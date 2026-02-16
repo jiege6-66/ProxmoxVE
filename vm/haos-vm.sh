@@ -69,13 +69,65 @@ trap 'error_handler $LINENO "$BASH_COMMAND"' ERR
 trap cleanup EXIT
 trap 'post_update_to_api "failed" "INTERRUPTED"' SIGINT
 trap 'post_update_to_api "failed" "TERMINATED"' SIGTERM
+
+# Smart recovery state
+VM_CREATION_PHASE="no"
+VM_RECOVERY_ATTEMPT=0
+VM_MAX_RETRIES=2
+
 function error_handler() {
   local exit_code="$?"
   local line_number="$1"
   local command="$2"
   local error_message="${RD}[ERROR]${CL} in line ${RD}$line_number${CL}: exit code ${RD}$exit_code${CL}: while executing command ${YW}$command${CL}"
-  post_update_to_api "failed" "${exit_code}"
   echo -e "\n$error_message\n"
+
+  # During VM creation phase: offer recovery menu instead of immediate cleanup
+  if [[ "$VM_CREATION_PHASE" == "yes" && $VM_RECOVERY_ATTEMPT -lt $VM_MAX_RETRIES ]]; then
+    ((VM_RECOVERY_ATTEMPT++))
+    trap - ERR
+    set +e
+
+    local choice
+    choice=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "VM CREATION FAILED" \
+      --radiolist "Exit code: ${exit_code} | Attempt: ${VM_RECOVERY_ATTEMPT}/${VM_MAX_RETRIES}\nFailed command: ${command}\n\nChoose a recovery action:" 16 72 4 \
+      "RETRY" "Retry VM creation" "ON" \
+      "RETRY_DOWNLOAD" "Retry with fresh download (clear cache)" "OFF" \
+      "KEEP" "Keep partial VM for debugging" "OFF" \
+      "ABORT" "Destroy VM and exit" "OFF" \
+      3>&1 1>&2 2>&3) || choice="ABORT"
+
+    case "$choice" in
+    RETRY | RETRY_DOWNLOAD)
+      msg_info "Cleaning up failed VM ${VMID} for retry"
+      cleanup_vmid 2>/dev/null || true
+      if [[ "$choice" == "RETRY_DOWNLOAD" && -n "${CACHE_FILE:-}" ]]; then
+        rm -f "$CACHE_FILE"
+        msg_ok "Cleared cached image"
+      fi
+      msg_ok "Ready for retry (attempt $((VM_RECOVERY_ATTEMPT + 1))/${VM_MAX_RETRIES})"
+      set -e
+      trap 'error_handler $LINENO "$BASH_COMMAND"' ERR
+      create_vm
+      exit $?
+      ;;
+    KEEP)
+      echo -e "\n${YW}  Keeping partial VM ${VMID} for debugging${CL}"
+      echo -e "  Inspect: qm config ${VMID}"
+      echo -e "  Remove:  qm destroy ${VMID} --destroy-unreferenced-disks --purge\n"
+      post_update_to_api "failed" "$exit_code"
+      exit "$exit_code"
+      ;;
+    *)
+      post_update_to_api "failed" "$exit_code"
+      cleanup_vmid
+      exit "$exit_code"
+      ;;
+    esac
+  fi
+
+  # Default: no recovery (max retries exceeded or outside creation phase)
+  post_update_to_api "failed" "${exit_code}"
   cleanup_vmid
 }
 
@@ -554,6 +606,7 @@ fi
 msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 
+create_vm() {
 var_version="${BRANCH}"
 msg_info "Retrieving the URL for Home Assistant ${BRANCH} Disk Image"
 if [ "$BRANCH" == "$dev" ]; then
@@ -658,3 +711,8 @@ if [ "$START_VM" == "yes" ]; then
 fi
 post_update_to_api "done" "none"
 msg_ok "Completed successfully!\n"
+} # end create_vm
+
+VM_CREATION_PHASE="yes"
+create_vm
+VM_CREATION_PHASE="no"

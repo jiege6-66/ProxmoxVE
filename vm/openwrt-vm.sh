@@ -70,13 +70,61 @@ trap 'error_handler $LINENO "$BASH_COMMAND"' ERR
 trap cleanup EXIT
 trap 'post_update_to_api "failed" "INTERRUPTED"' SIGINT
 trap 'post_update_to_api "failed" "TERMINATED"' SIGTERM
+
+# Smart recovery state
+VM_CREATION_PHASE="no"
+VM_RECOVERY_ATTEMPT=0
+VM_MAX_RETRIES=2
+
 function error_handler() {
   local exit_code="$?"
   local line_number="$1"
   local command="$2"
-  post_update_to_api "failed" "$exit_code"
   local error_message="${RD}[ERROR]${CL} in line ${RD}$line_number${CL}: exit code ${RD}$exit_code${CL}: while executing command ${YW}$command${CL}"
   echo -e "\n$error_message\n"
+
+  # During VM creation phase: offer recovery menu instead of immediate cleanup
+  if [[ "$VM_CREATION_PHASE" == "yes" && $VM_RECOVERY_ATTEMPT -lt $VM_MAX_RETRIES ]]; then
+    ((VM_RECOVERY_ATTEMPT++))
+    trap - ERR
+    set +e
+    set +o pipefail
+
+    local choice
+    choice=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "VM CREATION FAILED" \
+      --radiolist "Exit code: ${exit_code} | Attempt: ${VM_RECOVERY_ATTEMPT}/${VM_MAX_RETRIES}\nFailed command: ${command}\n\nChoose a recovery action:" 16 72 3 \
+      "RETRY" "Retry VM creation" "ON" \
+      "KEEP" "Keep partial VM for debugging" "OFF" \
+      "ABORT" "Destroy VM and exit" "OFF" \
+      3>&1 1>&2 2>&3) || choice="ABORT"
+
+    case "$choice" in
+    RETRY)
+      msg_info "Cleaning up failed VM ${VMID} for retry"
+      cleanup_vmid 2>/dev/null || true
+      msg_ok "Ready for retry (attempt $((VM_RECOVERY_ATTEMPT + 1))/${VM_MAX_RETRIES})"
+      set -Eeo pipefail
+      trap 'error_handler $LINENO "$BASH_COMMAND"' ERR
+      create_vm
+      exit $?
+      ;;
+    KEEP)
+      echo -e "\n${YW}  Keeping partial VM ${VMID} for debugging${CL}"
+      echo -e "  Inspect: qm config ${VMID}"
+      echo -e "  Remove:  qm destroy ${VMID} --destroy-unreferenced-disks --purge\n"
+      post_update_to_api "failed" "$exit_code"
+      exit "$exit_code"
+      ;;
+    *)
+      post_update_to_api "failed" "$exit_code"
+      cleanup_vmid
+      exit "$exit_code"
+      ;;
+    esac
+  fi
+
+  # Default: no recovery (max retries exceeded or outside creation phase)
+  post_update_to_api "failed" "$exit_code"
   cleanup_vmid
 }
 
@@ -520,6 +568,8 @@ else
 fi
 msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
+
+create_vm() {
 msg_info "Getting URL for OpenWrt Disk Image"
 
 response=$(curl -fsSL https://openwrt.org)
@@ -661,3 +711,8 @@ if [ -z "$VLAN" ] && [ "$VLAN2" != "999" ]; then
 fi
 post_update_to_api "done" "none"
 msg_ok "Completed Successfully!${VLAN_FINISH:+\n$VLAN_FINISH}"
+} # end create_vm
+
+VM_CREATION_PHASE="yes"
+create_vm
+VM_CREATION_PHASE="no"
