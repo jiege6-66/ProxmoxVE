@@ -624,3 +624,415 @@ EOF
   qm set "$VMID" -description "$DESCRIPTION" >/dev/null
 
 }
+
+# ==============================================================================
+# SECTION: VM SMART RECOVERY
+# ==============================================================================
+
+# Global error log for VM creation — captures stderr from critical commands
+VM_ERROR_LOG="${VM_ERROR_LOG:-/tmp/vm-install-$$.log}"
+VM_RECOVERY_ATTEMPT=${VM_RECOVERY_ATTEMPT:-0}
+VM_MAX_RETRIES=${VM_MAX_RETRIES:-2}
+
+# ------------------------------------------------------------------------------
+# vm_log_cmd()
+#
+# - Wraps a command to capture stderr into VM_ERROR_LOG
+# - Passes stdout through normally
+# - Returns the original exit code
+# Usage: vm_log_cmd qm importdisk "$VMID" "$IMAGE" "$STORAGE"
+# ------------------------------------------------------------------------------
+vm_log_cmd() {
+  "$@" 2>>"$VM_ERROR_LOG"
+}
+
+# ------------------------------------------------------------------------------
+# is_vm_download_error()
+#
+# - Detects download failures based on exit code and error log
+# - Checks curl exit codes (6, 7, 22, 28, 35, 52, 56) and HTTP error patterns
+# - Returns 0 (true) if download error detected, 1 otherwise
+# ------------------------------------------------------------------------------
+is_vm_download_error() {
+  local exit_code="${1:-0}"
+  local log_file="${2:-$VM_ERROR_LOG}"
+
+  # curl-specific exit codes indicating download issues
+  case "$exit_code" in
+  6 | 7 | 22 | 28 | 35 | 52 | 56) return 0 ;;
+  esac
+
+  # Check log for download-related patterns
+  if [[ -s "$log_file" ]]; then
+    if grep -qiE "curl.*failed|download.*failed|HTTP.*[45][0-9]{2}|Could not resolve|Connection refused|Connection timed out|SSL.*error" "$log_file" 2>/dev/null; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+# ------------------------------------------------------------------------------
+# is_vm_disk_import_error()
+#
+# - Detects disk import failures (qm importdisk / qm disk import)
+# - Checks for storage allocation and format conversion errors
+# - Returns 0 (true) if disk import error detected, 1 otherwise
+# ------------------------------------------------------------------------------
+is_vm_disk_import_error() {
+  local exit_code="${1:-0}"
+  local log_file="${2:-$VM_ERROR_LOG}"
+
+  if [[ -s "$log_file" ]]; then
+    if grep -qiE "importdisk.*failed|disk import.*error|storage.*allocation.*failed|qcow2.*error|raw.*error|pvesm.*alloc.*failed|unable to create|volume.*already exists" "$log_file" 2>/dev/null; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+# ------------------------------------------------------------------------------
+# is_vm_virt_customize_error()
+#
+# - Detects virt-customize / libguestfs failures
+# - Checks for guestfs, supermin, appliance boot errors
+# - Returns 0 (true) if virt-customize error detected, 1 otherwise
+# ------------------------------------------------------------------------------
+is_vm_virt_customize_error() {
+  local exit_code="${1:-0}"
+  local log_file="${2:-$VM_ERROR_LOG}"
+
+  if [[ -s "$log_file" ]]; then
+    if grep -qiE "virt-customize|libguestfs|guestfs|supermin|appliance.*boot|virt-.*failed|launch.*failed" "$log_file" 2>/dev/null; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+# ------------------------------------------------------------------------------
+# is_vm_vmid_conflict()
+#
+# - Detects VMID conflicts (VM already exists)
+# - Returns 0 (true) if conflict detected, 1 otherwise
+# ------------------------------------------------------------------------------
+is_vm_vmid_conflict() {
+  local exit_code="${1:-0}"
+  local log_file="${2:-$VM_ERROR_LOG}"
+
+  if [[ -s "$log_file" ]]; then
+    if grep -qiE "already exists|VM $VMID already|unable to create VM|VMID.*in use" "$log_file" 2>/dev/null; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+# ------------------------------------------------------------------------------
+# is_vm_storage_full()
+#
+# - Detects storage full / space exhaustion errors
+# - Returns 0 (true) if storage space issue detected, 1 otherwise
+# ------------------------------------------------------------------------------
+is_vm_storage_full() {
+  local exit_code="${1:-0}"
+  local log_file="${2:-$VM_ERROR_LOG}"
+
+  if [[ -s "$log_file" ]]; then
+    if grep -qiE "not enough space|no space left|storage.*full|disk quota|ENOSPC|insufficient.*space|thin pool.*full" "$log_file" 2>/dev/null; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+# ------------------------------------------------------------------------------
+# is_vm_network_error()
+#
+# - Detects general network/DNS errors beyond download failures
+# - Returns 0 (true) if network issue detected, 1 otherwise
+# ------------------------------------------------------------------------------
+is_vm_network_error() {
+  local exit_code="${1:-0}"
+  local log_file="${2:-$VM_ERROR_LOG}"
+
+  # Network-related curl/wget exit codes
+  case "$exit_code" in
+  6 | 7 | 28 | 52 | 56) return 0 ;;
+  esac
+
+  if [[ -s "$log_file" ]]; then
+    if grep -qiE "Name or service not known|Temporary failure in name resolution|Network is unreachable|No route to host|DNS.*failed|could not resolve" "$log_file" 2>/dev/null; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+# ------------------------------------------------------------------------------
+# vm_classify_error()
+#
+# - Classifies a VM creation error into a category
+# - Order matters: most specific checks first
+# - Returns category string via stdout
+# - Categories: vmid_conflict, storage_full, download, disk_import,
+#               virt_customize, network, unknown
+# ------------------------------------------------------------------------------
+vm_classify_error() {
+  local exit_code="${1:-0}"
+  local log_file="${2:-$VM_ERROR_LOG}"
+
+  if is_vm_vmid_conflict "$exit_code" "$log_file"; then
+    echo "vmid_conflict"
+  elif is_vm_storage_full "$exit_code" "$log_file"; then
+    echo "storage_full"
+  elif is_vm_download_error "$exit_code" "$log_file"; then
+    echo "download"
+  elif is_vm_disk_import_error "$exit_code" "$log_file"; then
+    echo "disk_import"
+  elif is_vm_virt_customize_error "$exit_code" "$log_file"; then
+    echo "virt_customize"
+  elif is_vm_network_error "$exit_code" "$log_file"; then
+    echo "network"
+  else
+    echo "unknown"
+  fi
+}
+
+# ------------------------------------------------------------------------------
+# vm_show_recovery_menu()
+#
+# - Displays a whiptail menu with recovery options after a VM creation failure
+# - Options are dynamically built based on error category
+# - Returns the selected option via stdout
+# - Arguments:
+#   $1: exit_code
+#   $2: error_category (from vm_classify_error)
+#   $3: current attempt number
+# ------------------------------------------------------------------------------
+vm_show_recovery_menu() {
+  local exit_code="${1:-1}"
+  local error_category="${2:-unknown}"
+  local attempt="${3:-1}"
+
+  local menu_items=()
+  local menu_height=12
+  local item_count=0
+
+  # --- Dynamic options based on error category ---
+
+  # Retry (always available unless max retries reached)
+  if ((attempt < VM_MAX_RETRIES)); then
+    case "$error_category" in
+    download)
+      menu_items+=("RETRY_DOWNLOAD" "🔄 Retry download (clear cache & re-download)" "ON")
+      ((item_count++))
+      ;;
+    disk_import)
+      menu_items+=("RETRY" "🔄 Retry VM creation" "ON")
+      ((item_count++))
+      ;;
+    virt_customize)
+      menu_items+=("RETRY" "🔄 Retry VM creation" "ON")
+      ((item_count++))
+      menu_items+=("SKIP_CUSTOMIZE" "⏭️  Skip virt-customize (use first-boot fallback)" "OFF")
+      ((item_count++))
+      ;;
+    network)
+      menu_items+=("RETRY" "🔄 Retry VM creation" "ON")
+      ((item_count++))
+      ;;
+    vmid_conflict)
+      menu_items+=("NEW_VMID" "🆔 Choose a different VM ID" "ON")
+      ((item_count++))
+      ;;
+    storage_full)
+      menu_items+=("RETRY_SETTINGS" "⚙️  Retry with different settings (storage/disk)" "ON")
+      ((item_count++))
+      ;;
+    *)
+      menu_items+=("RETRY" "🔄 Retry VM creation" "ON")
+      ((item_count++))
+      ;;
+    esac
+
+    # Retry with different resources (always offered)
+    menu_items+=("RETRY_SETTINGS" "⚙️  Retry with different settings (RAM/CPU/Disk)" "OFF")
+    ((item_count++))
+  fi
+
+  # Keep VM for debugging (always available)
+  menu_items+=("KEEP" "🔍 Keep partial VM for manual debugging" "OFF")
+  ((item_count++))
+
+  # Abort (always available)
+  menu_items+=("ABORT" "❌ Destroy VM and exit" "OFF")
+  ((item_count++))
+
+  menu_height=$((item_count + 10))
+
+  # Error info for title
+  local title="VM CREATION FAILED"
+  local body="Exit code: ${exit_code} | Category: ${error_category}\nAttempt: ${attempt}/${VM_MAX_RETRIES}\n\nChoose a recovery action:"
+
+  if ((attempt >= VM_MAX_RETRIES)); then
+    body="Exit code: ${exit_code} | Category: ${error_category}\n⚠️  Maximum retries (${VM_MAX_RETRIES}) reached.\n\nChoose an action:"
+  fi
+
+  local choice
+  choice=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "$title" \
+    --radiolist "$body" "$menu_height" 72 "$item_count" \
+    "${menu_items[@]}" 3>&1 1>&2 2>&3) || choice="ABORT"
+
+  echo "$choice"
+}
+
+# ------------------------------------------------------------------------------
+# vm_handle_recovery()
+#
+# - Main recovery handler called from error_handler or a wrapper
+# - Classifies the error, shows recovery menu, and executes the chosen action
+# - Arguments:
+#   $1: exit_code
+#   $2: line_number
+#   $3: failed_command
+#   $4: cleanup_fn     — function to call for VM cleanup (default: cleanup_vmid)
+#   $5: retry_fn       — function to re-invoke for full retry (required for retry)
+# - Uses global: VM_ERROR_LOG, VM_RECOVERY_ATTEMPT, VM_MAX_RETRIES, VMID
+# - Returns: 0 if retry was chosen (caller should re-run), 1 if abort/keep
+# ------------------------------------------------------------------------------
+vm_handle_recovery() {
+  local exit_code="${1:-1}"
+  local line_number="${2:-?}"
+  local failed_command="${3:-unknown}"
+  local cleanup_fn="${4:-cleanup_vmid}"
+  local retry_fn="${5:-}"
+
+  # Stop any running spinner
+  stop_spinner 2>/dev/null || true
+
+  # Classify the error
+  local error_category
+  error_category=$(vm_classify_error "$exit_code" "$VM_ERROR_LOG")
+
+  ((VM_RECOVERY_ATTEMPT++))
+
+  # Show error details
+  echo ""
+  msg_error "VM creation failed in line ${line_number}"
+  msg_error "Exit code: ${exit_code} | Category: ${error_category}"
+  msg_error "Command: ${failed_command}"
+
+  # Show last few lines of error log if available
+  if [[ -s "$VM_ERROR_LOG" ]]; then
+    echo -e "\n${TAB}${YW}--- Last 5 lines of error log ---${CL}"
+    tail -n 5 "$VM_ERROR_LOG" 2>/dev/null | while IFS= read -r line; do
+      echo -e "${TAB}  ${line}"
+    done
+    echo -e "${TAB}${YW}----------------------------------${CL}\n"
+  fi
+
+  # Show recovery menu
+  local choice
+  choice=$(vm_show_recovery_menu "$exit_code" "$error_category" "$VM_RECOVERY_ATTEMPT")
+
+  case "$choice" in
+  RETRY | RETRY_DOWNLOAD)
+    msg_info "Cleaning up failed VM ${VMID} for retry"
+    "$cleanup_fn" 2>/dev/null || true
+    rm -f "$VM_ERROR_LOG"
+
+    if [[ "$choice" == "RETRY_DOWNLOAD" ]]; then
+      # Clear cached image
+      if [[ -n "${CACHE_FILE:-}" && -f "$CACHE_FILE" ]]; then
+        msg_info "Clearing cached image: $(basename "$CACHE_FILE")"
+        rm -f "$CACHE_FILE"
+        msg_ok "Cache cleared"
+      fi
+    fi
+
+    msg_ok "Ready for retry (attempt $((VM_RECOVERY_ATTEMPT + 1))/${VM_MAX_RETRIES})"
+
+    if [[ -n "$retry_fn" ]]; then
+      # Re-invoke the retry function — caller loop handles this
+      return 0
+    else
+      msg_warn "No retry function provided — please re-run the script manually"
+      return 1
+    fi
+    ;;
+
+  SKIP_CUSTOMIZE)
+    msg_info "Cleaning up failed VM ${VMID} for retry (skipping virt-customize)"
+    "$cleanup_fn" 2>/dev/null || true
+    rm -f "$VM_ERROR_LOG"
+    # Set flag so docker-vm.sh skips virt-customize
+    export SKIP_VIRT_CUSTOMIZE="yes"
+    msg_ok "Will use first-boot fallback for package installation"
+
+    if [[ -n "$retry_fn" ]]; then
+      return 0
+    else
+      msg_warn "No retry function provided — please re-run the script manually"
+      return 1
+    fi
+    ;;
+
+  RETRY_SETTINGS)
+    msg_info "Cleaning up failed VM ${VMID} for retry with new settings"
+    "$cleanup_fn" 2>/dev/null || true
+    rm -f "$VM_ERROR_LOG"
+
+    # Let user choose new settings via advanced_settings if available
+    if declare -f advanced_settings >/dev/null 2>&1; then
+      header_info 2>/dev/null || true
+      echo -e "${ADVANCED:-}${BOLD}${RD}Reconfigure VM Settings${CL}"
+      advanced_settings
+    else
+      msg_warn "advanced_settings() not available — using current settings"
+    fi
+
+    if [[ -n "$retry_fn" ]]; then
+      return 0
+    else
+      msg_warn "No retry function provided — please re-run the script manually"
+      return 1
+    fi
+    ;;
+
+  NEW_VMID)
+    msg_info "Cleaning up conflicting VM ${VMID}"
+    "$cleanup_fn" 2>/dev/null || true
+    rm -f "$VM_ERROR_LOG"
+
+    # Get new VMID
+    VMID=$(get_valid_nextid)
+    echo -e "${CONTAINERID:-}${BOLD}${DGN}New Virtual Machine ID: ${BGN}${VMID}${CL}"
+    msg_ok "Using new VMID: ${VMID}"
+
+    if [[ -n "$retry_fn" ]]; then
+      return 0
+    else
+      msg_warn "No retry function provided — please re-run the script manually"
+      return 1
+    fi
+    ;;
+
+  KEEP)
+    msg_warn "Keeping partial VM ${VMID} for manual debugging"
+    msg_warn "You can inspect it with: qm config ${VMID}"
+    msg_warn "To remove it later: qm destroy ${VMID} --destroy-unreferenced-disks --purge"
+    # Report failure to telemetry
+    post_update_to_api "failed" "$exit_code" 2>/dev/null || true
+    exit "$exit_code"
+    ;;
+
+  ABORT | *)
+    msg_info "Destroying failed VM ${VMID}"
+    "$cleanup_fn" 2>/dev/null || true
+    rm -f "$VM_ERROR_LOG"
+    post_update_to_api "failed" "$exit_code" 2>/dev/null || true
+    msg_error "VM creation aborted by user"
+    exit "$exit_code"
+    ;;
+  esac
+}
