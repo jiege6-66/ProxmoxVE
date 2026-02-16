@@ -515,55 +515,55 @@ msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 
 create_vm() {
-msg_info "Retrieving the URL for the Ubuntu 22.04 Disk Image"
-URL=https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
-sleep 2
-msg_ok "${CL}${BL}${URL}${CL}"
-curl -f#SL -o "$(basename "$URL")" "$URL"
-echo -en "\e[1A\e[0K"
-FILE=$(basename $URL)
-msg_ok "Downloaded ${CL}${BL}${FILE}${CL}"
+  msg_info "Retrieving the URL for the Ubuntu 22.04 Disk Image"
+  URL=https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+  sleep 2
+  msg_ok "${CL}${BL}${URL}${CL}"
+  curl -f#SL -o "$(basename "$URL")" "$URL"
+  echo -en "\e[1A\e[0K"
+  FILE=$(basename $URL)
+  msg_ok "Downloaded ${CL}${BL}${FILE}${CL}"
 
-STORAGE_TYPE=$(pvesm status -storage $STORAGE | awk 'NR>1 {print $2}')
-case $STORAGE_TYPE in
-nfs | dir | cifs)
-  DISK_EXT=".qcow2"
-  DISK_REF="$VMID/"
-  DISK_IMPORT="-format qcow2"
-  THIN=""
-  ;;
-btrfs)
-  DISK_EXT=".raw"
-  DISK_REF="$VMID/"
-  DISK_IMPORT="-format raw"
-  FORMAT=",efitype=4m"
-  THIN=""
-  ;;
-*)
-  DISK_EXT=""
-  DISK_REF=""
-  DISK_IMPORT="-format raw"
-  ;;
-esac
-for i in {0,1}; do
-  disk="DISK$i"
-  eval DISK${i}=vm-${VMID}-disk-${i}${DISK_EXT:-}
-  eval DISK${i}_REF=${STORAGE}:${DISK_REF:-}${!disk}
-done
+  STORAGE_TYPE=$(pvesm status -storage $STORAGE | awk 'NR>1 {print $2}')
+  case $STORAGE_TYPE in
+  nfs | dir | cifs)
+    DISK_EXT=".qcow2"
+    DISK_REF="$VMID/"
+    DISK_IMPORT="-format qcow2"
+    THIN=""
+    ;;
+  btrfs)
+    DISK_EXT=".raw"
+    DISK_REF="$VMID/"
+    DISK_IMPORT="-format raw"
+    FORMAT=",efitype=4m"
+    THIN=""
+    ;;
+  *)
+    DISK_EXT=""
+    DISK_REF=""
+    DISK_IMPORT="-format raw"
+    ;;
+  esac
+  for i in {0,1}; do
+    disk="DISK$i"
+    eval DISK${i}=vm-${VMID}-disk-${i}${DISK_EXT:-}
+    eval DISK${i}_REF=${STORAGE}:${DISK_REF:-}${!disk}
+  done
 
-msg_info "Creating a Ubuntu 22.04 VM"
-qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
-  -name $HN -tags community-script -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
-pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
-qm importdisk $VMID ${FILE} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
-qm set $VMID \
-  -efidisk0 ${DISK0_REF}${FORMAT} \
-  -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=${DISK_SIZE} \
-  -ide2 ${STORAGE}:cloudinit \
-  -boot order=scsi0 \
-  -serial0 socket >/dev/null
-DESCRIPTION=$(
-  cat <<EOF
+  msg_info "Creating a Ubuntu 22.04 VM"
+  qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
+    -name $HN -tags community-script -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
+  pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
+  qm importdisk $VMID ${FILE} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
+  qm set $VMID \
+    -efidisk0 ${DISK0_REF}${FORMAT} \
+    -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=${DISK_SIZE} \
+    -ide2 ${STORAGE}:cloudinit \
+    -boot order=scsi0 \
+    -serial0 socket >/dev/null
+  DESCRIPTION=$(
+    cat <<EOF
 <div align='center'>
   <a href='https://Helper-Scripts.com' target='_blank' rel='noopener noreferrer'>
     <img src='https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/images/logo-81x112.png' alt='Logo' style='width:81px;height:112px;'/>
@@ -591,25 +591,25 @@ DESCRIPTION=$(
   </span>
 </div>
 EOF
-)
-qm set $VMID -description "$DESCRIPTION" >/dev/null
-if [ -n "$DISK_SIZE" ]; then
-  msg_info "Resizing disk to $DISK_SIZE GB"
-  qm resize $VMID scsi0 ${DISK_SIZE} >/dev/null
-else
-  msg_info "Using default disk size of $DEFAULT_DISK_SIZE GB"
-  qm resize $VMID scsi0 ${DEFAULT_DISK_SIZE} >/dev/null
-fi
+  )
+  qm set $VMID -description "$DESCRIPTION" >/dev/null
+  if [ -n "$DISK_SIZE" ]; then
+    msg_info "Resizing disk to $DISK_SIZE GB"
+    qm resize $VMID scsi0 ${DISK_SIZE} >/dev/null
+  else
+    msg_info "Using default disk size of $DEFAULT_DISK_SIZE GB"
+    qm resize $VMID scsi0 ${DEFAULT_DISK_SIZE} >/dev/null
+  fi
 
-msg_ok "Created a Ubuntu 22.04 VM ${CL}${BL}(${HN})"
-if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Ubuntu 22.04 VM"
-  qm start $VMID
-  msg_ok "Started Ubuntu 22.04 VM"
-fi
-post_update_to_api "done" "none"
-msg_ok "Completed successfully!\n"
-echo -e "Setup Cloud-Init before starting \n
+  msg_ok "Created a Ubuntu 22.04 VM ${CL}${BL}(${HN})"
+  if [ "$START_VM" == "yes" ]; then
+    msg_info "Starting Ubuntu 22.04 VM"
+    qm start $VMID
+    msg_ok "Started Ubuntu 22.04 VM"
+  fi
+  post_update_to_api "done" "none"
+  msg_ok "Completed successfully!\n"
+  echo -e "Setup Cloud-Init before starting \n
 More info at https://github.com/community-scripts/ProxmoxVE/discussions/272 \n"
 } # end create_vm
 

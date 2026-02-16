@@ -607,64 +607,64 @@ msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 
 create_vm() {
-var_version="${BRANCH}"
-msg_info "Retrieving the URL for Home Assistant ${BRANCH} Disk Image"
-if [ "$BRANCH" == "$dev" ]; then
-  URL="https://os-artifacts.home-assistant.io/${BRANCH}/haos_ova-${BRANCH}.qcow2.xz"
-else
-  URL="https://github.com/home-assistant/operating-system/releases/download/${BRANCH}/haos_ova-${BRANCH}.qcow2.xz"
-fi
+  var_version="${BRANCH}"
+  msg_info "Retrieving the URL for Home Assistant ${BRANCH} Disk Image"
+  if [ "$BRANCH" == "$dev" ]; then
+    URL="https://os-artifacts.home-assistant.io/${BRANCH}/haos_ova-${BRANCH}.qcow2.xz"
+  else
+    URL="https://github.com/home-assistant/operating-system/releases/download/${BRANCH}/haos_ova-${BRANCH}.qcow2.xz"
+  fi
 
-CACHE_DIR="/var/lib/vz/template/cache"
-CACHE_FILE="$CACHE_DIR/$(basename "$URL")"
-FILE_IMG="/var/lib/vz/template/tmp/${CACHE_FILE##*/%.xz}" # .qcow2
+  CACHE_DIR="/var/lib/vz/template/cache"
+  CACHE_FILE="$CACHE_DIR/$(basename "$URL")"
+  FILE_IMG="/var/lib/vz/template/tmp/${CACHE_FILE##*/%.xz}" # .qcow2
 
-mkdir -p "$CACHE_DIR" "$(dirname "$FILE_IMG")"
-msg_ok "${CL}${BL}${URL}${CL}"
+  mkdir -p "$CACHE_DIR" "$(dirname "$FILE_IMG")"
+  msg_ok "${CL}${BL}${URL}${CL}"
 
-download_and_validate_xz "$URL" "$CACHE_FILE"
+  download_and_validate_xz "$URL" "$CACHE_FILE"
 
-msg_info "Creating Home Assistant OS VM shell"
-qm create $VMID -machine q35 -bios ovmf -agent 1 -tablet 0 -localtime 1 ${CPU_TYPE} \
-  -cores "$CORE_COUNT" -memory "$RAM_SIZE" -name "$HN" -tags community-script \
-  -net0 "virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU" -onboot 1 -ostype l26 -scsihw virtio-scsi-pci >/dev/null
-msg_ok "Created VM shell"
+  msg_info "Creating Home Assistant OS VM shell"
+  qm create $VMID -machine q35 -bios ovmf -agent 1 -tablet 0 -localtime 1 ${CPU_TYPE} \
+    -cores "$CORE_COUNT" -memory "$RAM_SIZE" -name "$HN" -tags community-script \
+    -net0 "virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU" -onboot 1 -ostype l26 -scsihw virtio-scsi-pci >/dev/null
+  msg_ok "Created VM shell"
 
-extract_xz_with_pv "$CACHE_FILE" "$FILE_IMG"
+  extract_xz_with_pv "$CACHE_FILE" "$FILE_IMG"
 
-msg_info "Importing disk into storage ($STORAGE)"
-if qm disk import --help >/dev/null 2>&1; then
-  IMPORT_CMD=(qm disk import)
-else
-  IMPORT_CMD=(qm importdisk)
-fi
-IMPORT_OUT="$("${IMPORT_CMD[@]}" "$VMID" "$FILE_IMG" "$STORAGE" --format raw 2>&1 || true)"
-DISK_REF="$(printf '%s\n' "$IMPORT_OUT" | sed -n "s/.*successfully imported disk '\([^']\+\)'.*/\1/p" | tr -d "\r\"'")"
-[[ -z "$DISK_REF" ]] && DISK_REF="$(pvesm list "$STORAGE" | awk -v id="$VMID" '$5 ~ ("vm-"id"-disk-") {print $1":"$5}' | sort | tail -n1)"
-[[ -z "$DISK_REF" ]] && {
-  msg_error "Unable to determine imported disk reference."
-  echo "$IMPORT_OUT"
-  exit 1
-}
-msg_ok "Imported disk (${CL}${BL}${DISK_REF}${CL})"
+  msg_info "Importing disk into storage ($STORAGE)"
+  if qm disk import --help >/dev/null 2>&1; then
+    IMPORT_CMD=(qm disk import)
+  else
+    IMPORT_CMD=(qm importdisk)
+  fi
+  IMPORT_OUT="$("${IMPORT_CMD[@]}" "$VMID" "$FILE_IMG" "$STORAGE" --format raw 2>&1 || true)"
+  DISK_REF="$(printf '%s\n' "$IMPORT_OUT" | sed -n "s/.*successfully imported disk '\([^']\+\)'.*/\1/p" | tr -d "\r\"'")"
+  [[ -z "$DISK_REF" ]] && DISK_REF="$(pvesm list "$STORAGE" | awk -v id="$VMID" '$5 ~ ("vm-"id"-disk-") {print $1":"$5}' | sort | tail -n1)"
+  [[ -z "$DISK_REF" ]] && {
+    msg_error "Unable to determine imported disk reference."
+    echo "$IMPORT_OUT"
+    exit 1
+  }
+  msg_ok "Imported disk (${CL}${BL}${DISK_REF}${CL})"
 
-rm -f "$FILE_IMG"
+  rm -f "$FILE_IMG"
 
-msg_info "Attaching EFI and root disk"
-qm set $VMID \
-  --efidisk0 ${STORAGE}:0,efitype=4m \
-  --scsi0 ${DISK_REF},ssd=1,discard=on \
-  --boot order=scsi0 \
-  --serial0 socket >/dev/null
-qm set $VMID --agent enabled=1 >/dev/null
-msg_ok "Attached EFI and root disk"
+  msg_info "Attaching EFI and root disk"
+  qm set $VMID \
+    --efidisk0 ${STORAGE}:0,efitype=4m \
+    --scsi0 ${DISK_REF},ssd=1,discard=on \
+    --boot order=scsi0 \
+    --serial0 socket >/dev/null
+  qm set $VMID --agent enabled=1 >/dev/null
+  msg_ok "Attached EFI and root disk"
 
-msg_info "Resizing disk to $DISK_SIZE"
-qm resize $VMID scsi0 ${DISK_SIZE} >/dev/null
-msg_ok "Resized disk"
+  msg_info "Resizing disk to $DISK_SIZE"
+  qm resize $VMID scsi0 ${DISK_SIZE} >/dev/null
+  msg_ok "Resized disk"
 
-DESCRIPTION=$(
-  cat <<EOF
+  DESCRIPTION=$(
+    cat <<EOF
 <div align='center'>
   <a href='https://Helper-Scripts.com' target='_blank' rel='noopener noreferrer'>
     <img src='https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/images/logo-81x112.png' alt='Logo' style='width:81px;height:112px;'/>
@@ -692,25 +692,25 @@ DESCRIPTION=$(
   </span>
 </div>
 EOF
-)
-qm set $VMID -description "$DESCRIPTION" >/dev/null
-msg_ok "Created Homeassistant OS VM ${CL}${BL}(${HN})"
+  )
+  qm set $VMID -description "$DESCRIPTION" >/dev/null
+  msg_ok "Created Homeassistant OS VM ${CL}${BL}(${HN})"
 
-if whiptail --backtitle "Proxmox VE Helper Scripts" --title "Image Cache" \
-  --yesno "Keep downloaded Home Assistant OS image for future VMs?\n\nFile: $CACHE_FILE" 10 70; then
-  msg_ok "Keeping cached image"
-else
-  rm -f "$CACHE_FILE"
-  msg_ok "Deleted cached image"
-fi
+  if whiptail --backtitle "Proxmox VE Helper Scripts" --title "Image Cache" \
+    --yesno "Keep downloaded Home Assistant OS image for future VMs?\n\nFile: $CACHE_FILE" 10 70; then
+    msg_ok "Keeping cached image"
+  else
+    rm -f "$CACHE_FILE"
+    msg_ok "Deleted cached image"
+  fi
 
-if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Home Assistant OS VM"
-  qm start $VMID
-  msg_ok "Started Home Assistant OS VM"
-fi
-post_update_to_api "done" "none"
-msg_ok "Completed successfully!\n"
+  if [ "$START_VM" == "yes" ]; then
+    msg_info "Starting Home Assistant OS VM"
+    qm start $VMID
+    msg_ok "Started Home Assistant OS VM"
+  fi
+  post_update_to_api "done" "none"
+  msg_ok "Completed successfully!\n"
 } # end create_vm
 
 VM_CREATION_PHASE="yes"

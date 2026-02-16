@@ -570,57 +570,57 @@ msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 
 create_vm() {
-msg_info "Getting URL for OpenWrt Disk Image"
+  msg_info "Getting URL for OpenWrt Disk Image"
 
-response=$(curl -fsSL https://openwrt.org)
-stableversion=$(echo "$response" | sed -n 's/.*Current stable release - OpenWrt \([0-9.]\+\).*/\1/p' | head -n 1)
-URL="https://downloads.openwrt.org/releases/$stableversion/targets/x86/64/openwrt-$stableversion-x86-64-generic-ext4-combined.img.gz"
+  response=$(curl -fsSL https://openwrt.org)
+  stableversion=$(echo "$response" | sed -n 's/.*Current stable release - OpenWrt \([0-9.]\+\).*/\1/p' | head -n 1)
+  URL="https://downloads.openwrt.org/releases/$stableversion/targets/x86/64/openwrt-$stableversion-x86-64-generic-ext4-combined.img.gz"
 
-msg_ok "${CL}${BL}${URL}${CL}"
-curl -f#SL -o "$(basename "$URL")" "$URL"
-FILE=$(basename "$URL")
-msg_ok "Downloaded ${CL}${BL}$FILE${CL}"
+  msg_ok "${CL}${BL}${URL}${CL}"
+  curl -f#SL -o "$(basename "$URL")" "$URL"
+  FILE=$(basename "$URL")
+  msg_ok "Downloaded ${CL}${BL}$FILE${CL}"
 
-gunzip -f "$FILE" >/dev/null 2>&1 || true
-FILE="${FILE%.*}"
-msg_ok "Extracted OpenWrt Disk Image ${CL}${BL}$FILE${CL}"
+  gunzip -f "$FILE" >/dev/null 2>&1 || true
+  FILE="${FILE%.*}"
+  msg_ok "Extracted OpenWrt Disk Image ${CL}${BL}$FILE${CL}"
 
-msg_info "Creating OpenWrt VM"
-qm create $VMID -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
-  -onboot 1 -ostype l26 -scsihw virtio-scsi-pci --tablet 0
-if [[ "$(pvesm status | awk -v s=$STORAGE '$1==s {print $2}')" == "dir" ]]; then
-  qm set $VMID -efidisk0 ${STORAGE}:0,efitype=4m,size=4M
-else
-  pvesm alloc $STORAGE $VMID vm-$VMID-disk-0 4M >/dev/null
-  qm set $VMID -efidisk0 ${STORAGE}:vm-$VMID-disk-0,efitype=4m,size=4M
-fi
+  msg_info "Creating OpenWrt VM"
+  qm create $VMID -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
+    -onboot 1 -ostype l26 -scsihw virtio-scsi-pci --tablet 0
+  if [[ "$(pvesm status | awk -v s=$STORAGE '$1==s {print $2}')" == "dir" ]]; then
+    qm set $VMID -efidisk0 ${STORAGE}:0,efitype=4m,size=4M
+  else
+    pvesm alloc $STORAGE $VMID vm-$VMID-disk-0 4M >/dev/null
+    qm set $VMID -efidisk0 ${STORAGE}:vm-$VMID-disk-0,efitype=4m,size=4M
+  fi
 
-IMPORT_OUT="$(qm importdisk $VMID $FILE $STORAGE --format raw 2>&1 || true)"
-DISK_REF="$(printf '%s\n' "$IMPORT_OUT" | sed -n "s/.*successfully imported disk '\([^']\+\)'.*/\1/p")"
+  IMPORT_OUT="$(qm importdisk $VMID $FILE $STORAGE --format raw 2>&1 || true)"
+  DISK_REF="$(printf '%s\n' "$IMPORT_OUT" | sed -n "s/.*successfully imported disk '\([^']\+\)'.*/\1/p")"
 
-if [[ -z "$DISK_REF" ]]; then
-  DISK_REF="$(pvesm list "$STORAGE" | awk -v id="$VMID" '$1 ~ ("vm-"id"-disk-") {print $1}' | sort | tail -n1)"
-fi
+  if [[ -z "$DISK_REF" ]]; then
+    DISK_REF="$(pvesm list "$STORAGE" | awk -v id="$VMID" '$1 ~ ("vm-"id"-disk-") {print $1}' | sort | tail -n1)"
+  fi
 
-if [[ -z "$DISK_REF" ]]; then
-  msg_error "Unable to determine imported disk reference."
-  echo "$IMPORT_OUT"
-  exit 1
-fi
+  if [[ -z "$DISK_REF" ]]; then
+    msg_error "Unable to determine imported disk reference."
+    echo "$IMPORT_OUT"
+    exit 1
+  fi
 
-qm set $VMID \
-  -efidisk0 ${STORAGE}:0,efitype=4m,size=4M \
-  -scsi0 ${DISK_REF} \
-  -boot order=scsi0 \
-  -tags community-script >/dev/null
-msg_ok "Attached disk"
+  qm set $VMID \
+    -efidisk0 ${STORAGE}:0,efitype=4m,size=4M \
+    -scsi0 ${DISK_REF} \
+    -boot order=scsi0 \
+    -tags community-script >/dev/null
+  msg_ok "Attached disk"
 
-msg_info "Resizing disk to ${DISK_SIZE}"
-qm disk resize "$VMID" scsi0 "${DISK_SIZE}" >/dev/null
-msg_ok "Resized disk to ${DISK_SIZE}"
+  msg_info "Resizing disk to ${DISK_SIZE}"
+  qm disk resize "$VMID" scsi0 "${DISK_SIZE}" >/dev/null
+  msg_ok "Resized disk to ${DISK_SIZE}"
 
-DESCRIPTION=$(
-  cat <<EOF
+  DESCRIPTION=$(
+    cat <<EOF
 <div align='center'>
   <a href='https://Helper-Scripts.com' target='_blank' rel='noopener noreferrer'>
     <img src='https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/images/logo-81x112.png' alt='Logo' style='width:81px;height:112px;'/>
@@ -648,69 +648,69 @@ DESCRIPTION=$(
   </span>
 </div>
 EOF
-)
-qm set $VMID -description "$DESCRIPTION" >/dev/null
+  )
+  qm set $VMID -description "$DESCRIPTION" >/dev/null
 
-msg_ok "Created OpenWrt VM ${CL}${BL}(${HN})"
-msg_info "OpenWrt is being started in order to configure the network interfaces."
-qm start $VMID
-sleep 15
-msg_info "Waiting for OpenWrt to boot..."
-for i in {1..30}; do
-  if qm status "$VMID" | grep -q "running"; then
-    sleep 5
-    msg_ok "OpenWrt is running"
-    break
-  fi
-  sleep 1
-done
-
-msg_ok "Network interfaces are being configured as OpenWrt initiates."
-
-if qm status "$VMID" | grep -q "running"; then
-  send_line_to_vm ""
-  send_line_to_vm "uci delete network.@device[0]"
-  send_line_to_vm "uci set network.wan=interface"
-  send_line_to_vm "uci set network.wan.device=eth1"
-  send_line_to_vm "uci set network.wan.proto=dhcp"
-  send_line_to_vm "uci delete network.lan"
-  send_line_to_vm "uci set network.lan=interface"
-  send_line_to_vm "uci set network.lan.device=eth0"
-  send_line_to_vm "uci set network.lan.proto=static"
-  send_line_to_vm "uci set network.lan.ipaddr=${LAN_IP_ADDR}"
-  send_line_to_vm "uci set network.lan.netmask=${LAN_NETMASK}"
-  send_line_to_vm "uci commit"
-  send_line_to_vm "halt"
-  msg_ok "Network interfaces configured in OpenWrt"
-else
-  msg_error "VM is not running"
-  exit 1
-fi
-
-msg_info "Waiting for OpenWrt to shut down..."
-until qm status "$VMID" | grep -q "stopped"; do
-  sleep 2
-done
-msg_ok "OpenWrt has shut down"
-
-msg_info "Adding bridge interfaces on Proxmox side"
-qm set $VMID \
-  -net0 virtio,bridge=${LAN_BRG},macaddr=${LAN_MAC}${LAN_VLAN}${MTU} \
-  -net1 virtio,bridge=${BRG},macaddr=${MAC}${VLAN}${MTU} >/dev/null
-msg_ok "Bridge interfaces added"
-
-if [ "$START_VM" = "yes" ]; then
-  msg_info "Starting OpenWrt VM"
+  msg_ok "Created OpenWrt VM ${CL}${BL}(${HN})"
+  msg_info "OpenWrt is being started in order to configure the network interfaces."
   qm start $VMID
-  msg_ok "Started OpenWrt VM"
-fi
+  sleep 15
+  msg_info "Waiting for OpenWrt to boot..."
+  for i in {1..30}; do
+    if qm status "$VMID" | grep -q "running"; then
+      sleep 5
+      msg_ok "OpenWrt is running"
+      break
+    fi
+    sleep 1
+  done
 
-VLAN_FINISH=""
-if [ -z "$VLAN" ] && [ "$VLAN2" != "999" ]; then
-  VLAN_FINISH=" Please remember to adjust the VLAN tags to suit your network."
-fi
-post_update_to_api "done" "none"
-msg_ok "Completed Successfully!${VLAN_FINISH:+\n$VLAN_FINISH}"
+  msg_ok "Network interfaces are being configured as OpenWrt initiates."
+
+  if qm status "$VMID" | grep -q "running"; then
+    send_line_to_vm ""
+    send_line_to_vm "uci delete network.@device[0]"
+    send_line_to_vm "uci set network.wan=interface"
+    send_line_to_vm "uci set network.wan.device=eth1"
+    send_line_to_vm "uci set network.wan.proto=dhcp"
+    send_line_to_vm "uci delete network.lan"
+    send_line_to_vm "uci set network.lan=interface"
+    send_line_to_vm "uci set network.lan.device=eth0"
+    send_line_to_vm "uci set network.lan.proto=static"
+    send_line_to_vm "uci set network.lan.ipaddr=${LAN_IP_ADDR}"
+    send_line_to_vm "uci set network.lan.netmask=${LAN_NETMASK}"
+    send_line_to_vm "uci commit"
+    send_line_to_vm "halt"
+    msg_ok "Network interfaces configured in OpenWrt"
+  else
+    msg_error "VM is not running"
+    exit 1
+  fi
+
+  msg_info "Waiting for OpenWrt to shut down..."
+  until qm status "$VMID" | grep -q "stopped"; do
+    sleep 2
+  done
+  msg_ok "OpenWrt has shut down"
+
+  msg_info "Adding bridge interfaces on Proxmox side"
+  qm set $VMID \
+    -net0 virtio,bridge=${LAN_BRG},macaddr=${LAN_MAC}${LAN_VLAN}${MTU} \
+    -net1 virtio,bridge=${BRG},macaddr=${MAC}${VLAN}${MTU} >/dev/null
+  msg_ok "Bridge interfaces added"
+
+  if [ "$START_VM" = "yes" ]; then
+    msg_info "Starting OpenWrt VM"
+    qm start $VMID
+    msg_ok "Started OpenWrt VM"
+  fi
+
+  VLAN_FINISH=""
+  if [ -z "$VLAN" ] && [ "$VLAN2" != "999" ]; then
+    VLAN_FINISH=" Please remember to adjust the VLAN tags to suit your network."
+  fi
+  post_update_to_api "done" "none"
+  msg_ok "Completed Successfully!${VLAN_FINISH:+\n$VLAN_FINISH}"
 } # end create_vm
 
 VM_CREATION_PHASE="yes"
