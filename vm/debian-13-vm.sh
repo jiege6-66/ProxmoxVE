@@ -97,6 +97,7 @@ function error_handler() {
     RETRY | SKIP_CUSTOMIZE)
       msg_info "Cleaning up failed VM ${VMID} for retry"
       cleanup_vmid 2>/dev/null || true
+      rm -f "${WORK_FILE:-}" 2>/dev/null
       [[ "$choice" == "SKIP_CUSTOMIZE" ]] && export SKIP_VIRT_CUSTOMIZE="yes"
       msg_ok "Ready for retry (attempt $((VM_RECOVERY_ATTEMPT + 1))/${VM_MAX_RETRIES})"
       set -e
@@ -535,129 +536,129 @@ msg_ok "Using ${CL}${BL}$STORAGE${CL} ${GN}for Storage Location."
 msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 
 create_vm() {
-# ==============================================================================
-# PREREQUISITES
-# ==============================================================================
-if ! command -v virt-customize &>/dev/null; then
-  msg_info "Installing libguestfs-tools"
-  apt-get update >/dev/null 2>&1
-  apt-get install -y libguestfs-tools >/dev/null 2>&1
-  msg_ok "Installed libguestfs-tools"
-fi
+  # ==============================================================================
+  # PREREQUISITES
+  # ==============================================================================
+  if ! command -v virt-customize &>/dev/null; then
+    msg_info "Installing libguestfs-tools"
+    apt-get update >/dev/null 2>&1
+    apt-get install -y libguestfs-tools >/dev/null 2>&1
+    msg_ok "Installed libguestfs-tools"
+  fi
 
-msg_info "Retrieving the URL for the Debian 13 Qcow2 Disk Image"
-if [ "$CLOUD_INIT" == "yes" ]; then
-  URL=https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2
-else
-  URL=https://cloud.debian.org/images/cloud/trixie/latest/debian-13-nocloud-amd64.qcow2
-fi
-sleep 2
-msg_ok "${CL}${BL}${URL}${CL}"
-curl -f#SL -o "$(basename "$URL")" "$URL"
-echo -en "\e[1A\e[0K"
-FILE=$(basename $URL)
-msg_ok "Downloaded ${CL}${BL}${FILE}${CL}"
+  msg_info "Retrieving the URL for the Debian 13 Qcow2 Disk Image"
+  if [ "$CLOUD_INIT" == "yes" ]; then
+    URL=https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2
+  else
+    URL=https://cloud.debian.org/images/cloud/trixie/latest/debian-13-nocloud-amd64.qcow2
+  fi
+  sleep 2
+  msg_ok "${CL}${BL}${URL}${CL}"
+  curl -f#SL -o "$(basename "$URL")" "$URL"
+  echo -en "\e[1A\e[0K"
+  FILE=$(basename $URL)
+  msg_ok "Downloaded ${CL}${BL}${FILE}${CL}"
 
-# ==============================================================================
-# IMAGE CUSTOMIZATION
-# ==============================================================================
-WORK_FILE=$(mktemp --suffix=.qcow2)
-cp "$FILE" "$WORK_FILE"
+  # ==============================================================================
+  # IMAGE CUSTOMIZATION
+  # ==============================================================================
+  WORK_FILE=$(mktemp --suffix=.qcow2)
+  cp "$FILE" "$WORK_FILE"
 
-if [[ "${SKIP_VIRT_CUSTOMIZE:-}" != "yes" ]]; then
-msg_info "Customizing ${FILE} image"
+  if [[ "${SKIP_VIRT_CUSTOMIZE:-}" != "yes" ]]; then
+    msg_info "Customizing ${FILE} image"
 
-# Set hostname
-virt-customize -q -a "$WORK_FILE" --hostname "${HN}" >/dev/null 2>&1
+    # Set hostname
+    virt-customize -q -a "$WORK_FILE" --hostname "${HN}" >/dev/null 2>&1
 
-# Prepare for unique machine-id on first boot
-virt-customize -q -a "$WORK_FILE" --run-command "truncate -s 0 /etc/machine-id" >/dev/null 2>&1
-virt-customize -q -a "$WORK_FILE" --run-command "rm -f /var/lib/dbus/machine-id" >/dev/null 2>&1
+    # Prepare for unique machine-id on first boot
+    virt-customize -q -a "$WORK_FILE" --run-command "truncate -s 0 /etc/machine-id" >/dev/null 2>&1
+    virt-customize -q -a "$WORK_FILE" --run-command "rm -f /var/lib/dbus/machine-id" >/dev/null 2>&1
 
-# Disable systemd-firstboot to prevent interactive prompts blocking the console
-virt-customize -q -a "$WORK_FILE" --run-command "systemctl disable systemd-firstboot.service 2>/dev/null; rm -f /etc/systemd/system/sysinit.target.wants/systemd-firstboot.service; ln -sf /dev/null /etc/systemd/system/systemd-firstboot.service" >/dev/null 2>&1 || true
+    # Disable systemd-firstboot to prevent interactive prompts blocking the console
+    virt-customize -q -a "$WORK_FILE" --run-command "systemctl disable systemd-firstboot.service 2>/dev/null; rm -f /etc/systemd/system/sysinit.target.wants/systemd-firstboot.service; ln -sf /dev/null /etc/systemd/system/systemd-firstboot.service" >/dev/null 2>&1 || true
 
-# Pre-seed firstboot settings so it won't prompt even if triggered
-virt-customize -q -a "$WORK_FILE" --run-command "echo 'Etc/UTC' > /etc/timezone && ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime" >/dev/null 2>&1 || true
-virt-customize -q -a "$WORK_FILE" --run-command "touch /etc/locale.conf" >/dev/null 2>&1 || true
+    # Pre-seed firstboot settings so it won't prompt even if triggered
+    virt-customize -q -a "$WORK_FILE" --run-command "echo 'Etc/UTC' > /etc/timezone && ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime" >/dev/null 2>&1 || true
+    virt-customize -q -a "$WORK_FILE" --run-command "touch /etc/locale.conf" >/dev/null 2>&1 || true
 
-if [ "$CLOUD_INIT" == "yes" ]; then
-  # Cloud-Init handles SSH and login
-  virt-customize -q -a "$WORK_FILE" --run-command "sed -i 's/^#*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config" >/dev/null 2>&1 || true
-  virt-customize -q -a "$WORK_FILE" --run-command "sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config" >/dev/null 2>&1 || true
-else
-  # Configure auto-login on serial console (ttyS0) and virtual console (tty1)
-  virt-customize -q -a "$WORK_FILE" --run-command "mkdir -p /etc/systemd/system/serial-getty@ttyS0.service.d" >/dev/null 2>&1 || true
-  virt-customize -q -a "$WORK_FILE" --run-command 'cat > /etc/systemd/system/serial-getty@ttyS0.service.d/autologin.conf << EOF
+    if [ "$CLOUD_INIT" == "yes" ]; then
+      # Cloud-Init handles SSH and login
+      virt-customize -q -a "$WORK_FILE" --run-command "sed -i 's/^#*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config" >/dev/null 2>&1 || true
+      virt-customize -q -a "$WORK_FILE" --run-command "sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config" >/dev/null 2>&1 || true
+    else
+      # Configure auto-login on serial console (ttyS0) and virtual console (tty1)
+      virt-customize -q -a "$WORK_FILE" --run-command "mkdir -p /etc/systemd/system/serial-getty@ttyS0.service.d" >/dev/null 2>&1 || true
+      virt-customize -q -a "$WORK_FILE" --run-command 'cat > /etc/systemd/system/serial-getty@ttyS0.service.d/autologin.conf << EOF
 [Service]
 ExecStart=
 ExecStart=-/sbin/agetty --autologin root --noclear %I \$TERM
 EOF' >/dev/null 2>&1 || true
-  virt-customize -q -a "$WORK_FILE" --run-command "mkdir -p /etc/systemd/system/getty@tty1.service.d" >/dev/null 2>&1 || true
-  virt-customize -q -a "$WORK_FILE" --run-command 'cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << EOF
+      virt-customize -q -a "$WORK_FILE" --run-command "mkdir -p /etc/systemd/system/getty@tty1.service.d" >/dev/null 2>&1 || true
+      virt-customize -q -a "$WORK_FILE" --run-command 'cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << EOF
 [Service]
 ExecStart=
 ExecStart=-/sbin/agetty --autologin root --noclear %I \$TERM
 EOF' >/dev/null 2>&1 || true
-fi
+    fi
 
-msg_ok "Customized image"
-else
-  msg_ok "Skipped image customization (will configure on first boot)"
-fi
+    msg_ok "Customized image"
+  else
+    msg_ok "Skipped image customization (hostname and login not pre-configured)"
+  fi
 
-STORAGE_TYPE=$(pvesm status -storage "$STORAGE" | awk 'NR>1 {print $2}')
-case $STORAGE_TYPE in
-nfs | dir)
-  DISK_EXT=".qcow2"
-  DISK_REF="$VMID/"
-  DISK_IMPORT="-format qcow2"
-  THIN=""
-  ;;
-btrfs)
-  DISK_EXT=".raw"
-  DISK_REF="$VMID/"
-  DISK_IMPORT="-format raw"
-  FORMAT=",efitype=4m"
-  THIN=""
-  ;;
-*)
-  DISK_EXT=""
-  DISK_REF=""
-  DISK_IMPORT="-format raw"
-  ;;
-esac
-for i in {0,1}; do
-  disk="DISK$i"
-  eval DISK"${i}"=vm-"${VMID}"-disk-"${i}"${DISK_EXT:-}
-  eval DISK"${i}"_REF="${STORAGE}":"${DISK_REF:-}"${!disk}
-done
+  STORAGE_TYPE=$(pvesm status -storage "$STORAGE" | awk 'NR>1 {print $2}')
+  case $STORAGE_TYPE in
+  nfs | dir)
+    DISK_EXT=".qcow2"
+    DISK_REF="$VMID/"
+    DISK_IMPORT="-format qcow2"
+    THIN=""
+    ;;
+  btrfs)
+    DISK_EXT=".raw"
+    DISK_REF="$VMID/"
+    DISK_IMPORT="-format raw"
+    FORMAT=",efitype=4m"
+    THIN=""
+    ;;
+  *)
+    DISK_EXT=""
+    DISK_REF=""
+    DISK_IMPORT="-format raw"
+    ;;
+  esac
+  for i in {0,1}; do
+    disk="DISK$i"
+    eval DISK"${i}"=vm-"${VMID}"-disk-"${i}"${DISK_EXT:-}
+    eval DISK"${i}"_REF="${STORAGE}":"${DISK_REF:-}"${!disk}
+  done
 
-msg_info "Creating a Debian 13 VM"
-qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
-  -name $HN -tags community-script -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
-pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
-qm importdisk $VMID ${WORK_FILE} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
-if [ "$CLOUD_INIT" == "yes" ]; then
-  qm set $VMID \
-    -efidisk0 ${DISK0_REF}${FORMAT} \
-    -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=${DISK_SIZE} \
-    -scsi1 ${STORAGE}:cloudinit \
-    -boot order=scsi0 \
-    -serial0 socket >/dev/null
-else
-  qm set $VMID \
-    -efidisk0 ${DISK0_REF}${FORMAT} \
-    -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=${DISK_SIZE} \
-    -boot order=scsi0 \
-    -serial0 socket >/dev/null
-fi
+  msg_info "Creating a Debian 13 VM"
+  qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
+    -name $HN -tags community-script -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
+  pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
+  qm importdisk $VMID ${WORK_FILE} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
+  if [ "$CLOUD_INIT" == "yes" ]; then
+    qm set $VMID \
+      -efidisk0 ${DISK0_REF}${FORMAT} \
+      -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=${DISK_SIZE} \
+      -scsi1 ${STORAGE}:cloudinit \
+      -boot order=scsi0 \
+      -serial0 socket >/dev/null
+  else
+    qm set $VMID \
+      -efidisk0 ${DISK0_REF}${FORMAT} \
+      -scsi0 ${DISK1_REF},${DISK_CACHE}${THIN}size=${DISK_SIZE} \
+      -boot order=scsi0 \
+      -serial0 socket >/dev/null
+  fi
 
-# Clean up work file
-rm -f "$WORK_FILE"
+  # Clean up work file
+  rm -f "$WORK_FILE"
 
-DESCRIPTION=$(
-  cat <<EOF
+  DESCRIPTION=$(
+    cat <<EOF
 <div align='center'>
   <a href='https://Helper-Scripts.com' target='_blank' rel='noopener noreferrer'>
     <img src='https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/images/logo-81x112.png' alt='Logo' style='width:81px;height:112px;'/>
@@ -685,25 +686,25 @@ DESCRIPTION=$(
   </span>
 </div>
 EOF
-)
-qm set $VMID -description "$DESCRIPTION" >/dev/null
-if [ -n "$DISK_SIZE" ]; then
-  msg_info "Resizing disk to $DISK_SIZE GB"
-  qm resize $VMID scsi0 ${DISK_SIZE} >/dev/null
-else
-  msg_info "Using default disk size of $DEFAULT_DISK_SIZE GB"
-  qm resize $VMID scsi0 ${DEFAULT_DISK_SIZE} >/dev/null
-fi
+  )
+  qm set $VMID -description "$DESCRIPTION" >/dev/null
+  if [ -n "$DISK_SIZE" ]; then
+    msg_info "Resizing disk to $DISK_SIZE GB"
+    qm resize $VMID scsi0 ${DISK_SIZE} >/dev/null
+  else
+    msg_info "Using default disk size of $DEFAULT_DISK_SIZE GB"
+    qm resize $VMID scsi0 ${DEFAULT_DISK_SIZE} >/dev/null
+  fi
 
-msg_ok "Created a Debian 13 VM ${CL}${BL}(${HN})"
-if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Debian 13 VM"
-  qm start $VMID
-  msg_ok "Started Debian 13 VM"
-fi
+  msg_ok "Created a Debian 13 VM ${CL}${BL}(${HN})"
+  if [ "$START_VM" == "yes" ]; then
+    msg_info "Starting Debian 13 VM"
+    qm start $VMID
+    msg_ok "Started Debian 13 VM"
+  fi
 
-msg_ok "Completed successfully!\n"
-echo "More Info at https://github.com/community-scripts/ProxmoxVE/discussions/836"
+  msg_ok "Completed successfully!\n"
+  echo "More Info at https://github.com/community-scripts/ProxmoxVE/discussions/836"
 } # end create_vm
 
 VM_CREATION_PHASE="yes"

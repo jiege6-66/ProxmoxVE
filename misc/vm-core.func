@@ -940,6 +940,7 @@ vm_handle_recovery() {
     msg_info "Cleaning up failed VM ${VMID} for retry"
     "$cleanup_fn" 2>/dev/null || true
     rm -f "$VM_ERROR_LOG"
+    rm -f "${WORK_FILE:-}" 2>/dev/null
 
     if [[ "$choice" == "RETRY_DOWNLOAD" ]]; then
       # Clear cached image
@@ -965,6 +966,7 @@ vm_handle_recovery() {
     msg_info "Cleaning up failed VM ${VMID} for retry (skipping virt-customize)"
     "$cleanup_fn" 2>/dev/null || true
     rm -f "$VM_ERROR_LOG"
+    rm -f "${WORK_FILE:-}" 2>/dev/null
     # Set flag so docker-vm.sh skips virt-customize
     export SKIP_VIRT_CUSTOMIZE="yes"
     msg_ok "Will use first-boot fallback for package installation"
@@ -981,6 +983,7 @@ vm_handle_recovery() {
     msg_info "Cleaning up failed VM ${VMID} for retry with new settings"
     "$cleanup_fn" 2>/dev/null || true
     rm -f "$VM_ERROR_LOG"
+    rm -f "${WORK_FILE:-}" 2>/dev/null
 
     # Let user choose new settings via advanced_settings if available
     if declare -f advanced_settings >/dev/null 2>&1; then
@@ -1003,8 +1006,7 @@ vm_handle_recovery() {
     msg_info "Cleaning up conflicting VM ${VMID}"
     "$cleanup_fn" 2>/dev/null || true
     rm -f "$VM_ERROR_LOG"
-
-    # Get new VMID
+    rm -f "${WORK_FILE:-}" 2>/dev/null
     VMID=$(get_valid_nextid)
     echo -e "${CONTAINERID:-}${BOLD}${DGN}New Virtual Machine ID: ${BGN}${VMID}${CL}"
     msg_ok "Using new VMID: ${VMID}"
