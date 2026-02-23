@@ -44,15 +44,15 @@ sed \
 msg_ok "Configured Sparky Fitness"
 
 msg_info "Building Backend"
-cd "/opt/sparkyfitness/SparkyFitnessServer"
+cd /opt/sparkyfitness/SparkyFitnessServer
 $STD npm install
 msg_ok "Built Backend"
 
 msg_info "Building Frontend (Patience)"
-cd "/opt/sparkyfitness/SparkyFitnessFrontend"
+cd /opt/sparkyfitness/SparkyFitnessFrontend
 $STD npm install
 $STD npm run build
-cp -a "/opt/sparkyfitness/SparkyFitnessFrontend/dist/." "/var/www/sparkyfitness/"
+cp -a /opt/sparkyfitness/SparkyFitnessFrontend/dist/. /var/www/sparkyfitness/
 msg_ok "Built Frontend"
 
 msg_info "Creating SparkyFitness Service"
