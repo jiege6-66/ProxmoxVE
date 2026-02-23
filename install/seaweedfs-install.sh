@@ -14,8 +14,7 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt install -y \
-  fuse3
+$STD apt install -y fuse3
 msg_ok "Installed Dependencies"
 
 fetch_and_deploy_gh_release "seaweedfs" "seaweedfs/seaweedfs" "prebuild" "latest" "/opt/seaweedfs" "linux_amd64.tar.gz"
