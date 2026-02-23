@@ -357,7 +357,7 @@ get_error_text() {
 # - Calls ensure_log_on_host() to pull container log if needed
 # - Strips ANSI escape codes and carriage returns
 # - Truncates to max_bytes (default: 120KB) to stay within API limits
-# - Used for the install_log telemetry field
+# - Used for the error telemetry field (full trace instead of 20 lines)
 # ------------------------------------------------------------------------------
 get_full_log() {
   local max_bytes="${1:-122880}" # 120KB default
@@ -830,11 +830,15 @@ post_update_to_api() {
     else
       exit_code=1
     fi
-    # Get log lines and build structured error string
-    local error_text=""
-    error_text=$(get_error_text)
+    # Get full installation log for error field
+    local log_text=""
+    log_text=$(get_full_log 122880) || true # 120KB max
+    if [[ -z "$log_text" ]]; then
+      # Fallback to last 20 lines
+      log_text=$(get_error_text)
+    fi
     local full_error
-    full_error=$(build_error_string "$exit_code" "$error_text")
+    full_error=$(build_error_string "$exit_code" "$log_text")
     error=$(json_escape "$full_error")
     short_error=$(json_escape "$(explain_exit_code "$exit_code")")
     error_category=$(categorize_error "$exit_code")
@@ -855,16 +859,7 @@ post_update_to_api() {
 
   local http_code=""
 
-  # Collect full installation log for telemetry (all statuses)
-  local install_log_raw=""
-  local install_log_escaped=""
-  local install_log_short=""
-  install_log_raw=$(get_full_log 122880) || true # 120KB max
-  if [[ -n "$install_log_raw" ]]; then
-    install_log_escaped=$(json_escape "$install_log_raw")
-  fi
-
-  # ── Attempt 1: Full payload with complete error text + full install log ──
+  # ── Attempt 1: Full payload with complete error text (includes full log) ──
   local JSON_PAYLOAD
   JSON_PAYLOAD=$(
     cat <<EOF
@@ -892,8 +887,7 @@ post_update_to_api() {
     "gpu_model": "${gpu_model}",
     "gpu_passthrough": "${gpu_passthrough}",
     "ram_speed": "${ram_speed}",
-    "repo_source": "${REPO_SOURCE}",
-    "install_log": "${install_log_escaped}"
+    "repo_source": "${REPO_SOURCE}"
 }
 EOF
   )
@@ -907,13 +901,8 @@ EOF
     return 0
   fi
 
-  # ── Attempt 2: Short error text + truncated install log ──
+  # ── Attempt 2: Short error text (no full log) ──
   sleep 1
-
-  # Truncate install_log for retry (last 100 lines)
-  if [[ -n "$install_log_raw" ]]; then
-    install_log_short=$(json_escape "$(echo "$install_log_raw" | tail -n 100)")
-  fi
   local RETRY_PAYLOAD
   RETRY_PAYLOAD=$(
     cat <<EOF
@@ -941,8 +930,7 @@ EOF
     "gpu_model": "${gpu_model}",
     "gpu_passthrough": "${gpu_passthrough}",
     "ram_speed": "${ram_speed}",
-    "repo_source": "${REPO_SOURCE}",
-    "install_log": "${install_log_short}"
+    "repo_source": "${REPO_SOURCE}"
 }
 EOF
   )
@@ -956,7 +944,7 @@ EOF
     return 0
   fi
 
-  # ── Attempt 3: Minimal payload (bare minimum to set status, no install_log) ──
+  # ── Attempt 3: Minimal payload (bare minimum to set status) ──
   sleep 2
   local MINIMAL_PAYLOAD
   MINIMAL_PAYLOAD=$(
