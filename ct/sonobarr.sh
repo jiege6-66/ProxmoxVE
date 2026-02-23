@@ -6,7 +6,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 # Source: https://github.com/Dodelidoo-Labs/sonobarr
 
 APP="sonobarr"
-var_tags="${var_tags:-storage}"
+var_tags="${var_tags:-music;discovery}"
 var_cpu="${var_cpu:-1}"
 var_ram="${var_ram:-1024}"
 var_disk="${var_disk:-20}"
