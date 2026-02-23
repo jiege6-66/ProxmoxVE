@@ -351,6 +351,54 @@ get_error_text() {
 }
 
 # ------------------------------------------------------------------------------
+# get_full_log()
+#
+# - Returns the FULL installation log (build + install combined)
+# - Calls ensure_log_on_host() to pull container log if needed
+# - Strips ANSI escape codes and carriage returns
+# - Truncates to max_bytes (default: 120KB) to stay within API limits
+# - Used for the install_log telemetry field
+# ------------------------------------------------------------------------------
+get_full_log() {
+  local max_bytes="${1:-122880}" # 120KB default
+  local logfile=""
+
+  # Ensure logs are available on host (pulls from container if needed)
+  if declare -f ensure_log_on_host >/dev/null 2>&1; then
+    ensure_log_on_host
+  fi
+
+  # Try combined log first (most complete)
+  if [[ -n "${CTID:-}" && -n "${SESSION_ID:-}" ]]; then
+    local combined_log="/tmp/${NSAPP:-lxc}-${CTID}-${SESSION_ID}.log"
+    if [[ -s "$combined_log" ]]; then
+      logfile="$combined_log"
+    fi
+  fi
+
+  # Fall back to INSTALL_LOG
+  if [[ -z "$logfile" || ! -s "$logfile" ]]; then
+    if [[ -n "${INSTALL_LOG:-}" && -s "${INSTALL_LOG}" ]]; then
+      logfile="$INSTALL_LOG"
+    fi
+  fi
+
+  # Fall back to BUILD_LOG
+  if [[ -z "$logfile" || ! -s "$logfile" ]]; then
+    if [[ -n "${BUILD_LOG:-}" && -s "${BUILD_LOG}" ]]; then
+      logfile="$BUILD_LOG"
+    fi
+  fi
+
+  if [[ -n "$logfile" && -s "$logfile" ]]; then
+    # Strip ANSI codes and carriage returns, then truncate to max_bytes
+    sed 's/\r$//' "$logfile" 2>/dev/null |
+      sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' |
+      head -c "$max_bytes"
+  fi
+}
+
+# ------------------------------------------------------------------------------
 # build_error_string()
 #
 # - Builds a structured error string for telemetry reporting
@@ -807,7 +855,16 @@ post_update_to_api() {
 
   local http_code=""
 
-  # ── Attempt 1: Full payload with complete error text ──
+  # Collect full installation log for telemetry (all statuses)
+  local install_log_raw=""
+  local install_log_escaped=""
+  local install_log_short=""
+  install_log_raw=$(get_full_log 122880) || true # 120KB max
+  if [[ -n "$install_log_raw" ]]; then
+    install_log_escaped=$(json_escape "$install_log_raw")
+  fi
+
+  # ── Attempt 1: Full payload with complete error text + full install log ──
   local JSON_PAYLOAD
   JSON_PAYLOAD=$(
     cat <<EOF
@@ -835,7 +892,8 @@ post_update_to_api() {
     "gpu_model": "${gpu_model}",
     "gpu_passthrough": "${gpu_passthrough}",
     "ram_speed": "${ram_speed}",
-    "repo_source": "${REPO_SOURCE}"
+    "repo_source": "${REPO_SOURCE}",
+    "install_log": "${install_log_escaped}"
 }
 EOF
   )
@@ -849,8 +907,13 @@ EOF
     return 0
   fi
 
-  # ── Attempt 2: Short error text (no full log) ──
+  # ── Attempt 2: Short error text + truncated install log ──
   sleep 1
+
+  # Truncate install_log for retry (last 100 lines)
+  if [[ -n "$install_log_raw" ]]; then
+    install_log_short=$(json_escape "$(echo "$install_log_raw" | tail -n 100)")
+  fi
   local RETRY_PAYLOAD
   RETRY_PAYLOAD=$(
     cat <<EOF
@@ -878,7 +941,8 @@ EOF
     "gpu_model": "${gpu_model}",
     "gpu_passthrough": "${gpu_passthrough}",
     "ram_speed": "${ram_speed}",
-    "repo_source": "${REPO_SOURCE}"
+    "repo_source": "${REPO_SOURCE}",
+    "install_log": "${install_log_short}"
 }
 EOF
   )
@@ -892,7 +956,7 @@ EOF
     return 0
   fi
 
-  # ── Attempt 3: Minimal payload (bare minimum to set status) ──
+  # ── Attempt 3: Minimal payload (bare minimum to set status, no install_log) ──
   sleep 2
   local MINIMAL_PAYLOAD
   MINIMAL_PAYLOAD=$(
@@ -969,16 +1033,16 @@ categorize_error() {
   # Python environment errors
   # (already covered: 160-162 under dependency)
 
-  # Aborted by user
-  130) echo "aborted" ;;
+  # Aborted by user (SIGHUP=terminal closed, SIGINT=Ctrl+C, SIGTERM=killed)
+  129 | 130 | 143) echo "user_aborted" ;;
 
   # Resource errors (OOM, SIGKILL, SIGABRT)
   134 | 137) echo "resource" ;;
 
-  # Signal/Process errors (SIGTERM, SIGPIPE, SIGSEGV)
-  139 | 141 | 143) echo "signal" ;;
+  # Signal/Process errors (SIGPIPE, SIGSEGV)
+  139 | 141) echo "signal" ;;
 
-  # Shell errors (general error, syntax error)  
+  # Shell errors (general error, syntax error)
   1 | 2) echo "shell" ;;
 
   # Default - truly unknown
