@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-COMMUNITY_SCRIPTS_URL="${COMMUNITY_SCRIPTS_URL:-https://git.community-scripts.org/community-scripts/ProxmoxVE/raw/branch/main}"
-source <(curl -fsSL "$COMMUNITY_SCRIPTS_URL/misc/build.func")
+source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
 # Copyright (c) 2021-2026 community-scripts ORG
 # Author: Tom Frenzel (tomfrenzel)
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
@@ -31,7 +30,6 @@ function update_script() {
   fi
 
   NODE_VERSION="25" setup_nodejs
-  PG_VERSION="18" setup_postgresql
 
   if check_for_gh_release "sparkyfitness" "CodeWithCJ/SparkyFitness"; then
     msg_info "Stopping Services"
@@ -39,32 +37,32 @@ function update_script() {
     msg_ok "Stopped Services"
 
     msg_info "Backing up data"
-    mkdir -p "/opt/sparkyfitness_backup"
-    if [[ -d "/opt/sparkyfitness/SparkyFitnessServer/uploads" ]]; then
-      cp -r "/opt/sparkyfitness/SparkyFitnessServer/uploads" "/opt/sparkyfitness_backup/"
+    mkdir -p /opt/sparkyfitness_backup
+    if [[ -d /opt/sparkyfitness/SparkyFitnessServer/uploads ]]; then
+      cp -r /opt/sparkyfitness/SparkyFitnessServer/uploads /opt/sparkyfitness_backup/
     fi
-    if [[ -d "/opt/sparkyfitness/SparkyFitnessServer/backup" ]]; then
-      cp -r "/opt/sparkyfitness/SparkyFitnessServer/backup" "/opt/sparkyfitness_backup/"
+    if [[ -d /opt/sparkyfitness/SparkyFitnessServer/backup ]]; then
+      cp -r /opt/sparkyfitness/SparkyFitnessServer/backup /opt/sparkyfitness_backup/
     fi
     msg_ok "Backed up data"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "sparkyfitness" "CodeWithCJ/SparkyFitness" "tarball"
 
     msg_info "Updating Sparky Fitness Backend"
-    cd "/opt/sparkyfitness/SparkyFitnessServer"
+    cd /opt/sparkyfitness/SparkyFitnessServer
     $STD npm install
     msg_ok "Updated Sparky Fitness Backend"
 
     msg_info "Updating Sparky Fitness Frontend (Patience)"
-    cd "/opt/sparkyfitness/SparkyFitnessFrontend"
+    cd /opt/sparkyfitness/SparkyFitnessFrontend
     $STD npm install
     $STD npm run build
-    cp -a "/opt/sparkyfitness/SparkyFitnessFrontend/dist/." "/var/www/sparkyfitness/"
+    cp -a /opt/sparkyfitness/SparkyFitnessFrontend/dist/. /var/www/sparkyfitness/
     msg_ok "Updated Sparky Fitness Frontend"
 
     msg_info "Restoring data"
-    cp -r "/opt/sparkyfitness_backup/." "/opt/sparkyfitness/SparkyFitnessServer/"
-    rm -rf "/opt/sparkyfitness_backup"
+    cp -r /opt/sparkyfitness_backup/. /opt/sparkyfitness/SparkyFitnessServer/
+    rm -rf /opt/sparkyfitness_backup
     msg_ok "Restored data"
 
     msg_info "Starting Services"
@@ -72,7 +70,6 @@ function update_script() {
     msg_ok "Started Services"
     msg_ok "Updated successfully!"
   fi
-
   exit
 }
 
