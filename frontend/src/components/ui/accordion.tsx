@@ -55,3 +55,5 @@ const AccordionContent = React.forwardRef<
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };
+
+这个组件代码中没有用户可见的 UI 文本需要翻译。代码只包含组件定义、样式类名和技术性的 displayName 属性，这些都不是面向用户的文本内容。

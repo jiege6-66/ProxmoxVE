@@ -17,7 +17,7 @@ export default function DisableDescription({ item }: { item: Script }) {
       >
         <AlertCircle className="h-5 min-h-5 w-5 min-w-5 mt-0.5" />
         <div className="flex flex-col gap-2">
-          <h3 className="font-semibold text-base">Script Disabled</h3>
+          <h3 className="font-semibold text-base">脚本已禁用</h3>
           <p>{TextParseLinks(item.disable_description!)}</p>
         </div>
       </div>

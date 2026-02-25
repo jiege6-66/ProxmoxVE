@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/images/logo-81x112.png" height="120px" alt="Proxmox VE Helper-Scripts Logo" />
   
   <h1>Proxmox VE Helper-Scripts</h1>
-  <p><em>A Community Legacy in Memory of @tteck</em></p>
+  <p><em>纪念 @tteck 的社区传承</em></p>
 
   <p>
     <a href="https://helper-scripts.com">
@@ -30,65 +30,65 @@
 
   <br />
 
- **Simplify your Proxmox VE setup with community-driven automation scripts**  
- Originally created by tteck, now maintained and expanded by the community
+ **使用社区驱动的自动化脚本简化您的 Proxmox VE 设置**  
+ 最初由 tteck 创建，现由社区维护和扩展
 
 </div>
 
 <br />
 
 <div align="center">
-  <sub>🙌 <strong>Shoutout to</strong></sub>
+  <sub>🙌 <strong>特别感谢</strong></sub>
   <br />
   <br />
   <a href="https://selfh.st/">
     <img src="https://img.shields.io/badge/selfh.st-Icons_for_Self--Hosted-2563eb?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==&labelColor=1e3a8a" alt="selfh.st Icons" />
   </a>
   <br />
-  <sub><a href="https://github.com/selfhst/icons">View on GitHub</a> • Consistent, beautiful icons for 5000+ self-hosted apps</sub>
+  <sub><a href="https://github.com/selfhst/icons">在 GitHub 上查看</a> • 为 5000+ 个自托管应用提供一致、美观的图标</sub>
 </div>
 
 ---
 
-## 🎯 Key Features
+## 🎯 主要特性
 
 <div align="center">
 
 <table>
   <tr>
     <td align="center" width="25%">
-      <h3>⚡ Quick Setup</h3>
-      <p>One-command installations for popular services and containers</p>
+      <h3>⚡ 快速设置</h3>
+      <p>一键安装流行的服务和容器</p>
     </td>
     <td align="center" width="25%">
-      <h3>⚙️ Flexible Config</h3>
-      <p>Simple mode for beginners, advanced options for power users</p>
+      <h3>⚙️ 灵活配置</h3>
+      <p>为初学者提供简单模式，为高级用户提供高级选项</p>
     </td>
     <td align="center" width="25%">
-      <h3>🔄 Auto Updates</h3>
-      <p>Keep your installations current with built-in update mechanisms</p>
+      <h3>🔄 自动更新</h3>
+      <p>通过内置更新机制保持安装最新</p>
     </td>
     <td align="center" width="25%">
-      <h3>🛠️ Easy Management</h3>
-      <p>Post-install scripts for configuration and troubleshooting</p>
+      <h3>🛠️ 轻松管理</h3>
+      <p>用于配置和故障排除的安装后脚本</p>
     </td>
   </tr>
   <tr>
     <td align="center" width="25%">
-      <h3>👥 Community Driven</h3>
-      <p>Actively maintained with contributions from users worldwide</p>
+      <h3>👥 社区驱动</h3>
+      <p>由来自世界各地的用户积极维护和贡献</p>
     </td>
     <td align="center" width="25%">
-      <h3>📖 Well Documented</h3>
-      <p>Comprehensive guides and community support</p>
+      <h3>📖 文档完善</h3>
+      <p>全面的指南和社区支持</p>
     </td>
     <td align="center" width="25%">
-      <h3>🔒 Secure</h3>
-      <p>Regular security updates and best practices</p>
+      <h3>🔒 安全</h3>
+      <p>定期安全更新和最佳实践</p>
     </td>
     <td align="center" width="25%">
-      <h3>⚡ Performance</h3>
-      <p>Optimized configurations for best performance</p>
+      <h3>⚡ 性能</h3>
+      <p>优化配置以获得最佳性能</p>
     </td>
   </tr>
 </table>
@@ -97,7 +97,7 @@
 
 ---
 
-## 📋 Requirements
+## 📋 系统要求
 
 <div align="center">
 
@@ -105,15 +105,15 @@
   <tr>
     <td align="center" width="33%">
       <h3>🖥️ Proxmox VE</h3>
-      <p>Version: 8.4.x | 9.0.x | 9.1.x</p>
+      <p>版本：8.4.x | 9.0.x | 9.1.x</p>
     </td>
     <td align="center" width="33%">
-      <h3>🐧 Operating System</h3>
-      <p>Debian-based with Proxmox Tools</p>
+      <h3>🐧 操作系统</h3>
+      <p>基于 Debian 并带有 Proxmox Tools</p>
     </td>
     <td align="center" width="33%">
-      <h3>🌐 Network</h3>
-      <p>Internet connection required</p>
+      <h3>🌐 网络</h3>
+      <p>需要互联网连接</p>
     </td>
   </tr>
 </table>
@@ -122,35 +122,35 @@
 
 ---
 
-## 📥 Getting Started
+## 📥 快速开始
 
-Choose your preferred installation method:
+选择您喜欢的安装方法：
 
-### Method 1: One-Click Web Installer
+### 方法 1：一键网页安装器
 
-The fastest way to get started:
+最快的入门方式：
 
-1. Visit **[helper-scripts.com](https://helper-scripts.com/)** 🌐
-2. Search for your desired script (e.g., "Home Assistant", "Docker")
-3. Copy the bash command displayed on the script page
-4. Open your **Proxmox Shell** and paste the command
-5. Press Enter and follow the interactive prompts
+1. 访问 **[helper-scripts.com](https://helper-scripts.com/)** 🌐
+2. 搜索您想要的脚本（例如 "Home Assistant"、"Docker"）
+3. 复制脚本页面上显示的 bash 命令
+4. 打开您的 **Proxmox Shell** 并粘贴命令
+5. 按 Enter 键并按照交互式提示操作
 
-### Method 2: PVEScripts-Local
+### 方法 2：PVEScripts-Local
 
-Install a convenient script manager directly in your Proxmox UI:
+直接在您的 Proxmox UI 中安装便捷的脚本管理器：
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pve-scripts-local.sh)"
 ```
 
-This adds a menu to your Proxmox interface for easy script access without visiting the website.
+这会在您的 Proxmox 界面中添加一个菜单，方便访问脚本而无需访问网站。
 
-📖 **Learn more:** [ProxmoxVE-Local Repository](https://github.com/community-scripts/ProxmoxVE-Local)
+📖 **了解更多：** [ProxmoxVE-Local Repository](https://github.com/community-scripts/ProxmoxVE-Local)
 
 ---
 
-## 💬 Join the Community
+## 💬 加入社区
 
 <div align="center">
 
@@ -158,21 +158,21 @@ This adds a menu to your Proxmox interface for easy script access without visiti
   <tr>
     <td align="center" width="33%">
       <h3>💬 Discord</h3>
-      <p>Real-time chat, support, and discussions</p>
+      <p>实时聊天、支持和讨论</p>
       <a href="https://discord.gg/3AnUqsXnmK">
         <img src="https://img.shields.io/badge/Join-7289da?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
       </a>
     </td>
     <td align="center" width="33%">
-      <h3>💭 Discussions</h3>
-      <p>Feature requests, Q&A, and ideas</p>
+      <h3>💭 讨论区</h3>
+      <p>功能请求、问答和想法</p>
       <a href="https://github.com/community-scripts/ProxmoxVE/discussions">
         <img src="https://img.shields.io/badge/Discuss-238636?style=for-the-badge&logo=github&logoColor=white" alt="Discussions" />
       </a>
     </td>
     <td align="center" width="33%">
-      <h3>🐛 Issues</h3>
-      <p>Bug reports and issue tracking</p>
+      <h3>🐛 问题反馈</h3>
+      <p>错误报告和问题跟踪</p>
       <a href="https://github.com/community-scripts/ProxmoxVE/issues">
         <img src="https://img.shields.io/badge/Report-d73a4a?style=for-the-badge&logo=github&logoColor=white" alt="Issues" />
       </a>
@@ -184,27 +184,27 @@ This adds a menu to your Proxmox interface for easy script access without visiti
 
 ---
 
-## 🛠️ Contribute
+## 🛠️ 贡献
 
 <div align="center">
 
 <table>
   <tr>
     <td align="center" width="25%">
-      <h3>💻 Code</h3>
-      <p>Add new scripts or improve existing ones</p>
+      <h3>💻 代码</h3>
+      <p>添加新脚本或改进现有脚本</p>
     </td>
     <td align="center" width="25%">
-      <h3>📝 Documentation</h3>
-      <p>Write guides, improve READMEs, translate content</p>
+      <h3>📝 文档</h3>
+      <p>编写指南、改进 README、翻译内容</p>
     </td>
     <td align="center" width="25%">
-      <h3>🧪 Testing</h3>
-      <p>Test scripts and report compatibility issues</p>
+      <h3>🧪 测试</h3>
+      <p>测试脚本并报告兼容性问题</p>
     </td>
     <td align="center" width="25%">
-      <h3>💡 Ideas</h3>
-      <p>Suggest features or workflow improvements</p>
+      <h3>💡 想法</h3>
+      <p>建议功能或工作流程改进</p>
     </td>
   </tr>
 </table>
@@ -214,17 +214,17 @@ This adds a menu to your Proxmox interface for easy script access without visiti
 <div align="center">
   <br />
   
-  👉 Check our **[Contributing Guidelines](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/README.md)** to get started
+  👉 查看我们的 **[贡献指南](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/README.md)** 开始贡献
   
 </div>
 
 ---
 
-## ❤️ Support the Project
+## ❤️ 支持项目
 
-This project is maintained by volunteers in memory of tteck. Your support helps us maintain infrastructure, improve documentation, and give back to important causes.
+该项目由志愿者维护，以纪念 tteck。您的支持帮助我们维护基础设施、改进文档，并回馈重要事业。
 
-**🎗️ 30% of all donations go directly to cancer research and hospice care**
+**🎗️ 所有捐款的 30% 将直接用于癌症研究和临终关怀**
 
 <div align="center">
 
@@ -233,13 +233,13 @@ This project is maintained by volunteers in memory of tteck. Your support helps 
 </a>
 
 <br />
-<sub>Every contribution helps keep this project alive and supports meaningful causes</sub>
+<sub>每一份贡献都有助于保持这个项目的活力并支持有意义的事业</sub>
 
 </div>
 
 ---
 
-## 📈 Project Statistics
+## 📈 项目统计
 <p align="center">
   <img
     src="https://repobeats.axiom.co/api/embed/57edde03e00f88d739bdb5b844ff7d07dd079375.svg"
@@ -270,14 +270,14 @@ This project is maintained by volunteers in memory of tteck. Your support helps 
 
 ---
 
-## 📜 License
+## 📜 许可证
 
-This project is licensed under the **[MIT License](LICENSE)** - feel free to use, modify, and distribute.
+本项目采用 **[MIT License](LICENSE)** 许可 - 可自由使用、修改和分发。
 
 ---
 
 <div align="center">
-  <sub>Made with ❤️ by the Proxmox community in memory of tteck</sub>
+  <sub>由 Proxmox 社区用 ❤️ 制作，以纪念 tteck</sub>
   <br />
-  <sub><i>Proxmox® is a registered trademark of <a href="https://www.proxmox.com/en/about/company">Proxmox Server Solutions GmbH</a></i></sub>
+  <sub><i>Proxmox® 是 <a href="https://www.proxmox.com/en/about/company">Proxmox Server Solutions GmbH</a> 的注册商标</i></sub>
 </div>

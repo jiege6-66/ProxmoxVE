@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_warn "WARNING: This script will run an external installer from a third-party source (https://swizzin.ltd/)."
-msg_warn "The following code is NOT maintained or audited by our repository."
-msg_warn "If you have any doubts or concerns, please review the installer code before proceeding:"
+msg_warn "警告：此脚本将运行来自第三方来源的外部安装器 (https://swizzin.ltd/)."
+msg_warn "以下代码不由我们的仓库维护或审计。"
+msg_warn "如果您有任何疑虑，请在继续之前查看安装器代码："
 msg_custom "${TAB3}${GATEWAY}${BGN}${CL}" "\e[1;34m" "→  https://s5n.sh"
 echo
 read -r -p "${TAB3}Do you want to continue? [y/N]: " CONFIRM
 if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-  msg_error "Aborted by user. No changes have been made."
+  msg_error "用户已中止。未做任何更改。"
   exit 10
 fi
 bash <(curl -fsSL https://s5n.sh)

@@ -37,3 +37,5 @@ export default function Alerts({ item }: { item: Script }) {
     </>
   );
 }
+
+这段代码中没有用户可见的 UI 文本需要翻译。代码只包含类型定义、组件结构和样式类名，没有硬编码的英文字符串。实际显示的文本内容来自 `note.text` 属性，应该在数据源层面进行翻译。

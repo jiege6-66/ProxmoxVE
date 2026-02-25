@@ -13,7 +13,7 @@
   "website": "https://planka.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/planka.webp",
   "config_path": "/opt/planka/.env",
-  "description": "Planka is a powerful, project management platform that transforms how teams collaborate. Create projects with multiple boards, organize tasks with intuitive drag-and-drop cards, attach files, write rich markdown descriptions, set due dates, assign team members, and keep conversations flowing with comments and labels—all with seamless real-time updates and smart notifications.",
+  "description": "Planka 是一个强大的项目管理平台，改变了团队协作的方式。创建包含多个 boards 的 projects，使用直观的拖放 cards 组织任务，附加文件，编写丰富的 markdown 描述，设置截止日期，分配团队成员，并通过 comments 和 labels 保持对话流畅——所有这些都具有无缝的实时更新和智能通知功能。",
   "install_methods": [
     {
       "type": "default",

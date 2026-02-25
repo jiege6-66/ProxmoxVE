@@ -27,3 +27,5 @@ const Switch = React.forwardRef<
 Switch.displayName = SwitchPrimitives.Root.displayName;
 
 export { Switch };
+
+这个组件没有用户可见的 UI 文本字符串需要翻译。代码中只包含 CSS 类名和组件属性，没有需要本地化的文本内容。

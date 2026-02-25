@@ -18,6 +18,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         <button
           onClick={onClose}
           className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded"
+          aria-label="关闭"
         >
           ✖
         </button>

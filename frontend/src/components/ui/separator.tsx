@@ -29,3 +29,5 @@ const Separator = React.forwardRef<
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
 export { Separator };
+
+这个组件没有用户可见的 UI 文本需要翻译。代码中只包含样式类名和组件属性，没有显示给用户的中文或英文说明文字。

@@ -25,3 +25,5 @@ function useIsInView<T extends HTMLElement = HTMLElement>(
 }
 
 export { useIsInView, type UseIsInViewOptions };
+
+这段代码中没有用户可见的 UI 文本需要翻译，所有内容都是代码逻辑、类型定义和变量名。

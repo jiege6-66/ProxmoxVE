@@ -13,7 +13,7 @@
   "website": "https://github.com/eko/pihole-exporter",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/pi-hole.webp",
   "config_path": "/opt/pihole-exporter.env",
-  "description": "A Prometheus exporter for PI-Hole's Raspberry PI ad blocker",
+  "description": "一个用于 PI-Hole 的 Raspberry PI 广告拦截器的 Prometheus exporter",
   "install_methods": [
     {
       "type": "default",
