@@ -21,33 +21,33 @@ catch_errors
 
 function update_script() {
   if [[ ! -d /opt/tinyauth ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Updating packages"
+  msg_info "正在更新 packages"
   $STD apk -U upgrade
   msg_ok "Updated packages"
 
   RELEASE=$(curl -s https://api.github.com/repos/steveiliop56/tinyauth/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
   if [ "${RELEASE}" != "$(cat ~/.tinyauth 2>/dev/null)" ] || [ ! -f ~/.tinyauth ]; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     $STD service tinyauth stop
-    msg_ok "Service Stopped"
+    msg_ok "Service 已停止"
 
-    msg_info "Updating Tinyauth"
+    msg_info "正在更新 Tinyauth"
     rm -f /opt/tinyauth/tinyauth
     curl -fsSL "https://github.com/steveiliop56/tinyauth/releases/download/v${RELEASE}/tinyauth-amd64" -o /opt/tinyauth/tinyauth
     chmod +x /opt/tinyauth/tinyauth
     echo "${RELEASE}" >~/.tinyauth
     msg_ok "Updated Tinyauth"
 
-    msg_info "Restarting Tinyauth"
+    msg_info "正在重启 Tinyauth"
     $STD service tinyauth start
-    msg_ok "Restarted Tinyauth"
-    msg_ok "Updated successfully!"
+    msg_ok "已重启 Tinyauth"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at ${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at ${RELEASE}"
   fi
   exit 0
 }
@@ -56,7 +56,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

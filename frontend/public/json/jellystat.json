@@ -13,7 +13,7 @@
   "website": "https://github.com/CyferShepard/Jellystat",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/jellystat.webp",
   "config_path": "/opt/jellystat/.env",
-  "description": "A free and open source statistics app for Jellyfin",
+  "description": "一个免费的开源 Jellyfin 统计应用",
   "install_methods": [
     {
       "type": "default",

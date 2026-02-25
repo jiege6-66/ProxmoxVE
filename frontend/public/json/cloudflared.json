@@ -13,7 +13,7 @@
   "website": "https://www.cloudflare.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cloudflare.webp",
   "config_path": "/usr/local/etc/cloudflared/config.yml",
-  "description": "Cloudflared is a command-line tool that allows you to securely access resources on the Cloudflare network, such as websites and APIs, from your local computer. It works by creating a secure tunnel between your computer and the Cloudflare network, allowing you to access resources as if they were on your local network.",
+  "description": "Cloudflared 是一个命令行工具,允许您从本地计算机安全访问 Cloudflare 网络上的资源,例如网站和 API。它通过在您的计算机和 Cloudflare 网络之间创建安全隧道来工作,允许您访问资源,就像它们在您的本地网络上一样。",
   "install_methods": [
     {
       "type": "default",

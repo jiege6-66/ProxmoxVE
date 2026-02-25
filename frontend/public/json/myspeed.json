@@ -13,7 +13,7 @@
   "website": "https://myspeed.dev/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/myspeed.webp",
   "config_path": "",
-  "description": "MySpeed is a speed test analysis tool that records and displays internet speed metrics for up to 30 days. It offers automated tests using Cron expressions and supports multiple speed test servers (Ookla, LibreSpeed, Cloudflare). MySpeed provides detailed statistics, health check notifications via email or messaging apps, and integrates with Prometheus and Grafana for advanced monitoring.",
+  "description": "MySpeed 是一个速度测试分析工具，可记录并显示长达 30 天的互联网速度指标。它使用 Cron 表达式提供自动化测试，并支持多个速度测试服务器（Ookla、LibreSpeed、Cloudflare）。MySpeed 提供详细的统计数据、通过电子邮件或消息应用程序的健康检查通知，并与 Prometheus 和 Grafana 集成以进行高级监控。",
   "install_methods": [
     {
       "type": "default",

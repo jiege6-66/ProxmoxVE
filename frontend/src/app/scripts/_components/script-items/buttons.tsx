@@ -54,27 +54,27 @@ export default function Buttons({ item }: { item: Script }) {
     item.website && {
       href: item.website,
       icon: <Globe className="h-4 w-4" />,
-      text: "Website",
+      text: "网站",
     },
     item.documentation && {
       href: item.documentation,
       icon: <BookOpenText className="h-4 w-4" />,
-      text: "Documentation",
+      text: "文档",
     },
     installSourceUrl && {
       href: installSourceUrl,
       icon: <Code className="h-4 w-4" />,
-      text: "Install Source",
+      text: "安装源码",
     },
     updateSourceUrl && item.updateable && {
       href: updateSourceUrl,
       icon: <RefreshCcw className="h-4 w-4" />,
-      text: "Update Source",
+      text: "更新源码",
     },
     sourceUrl && {
       href: sourceUrl,
       icon: <Code className="h-4 w-4" />,
-      text: "Source Code",
+      text: "源代码",
     },
   ].filter(Boolean) as LinkItem[];
 
@@ -86,7 +86,7 @@ export default function Buttons({ item }: { item: Script }) {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="flex items-center gap-2">
           <LinkIcon className="size-4" />
-          Links
+          链接
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

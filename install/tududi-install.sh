@@ -13,24 +13,24 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   sqlite3 \
   yq
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "tududi" "chrisvel/tududi" "tarball" "latest" "/opt/tududi"
 
-msg_info "Configuring Tududi"
+msg_info "正在配置 Tududi"
 cd /opt/tududi
 $STD npm install
 export NODE_ENV=production
 $STD npm run frontend:build
 mv ./dist ./backend
-msg_ok "Configured Tududi"
+msg_ok "已配置 Tududi"
 
-msg_info "Creating env and database"
+msg_info "正在创建 env and database"
 DB_LOCATION="/opt/tududi-db"
 UPLOAD_DIR="/opt/tududi-uploads"
 mkdir -p {"$DB_LOCATION","$UPLOAD_DIR"}
@@ -47,9 +47,9 @@ sed -e '/^NODE_ENV=/s/=.*$/=production/' \
   /opt/tududi/backend/.env.example >/opt/tududi/backend/.env
 export DB_FILE="${DB_LOCATION}/production.sqlite3"
 $STD npm run db:init
-msg_ok "Created env and database"
+msg_ok "已创建 env and database"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/tududi.service
 [Unit]
 Description=Tududi Service
@@ -65,7 +65,7 @@ ExecStart=/usr/bin/bash /opt/tududi/backend/cmd/start.sh
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now tududi
-msg_ok "Created service"
+msg_ok "已创建 service"
 
 motd_ssh
 customize

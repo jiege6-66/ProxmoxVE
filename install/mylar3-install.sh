@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 cat <<EOF >/etc/apt/sources.list.d/non-free.sources
 Types: deb
 URIs: http://deb.debian.org/debian
@@ -22,20 +22,20 @@ Components: non-free non-free-firmware
 EOF
 $STD apt update
 $STD apt install -y unrar
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.12" setup_uv
 fetch_and_deploy_gh_release "mylar3" "mylar3/mylar3" "tarball"
 
-msg_info "Installing ${APPLICATION}"
+msg_info "正在安装 ${APPLICATION}"
 mkdir -p /opt/mylar3-data
 $STD uv venv --clear /opt/mylar3/.venv
 $STD /opt/mylar3/.venv/bin/python -m ensurepip --upgrade
 $STD /opt/mylar3/.venv/bin/python -m pip install --upgrade pip
 $STD /opt/mylar3/.venv/bin/python -m pip install --no-cache-dir -r /opt/mylar3/requirements.txt
-msg_ok "Installed ${APPLICATION}"
+msg_ok "已安装 ${APPLICATION}"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/mylar3.service
 [Unit]
 Description=Mylar3 Service
@@ -51,7 +51,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now mylar3
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

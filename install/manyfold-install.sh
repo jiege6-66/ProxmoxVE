@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   libarchive-dev \
   git \
@@ -21,7 +21,7 @@ $STD apt install -y \
   redis-server \
   nginx \
   libassimp-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_imagemagick
 PG_VERSION="16" setup_postgresql
@@ -33,7 +33,7 @@ fetch_and_deploy_gh_release "manyfold" "manyfold3d/manyfold" "tarball" "latest" 
 RUBY_INSTALL_VERSION=$(cat /opt/manyfold/app/.ruby-version)
 RUBY_VERSION=${RUBY_INSTALL_VERSION} RUBY_INSTALL_RAILS="true" HOME=/home/manyfold setup_ruby
 
-msg_info "Configuring Manyfold"
+msg_info "正在配置 Manyfold"
 YARN_VERSION=$(grep '"packageManager":' /opt/manyfold/app/package.json | sed -E 's/.*"(yarn@[0-9\.]+)".*/\1/')
 RELEASE=$(get_latest_github_release "manyfold3d/manyfold")
 useradd -m -s /usr/bin/bash manyfold
@@ -75,17 +75,17 @@ bin/rails db:migrate
 bin/rails assets:precompile
 EOF
 $STD mkdir -p /opt/manyfold_data
-msg_ok "Configured Manyfold"
+msg_ok "已配置 Manyfold"
 
-msg_info "Installing Manyfold"
+msg_info "正在安装 Manyfold"
 chown -R manyfold:manyfold {/home/manyfold,/opt/manyfold}
 chmod +x /opt/manyfold/user_setup.sh
 $STD npm install --global corepack
 $STD sudo -u manyfold bash /opt/manyfold/user_setup.sh
 rm -f /opt/manyfold/user_setup.sh
-msg_ok "Installed Manyfold"
+msg_ok "已安装 Manyfold"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 source /opt/manyfold/.env
 export PATH="/home/manyfold/.rbenv/shims:/home/manyfold/.rbenv/bin:$PATH"
 $STD foreman export systemd /etc/systemd/system -a manyfold -u manyfold -f /opt/manyfold/app/Procfile
@@ -128,12 +128,12 @@ EOF
 ln -s /etc/nginx/sites-available/manyfold.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
-msg_ok "Cleaned"
+msg_ok "已清理"

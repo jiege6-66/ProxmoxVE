@@ -13,7 +13,7 @@
   "documentation": "https://healthchecks.io/docs/",
   "website": "https://healthchecks.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/healthchecks.webp",
-  "description": "Healthchecks is a cron job monitoring service. It listens for HTTP requests and email messages (\"pings\") from your cron jobs and scheduled tasks (\"checks\"). When a ping does not arrive on time, Healthchecks sends out alerts. Healthchecks comes with a web dashboard, API, 25+ integrations for delivering notifications, monthly email reports, WebAuthn 2FA support, team management features: projects, team members, read-only access.",
+  "description": "Healthchecks 是一个 cron 作业监控服务。它监听来自你的 cron 作业和计划任务（\"检查\"）的 HTTP 请求和电子邮件消息（\"ping\"）。当 ping 未按时到达时，Healthchecks 会发出告警。Healthchecks 配有 Web 仪表板、API、25+ 个用于发送通知的集成、月度电子邮件报告、WebAuthn 2FA 支持、团队管理功能：项目、团队成员、只读访问。",
   "install_methods": [
     {
       "type": "default",

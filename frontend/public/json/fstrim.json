@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/linuxcontainers.webp",
   "config_path": "",
-  "description": "This maintains SSD performance by managing unused blocks. Thin-provisioned storage systems also require management to prevent unnecessary storage use. VMs automate fstrim, while LXC containers need manual or automated fstrim processes for optimal performance.",
+  "description": "这通过管理未使用的块来维护 SSD 性能。精简配置存储系统也需要管理以防止不必要的存储使用。VM 自动执行 fstrim，而 LXC 容器需要手动或自动化的 fstrim 进程以获得最佳性能。",
   "install_methods": [
     {
       "type": "default",

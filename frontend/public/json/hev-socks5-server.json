@@ -13,7 +13,7 @@
   "website": "https://github.com/heiher/hev-socks5-server",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/hev.webp",
   "config_path": "/opt/hivemq/conf/config.xml",
-  "description": "HevSocks5Server is a simple, lightweight socks5 server.",
+  "description": "HevSocks5Server 是一个简单、轻量级的 socks5 服务器。",
   "install_methods": [
     {
       "type": "default",

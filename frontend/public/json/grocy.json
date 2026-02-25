@@ -13,7 +13,7 @@
   "website": "https://grocy.info/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/grocy.webp",
   "config_path": "/var/www/html/data/config.php",
-  "description": "grocy is a web-based self-hosted groceries & household management solution for your home. It helps you keep track of your groceries and household items, manage your shopping list, and keep track of your pantry, recipes, meal plans, and more.",
+  "description": "grocy 是一个基于 Web 的自托管杂货和家庭管理解决方案。它帮助你跟踪杂货和家居用品，管理购物清单，并跟踪你的储藏室、食谱、膳食计划等。",
   "install_methods": [
     {
       "type": "default",

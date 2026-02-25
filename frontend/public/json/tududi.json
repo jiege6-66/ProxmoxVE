@@ -13,7 +13,7 @@
   "config_path": "/opt/tududi/backend/.env",
   "website": "https://tududi.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tududi.webp",
-  "description": "Self-hosted task management with functional programming architecture, hierarchical organization, and multi-language support.",
+  "description": "具有函数式编程架构、分层组织和多语言支持的自托管任务管理。",
   "install_methods": [
     {
       "type": "default",

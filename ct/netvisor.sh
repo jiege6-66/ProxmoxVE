@@ -25,13 +25,13 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/netvisor ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Stopping services"
+  msg_info "正在停止 services"
   systemctl -q disable --now netvisor-daemon netvisor-server
-  msg_ok "Stopped services"
+  msg_ok "已停止 services"
 
   NODE_VERSION="24" setup_nodejs
   CLEAN_INSTALL=1 fetch_and_deploy_gh_release "scanopy" "scanopy/scanopy" "tarball" "latest" "/opt/scanopy"
@@ -50,24 +50,24 @@ function update_script() {
   sed -i 's|_TARGET=.*$|_URL=http://127.0.0.1:60072|' /opt/scanopy/.env
   sed -i 's/NETVISOR/SCANOPY/g; s|netvisor/|scanopy/|' /opt/scanopy/.env
 
-  msg_info "Creating frontend UI"
+  msg_info "正在创建 frontend UI"
   export PUBLIC_SERVER_HOSTNAME=default
   export PUBLIC_SERVER_PORT=""
   cd /opt/scanopy/ui
   $STD npm ci --no-fund --no-audit
   $STD npm run build
-  msg_ok "Created frontend UI"
+  msg_ok "已创建 frontend UI"
 
-  msg_info "Building Scanopy-server (patience)"
+  msg_info "正在构建 Scanopy-server (patience)"
   cd /opt/scanopy/backend
   $STD cargo build --release --bin server
   mv ./target/release/server /usr/bin/scanopy-server
-  msg_ok "Built Scanopy-server"
+  msg_ok "已构建 Scanopy-server"
 
-  msg_info "Building Scanopy-daemon"
+  msg_info "正在构建 Scanopy-daemon"
   $STD cargo build --release --bin daemon
   cp ./target/release/daemon /usr/bin/scanopy-daemon
-  msg_ok "Built Scanopy-daemon"
+  msg_ok "已构建 Scanopy-daemon"
 
   sed -i '/^  \"server_target.*$/d' /root/.config/daemon/config.json
   sed -i -e 's|-target|-url|' \
@@ -82,9 +82,9 @@ function update_script() {
   mv /etc/systemd/system/netvisor-server.service /etc/systemd/system/scanopy-server.service
   systemctl daemon-reload
 
-  msg_info "Starting services"
+  msg_info "正在启动 services"
   systemctl -q enable --now scanopy-server scanopy-daemon
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
 
   sed -i 's/netvisor/scanopy/' /usr/bin/update
   mv ~/NetVisor.creds ~/scanopy.creds
@@ -98,8 +98,8 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:60072${CL}"
 echo -e "${INFO}${YW} Then create your account, and run the 'configure_daemon.sh' script to setup the daemon.${CL}"

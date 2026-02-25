@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /etc/odoo/odoo.conf ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   ensure_dependencies python3-lxml
@@ -43,23 +43,23 @@ function update_script() {
     tail -n1)
 
   if [[ "${LATEST_VERSION}" != "$(cat /opt/${APP}_version.txt)" ]] || [[ ! -f /opt/${APP}_version.txt ]]; then
-    msg_info "Stopping ${APP} service"
+    msg_info "正在停止 ${APP} service"
     systemctl stop odoo
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating ${APP} to ${LATEST_VERSION}"
+    msg_info "正在更新 ${APP} to ${LATEST_VERSION}"
     curl -fsSL https://nightly.odoo.com/${RELEASE}/nightly/deb/odoo_${RELEASE}.latest_all.deb -o /opt/odoo.deb
     $STD apt install -y /opt/odoo.deb
     rm -f /opt/odoo.deb
     echo "$LATEST_VERSION" >/opt/${APP}_version.txt
     msg_ok "Updated ${APP} to ${LATEST_VERSION}"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start odoo
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at ${LATEST_VERSION}"
+    msg_ok "无需更新。 ${APP} is already at ${LATEST_VERSION}"
   fi
   exit
 }
@@ -68,7 +68,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8069${CL}"

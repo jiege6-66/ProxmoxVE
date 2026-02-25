@@ -17,7 +17,7 @@ PG_VERSION=17 setup_postgresql
 PG_DB_NAME="miniflux_db" PG_DB_USER="miniflux" PG_DB_GRANT_SUPERUSER="true" setup_postgresql_db
 fetch_and_deploy_gh_release "miniflux" "miniflux/v2" "binary" "latest"
 
-msg_info "Configuring Miniflux"
+msg_info "正在配置 Miniflux"
 ADMIN_NAME=admin
 ADMIN_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)"
 cat <<EOF >/etc/miniflux.conf
@@ -34,7 +34,7 @@ EOF
 } >>~/miniflux.creds
 $STD miniflux -migrate -config-file /etc/miniflux.conf
 systemctl enable -q --now miniflux
-msg_ok "Configured Miniflux"
+msg_ok "已配置 Miniflux"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://github.com/CodeWithCJ/SparkyFitness",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/sparkyfitness.webp",
   "config_path": "/etc/sparkyfitness/.env",
-  "description": "A self-hosted, privacy-first alternative to MyFitnessPal. Track nutrition, exercise, body metrics, and health data while keeping full control of your data.",
+  "description": "一个自托管、隐私优先的 MyFitnessPal 替代品。跟踪营养、运动、身体指标和健康数据，同时完全控制您的数据。",
   "install_methods": [
     {
       "type": "default",

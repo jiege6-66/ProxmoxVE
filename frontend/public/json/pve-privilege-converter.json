@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script allows converting Proxmox LXC containers between privileged and unprivileged modes using vzdump backup and restore. It guides you through container selection, backup storage, ID assignment, and privilege flipping via automated restore. Useful for applying changes that require different LXC modes.",
+  "description": "此脚本允许使用 vzdump 备份和恢复在特权和非特权模式之间转换 Proxmox LXC 容器。它引导您完成容器选择、备份存储、ID 分配以及通过自动恢复切换特权模式。适用于应用需要不同 LXC 模式的更改。",
   "install_methods": [
     {
       "type": "default",

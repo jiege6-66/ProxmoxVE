@@ -13,7 +13,7 @@
   "website": "https://github.com/hansmi/prometheus-paperless-exporter",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/paperless-ngx.webp",
   "config_path": "/etc/prometheus-paperless-ngx-exporter/config.env",
-  "description": "Prometheus metrics exporter for Paperless-NGX, a document management system transforming physical documents into a searchable online archive. The exporter relies on Paperless' REST API.",
+  "description": "Paperless-NGX 的 Prometheus 指标导出器，Paperless-NGX 是一个将物理文档转换为可搜索在线档案的文档管理系统。该导出器依赖于 Paperless 的 REST API。",
   "install_methods": [
     {
       "type": "default",

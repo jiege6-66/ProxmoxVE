@@ -24,27 +24,27 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/paperless-ai ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "paperless-ai" "clusterzx/paperless-ai"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop paperless-ai paperless-rag
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     cp -r /opt/paperless-ai/data /opt/paperless-ai-data-backup
-    msg_ok "Backed up data"
+    msg_ok "已备份 data"
 
     fetch_and_deploy_gh_release "paperless-ai" "clusterzx/paperless-ai" "tarball"
 
-    msg_info "Restoring data"
+    msg_info "正在恢复 data"
     cp -r /opt/paperless-ai-data-backup/* /opt/paperless-ai/data/
     rm -rf /opt/paperless-ai-data-backup
-    msg_ok "Restored data"
+    msg_ok "已恢复 data"
 
-    msg_info "Updating Paperless-AI"
+    msg_info "正在更新 Paperless-AI"
     cd /opt/paperless-ai
     if [[ ! -d /opt/paperless-ai/venv ]]; then
       msg_info "Recreating Python venv"
@@ -57,12 +57,12 @@ function update_script() {
     $STD npm ci --only=production
     msg_ok "Updated Paperless-AI"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start paperless-rag
     sleep 3
     systemctl start paperless-ai
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -71,7 +71,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

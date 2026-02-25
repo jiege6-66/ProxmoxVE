@@ -79,7 +79,7 @@ if systemctl is-active -q ping-instances.service; then
   systemctl stop ping-instances.service
 fi
 header_info
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXCs" --yesno "This will allow for the creation of one of the many TurnKey LXC Containers. Proceed?" 10 68
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXC 容器" --yesno "这将允许创建多种 TurnKey LXC 容器之一。是否继续？" 10 68
 TURNKEY_MENU=()
 MSG_MAX_LENGTH=0
 while read -r TAG ITEM; do
@@ -112,10 +112,10 @@ wordpress Wordpress
 zoneminder ZoneMinder
 EOF
 )
-turnkey=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXCs" --radiolist "\nSelect a TurnKey LXC to create:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${TURNKEY_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
+turnkey=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXC 容器" --radiolist "\n选择要创建的 TurnKey LXC：\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${TURNKEY_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
 [ -z "$turnkey" ] && {
-  whiptail --backtitle "Proxmox VE Helper Scripts" --title "No TurnKey LXC Selected" --msgbox "It appears that no TurnKey LXC container was selected" 10 68
-  msg "Done"
+  whiptail --backtitle "Proxmox VE Helper Scripts" --title "未选择 TurnKey LXC" --msgbox "看起来没有选择任何 TurnKey LXC 容器" 10 68
+  msg "完成"
   exit
 }
 
@@ -123,15 +123,15 @@ turnkey=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXCs
 PASS="$(openssl rand -base64 8)"
 # Prompt user to confirm container ID
 while true; do
-  CTID=$(whiptail --backtitle "Container ID" --title "Choose the Container ID" --inputbox "Enter the container ID..." 8 40 $(pvesh get /cluster/nextid) 3>&1 1>&2 2>&3)
+  CTID=$(whiptail --backtitle "容器 ID" --title "选择容器 ID" --inputbox "请输入容器 ID..." 8 40 $(pvesh get /cluster/nextid) 3>&1 1>&2 2>&3)
 
   # Check if user cancelled
-  [ -z "$CTID" ] && die "No Container ID selected"
+  [ -z "$CTID" ] && die "未选择容器 ID"
 
   # Validate Container ID
   if ! validate_container_id "$CTID"; then
     SUGGESTED_ID=$(get_valid_container_id "$CTID")
-    if whiptail --backtitle "Container ID" --title "ID Already In Use" --yesno "Container/VM ID $CTID is already in use.\n\nWould you like to use the next available ID ($SUGGESTED_ID)?" 10 58; then
+    if whiptail --backtitle "容器 ID" --title "ID 已被使用" --yesno "容器/虚拟机 ID $CTID 已被使用。\n\n是否使用下一个可用 ID ($SUGGESTED_ID)？" 10 58; then
       CTID="$SUGGESTED_ID"
       break
     fi
@@ -141,7 +141,7 @@ while true; do
   fi
 done
 # Prompt user to confirm Hostname
-HOST_NAME=$(whiptail --backtitle "Hostname" --title "Choose the Hostname" --inputbox "Enter the containers Hostname..." 8 40 "turnkey-${turnkey}" 3>&1 1>&2 2>&3)
+HOST_NAME=$(whiptail --backtitle "主机名" --title "选择主机名" --inputbox "请输入容器的主机名..." 8 40 "turnkey-${turnkey}" 3>&1 1>&2 2>&3)
 PCT_OPTIONS="
     -features keyctl=1,nesting=1
     -hostname $HOST_NAME
@@ -190,17 +190,17 @@ function select_storage() {
 
   # Select storage location
   if [ $((${#MENU[@]} / 3)) -eq 0 ]; then
-    warn "'$CONTENT_LABEL' needs to be selected for at least one storage location."
-    die "Unable to detect valid storage location."
+    warn "'$CONTENT_LABEL' 需要至少为一个存储位置选择。"
+    die "无法检测到有效的存储位置。"
   elif [ $((${#MENU[@]} / 3)) -eq 1 ]; then
     printf ${MENU[0]}
   else
     local STORAGE
     while [ -z "${STORAGE:+x}" ]; do
-      STORAGE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Storage Pools" --radiolist \
-        "Which storage pool would you like to use for the ${CONTENT_LABEL,,}?\n\n" \
+      STORAGE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "存储池" --radiolist \
+        "要使用哪个存储池来存储${CONTENT_LABEL,,}？\n\n" \
         16 $(($MSG_MAX_LENGTH + 23)) 6 \
-        "${MENU[@]}" 3>&1 1>&2 2>&3) || die "Menu aborted."
+        "${MENU[@]}" 3>&1 1>&2 2>&3) || die "菜单已中止。"
     done
     printf $STORAGE
   fi
@@ -208,26 +208,26 @@ function select_storage() {
 
 # Get template storage
 TEMPLATE_STORAGE=$(select_storage template)
-info "Using '$TEMPLATE_STORAGE' for template storage."
+info "使用 '$TEMPLATE_STORAGE' 作为模板存储。"
 
 # Get container storage
 CONTAINER_STORAGE=$(select_storage container)
-info "Using '$CONTAINER_STORAGE' for container storage."
+info "使用 '$CONTAINER_STORAGE' 作为容器存储。"
 
 # Update LXC template list
-msg "Updating LXC template list..."
+msg "正在更新 LXC 模板列表..."
 pveam update >/dev/null
 
 # Get LXC template string
 mapfile -t TEMPLATES < <(pveam available -section turnkeylinux | awk -v turnkey="${turnkey}" '$0 ~ turnkey {print $2}' | sort -t - -k 2 -V)
-[ ${#TEMPLATES[@]} -gt 0 ] || die "Unable to find a template when searching for '${turnkey}'."
+[ ${#TEMPLATES[@]} -gt 0 ] || die "搜索 '${turnkey}' 时未找到模板。"
 TEMPLATE="${TEMPLATES[-1]}"
 
 # Download LXC template
 if ! pveam list $TEMPLATE_STORAGE | grep -q $TEMPLATE; then
-  msg "Downloading LXC template (Patience)..."
+  msg "正在下载 LXC 模板（请耐心等待）..."
   pveam download $TEMPLATE_STORAGE $TEMPLATE >/dev/null ||
-    die "A problem occured while downloading the LXC template."
+    die "下载 LXC 模板时出现问题。"
 fi
 
 # Create variable for 'pct' options
@@ -235,9 +235,9 @@ PCT_OPTIONS=(${PCT_OPTIONS[@]:-${DEFAULT_PCT_OPTIONS[@]}})
 [[ " ${PCT_OPTIONS[@]} " =~ " -rootfs " ]] || PCT_OPTIONS+=(-rootfs $CONTAINER_STORAGE:${PCT_DISK_SIZE:-8})
 
 # Create LXC
-msg "Creating LXC container..."
+msg "正在创建 LXC 容器..."
 pct create $CTID ${TEMPLATE_STORAGE}:vztmpl/${TEMPLATE} ${PCT_OPTIONS[@]} >/dev/null ||
-  die "A problem occured while trying to create container."
+  die "创建容器时出现问题。"
 
 # Save password
 echo "TurnKey ${turnkey} password: ${PASS}" >>~/turnkey-${turnkey}.creds # file is located in the Proxmox root directory
@@ -245,14 +245,14 @@ echo "TurnKey ${turnkey} password: ${PASS}" >>~/turnkey-${turnkey}.creds # file 
 # If turnkey is "OpenVPN", add access to the tun device
 TUN_DEVICE_REQUIRED=("openvpn") # Setup this way in case future turnkeys also need tun access
 if printf '%s\n' "${TUN_DEVICE_REQUIRED[@]}" | grep -qw "${turnkey}"; then
-  info "${turnkey} requires access to /dev/net/tun on the host. Modifying the container configuration to allow this."
+  info "${turnkey} 需要访问主机上的 /dev/net/tun。正在修改容器配置以允许访问。"
   echo "lxc.cgroup2.devices.allow: c 10:200 rwm" >>/etc/pve/lxc/${CTID}.conf
   echo "lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file 0 0" >>/etc/pve/lxc/${CTID}.conf
   sleep 5
 fi
 
 # Start container
-msg "Starting LXC Container..."
+msg "正在启动 LXC 容器..."
 pct start "$CTID"
 sleep 10
 
@@ -266,15 +266,15 @@ while [[ $attempt -le $max_attempts ]]; do
   if [[ -n $IP ]]; then
     break
   else
-    warn "Attempt $attempt: IP address not found. Pausing for 5 seconds..."
+    warn "第 $attempt 次尝试：未找到 IP 地址。暂停 5 秒..."
     sleep 5
     ((attempt++))
   fi
 done
 
 if [[ -z $IP ]]; then
-  warn "Maximum number of attempts reached. IP address not found."
-  IP="NOT FOUND"
+  warn "已达到最大尝试次数。未找到 IP 地址。"
+  IP="未找到"
 fi
 
 # Start Proxmox VE Monitor-All if available
@@ -285,11 +285,11 @@ fi
 # Success message
 header_info
 echo
-info "LXC container '$CTID' was successfully created, and its IP address is ${IP}."
+info "LXC 容器 '$CTID' 已成功创建，IP 地址为 ${IP}。"
 echo
-info "Proceed to the LXC console to complete the setup."
+info "请前往 LXC 控制台完成设置。"
 echo
-info "login: root"
-info "password: $PASS"
-info "(credentials also stored in the root user's root directory in the 'turnkey-${turnkey}.creds' file.)"
+info "用户名: root"
+info "密码: $PASS"
+info "（凭据也保存在 root 用户主目录的 'turnkey-${turnkey}.creds' 文件中。）"
 echo

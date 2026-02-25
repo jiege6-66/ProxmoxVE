@@ -12,23 +12,23 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add ca-certificates
 $STD update-ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Traefik"
+msg_info "正在安装 Traefik"
 $STD apk add traefik --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
-msg_ok "Installed Traefik"
+msg_ok "已安装 Traefik"
 
 read -p "${TAB3}Enable Traefik WebUI (Port 8080)? [y/N]: " enable_webui
 if [[ "$enable_webui" =~ ^[Yy]$ ]]; then
-  msg_info "Configuring Traefik WebUI"
+  msg_info "正在配置 Traefik WebUI"
   sed -i 's/localhost//g' /etc/traefik/traefik.yaml
-  msg_ok "Configured Traefik WebUI"
+  msg_ok "已配置 Traefik WebUI"
 fi
 
-msg_info "Enabling and starting Traefik service"
+msg_info "正在启用 and starting Traefik service"
 $STD rc-update add traefik default
 sed -i '/^command=.*/i directory="/etc/traefik"' /etc/init.d/traefik
 $STD rc-service traefik start

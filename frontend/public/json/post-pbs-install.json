@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "The script is designed for Proxmox Backup Server (PBS) and will give options to Disable the Enterprise Repo, Add/Correct PBS Sources, Enable the No-Subscription Repo, Add Test Repo, Disable Subscription Nag, Update Proxmox Backup Server and Reboot PBS.",
+  "description": "该脚本专为 Proxmox Backup Server (PBS) 设计，提供禁用企业仓库、添加/修正 PBS 源、启用无订阅仓库、添加测试仓库、禁用订阅提示、更新 Proxmox Backup Server 和重启 PBS 等选项。",
   "install_methods": [
     {
       "type": "default",

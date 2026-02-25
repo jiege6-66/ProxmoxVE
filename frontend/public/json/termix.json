@@ -13,7 +13,7 @@
   "website": "https://termix.site/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/termix.webp",
   "config_path": "",
-  "description": "Termix is an open-source, self-hosted server management platform with SSH terminal access, SSH tunneling, remote file management, Docker management, and multi-platform support.",
+  "description": "Termix 是一个开源的自托管服务器管理平台,具有 SSH 终端访问、SSH 隧道、远程文件管理、Docker 管理和多平台支持。",
   "install_methods": [
     {
       "type": "default",

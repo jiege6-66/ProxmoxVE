@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependendencies"
+msg_info "正在安装 dependendencies"
 $STD apt install -y valkey
-msg_ok "Installed dependendencies"
+msg_ok "已安装 dependendencies"
 
 NODE_VERSION="22" NODE_MODULE="pnpm" setup_nodejs
 PG_VERSION="17" setup_postgresql
@@ -26,7 +26,7 @@ fetch_and_deploy_gh_release "openarchiver" "LogicLabs-OU/OpenArchiver" "tarball"
 JWT_KEY="$(openssl rand -hex 32)"
 SECRET_KEY="$(openssl rand -hex 32)"
 
-msg_info "Setting up Open Archiver"
+msg_info "正在设置 Open Archiver"
 mkdir -p /opt/openarchiver-data
 cd /opt/openarchiver
 cp .env.example .env
@@ -47,9 +47,9 @@ sed -i "s|^ORIGIN=.*|ORIGIN=http://$LOCAL_IP:3000|g" /opt/openarchiver/.env
 $STD pnpm install --shamefully-hoist --frozen-lockfile --prod=false
 $STD pnpm run build:oss
 $STD pnpm db:migrate
-msg_ok "Setup Open Archiver"
+msg_ok "设置 Open Archiver"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/openarchiver.service
 [Unit]
 Description=Open Archiver Service
@@ -67,7 +67,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now openarchiver
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

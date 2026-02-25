@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_codeberg_release "readeck" "readeck/readeck" "singlefile" "latest" "/opt/readeck" "readeck-*-linux-amd64"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/readeck.service
 [Unit]
 Description=Readeck Service
@@ -32,7 +32,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now readeck
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

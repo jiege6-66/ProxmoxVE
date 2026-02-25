@@ -16,18 +16,18 @@ update_os
 JAVA_VERSION=21 setup_java
 PG_VERSION=16 setup_postgresql
 
-msg_info "Configuring PostgreSQL"
+msg_info "正在配置 PostgreSQL"
 DB_NAME="keycloak"
 DB_USER="keycloak"
 DB_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)"
 $STD sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';"
 $STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME WITH OWNER $DB_USER ENCODING 'UTF8';"
 $STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
-msg_ok "Configured PostgreSQL"
+msg_ok "已配置 PostgreSQL"
 
 fetch_and_deploy_gh_release "keycloak_app" "keycloak/keycloak" "prebuild" "latest" "/opt/keycloak" "keycloak-*.tar.gz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/keycloak.service
 [Unit]
 Description=Keycloak Service
@@ -57,7 +57,7 @@ Environment="KC_HOSTNAME_STRICT=false"
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now keycloak
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

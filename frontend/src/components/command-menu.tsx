@@ -211,7 +211,7 @@ function CommandMenu() {
             setOpen(true);
           }}
         >
-          <span className="inline-flex">Search scripts...</span>
+          <span className="inline-flex">搜索脚本...</span>
           <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.45rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
             <span className="text-xs">⌘</span>
             K
@@ -227,7 +227,7 @@ function CommandMenu() {
                 onClick={handleOpenRandomScript}
                 disabled={isLoading}
                 className="hidden lg:flex"
-                aria-label="Open Random Script"
+                aria-label="打开随机脚本"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
@@ -236,11 +236,11 @@ function CommandMenu() {
                 }}
               >
                 <Sparkles className="size-4" />
-                <span className="sr-only">Open Random Script</span>
+                <span className="sr-only">打开随机脚本</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Open Random Script</p>
+              <p>打开随机脚本</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -256,28 +256,28 @@ function CommandMenu() {
           }
         }}
       >
-        <DialogTitle className="sr-only">Search scripts</DialogTitle>
+        <DialogTitle className="sr-only">搜索脚本</DialogTitle>
         <CommandInput
-          placeholder="Search for a script..."
+          placeholder="搜索脚本..."
           onValueChange={setQuery}
           value={query}
         />
         <CommandList>
           <CommandEmpty>
             {isLoading ? (
-              "Searching..."
+              "搜索中..."
             ) : (
               <div className="flex flex-col items-center justify-center py-6 text-center">
-                <p className="text-sm text-muted-foreground">No scripts match your search.</p>
+                <p className="text-sm text-muted-foreground">没有找到匹配的脚本。</p>
                 <div className="mt-4">
-                  <p className="text-xs text-muted-foreground mb-2">Want to add a new script?</p>
+                  <p className="text-xs text-muted-foreground mb-2">想要添加新脚本？</p>
                   <Button variant="outline" size="sm" asChild>
                     <Link
                       href={`https://github.com/community-scripts/${basePath}/tree/main/docs/contribution/GUIDE.md`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Documentation <ArrowRightIcon className="ml-2 h-4 w-4" />
+                      文档 <ArrowRightIcon className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                 </div>
@@ -286,7 +286,7 @@ function CommandMenu() {
           </CommandEmpty>
 
           {results.length > 0 ? (
-            <CommandGroup heading="Search Results">
+            <CommandGroup heading="搜索结果">
               {results.map(script => (
                 <CommandItem
                   key={`script:${script.slug}`}
@@ -296,7 +296,7 @@ function CommandMenu() {
                     router.push(`/scripts?id=${script.slug}`);
                   }}
                   tabIndex={0}
-                  aria-label={`Open script ${script.name}`}
+                  aria-label={`打开脚本 ${script.name}`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       setOpen(false);
@@ -320,7 +320,7 @@ function CommandMenu() {
                 </CommandItem>
               ))}
             </CommandGroup>
-          ) : ( // When no search results, show all scripts grouped by category
+          ) : (
             Object.entries(uniqueScriptsByCategory).map(([categoryName, scripts]) => (
               <CommandGroup key={`category:${categoryName}`} heading={categoryName}>
                 {scripts.map(script => (
@@ -332,7 +332,7 @@ function CommandMenu() {
                       router.push(`/scripts?id=${script.slug}`);
                     }}
                     tabIndex={0}
-                    aria-label={`Open script ${script.name}`}
+                    aria-label={`打开脚本 ${script.name}`}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         setOpen(false);

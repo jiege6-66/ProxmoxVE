@@ -13,7 +13,7 @@
   "config_path": "",
   "website": "https://github.com/connorgallopo/Tracearr",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tracearr.webp",
-  "description": "Tracearr is a streaming access manager for Plex, Jellyfin and Emby servers. It answers the question every server owner eventually asks: \"Who's actually using my server, and are they sharing their login?\"",
+  "description": "Tracearr 是一个用于 Plex、Jellyfin 和 Emby 服务器的流媒体访问管理器。它回答了每个服务器所有者最终都会问的问题:\"谁真正在使用我的服务器,他们是否在共享登录?\"",
   "install_methods": [
     {
       "type": "default",

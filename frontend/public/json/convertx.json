@@ -13,7 +13,7 @@
   "documentation": "https://github.com/C4illin/ConvertX",
   "website": "https://github.com/C4illin/ConvertX",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/convertx.webp",
-  "description": "ConvertX is a self-hosted online file converter supporting over 1000 formats, including images, audio, video, documents, and more, powered by FFmpeg, GraphicsMagick, and other libraries.",
+  "description": "ConvertX 是一个自托管的在线文件转换器，支持超过 1000 种格式，包括图像、音频、视频、文档等，由 FFmpeg、GraphicsMagick 和其他库提供支持。",
   "install_methods": [
     {
       "type": "default",

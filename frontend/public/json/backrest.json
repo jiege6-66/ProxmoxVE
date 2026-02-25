@@ -13,7 +13,7 @@
   "website": "https://garethgeorge.github.io/backrest",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/backrest.webp",
   "config_path": "/opt/backrest/config/config.json | /opt/backrest/.env",
-  "description": "Backrest is a web-accessible backup solution built on top of restic and providing a WebUI which wraps the restic CLI and makes it easy to create repos, browse snapshots, and restore files. Additionally, Backrest can run in the background and take an opinionated approach to scheduling snapshots and orchestrating repo health operations.",
+  "description": "Backrest 是一个基于 restic 构建的可通过 Web 访问的备份解决方案，提供了一个 WebUI 来封装 restic CLI，使创建仓库、浏览快照和恢复文件变得简单。此外，Backrest 可以在后台运行，并采用一种有主见的方法来调度快照和编排仓库健康操作。",
   "install_methods": [
     {
       "type": "default",

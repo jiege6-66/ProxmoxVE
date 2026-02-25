@@ -13,7 +13,7 @@
   "website": "https://www.qbittorrent.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/qbittorrent.webp",
   "config_path": "$HOME/.config/qBittorrent/qBittorrent.conf",
-  "description": "qBittorrent offers a user-friendly interface that allows users to search for and download torrent files easily. It also supports magnet links, which allow users to start downloading files without the need for a torrent file.",
+  "description": "qBittorrent 提供用户友好的界面,允许用户轻松搜索和下载种子文件。它还支持磁力链接,允许用户无需种子文件即可开始下载文件。",
   "install_methods": [
     {
       "type": "default",

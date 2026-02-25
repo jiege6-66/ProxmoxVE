@@ -13,7 +13,7 @@
   "website": "https://github.com/aceberg/WatchYourLAN",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/watchyourlan.webp",
   "config_path": "/data/config.yaml",
-  "description": "WatchYourLAN is a lightweight network IP scanner with web GUI.",
+  "description": "WatchYourLAN 是一个轻量级的网络 IP 扫描器，带有 Web 图形界面。",
   "install_methods": [
     {
       "type": "default",

@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "glance" "glanceapp/glance" "prebuild" "latest" "/opt/glance" "glance-linux-amd64.tar.gz"
 
-msg_info "Configuring Glance"
+msg_info "正在配置 Glance"
 cat <<EOF >/opt/glance/glance.yml
 pages:
   - name: Startpage
@@ -36,9 +36,9 @@ pages:
                   - title: Helper Scripts
                     url: https://github.com/community-scripts/ProxmoxVE
 EOF
-msg_ok "Configured Glance"
+msg_ok "已配置 Glance"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 service_path="/etc/systemd/system/glance.service"
 echo "[Unit]
 Description=Glance Daemon
@@ -56,7 +56,7 @@ Restart=on-failure
 WantedBy=multi-user.target" >$service_path
 
 systemctl enable -q --now glance
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

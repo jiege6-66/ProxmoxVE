@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script serves as a versatile backup utility, enabling users to specify both the backup path and the directory they want to work in. This flexibility empowers users to select the specific files and directories they wish to back up, making it compatible with a wide range of hosts, not limited to Proxmox.",
+  "description": "此脚本作为一个多功能备份工具，允许用户指定备份路径和工作目录。这种灵活性使用户能够选择要备份的特定文件和目录，使其兼容各种主机，不仅限于 Proxmox。",
   "install_methods": [
     {
       "type": "default",

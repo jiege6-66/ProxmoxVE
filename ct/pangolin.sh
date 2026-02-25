@@ -25,24 +25,24 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/pangolin ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "pangolin" "fosrl/pangolin"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop pangolin
     systemctl stop gerbil
     msg_info "Service stopped"
 
-    msg_info "Creating backup"
+    msg_info "正在创建 backup"
     tar -czf /opt/pangolin_config_backup.tar.gz -C /opt/pangolin config
-    msg_ok "Created backup"
+    msg_ok "已创建 backup"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "pangolin" "fosrl/pangolin" "tarball"
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "gerbil" "fosrl/gerbil" "singlefile" "latest" "/usr/bin" "gerbil_linux_amd64"
 
-    msg_info "Updating Pangolin"
+    msg_info "正在更新 Pangolin"
     cd /opt/pangolin
     $STD npm ci
     $STD npm run set:sqlite
@@ -58,26 +58,26 @@ function update_script() {
     cp server/db/mac_models.json ./dist/mac_models.json
     msg_ok "Updated Pangolin"
 
-    msg_info "Restoring config"
+    msg_info "正在恢复 config"
     tar -xzf /opt/pangolin_config_backup.tar.gz -C /opt/pangolin --overwrite
     rm -f /opt/pangolin_config_backup.tar.gz
-    msg_ok "Restored config"
+    msg_ok "已恢复 config"
 
-    msg_info "Running database migrations"
+    msg_info "正在运行 database migrations"
     cd /opt/pangolin
     ENVIRONMENT=prod $STD npx drizzle-kit push --config drizzle.sqlite.config.ts
     msg_ok "Ran database migrations"
 
-    msg_info "Updating Badger plugin version"
+    msg_info "正在更新 Badger plugin version"
     BADGER_VERSION=$(get_latest_github_release "fosrl/badger" "false")
     sed -i "s/version: \"v[0-9.]*\"/version: \"$BADGER_VERSION\"/g" /opt/pangolin/config/traefik/traefik_config.yml
     msg_ok "Updated Badger plugin version"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start pangolin
     systemctl start gerbil
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -86,7 +86,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://<YOUR_PANGOLIN_URL>${CL}"

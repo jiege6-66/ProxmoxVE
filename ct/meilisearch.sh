@@ -28,28 +28,28 @@ function update_script() {
 
   if [[ -d /opt/meilisearch-ui ]]; then
     if check_for_gh_release "meilisearch-ui" "riccox/meilisearch-ui"; then
-      msg_info "Stopping Meilisearch-UI"
+      msg_info "正在停止 Meilisearch-UI"
       systemctl stop meilisearch-ui
-      msg_ok "Stopped Meilisearch-UI"
+      msg_ok "已停止 Meilisearch-UI"
 
       cp /opt/meilisearch-ui/.env.local /tmp/.env.local.bak
       rm -rf /opt/meilisearch-ui
       fetch_and_deploy_gh_release "meilisearch-ui" "riccox/meilisearch-ui" "tarball"
 
-      msg_info "Configuring Meilisearch-UI"
+      msg_info "正在配置 Meilisearch-UI"
       cd /opt/meilisearch-ui
       sed -i 's|const hash = execSync("git rev-parse HEAD").toString().trim();|const hash = "unknown";|' /opt/meilisearch-ui/vite.config.ts
       mv /tmp/.env.local.bak /opt/meilisearch-ui/.env.local
       $STD pnpm install
-      msg_ok "Configured Meilisearch-UI"
+      msg_ok "已配置 Meilisearch-UI"
 
-      msg_info "Starting Meilisearch-UI"
+      msg_info "正在启动 Meilisearch-UI"
       systemctl start meilisearch-ui
-      msg_ok "Started Meilisearch-UI"
+      msg_ok "已启动 Meilisearch-UI"
     fi
   fi
 
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -57,7 +57,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}meilisearch: http://${IP}:7700$ | meilisearch-ui: http://${IP}:24900${CL}"

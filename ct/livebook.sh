@@ -25,32 +25,32 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /opt/livebook/.mix/escripts/livebook ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "livebook" "livebook-dev/livebook"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop livebook
-    msg_info "Stopped Service"
+    msg_info "已停止 Service"
 
-    msg_info "Updating Container"
+    msg_info "正在更新 Container"
     $STD apt update
     $STD apt upgrade -y
     msg_ok "Updated Container"
 
-    msg_info "Updating Livebook"
+    msg_info "正在更新 Livebook"
     source /opt/livebook/.env
     cd /opt/livebook
     $STD mix escript.install hex livebook --force
 
     chown -R livebook:livebook /opt/livebook /data
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start livebook
-    msg_info "Started Service"
+    msg_info "已启动 Service"
 
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -59,6 +59,6 @@ start
 build_container
 description
 
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

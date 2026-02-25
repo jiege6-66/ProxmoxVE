@@ -13,7 +13,7 @@
   "config_path": "/opt/PVEScripts-Local/.env",
   "website": "https://community-scripts.github.io/ProxmoxVE",
   "logo": "https://raw.githubusercontent.com/community-scripts/ProxmoxVE-Local/refs/heads/main/.github/logo.png",
-  "description": "A modern web-based management interface for Proxmox VE (PVE) helper scripts. This tool provides a user-friendly way to discover, download, and execute community-sourced Proxmox scripts locally with real-time terminal output streaming.",
+  "description": "一个现代化的基于网页的 Proxmox VE (PVE) 辅助脚本管理界面。此工具提供用户友好的方式来发现、下载和本地执行社区提供的 Proxmox 脚本,并实时流式传输终端输出。",
   "install_methods": [
     {
       "type": "default",

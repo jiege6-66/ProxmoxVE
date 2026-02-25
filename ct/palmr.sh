@@ -24,13 +24,13 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/palmr_data ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "palmr" "kyantech/Palmr"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop palmr-frontend palmr-backend
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
     cp /opt/palmr/apps/server/.env /opt/palmr.env
     rm -rf /opt/palmr
@@ -39,7 +39,7 @@ function update_script() {
     PNPM="$(jq -r '.packageManager' /opt/palmr/package.json)"
     NODE_VERSION="24" NODE_MODULE="$PNPM" setup_nodejs
 
-    msg_info "Updating ${APP}"
+    msg_info "正在更新 ${APP}"
     cd /opt/palmr/apps/server
     mv /opt/palmr.env /opt/palmr/apps/server/.env
     $STD pnpm install
@@ -57,10 +57,10 @@ function update_script() {
     chown -R palmr:palmr /opt/palmr_data /opt/palmr
     msg_ok "Updated ${APP}"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start palmr-backend palmr-frontend
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -69,7 +69,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

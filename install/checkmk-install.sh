@@ -19,9 +19,9 @@ curl -fsSL "https://download.checkmk.com/checkmk/${RELEASE}/check-mk-raw-${RELEA
 $STD apt-get install -y /opt/checkmk.deb
 rm -rf /opt/checkmk.deb
 echo "${RELEASE}" >"/opt/checkmk_version.txt"
-msg_ok "Installed Checkmk"
+msg_ok "已安装 Checkmk"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 SITE_NAME="monitoring"
 $STD omd create "$SITE_NAME"
 MKPASSWORD=$(openssl rand -base64 18 | tr -d '/+=' | cut -c1-16)
@@ -36,7 +36,7 @@ $STD omd start "$SITE_NAME"
   echo "Site: $SITE_NAME"
 } >>~/checkmk.creds
 
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 cleanup_lxc
 motd_ssh

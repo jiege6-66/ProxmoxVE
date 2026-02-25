@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.13" setup_uv
 fetch_and_deploy_gh_release "Tautulli" "Tautulli/Tautulli" "tarball"
 
-msg_info "Installing Tautulli"
+msg_info "正在安装 Tautulli"
 cd /opt/Tautulli
 TAUTULLI_VERSION=$(get_latest_github_release "Tautulli/Tautulli" "false")
 echo "${TAUTULLI_VERSION}" >/opt/Tautulli/version.txt
@@ -30,9 +30,9 @@ $STD source /opt/Tautulli/.venv/bin/activate
 $STD uv pip install -r requirements.txt
 $STD uv pip install pyopenssl
 $STD uv pip install "setuptools<81"
-msg_ok "Installed Tautulli"
+msg_ok "已安装 Tautulli"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/tautulli.service
 [Unit]
 Description=Tautulli
@@ -52,7 +52,7 @@ SyslogIdentifier=tautulli
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now tautulli
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

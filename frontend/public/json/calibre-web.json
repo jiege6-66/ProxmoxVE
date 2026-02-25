@@ -13,7 +13,7 @@
   "website": "https://github.com/janeczku/calibre-web",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/calibre-web.webp",
   "config_path": "/opt/calibre-web/app.db",
-  "description": "Web app for browsing, reading and downloading eBooks from a Calibre database. Provides an attractive interface with mobile support, user management, and eBook conversion capabilities.",
+  "description": "用于从 Calibre 数据库浏览、阅读和下载电子书的 Web 应用程序。提供具有移动支持、用户管理和电子书转换功能的吸引人界面。",
   "install_methods": [
     {
       "type": "default",

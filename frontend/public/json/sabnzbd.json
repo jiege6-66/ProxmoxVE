@@ -1,35 +1,35 @@
 {
-    "name": "SABnzbd",
-    "slug": "sabnzbd",
-    "categories": [
-        11
-    ],
-    "date_created": "2024-05-02",
-    "type": "ct",
-    "updateable": true,
-    "privileged": false,
-    "interface_port": 7777,
-    "documentation": "https://sabnzbd.org/wiki/",
-    "website": "https://sabnzbd.org/",
-    "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/sabnzbd.webp",
-    "config_path": "/.sabnzbd/sabnzbd.ini",
-    "description": "SABnzbd is a free, open-source software program for downloading binary files from Usenet newsgroups. It is designed to be easy to use, and provides a number of features to simplify the downloading process, such as automatic error detection and repair, download scheduling, and integration with other applications. SABnzbd is a binary newsreader, which means it is specifically designed for downloading binary files, such as images, music, and video, from Usenet newsgroups. With its user-friendly interface and powerful features, SABnzbd makes it easy to manage your Usenet downloads and keep your download queue organized.",
-    "install_methods": [
-        {
-            "type": "default",
-            "script": "ct/sabnzbd.sh",
-            "resources": {
-                "cpu": 2,
-                "ram": 2048,
-                "hdd": 5,
-                "os": "debian",
-                "version": "13"
-            }
-        }
-    ],
-    "default_credentials": {
-        "username": null,
-        "password": null
-    },
-    "notes": []
+  "name": "SABnzbd",
+  "slug": "sabnzbd",
+  "categories": [
+    11
+  ],
+  "date_created": "2024-05-02",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 7777,
+  "documentation": "https://sabnzbd.org/wiki/",
+  "website": "https://sabnzbd.org/",
+  "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/sabnzbd.webp",
+  "config_path": "/.sabnzbd/sabnzbd.ini",
+  "description": "SABnzbd 是一个免费的开源软件程序,用于从 Usenet 新闻组下载二进制文件。它设计易于使用,并提供许多功能来简化下载过程,例如自动错误检测和修复、下载调度以及与其他应用程序的集成。SABnzbd 是一个二进制新闻阅读器,这意味着它专门设计用于从 Usenet 新闻组下载二进制文件,如图像、音乐和视频。凭借其用户友好的界面和强大的功能,SABnzbd 使管理您的 Usenet 下载和保持下载队列有序变得容易。",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/sabnzbd.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 5,
+        "os": "debian",
+        "version": "13"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": []
 }

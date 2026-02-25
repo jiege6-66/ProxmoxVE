@@ -13,7 +13,7 @@
   "website": "https://github.com/mmastrac/stylus",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/stylus.webp",
   "config_path": "/opt/stylus/config.yaml",
-  "description": "Stylus (style + status) is a lightweight status page for infrastructure and networks. Configure a set of bash scripts that test the various parts of your infrastructure, set up visualizations with minimal configuration, and Stylus will generate you a dashboard for your system.",
+  "description": "Stylus（style + status）是一个用于基础设施和网络的轻量级状态页面。配置一组测试基础设施各个部分的 bash 脚本，通过最少的配置设置可视化，Stylus 将为您的系统生成一个仪表板。",
   "install_methods": [
     {
       "type": "default",

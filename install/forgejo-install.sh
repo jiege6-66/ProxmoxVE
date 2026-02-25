@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     git \
     git-lfs
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_codeberg_release "forgejo" "forgejo/forgejo" "singlefile" "latest" "/opt/forgejo" "forgejo-*-linux-amd64"
 ln -sf /opt/forgejo/forgejo /usr/local/bin/forgejo
 
-msg_info "Setting up Forgejo"
+msg_info "正在设置 Forgejo"
 $STD adduser --system --shell /bin/bash --gecos 'Git Version Control' --group --disabled-password --home /home/git git
 mkdir /var/lib/forgejo
 chown git:git /var/lib/forgejo
@@ -30,9 +30,9 @@ chmod 750 /var/lib/forgejo
 mkdir /etc/forgejo
 chown root:git /etc/forgejo
 chmod 770 /etc/forgejo
-msg_ok "Setup Forgejo"
+msg_ok "设置 Forgejo"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/forgejo.service
 [Unit]
 Description=Forgejo
@@ -51,7 +51,7 @@ Environment=USER=git HOME=/home/git FORGEJO_WORK_DIR=/var/lib/forgejo
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now forgejo
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://mariadb.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mariadb.webp",
   "config_path": "",
-  "description": "MariaDB is a fork of the popular MySQL database management system that is developed and maintained by the open-source community. It is also commercially supported, offering enterprise-level features and support for organizations that require them. MariaDB aims to maintain high compatibility with MySQL, ensuring a drop-in replacement capability.",
+  "description": "MariaDB 是流行的 MySQL 数据库管理系统的一个分支，由开源社区开发和维护。它还提供商业支持，为需要企业级功能和支持的组织提供服务。MariaDB 旨在保持与 MySQL 的高度兼容性，确保可以直接替换。",
   "install_methods": [
     {
       "type": "default",

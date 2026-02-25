@@ -13,7 +13,7 @@
   "website": "https://github.com/jordan-dalby/ByteStash",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/bytestash.webp",
   "config_path": "",
-  "description": "ByteStash is a self-hosted web application designed to store, organise, and manage your code snippets efficiently. With support for creating, editing, and filtering snippets, ByteStash helps you keep track of your code in one secure place.",
+  "description": "ByteStash 是一个自托管的 Web 应用程序，旨在高效地存储、组织和管理您的代码片段。通过支持创建、编辑和过滤片段，ByteStash 帮助您在一个安全的地方跟踪您的代码。",
   "install_methods": [
     {
       "type": "default",

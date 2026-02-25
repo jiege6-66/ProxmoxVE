@@ -13,7 +13,7 @@
   "website": "https://caddyserver.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/caddy.webp",
   "config_path": "/etc/caddy/Caddyfile",
-  "description": "Caddy is a powerful, extensible platform to serve your sites, services, and apps, written in Go.",
+  "description": "Caddy 是一个强大、可扩展的平台，用于提供您的网站、服务和应用程序，使用 Go 编写。",
   "install_methods": [
     {
       "type": "default",

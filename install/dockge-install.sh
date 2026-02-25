@@ -15,32 +15,32 @@ update_os
 
 DOCKER_LATEST_VERSION=$(get_latest_github_release "moby/moby")
 
-msg_info "Installing Docker $DOCKER_LATEST_VERSION (with Compose, Buildx)"
+msg_info "正在安装 Docker $DOCKER_LATEST_VERSION (with Compose, Buildx)"
 DOCKER_CONFIG_PATH='/etc/docker/daemon.json'
 mkdir -p $(dirname $DOCKER_CONFIG_PATH)
 echo -e '{\n  "log-driver": "journald"\n}' >/etc/docker/daemon.json
 $STD sh <(curl -fsSL https://get.docker.com)
-msg_ok "Installed Docker $DOCKER_LATEST_VERSION"
+msg_ok "已安装 Docker $DOCKER_LATEST_VERSION"
 
-msg_info "Installing Dockge"
+msg_info "正在安装 Dockge"
 mkdir -p /opt/{dockge,stacks}
 curl -fsSL "https://raw.githubusercontent.com/louislam/dockge/master/compose.yaml" -o "/opt/dockge/compose.yaml"
 cd /opt/dockge
 $STD docker compose up -d
-msg_ok "Installed Dockge"
+msg_ok "已安装 Dockge"
 
 read -r -p "${TAB3}Would you like to add Immich? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Adding Immich compose.yaml"
+  msg_info "正在添加 Immich compose.yaml"
   mkdir -p /opt/stacks/immich
   curl -fsSL "https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml" -o "/opt/stacks/immich/compose.yaml"
   curl -fsSL "https://github.com/immich-app/immich/releases/latest/download/example.env" -o "/opt/stacks/immich/.env"
-  msg_ok "Added Immich compose.yaml"
+  msg_ok "已添加 Immich compose.yaml"
 fi
 
 read -r -p "${TAB3}Would you like to add Home Assistant? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Adding Home Assistant compose.yaml"
+  msg_info "正在添加 Home Assistant compose.yaml"
   mkdir -p /opt/stacks/homeassistant
   cat <<EOF >/opt/stacks/homeassistant/compose.yaml
 version: "3"
@@ -56,7 +56,7 @@ services:
     privileged: true
     network_mode: host
 EOF
-  msg_ok "Added Home Assistant compose.yaml"
+  msg_ok "已添加 Home Assistant compose.yaml"
 fi
 
 motd_ssh

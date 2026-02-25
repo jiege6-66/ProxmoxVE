@@ -13,7 +13,7 @@
   "website": "https://barassistant.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/bar-assistant.webp",
   "config_path": "/opt/bar-assistant",
-  "description": "Bar Assistant is all-in-one solution for managing your home bar. Compared to other recipe management software that usually tries to be more for general use, Bar Assistant is made specifically for managing cocktail recipes. This means that there are a lot of cocktail-oriented features, like ingredient substitutes, first-class ingredients, ABV calculations, unit switching and more..",
+  "description": "Bar Assistant 是一个管理家庭酒吧的一体化解决方案。与其他通常试图更通用的食谱管理软件相比，Bar Assistant 专门用于管理鸡尾酒配方。这意味着有很多面向鸡尾酒的功能，如配料替代品、一流的配料、ABV 计算、单位切换等。",
   "install_methods": [
     {
       "type": "default",

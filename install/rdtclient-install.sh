@@ -13,24 +13,24 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 setup_deb822_repo \
   "microsoft" \
   "https://packages.microsoft.com/keys/microsoft-2025.asc" \
   "https://packages.microsoft.com/debian/13/prod/" \
   "trixie"
 $STD apt install -y aspnetcore-runtime-9.0
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "rdt-client" "rogerfar/rdt-client" "prebuild" "latest" "/opt/rdtc" "RealDebridClient.zip"
 
-msg_info "Setting up rdtclient"
+msg_info "正在设置 rdtclient"
 cd /opt/rdtc
 mkdir -p data/{db,downloads}
 sed -i 's#/data/db/#/opt/rdtc&#g' /opt/rdtc/appsettings.json
-msg_ok "Configured rdtclient"
+msg_ok "已配置 rdtclient"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/rdtc.service
 [Unit]
 Description=RdtClient Service
@@ -45,7 +45,7 @@ User=root
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now rdtc
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -16,7 +16,7 @@ setup_hwaccel
 
 setup_imagemagick
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   assimp-utils \
   calibre \
@@ -37,12 +37,12 @@ $STD apt install -y \
   texlive-latex-extra \
   texlive-latex-recommended \
   texlive-xetex
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION=22 NODE_MODULE="bun" setup_nodejs
 fetch_and_deploy_gh_release "ConvertX" "C4illin/ConvertX" "tarball" "latest" "/opt/convertx"
 
-msg_info "Installing ConvertX"
+msg_info "正在安装 ConvertX"
 cd /opt/convertx
 mkdir -p data
 $STD bun install
@@ -53,9 +53,9 @@ JWT_SECRET=$JWT_SECRET
 HTTP_ALLOWED=true
 PORT=3000
 EOF
-msg_ok "Installed ConvertX"
+msg_ok "已安装 ConvertX"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/convertx.service
 [Unit]
 Description=ConvertX File Converter
@@ -72,7 +72,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now convertx
-msg_ok "Service Created"
+msg_ok "Service 已创建"
 
 motd_ssh
 customize

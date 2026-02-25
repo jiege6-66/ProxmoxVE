@@ -13,7 +13,7 @@
   "website": "https://github.com/lldap/lldap",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/lldap.webp",
   "config_path": "",
-  "description": "LLDAP is a lightweight LDAP server designed for simplicity and ease of use. It provides secure user authentication and authorization management through LDAP over TLS. Ideal for small to medium-sized environments, It aims to streamline identity management tasks with a minimalistic and straightforward setup.",
+  "description": "LLDAP 是一个轻量级的 LDAP 服务器,专为简单性和易用性而设计。它通过 LDAP over TLS 提供安全的用户身份验证和授权管理。非常适合中小型环境,旨在通过简约直接的设置简化身份管理任务。",
   "install_methods": [
     {
       "type": "default",

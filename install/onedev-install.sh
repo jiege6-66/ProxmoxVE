@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   git-lfs
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 JAVA_VERSION="21" setup_java
 
-msg_info "Installing OneDev"
+msg_info "正在安装 OneDev"
 RELEASE=$(curl -fsSL https://api.github.com/repos/theonedev/onedev/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
 cd /opt
 curl -fsSL "https://code.onedev.io/onedev/server/~site/onedev-latest.tar.gz" -o onedev-latest.tar.gz
@@ -31,7 +31,7 @@ $STD /opt/onedev/bin/server.sh install
 systemctl start onedev
 rm -rf /opt/onedev-latest.tar.gz
 echo "${RELEASE}" >~/.onedev
-msg_ok "Installed OneDev"
+msg_ok "已安装 OneDev"
 
 motd_ssh
 customize

@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 
-msg_info "Installing Node-Red"
+msg_info "正在安装 Node-Red"
 $STD npm install -g --unsafe-perm node-red
 echo "journalctl -f -n 100 -u nodered -o cat" >/usr/bin/node-red-log
 chmod +x /usr/bin/node-red-log
@@ -31,9 +31,9 @@ echo "systemctl start nodered" >/usr/bin/node-red-start
 chmod +x /usr/bin/node-red-start
 echo "systemctl restart nodered" >/usr/bin/node-red-restart
 chmod +x /usr/bin/node-red-restart
-msg_ok "Installed Node-Red"
+msg_ok "已安装 Node-Red"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 service_path="/etc/systemd/system/nodered.service"
 echo "[Unit]
 Description=Node-RED
@@ -54,7 +54,7 @@ Group=root
 [Install]
 WantedBy=multi-user.target" >$service_path
 systemctl enable -q --now nodered
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

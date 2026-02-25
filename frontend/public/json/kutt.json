@@ -13,7 +13,7 @@
   "config_path": "/opt/kutt/.env",
   "website": "https://kutt.it",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/kutt.webp",
-  "description": "Kutt is a modern URL shortener with support for custom domains. Create and edit links, view statistics, manage users, and more.",
+  "description": "Kutt 是一个支持自定义域名的现代 URL 缩短器。创建和编辑链接、查看统计信息、管理用户等。",
   "install_methods": [
     {
       "type": "default",

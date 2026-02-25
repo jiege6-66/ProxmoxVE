@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y --no-install-recommends \
   libicu-dev \
   libzip-dev \
@@ -24,7 +24,7 @@ $STD apt install -y --no-install-recommends \
   libcurl4-openssl-dev \
   libonig-dev \
   pkg-config
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.4" PHP_APACHE="YES" PHP_FPM="YES" setup_php
 setup_composer
@@ -32,7 +32,7 @@ setup_mariadb
 MARIADB_DB_NAME="domain_monitor" MARIADB_DB_USER="domainmonitor" setup_mariadb_db
 fetch_and_deploy_gh_release "domain-monitor" "Hosteroid/domain-monitor" "prebuild" "latest" "/opt/domain-monitor" "domain-monitor-v*.zip"
 
-msg_info "Setting up Domain Monitor"
+msg_info "正在设置 Domain Monitor"
 ENC_KEY=$(openssl rand -base64 32 | tr -d '\n')
 cd /opt/domain-monitor
 $STD composer install
@@ -59,7 +59,7 @@ EOF
 chown -R www-data:www-data /opt/domain-monitor
 $STD a2enmod rewrite headers
 $STD systemctl reload apache2
-msg_ok "Setup Domain Monitor"
+msg_ok "设置 Domain Monitor"
 
 motd_ssh
 customize

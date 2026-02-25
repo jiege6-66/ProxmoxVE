@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "nocodb" "nocodb/nocodb" "singlefile" "0.301.1" "/opt/nocodb/" "Noco-linux-x64"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/nocodb.service
 echo "[Unit]
 Description=nocodb
@@ -31,7 +31,7 @@ ExecStart=/opt/nocodb/./nocodb
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now nocodb
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

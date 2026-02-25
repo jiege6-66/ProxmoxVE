@@ -158,3 +158,5 @@ export {
   type ParticlesEffectProps,
   type ParticlesProps,
 };
+
+这段代码中没有用户可见的 UI 文本字符串需要翻译。代码主要包含类型定义、组件逻辑和样式计算，所有的字符串都是技术性的（如 CSS 值、属性名等），不是面向用户的界面文本。

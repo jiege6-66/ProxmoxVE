@@ -13,7 +13,7 @@
   "website": "https://www.deluge-torrent.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/deluge.webp",
   "config_path": "~/.config/deluge",
-  "description": "Deluge is a free, open-source, lightweight BitTorrent client. It supports various platforms including Windows, Linux, and macOS, and offers features such as peer exchange, DHT, and magnet links.",
+  "description": "Deluge 是一个免费、开源、轻量级的 BitTorrent 客户端。它支持包括 Windows、Linux 和 macOS 在内的多个平台，并提供对等交换、DHT 和磁力链接等功能。",
   "install_methods": [
     {
       "type": "default",

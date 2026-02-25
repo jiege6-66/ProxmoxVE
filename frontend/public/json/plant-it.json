@@ -13,7 +13,7 @@
   "website": "https://plant-it.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/plant-it.webp",
   "config_path": "/opt/plant-it/backend/server.env",
-  "description": "Plant-it is a self-hosted, open-source app designed to help users manage and track plant care. It allows users to add plants, log activities like watering, fertilizing, and pruning, set reminders, and upload photos for visual tracking. The app includes a database of over 400,000 plant species, offering detailed care information such as optimal growing conditions and maintenance tips.\n\nUsers can organize their plant collection, monitor growth, and share data with others. The app is free to use and works on Android, iOS, and the web.",
+  "description": "Plant-it 是一个自托管的开源应用，旨在帮助用户管理和追踪植物护理。它允许用户添加植物，记录浇水、施肥和修剪等活动，设置提醒，并上传照片进行可视化追踪。该应用包含超过 400,000 种植物物种的数据库，提供详细的护理信息，如最佳生长条件和维护技巧。\n\n用户可以整理他们的植物收藏，监测生长情况，并与他人分享数据。该应用免费使用，支持 Android、iOS 和 Web。",
   "install_methods": [
     {
       "type": "default",

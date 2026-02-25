@@ -196,7 +196,7 @@ set_std_mode() {
 #
 # - Parses comma-separated dev_mode variable (e.g., "motd,keep,trace")
 # - Sets global flags for each mode:
-#   * DEV_MODE_MOTD: Setup SSH/MOTD before installation
+#   * DEV_MODE_MOTD: 设置 SSH/MOTD before installation
 #   * DEV_MODE_KEEP: Never delete container on failure
 #   * DEV_MODE_TRACE: Enable bash set -x tracing
 #   * DEV_MODE_PAUSE: Pause after each msg_info step
@@ -382,7 +382,7 @@ ssh_check() {
     fi
 
     # Only warn for truly external connections
-    msg_warn "Running via external SSH (client: $client_ip)."
+    msg_warn "正在运行 via external SSH (client: $client_ip)."
     msg_warn "For better stability, consider using the Proxmox Shell (Console) instead."
   fi
 }
@@ -550,7 +550,7 @@ silent() {
 # ------------------------------------------------------------------------------
 spinner() {
   local chars=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)
-  local msg="${SPINNER_MSG:-Processing...}"
+  local msg="${SPINNER_MSG:-正在处理...}"
   local i=0
   while true; do
     local index=$((i++ % ${#chars[@]}))
@@ -999,7 +999,7 @@ show_missing_values_warning() {
 #
 # Example:
 #   if prompt_confirm "Proceed with installation?" "y" 30; then
-#     echo "Installing..."
+#     echo "正在安装..."
 #   fi
 #
 #   # Unattended: prompt_confirm will use default without waiting
@@ -1281,7 +1281,7 @@ prompt_input_required() {
 #
 # Example:
 #   choice=$(prompt_select "Select database:" 1 30 "PostgreSQL" "MySQL" "SQLite")
-#   echo "Selected: $choice"
+#   echo "已选择: $choice"
 #
 #   # With array
 #   options=("Option A" "Option B" "Option C")
@@ -1451,7 +1451,7 @@ prompt_password() {
 # - Uses fallback error handling to prevent cleanup failures from breaking installs
 # ------------------------------------------------------------------------------
 cleanup_lxc() {
-  msg_info "Cleaning up"
+  msg_info "正在清理"
 
   if is_alpine; then
     $STD apk cache clean || true
@@ -1504,7 +1504,7 @@ cleanup_lxc() {
     rm -rf /root/.composer/cache 2>/dev/null || true
   fi
 
-  msg_ok "Cleaned"
+  msg_ok "已清理"
 
   # Send progress ping if available (defined in install.func)
   if declare -f post_progress_to_api &>/dev/null; then
@@ -1523,7 +1523,7 @@ cleanup_lxc() {
 # - Returns 0 if swap active or successfully created, 1 if declined/failed
 # ------------------------------------------------------------------------------
 check_or_create_swap() {
-  msg_info "Checking for active swap"
+  msg_info "正在检查 for active swap"
 
   if swapon --noheadings --show | grep -q 'swap'; then
     msg_ok "Swap is active"
@@ -1533,7 +1533,7 @@ check_or_create_swap() {
   msg_error "No active swap detected"
 
   if ! prompt_confirm "Do you want to create a swap file?" "n" 60; then
-    msg_info "Skipping swap file creation"
+    msg_info "正在跳过 swap file creation"
     return 1
   fi
 
@@ -1546,14 +1546,14 @@ check_or_create_swap() {
 
   local swap_file="/swapfile"
 
-  msg_info "Creating ${swap_size_mb}MB swap file at $swap_file"
+  msg_info "正在创建 ${swap_size_mb}MB swap file at $swap_file"
   if dd if=/dev/zero of="$swap_file" bs=1M count="$swap_size_mb" status=progress &&
     chmod 600 "$swap_file" &&
     mkswap "$swap_file" &&
     swapon "$swap_file"; then
     msg_ok "Swap file created and activated successfully"
   else
-    msg_error "Failed to create or activate swap"
+    msg_error "无法 create or activate swap"
     return 1
   fi
 }

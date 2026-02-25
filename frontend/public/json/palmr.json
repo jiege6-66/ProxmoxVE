@@ -14,7 +14,7 @@
   "config_path": "/opt/palmr/apps/server/.env, /opt/palmr/apps/web/.env",
   "website": "https://palmr.kyantech.com.br/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/palmr.webp",
-  "description": "Palmr is a fast and secure platform for sharing files, built with performance and privacy in mind.",
+  "description": "Palmr 是一个快速安全的文件共享平台,注重性能和隐私。",
   "install_methods": [
     {
       "type": "default",

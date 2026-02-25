@@ -13,7 +13,7 @@
   "website": "https://couchdb.apache.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/couchdb.webp",
   "config_path": "etc/default.ini",
-  "description": "Apache CouchDB Seamless multi-master sync, that scales from Big Data to Mobile, with an Intuitive HTTP/JSON API and designed for Reliability.",
+  "description": "Apache CouchDB 无缝的多主同步,可从大数据扩展到移动设备,具有直观的 HTTP/JSON API,专为可靠性而设计。",
   "install_methods": [
     {
       "type": "default",

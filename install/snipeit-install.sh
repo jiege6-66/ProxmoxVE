@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.3" PHP_FPM="YES" PHP_MODULE="ldap,soap,xsl" setup_php
 setup_composer
@@ -25,7 +25,7 @@ fetch_and_deploy_gh_release "snipe-it" "grokability/snipe-it" "tarball"
 setup_mariadb
 MARIADB_DB_NAME="snipeit_db" MARIADB_DB_USER="snipeit" setup_mariadb_db
 
-msg_info "Configuring Snipe-IT"
+msg_info "正在配置 Snipe-IT"
 cd /opt/snipe-it
 cp .env.example .env
 sed -i -e "s|^APP_URL=.*|APP_URL=http://$LOCAL_IP|" \
@@ -37,9 +37,9 @@ chmod -R 755 /opt/snipe-it
 export COMPOSER_ALLOW_SUPERUSER=1
 $STD composer install --no-dev --optimize-autoloader --no-interaction
 $STD php artisan key:generate --force
-msg_ok "Configured Snipe-IT"
+msg_ok "已配置 Snipe-IT"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/nginx/conf.d/snipeit.conf
 server {
         listen 80;
@@ -63,7 +63,7 @@ server {
 }
 EOF
 systemctl reload nginx
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

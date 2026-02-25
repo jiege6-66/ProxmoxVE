@@ -13,7 +13,7 @@
   "website": "https://graylog.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/graylog.webp",
   "config_path": "/etc/graylog/server/server.conf",
-  "description": "Graylog is an open-source log management and analysis platform that centralizes and processes log data from various sources, enabling real-time search, analysis, and alerting for IT infrastructure monitoring and troubleshooting.",
+  "description": "Graylog 是一个开源的日志管理和分析平台，集中处理来自各种来源的日志数据，实现实时搜索、分析和告警，用于 IT 基础设施监控和故障排除。",
   "install_methods": [
     {
       "type": "default",

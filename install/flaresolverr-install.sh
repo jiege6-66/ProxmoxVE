@@ -14,13 +14,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y \
   apt-transport-https \
   xvfb
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Chrome"
+msg_info "正在安装 Chrome"
 setup_deb822_repo \
   "google-chrome" \
   "https://dl.google.com/linux/linux_signing_key.pub" \
@@ -30,11 +30,11 @@ $STD apt update
 $STD apt install -y google-chrome-stable
 # remove google-chrome.list added by google-chrome-stable
 rm /etc/apt/sources.list.d/google-chrome.list
-msg_ok "Installed Chrome"
+msg_ok "已安装 Chrome"
 
 fetch_and_deploy_gh_release "flaresolverr" "FlareSolverr/FlareSolverr" "prebuild" "latest" "/opt/flaresolverr" "flaresolverr_linux_x64.tar.gz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/flaresolverr.service
 [Unit]
 Description=FlareSolverr
@@ -53,7 +53,7 @@ TimeoutStopSec=30
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now flaresolverr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

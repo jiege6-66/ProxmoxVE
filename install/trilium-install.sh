@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "Trilium" "TriliumNext/Trilium" "prebuild" "latest" "/opt/trilium" "TriliumNotes-Server-*linux-x64.tar.xz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/trilium.service
 [Unit]
 Description=Trilium Daemon
@@ -33,7 +33,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q trilium
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

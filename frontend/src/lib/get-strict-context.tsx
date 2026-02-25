@@ -25,7 +25,7 @@ function getStrictContext<T>(
   const useSafeContext = () => {
     const ctx = React.useContext(Context);
     if (ctx === undefined) {
-      throw new Error(`useContext must be used within ${name ?? "a Provider"}`);
+      throw new Error(`useContext 必须在 ${name ?? "Provider"} 内部使用`);
     }
     return ctx;
   };

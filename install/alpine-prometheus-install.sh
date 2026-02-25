@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Prometheus"
+msg_info "正在安装 Prometheus"
 $STD apk add --no-cache prometheus
-msg_ok "Installed Prometheus"
+msg_ok "已安装 Prometheus"
 
-msg_info "Enabling Prometheus Service"
+msg_info "正在启用 Prometheus Service"
 $STD rc-update add prometheus default
-msg_ok "Enabled Prometheus Service"
+msg_ok "已启用 Prometheus Service"
 
-msg_info "Starting Prometheus"
+msg_info "正在启动 Prometheus"
 $STD service prometheus start
-msg_ok "Started Prometheus"
+msg_ok "已启动 Prometheus"
 
 motd_ssh
 customize

@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.13" setup_uv
 NODE_VERSION="24" setup_nodejs
@@ -23,7 +23,7 @@ PG_VERSION="17" PG_MODULES="postgis" setup_postgresql
 PG_DB_NAME="enduraindb" PG_DB_USER="endurain" setup_postgresql_db
 fetch_and_deploy_gh_release "endurain" "endurain-project/endurain" "tarball" "latest" "/opt/endurain"
 
-msg_info "Setting up Endurain"
+msg_info "正在设置 Endurain"
 cd /opt/endurain
 rm -rf \
   /opt/endurain/{docs,example.env,screenshot_01.png} \
@@ -66,9 +66,9 @@ LOGS_DIR="/opt/endurain_data/logs"
 #SMTP_SECURE=true
 #SMTP_SECURE_TYPE=starttls
 EOF
-msg_ok "Setup Endurain"
+msg_ok "设置 Endurain"
 
-msg_info "Building Frontend"
+msg_info "正在构建 Frontend"
 cd /opt/endurain/frontend/app
 $STD npm ci --prefer-offline
 $STD npm run build
@@ -77,9 +77,9 @@ window.env = {
   ENDURAIN_HOST: "${ENDURAIN_HOST}"
 }
 EOF
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
-msg_info "Setting up Backend"
+msg_info "正在设置 Backend"
 cd /opt/endurain/backend
 $STD uv tool install poetry
 $STD uv tool update-shell
@@ -88,9 +88,9 @@ $STD poetry self add poetry-plugin-export
 $STD poetry export -f requirements.txt --output requirements.txt --without-hashes
 $STD uv venv --clear
 $STD uv pip install -r requirements.txt
-msg_ok "Setup Backend"
+msg_ok "设置 Backend"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/endurain.service
 [Unit]
 Description=Endurain FastAPI Backend
@@ -110,7 +110,7 @@ StandardError=journal
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now endurain
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

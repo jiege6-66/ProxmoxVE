@@ -13,24 +13,24 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apt-transport-https \
   redis
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="infisical_db" PG_DB_USER="infisical" setup_postgresql_db
 
-msg_info "Setting up Infisical Repository"
+msg_info "正在设置 Infisical Repository"
 setup_deb822_repo \
   "infisical" \
   "https://artifacts-infisical-core.infisical.com/infisical.gpg" \
   "https://artifacts-infisical-core.infisical.com/deb" \
   "stable"
-msg_ok "Setup Infisical repository"
+msg_ok "设置 Infisical repository"
 
-msg_info "Setting up Infisical"
+msg_info "正在设置 Infisical"
 AUTH_SECRET="$(openssl rand -base64 32 | tr -d '\n')"
 ENC_KEY="$(openssl rand -hex 16 | tr -d '\n')"
 $STD apt install -y infisical-core
@@ -43,7 +43,7 @@ infisical_core['DB_CONNECTION_URI'] = 'postgres://${PG_DB_USER}:${PG_DB_PASS}@lo
 infisical_core['REDIS_URL'] = 'redis://localhost:6379'
 EOF
 $STD infisical-ctl reconfigure
-msg_ok "Setup Infisical"
+msg_ok "设置 Infisical"
 
 motd_ssh
 customize

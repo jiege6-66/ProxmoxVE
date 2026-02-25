@@ -25,7 +25,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/gitea-mirror ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -36,7 +36,7 @@ function update_script() {
       exit 75
     fi
     msg_warn "WARNING: Version $APP_VERSION detected!"
-    msg_warn "Updating from version 2.x will CLEAR ALL CONFIGURATION."
+    msg_warn "正在更新 from version 2.x will CLEAR ALL CONFIGURATION."
     msg_warn "This includes: API tokens, User settings, Repository configurations, All custom settings"
     echo ""
     read -r -p "Do you want to continue? (y/N): " CONFIRM
@@ -56,7 +56,7 @@ function update_script() {
   fi
 
   if [[ ! -f /opt/gitea-mirror.env ]]; then
-    msg_info "Detected old Enviroment, updating files"
+    msg_info "已检测到 old Enviroment, updating files"
     APP_SECRET=$(openssl rand -base64 32)
     cat <<EOF >/opt/gitea-mirror.env
 # See here for config options: https://github.com/RayLabsHQ/gitea-mirror/blob/main/docs/ENVIRONMENT_VARIABLES.md
@@ -88,25 +88,25 @@ EOF
   fi
 
   if check_for_gh_release "gitea-mirror" "RayLabsHQ/gitea-mirror"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop gitea-mirror
-    msg_ok "Services Stopped"
+    msg_ok "Services 已停止"
 
     msg_info "Backup Data"
     mkdir -p /opt/gitea-mirror-backup/data
     cp /opt/gitea-mirror/data/* /opt/gitea-mirror-backup/data/
     msg_ok "Backup Data"
 
-    msg_info "Installing Bun"
+    msg_info "正在安装 Bun"
     export BUN_INSTALL=/opt/bun
     curl -fsSL https://bun.sh/install | $STD bash
     ln -sf /opt/bun/bin/bun /usr/local/bin/bun
     ln -sf /opt/bun/bin/bun /usr/local/bin/bunx
-    msg_ok "Installed Bun"
+    msg_ok "已安装 Bun"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "gitea-mirror" "RayLabsHQ/gitea-mirror" "tarball"
 
-    msg_info "Updating and rebuilding ${APP}"
+    msg_info "正在更新 and rebuilding ${APP}"
     cd /opt/gitea-mirror
     $STD bun run setup
     $STD bun run build
@@ -115,14 +115,14 @@ EOF
     sudo sed -i.bak "s|^npm_package_version=.*|npm_package_version=${APP_VERSION}|" /opt/gitea-mirror.env
     msg_ok "Updated and rebuilt ${APP}"
 
-    msg_info "Restoring Data"
+    msg_info "正在恢复 Data"
     cp /opt/gitea-mirror-backup/data/* /opt/gitea-mirror/data
-    msg_ok "Restored Data"
+    msg_ok "已恢复 Data"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start gitea-mirror
-    msg_ok "Service Started"
-    msg_ok "Updated successfully!"
+    msg_ok "Service 已启动"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -131,7 +131,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:4321${CL}"

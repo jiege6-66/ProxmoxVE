@@ -19,7 +19,7 @@ PG_DB_NAME="partdb" PG_DB_USER="partdb" setup_postgresql_db
 PHP_VERSION="8.4" PHP_APACHE="YES" PHP_MODULE="xsl" PHP_POST_MAX_SIZE="100M" PHP_UPLOAD_MAX_FILESIZE="100M" setup_php
 setup_composer
 
-msg_info "Installing Part-DB (Patience)"
+msg_info "正在安装 Part-DB (Patience)"
 cd /opt
 RELEASE=$(get_latest_github_release "Part-DB/Part-DB-server")
 curl -fsSL "https://github.com/Part-DB/Part-DB-server/archive/refs/tags/v${RELEASE}.zip" -o "/opt/v${RELEASE}.zip"
@@ -46,9 +46,9 @@ ADMIN_PASS=$(grep -oP 'The initial password for the "admin" user is: \K\w+' ~/da
 rm -rf ~/database-migration-output
 rm -rf "/opt/v${RELEASE}.zip"
 echo "${RELEASE}" >~/.partdb
-msg_ok "Installed Part-DB"
+msg_ok "已安装 Part-DB"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/partdb.conf
 <VirtualHost *:80>
     ServerName partdb
@@ -67,7 +67,7 @@ $STD a2ensite partdb
 $STD a2enmod rewrite
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

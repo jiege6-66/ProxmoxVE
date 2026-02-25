@@ -14,7 +14,7 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Setting up Hyperion repository"
+msg_info "正在设置 Hyperion repository"
 setup_deb822_repo \
   "hyperion" \
   "https://releases.hyperion-project.org/hyperion.pub.key" \
@@ -22,10 +22,10 @@ setup_deb822_repo \
   "$(get_os_info codename)"
 msg_ok "Set up Hyperion repository"
 
-msg_info "Installing Hyperion"
+msg_info "正在安装 Hyperion"
 $STD apt install -y hyperion
 systemctl enable -q --now hyperion@root
-msg_ok "Installed Hyperion"
+msg_ok "已安装 Hyperion"
 
 motd_ssh
 customize

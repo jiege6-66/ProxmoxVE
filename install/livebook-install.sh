@@ -13,20 +13,20 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y \
   build-essential \
   ca-certificates \
   cmake \
   git \
   libncurses5-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Creating livebook user"
+msg_info "正在创建 livebook user"
 mkdir -p /opt/livebook /data
 export HOME=/opt/livebook
 $STD adduser --system --group --home /opt/livebook --shell /bin/bash livebook
-msg_ok "Created livebook user"
+msg_ok "已创建 livebook user"
 
 msg_warn "WARNING: This script will run an external installer from a third-party source (https://elixir-lang.org)."
 msg_warn "The following code is NOT maintained or audited by our repository."
@@ -41,7 +41,7 @@ fi
 curl -fsSO https://elixir-lang.org/install.sh
 $STD sh install.sh elixir@latest otp@latest
 
-msg_info "Setup Erlang and Elixir"
+msg_info "设置 Erlang and Elixir"
 ERLANG_VERSION=$(ls /opt/livebook/.elixir-install/installs/otp/ | head -n1)
 ELIXIR_VERSION=$(ls /opt/livebook/.elixir-install/installs/elixir/ | head -n1)
 LIVEBOOK_PASSWORD=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c16)
@@ -71,9 +71,9 @@ EOF
   echo "Livebook-Credentials"
   echo "Livebook Password: $LIVEBOOK_PASSWORD"
 } >>~/livebook.creds
-msg_ok "Installed Erlang $ERLANG_VERSION and Elixir $ELIXIR_VERSION"
+msg_ok "已安装 Erlang $ERLANG_VERSION and Elixir $ELIXIR_VERSION"
 
-msg_info "Installing Livebook"
+msg_info "正在安装 Livebook"
 cat <<EOF >/etc/systemd/system/livebook.service
 [Unit]
 Description=Livebook
@@ -94,7 +94,7 @@ WantedBy=multi-user.target
 EOF
 chown -R livebook:livebook /opt/livebook /data
 systemctl enable -q --now livebook
-msg_ok "Installed Livebook"
+msg_ok "已安装 Livebook"
 
 motd_ssh
 customize

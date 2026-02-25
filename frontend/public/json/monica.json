@@ -1,35 +1,35 @@
 {
-    "name": "Monica",
-    "slug": "monica",
-    "categories": [
-        24
-    ],
-    "date_created": "2025-01-28",
-    "type": "ct",
-    "updateable": true,
-    "privileged": false,
-    "interface_port": 80,
-    "documentation": "https://github.com/monicahq/monica/tree/4.x/docs",
-    "website": "https://www.monicahq.com/",
-    "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/monica.webp",
-    "config_path": "/opt/monica/.env",
-    "description": "Monica is an open-source personal CRM designed to help you manage and strengthen your relationships. It allows you to store important details about your contacts, track interactions, set reminders for special dates, and log activities—all in one secure, private place. Perfect for busy individuals, Monica helps you stay organized, remember meaningful moments, and nurture your connections without ads or data mining. Install it on your own server for full control!",
-    "install_methods": [
-        {
-            "type": "default",
-            "script": "ct/monica.sh",
-            "resources": {
-                "cpu": 2,
-                "ram": 2048,
-                "hdd": 8,
-                "os": "debian",
-                "version": "13"
-            }
-        }
-    ],
-    "default_credentials": {
-        "username": "admin@helper-scripts.com",
-        "password": "helper-scripts.com"
-    },
-    "notes": []
+  "name": "Monica",
+  "slug": "monica",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-01-28",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 80,
+  "documentation": "https://github.com/monicahq/monica/tree/4.x/docs",
+  "website": "https://www.monicahq.com/",
+  "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/monica.webp",
+  "config_path": "/opt/monica/.env",
+  "description": "Monica 是一个开源的个人 CRM，旨在帮助您管理和加强人际关系。它允许您存储联系人的重要详细信息、跟踪互动、为特殊日期设置提醒并记录活动——所有这些都在一个安全、私密的地方。非常适合忙碌的个人，Monica 帮助您保持井然有序、记住有意义的时刻并培养您的联系，没有广告或数据挖掘。将其安装在您自己的服务器上以获得完全控制！",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/monica.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 8,
+        "os": "debian",
+        "version": "13"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": "admin@helper-scripts.com",
+    "password": "helper-scripts.com"
+  },
+  "notes": []
 }

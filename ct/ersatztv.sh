@@ -24,27 +24,27 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/ErsatzTV ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "ersatztv" "ErsatzTV/ErsatzTV"; then
-    msg_info "Stopping ErsatzTV"
+    msg_info "正在停止 ErsatzTV"
     systemctl stop ersatzTV
-    msg_ok "Stopped ErsatzTV"
+    msg_ok "已停止 ErsatzTV"
 
     fetch_and_deploy_gh_release "ersatztv" "ErsatzTV/ErsatzTV" "prebuild" "latest" "/opt/ErsatzTV" "*linux-x64.tar.gz"
 
-    msg_info "Starting ErsatzTV"
+    msg_info "正在启动 ErsatzTV"
     systemctl start ersatzTV
-    msg_ok "Started ErsatzTV"
+    msg_ok "已启动 ErsatzTV"
 
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
 
   if check_for_gh_release "ersatztv-ffmpeg" "ErsatzTV/ErsatzTV-ffmpeg"; then
-    msg_info "Stopping ErsatzTV"
+    msg_info "正在停止 ErsatzTV"
     systemctl stop ersatzTV
-    msg_ok "Stopped ErsatzTV"
+    msg_ok "已停止 ErsatzTV"
 
     fetch_and_deploy_gh_release "ersatztv-ffmpeg" "ErsatzTV/ErsatzTV-ffmpeg" "prebuild" "latest" "/opt/ErsatzTV-ffmpeg" "*-linux64-gpl-7.1.tar.xz"
 
@@ -55,10 +55,10 @@ function update_script() {
     ln -sf /opt/ErsatzTV-ffmpeg/bin/ffprobe /usr/local/bin/ffprobe
     msg_ok "ffmpeg links set"
 
-    msg_info "Starting ErsatzTV"
+    msg_info "正在启动 ErsatzTV"
     systemctl start ersatzTV
-    msg_ok "Started ErsatzTV"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 ErsatzTV"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -67,7 +67,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8409${CL}"

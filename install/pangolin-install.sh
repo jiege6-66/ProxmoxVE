@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   sqlite3 \
   iptables
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "pangolin" "fosrl/pangolin" "tarball"
@@ -27,7 +27,7 @@ fetch_and_deploy_gh_release "traefik" "traefik/traefik" "prebuild" "latest" "/us
 read -rp "${TAB3}Enter your Pangolin URL (ex: https://pangolin.example.com): " pango_url
 read -rp "${TAB3}Enter your email address: " pango_email
 
-msg_info "Setup Pangolin"
+msg_info "设置 Pangolin"
 SECRET_KEY=$(openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | head -c 32)
 BADGER_VERSION=$(get_latest_github_release "fosrl/badger" "false")
 cd /opt/pangolin
@@ -188,9 +188,9 @@ else
   echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf
   $STD sysctl -p /etc/sysctl.conf
 fi
-msg_ok "Setup Pangolin"
+msg_ok "设置 Pangolin"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/pangolin.service
 [Unit]
 Description=Pangolin Service
@@ -245,7 +245,7 @@ ExecReload=/bin/kill -USR1 \$MAINPID
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now traefik
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

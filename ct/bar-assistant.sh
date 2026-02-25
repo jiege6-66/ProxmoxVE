@@ -26,24 +26,24 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/bar-assistant ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "bar-assistant" "karlomikus/bar-assistant"; then
-    msg_info "Stopping nginx"
+    msg_info "正在停止 nginx"
     systemctl stop nginx
-    msg_ok "Stopped nginx"
+    msg_ok "已停止 nginx"
 
     PHP_VERSION="8.4" PHP_FPM="YES" PHP_MODULE="pdo-sqlite" setup_php
 
-    msg_info "Backing up Bar Assistant"
+    msg_info "正在备份 Bar Assistant"
     mv /opt/bar-assistant /opt/bar-assistant-backup
-    msg_ok "Backed up Bar Assistant"
+    msg_ok "已备份 Bar Assistant"
 
     fetch_and_deploy_gh_release "bar-assistant" "karlomikus/bar-assistant" "tarball" "latest" "/opt/bar-assistant"
     setup_composer
 
-    msg_info "Updating Bar-Assistant"
+    msg_info "正在更新 Bar-Assistant"
     cp -r /opt/bar-assistant-backup/.env /opt/bar-assistant/.env
     cp -r /opt/bar-assistant-backup/storage/bar-assistant /opt/bar-assistant/storage/bar-assistant
     cd /opt/bar-assistant
@@ -59,23 +59,23 @@ function update_script() {
     rm -rf /opt/bar-assistant-backup
     msg_ok "Updated Bar-Assistant"
 
-    msg_info "Starting nginx"
+    msg_info "正在启动 nginx"
     systemctl start nginx
-    msg_ok "Started nginx"
+    msg_ok "已启动 nginx"
   fi
 
   if check_for_gh_release "vue-salt-rim" "karlomikus/vue-salt-rim"; then
-    msg_info "Backing up Vue Salt Rim"
+    msg_info "正在备份 Vue Salt Rim"
     mv /opt/vue-salt-rim /opt/vue-salt-rim-backup
-    msg_ok "Backed up Vue Salt Rim"
+    msg_ok "已备份 Vue Salt Rim"
 
-    msg_info "Stopping nginx"
+    msg_info "正在停止 nginx"
     systemctl stop nginx
-    msg_ok "Stopped nginx"
+    msg_ok "已停止 nginx"
 
     fetch_and_deploy_gh_release "vue-salt-rim" "karlomikus/vue-salt-rim" "tarball" "latest" "/opt/vue-salt-rim"
 
-    msg_info "Updating Vue Salt Rim"
+    msg_info "正在更新 Vue Salt Rim"
     cp /opt/vue-salt-rim-backup/public/config.js /opt/vue-salt-rim/public/config.js
     cd /opt/vue-salt-rim
     $STD npm install
@@ -83,9 +83,9 @@ function update_script() {
     rm -rf /opt/vue-salt-rim-backup
     msg_ok "Updated Vue Salt Rim"
 
-    msg_info "Starting nginx"
+    msg_info "正在启动 nginx"
     systemctl start nginx
-    msg_ok "Started nginx"
+    msg_ok "已启动 nginx"
   fi
 
   setup_meilisearch
@@ -97,7 +97,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

@@ -222,12 +222,12 @@ const Particles: React.FC<ParticlesProps> = ({
   const animate = () => {
     clearContext();
     circles.current.forEach((circle: Circle, i: number) => {
-      // Handle the alpha value
+      // 处理透明度值
       const edge = [
-        circle.x + circle.translateX - circle.size, // distance from left edge
-        canvasSize.current.w - circle.x - circle.translateX - circle.size, // distance from right edge
-        circle.y + circle.translateY - circle.size, // distance from top edge
-        canvasSize.current.h - circle.y - circle.translateY - circle.size, // distance from bottom edge
+        circle.x + circle.translateX - circle.size, // 距离左边缘的距离
+        canvasSize.current.w - circle.x - circle.translateX - circle.size, // 距离右边缘的距离
+        circle.y + circle.translateY - circle.size, // 距离顶部边缘的距离
+        canvasSize.current.h - circle.y - circle.translateY - circle.size, // 距离底部边缘的距离
       ];
       const closestEdge = edge.reduce((a, b) => Math.min(a, b));
       const remapClosestEdge = Number.parseFloat(
@@ -253,19 +253,19 @@ const Particles: React.FC<ParticlesProps> = ({
 
       drawCircle(circle, true);
 
-      // circle gets out of the canvas
+      // 圆形移出画布
       if (
         circle.x < -circle.size
         || circle.x > canvasSize.current.w + circle.size
         || circle.y < -circle.size
         || circle.y > canvasSize.current.h + circle.size
       ) {
-        // remove the circle from the array
+        // 从数组中移除圆形
         circles.current.splice(i, 1);
-        // create a new circle
+        // 创建新的圆形
         const newCircle = circleParams();
         drawCircle(newCircle);
-        // update the circle position
+        // 更新圆形位置
       }
     });
     window.requestAnimationFrame(animate);

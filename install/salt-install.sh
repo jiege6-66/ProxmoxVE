@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up Salt Repo"
+msg_info "正在设置 Salt Repo"
 setup_deb822_repo \
   "salt" \
   "https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public" \
   "https://packages.broadcom.com/artifactory/saltproject-deb" \
   "stable"
-msg_ok "Setup Salt Repo"
+msg_ok "设置 Salt Repo"
 
-msg_info "Installing Salt"
+msg_info "正在安装 Salt"
 RELEASE=$(get_latest_github_release "saltstack/salt")
 cat <<EOF >/etc/apt/preferences.d/salt-pin-1001
 Package: salt-*
@@ -30,7 +30,7 @@ Pin-Priority: 1001
 EOF
 $STD apt install -y salt-master
 echo "${RELEASE}" >/~.salt
-msg_ok "Installed Salt"
+msg_ok "已安装 Salt"
 
 motd_ssh
 customize

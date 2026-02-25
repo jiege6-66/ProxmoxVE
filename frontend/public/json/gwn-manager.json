@@ -13,7 +13,7 @@
   "website": "https://www.grandstream.com/products/networking-solutions/wi-fi-management/product/gwn-manager",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/gwn-manager.webp",
   "config_path": "/gwn/conf/gwn.conf",
-  "description": "GWN Manager is a free on-premise enterprise-grade, management platform for Grandstream GWN series devices. Typically deployed on a customer’s private network, this flexible, scalable solution offers simplified configuration and management.",
+  "description": "GWN Manager 是一个免费的本地部署企业级管理平台，用于 Grandstream GWN 系列设备。通常部署在客户的专用网络上，这个灵活、可扩展的解决方案提供简化的配置和管理。",
   "install_methods": [
     {
       "type": "default",

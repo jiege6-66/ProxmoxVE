@@ -15,12 +15,12 @@ update_os
 
 fetch_and_deploy_gh_release "alertmanager" "prometheus/alertmanager" "prebuild" "latest" "/usr/local/bin/" "alertmanager*linux-amd64.tar.gz"
 
-msg_info "Configuring Prometheus Alertmanager"
+msg_info "正在配置 Prometheus Alertmanager"
 mkdir -p /etc/alertmanager /var/lib/alertmanager
 mv /usr/local/bin/alertmanager.yml /etc/alertmanager/alertmanager.yml
-msg_ok "Configured Prometheus Alertmanager"
+msg_ok "已配置 Prometheus Alertmanager"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/prometheus-alertmanager.service
 [Unit]
 Description=Prometheus Alertmanager
@@ -41,7 +41,7 @@ ExecReload=/bin/kill -HUP \$MAINPID
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now prometheus-alertmanager
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

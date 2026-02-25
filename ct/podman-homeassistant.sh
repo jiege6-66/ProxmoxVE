@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/homeassistant.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   UPD=$(msg_menu "Home Assistant Update Options" \
@@ -34,12 +34,12 @@ function update_script() {
     "4" "Remove ALL Unused Images")
 
   if [ "$UPD" == "1" ]; then
-    msg_info "Updating ${APP} LXC"
+    msg_info "正在更新 ${APP} LXC"
     $STD apt update
     $STD apt upgrade -y
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
 
-    msg_info "Updating All Containers\n"
+    msg_info "正在更新 All Containers\n"
     CONTAINER_LIST="${1:-$(podman ps -q)}"
     for container in ${CONTAINER_LIST}; do
       CONTAINER_IMAGE="$(podman inspect --format "{{.Config.Image}}" --type container ${container})"
@@ -47,7 +47,7 @@ function update_script() {
       podman pull "${CONTAINER_IMAGE}"
       LATEST_IMAGE="$(podman inspect --format "{{.Id}}" --type image "${CONTAINER_IMAGE}")"
       if [[ "${RUNNING_IMAGE}" != "${LATEST_IMAGE}" ]]; then
-        echo "Updating ${container} image ${CONTAINER_IMAGE}"
+        echo "正在更新 ${container} image ${CONTAINER_IMAGE}"
         systemctl restart homeassistant
       fi
     done
@@ -55,23 +55,23 @@ function update_script() {
     exit
   fi
   if [ "$UPD" == "2" ]; then
-    msg_info "Installing Home Assistant Community Store (HACS)"
+    msg_info "正在安装 Home Assistant Community Store (HACS)"
     $STD apt update
     cd /var/lib/containers/storage/volumes/hass_config/_data
     $STD bash <(curl -fsSL https://get.hacs.xyz)
-    msg_ok "Installed Home Assistant Community Store (HACS)"
+    msg_ok "已安装 Home Assistant Community Store (HACS)"
     echo -e "\n Reboot Home Assistant and clear browser cache then Add HACS integration.\n"
     exit
   fi
   if [ "$UPD" == "3" ]; then
-    msg_info "Installing FileBrowser"
+    msg_info "正在安装 FileBrowser"
     $STD curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
     $STD filebrowser config init -a '0.0.0.0'
     $STD filebrowser config set -a '0.0.0.0'
     $STD filebrowser users add admin helper-scripts.com --perm.admin
-    msg_ok "Installed FileBrowser"
+    msg_ok "已安装 FileBrowser"
 
-    msg_info "Creating Service"
+    msg_info "正在创建 Service"
     cat <<EOF >/etc/systemd/system/filebrowser.service
 [Unit]
 Description=Filebrowser
@@ -86,17 +86,17 @@ ExecStart=/usr/local/bin/filebrowser -r /
 WantedBy=default.target
 EOF
     systemctl enable -q --now filebrowser
-    msg_ok "Created Service"
+    msg_ok "已创建 Service"
 
-    msg_ok "Completed successfully!\n"
+    msg_ok "已成功完成！\n"
     echo -e "FileBrowser should be reachable by going to the following URL.
          ${BL}http://$LOCAL_IP:8080${CL}   admin|helper-scripts.com\n"
     exit
   fi
   if [ "$UPD" == "4" ]; then
-    msg_info "Removing ALL Unused Images"
+    msg_info "正在移除 ALL Unused Images"
     podman image prune -a -f
-    msg_ok "Removed ALL Unused Images"
+    msg_ok "已移除 ALL Unused Images"
     exit
   fi
 }
@@ -105,7 +105,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8123${CL}"

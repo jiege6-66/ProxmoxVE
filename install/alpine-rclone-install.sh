@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apk add --no-cache \
   apache2-utils fuse3
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
-msg_info "Installing rclone"
+msg_info "正在安装 rclone"
 temp_file=$(mktemp)
 mkdir -p /opt/rclone
 RELEASE=$(curl -s https://api.github.com/repos/rclone/rclone/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
@@ -34,9 +34,9 @@ $STD htpasswd -cb -B /opt/login.pwd admin "$RCLONE_PASSWORD"
 } >>~/rclone.creds
 echo "${RELEASE}" >/opt/rclone_version.txt
 rm -f "$temp_file"
-msg_ok "Installed rclone"
+msg_ok "已安装 rclone"
 
-msg_info "Enabling rclone Service"
+msg_info "正在启用 rclone Service"
 cat <<EOF >/etc/init.d/rclone
 #!/sbin/openrc-run
 description="rclone Service"
@@ -52,16 +52,16 @@ depend() {
 EOF
 chmod +x /etc/init.d/rclone
 $STD rc-update add rclone default
-msg_ok "Enabled rclone Service"
+msg_ok "已启用 rclone Service"
 
-msg_info "Starting rclone"
+msg_info "正在启动 rclone"
 $STD service rclone start
-msg_ok "Started rclone"
+msg_ok "已启动 rclone"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 rm -rf "$temp_file"
 $STD apk cache clean
-msg_ok "Cleaned"
+msg_ok "已清理"

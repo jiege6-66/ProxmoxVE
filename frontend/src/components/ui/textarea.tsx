@@ -17,6 +17,6 @@ const Textarea = React.forwardRef<
     />
   );
 });
-Textarea.displayName = "Textarea";
+Textarea.displayName = "文本域";
 
 export { Textarea };

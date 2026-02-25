@@ -13,7 +13,7 @@
   "website": "https://transmissionbt.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/transmission.webp",
   "config_path": "Debian `/etc/transmission-daemon/settings.json` | Alpine `/var/lib/transmission/config/settings.json`",
-  "description": "Transmission is a free, open-source BitTorrent client known for its fast download speeds and ease of use. It supports various platforms such as Windows, Linux, and macOS and has features like web interface, peer exchange, and encrypted transfers.",
+  "description": "Transmission 是一个免费、开源的 BitTorrent 客户端,以其快速的下载速度和易用性而闻名。它支持 Windows、Linux 和 macOS 等各种平台,并具有 Web 界面、对等交换和加密传输等功能。",
   "install_methods": [
     {
       "type": "default",

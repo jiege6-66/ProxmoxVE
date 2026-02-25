@@ -46,7 +46,7 @@ export default function StarOnGithubButton() {
       <span className="absolute right-0 -mt-12 h-32 translate-x-12 rotate-12 bg-white opacity-10 transition-all duration-1000 ease-out group-hover:-translate-x-40" />
       <div className="flex items-center">
         <FaGithub className="size-4" />
-        <span className="ml-1">Star on GitHub</span>
+        <span className="ml-1">在 GitHub 上加星</span>
         {" "}
       </div>
       <div className="ml-2 flex items-center gap-1 text-sm md:flex">

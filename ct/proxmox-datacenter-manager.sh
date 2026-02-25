@@ -24,12 +24,12 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -e /usr/sbin/proxmox-datacenter-manager-admin ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if grep -q 'Debian GNU/Linux 12' /etc/os-release && [ -f /etc/apt/sources.list.d/proxmox-release-bookworm.list ] && [ -f /etc/apt/sources.list.d/pdm-test.list ]; then
-    msg_info "Updating outdated outdated source formats"
+    msg_info "正在更新 outdated outdated source formats"
     echo "deb [signed-by=/usr/share/keyrings/proxmox-archive-keyring.gpg] http://download.proxmox.com/debian/pdm bookworm pdm-test" >/etc/apt/sources.list.d/pdm-test.list
     curl -fsSL https://enterprise.proxmox.com/debian/proxmox-archive-keyring-trixie.gpg -o /usr/share/keyrings/proxmox-archive-keyring.gpg
     rm -f /etc/apt/keyrings/proxmox-release-bookworm.gpg /etc/apt/sources.list.d/proxmox-release-bookworm.list
@@ -39,8 +39,8 @@ function update_script() {
 
   if grep -q 'Debian GNU/Linux 13' /etc/os-release; then
     if [ -f "/etc/apt/sources.list.d/pdm-test.sources" ]; then
-      if ! grep -qx "Enabled: false" "/etc/apt/sources.list.d/pdm-test.sources"; then
-          echo "Enabled: false" >> "/etc/apt/sources.list.d/pdm-test.sources"
+      if ! grep -qx "已启用: false" "/etc/apt/sources.list.d/pdm-test.sources"; then
+          echo "已启用: false" >> "/etc/apt/sources.list.d/pdm-test.sources"
           setup_deb822_repo \
             "pdm" \
             "https://enterprise.proxmox.com/debian/proxmox-archive-keyring-trixie.gpg" \
@@ -51,11 +51,11 @@ function update_script() {
     fi
   fi
 
-  msg_info "Updating $APP LXC"
+  msg_info "正在更新 $APP LXC"
   $STD apt update
   $STD apt -y upgrade
   msg_ok "Updated $APP LXC"
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -63,7 +63,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}:8443${CL}"

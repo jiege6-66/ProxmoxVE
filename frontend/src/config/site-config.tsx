@@ -24,14 +24,14 @@ export const navbarLinks = [
     href: `https://github.com/community-scripts/${basePath}/blob/main/CHANGELOG.md`,
     event: "Changelog",
     icon: <Scroll className="h-4 w-4" />,
-    text: "Changelog",
+    text: "更新日志",
     mobileHidden: true,
   },
   {
     href: `https://github.com/community-scripts/${basePath}/discussions`,
     event: "Discussions",
     icon: <MessagesSquare className="h-4 w-4" />,
-    text: "Discussions",
+    text: "讨论",
     mobileHidden: true,
   },
 ].filter(Boolean) as {

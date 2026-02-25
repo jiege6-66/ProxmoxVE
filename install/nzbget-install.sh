@@ -14,13 +14,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   par2 \
   unrar-free
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing NZBGet"
+msg_info "正在安装 NZBGet"
 setup_deb822_repo \
   "nzbgetcom" \
   "https://nzbgetcom.github.io/nzbgetcom.asc" \
@@ -30,7 +30,7 @@ $STD apt install -y nzbget
 sed -i "s|UnrarCmd=unrar|UnrarCmd=unrar-free|g" /var/lib/nzbget/nzbget.conf
 sed -i "s|SevenZipCmd=7zz|SevenZipCmd=7z|g" /var/lib/nzbget/nzbget.conf
 systemctl restart nzbget
-msg_ok "Installed NZBGet"
+msg_ok "已安装 NZBGet"
 
 motd_ssh
 customize

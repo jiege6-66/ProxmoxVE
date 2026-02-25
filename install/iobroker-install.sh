@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 msg_warn "WARNING: This script will run an external installer from a third-party source (https://iobroker.net/)."
 msg_warn "The following code is NOT maintained or audited by our repository."
@@ -30,9 +30,9 @@ fi
 
 NODE_VERSION="22" setup_nodejs
 
-msg_info "Installing ioBroker (Patience)"
+msg_info "正在安装 ioBroker (Patience)"
 $STD bash <(curl -fsSL https://iobroker.net/install.sh)
-msg_ok "Installed ioBroker"
+msg_ok "已安装 ioBroker"
 
 motd_ssh
 customize

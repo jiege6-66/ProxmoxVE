@@ -13,7 +13,7 @@
   "website": "https://github.com/juanfont/headscale",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/headscale.webp",
   "config_path": "/etc/headscale/config.yaml",
-  "description": "An open source, self-hosted implementation of the Tailscale control server",
+  "description": "一个开源的、自托管的 Tailscale 控制服务器实现",
   "install_methods": [
     {
       "type": "default",

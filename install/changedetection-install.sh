@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt-get install -y \
   git \
   build-essential \
@@ -41,24 +41,24 @@ $STD apt-get install -y \
   xdg-utils \
   xvfb \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setup Python3"
+msg_info "设置 Python3"
 $STD apt-get install -y \
   python3 \
   python3-dev \
   python3-pip
 rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED
-msg_ok "Setup Python3"
+msg_ok "设置 Python3"
 
 NODE_VERSION="24" setup_nodejs
 
-msg_info "Installing Change Detection"
+msg_info "正在安装 Change Detection"
 mkdir /opt/changedetection
 $STD pip3 install changedetection.io
-msg_ok "Installed Change Detection"
+msg_ok "已安装 Change Detection"
 
-msg_info "Installing Browserless & Playwright"
+msg_info "正在安装 Browserless & Playwright"
 mkdir /opt/browserless
 $STD python3 -m pip install playwright
 $STD git clone https://github.com/browserless/chrome /opt/browserless
@@ -70,9 +70,9 @@ $STD /opt/browserless/node_modules/playwright-core/cli.js install --force msedge
 $STD npm run build --prefix /opt/browserless
 $STD npm run build:function --prefix /opt/browserless
 $STD npm prune production --prefix /opt/browserless
-msg_ok "Installed Browserless & Playwright"
+msg_ok "已安装 Browserless & Playwright"
 
-msg_info "Installing Font Packages"
+msg_info "正在安装 Font Packages"
 $STD apt-get install -y \
   fontconfig \
   libfontconfig1 \
@@ -86,9 +86,9 @@ $STD apt-get install -y \
   fonts-roboto \
   fonts-thai-tlwg \
   fonts-wqy-zenhei
-msg_ok "Installed Font Packages"
+msg_ok "已安装 Font Packages"
 
-msg_info "Installing X11 Packages"
+msg_info "正在安装 X11 Packages"
 $STD apt-get install -y \
   libx11-6 \
   libx11-xcb1 \
@@ -103,9 +103,9 @@ $STD apt-get install -y \
   libxrender1 \
   libxss1 \
   libxtst6
-msg_ok "Installed X11 Packages"
+msg_ok "已安装 X11 Packages"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/changedetection.service
 [Unit]
 Description=Change Detection
@@ -137,7 +137,7 @@ EOF
 
 systemctl enable -q --now browserless
 systemctl enable -q --now changedetection
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

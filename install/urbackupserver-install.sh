@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y debconf-utils
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_deb822_repo \
   "urbackup" \
@@ -24,11 +24,11 @@ setup_deb822_repo \
   "./" \
   ""
 
-msg_info "Setting up UrBackup Server"
+msg_info "正在设置 UrBackup Server"
 mkdir -p /opt/urbackup/backups
 echo "urbackup-server urbackup/backuppath string /opt/urbackup/backups" | debconf-set-selections
 $STD apt install -y urbackup-server
-msg_ok "Setup UrBackup Server"
+msg_ok "设置 UrBackup Server"
 
 motd_ssh
 customize

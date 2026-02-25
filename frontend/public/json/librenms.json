@@ -13,7 +13,7 @@
   "website": "https://librenms.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/librenms.webp",
   "config_path": "/opt/librenms/config.php and /opt/librenms/.env",
-  "description": "LibreNMS is an open-source, community-driven network monitoring system that provides automatic discovery, alerting, and performance tracking for network devices. It supports a wide range of hardware and integrates with various notification and logging platforms.",
+  "description": "LibreNMS 是一个开源的、社区驱动的网络监控系统,为网络设备提供自动发现、警报和性能跟踪。它支持各种硬件,并与各种通知和日志平台集成。",
   "install_methods": [
     {
       "type": "default",

@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y sqlite3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Readarr"
+msg_info "正在安装 Readarr"
 mkdir -p /var/lib/readarr/
 chmod 775 /var/lib/readarr/
 cd /var/lib/readarr/
@@ -26,9 +26,9 @@ $STD tar -xvzf readarr.tar.gz
 mv Readarr /opt
 chmod 775 /opt/Readarr
 rm -rf Readarr.develop.*.tar.gz
-msg_ok "Installed Readarr"
+msg_ok "已安装 Readarr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/readarr.service
 [Unit]
 Description=Readarr Daemon
@@ -45,7 +45,7 @@ WantedBy=multi-user.target
 EOF
 systemctl -q daemon-reload
 systemctl enable --now -q readarr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

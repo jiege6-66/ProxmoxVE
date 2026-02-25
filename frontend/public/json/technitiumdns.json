@@ -13,7 +13,7 @@
   "website": "https://technitium.com/dns/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/technitium.webp",
   "config_path": "",
-  "description": "Technitium DNS Server is a free, open-source and privacy-focused DNS (Domain Name System) server software for Windows, Linux, and macOS. It is designed to provide a secure, fast, and reliable DNS resolution service to its users. The server can be configured through a web-based interface, and it supports a variety of advanced features, such as automatic IP updates, IPv6 support, caching of DNS queries, and the ability to block unwanted domains. It is also designed to be highly secure, with built-in measures to prevent common types of DNS attacks and data leaks. Technitium DNS Server is aimed at providing an alternative to traditional DNS servers, which often have privacy and security concerns associated with them, and it is ideal for users who are looking for a more secure and private DNS resolution service.",
+  "description": "Technitium DNS Server 是一个免费、开源且注重隐私的 DNS(域名系统)服务器软件,适用于 Windows、Linux 和 macOS。它旨在为用户提供安全、快速和可靠的 DNS 解析服务。该服务器可以通过基于 Web 的界面进行配置,并支持各种高级功能,例如自动 IP 更新、IPv6 支持、DNS 查询缓存以及阻止不需要的域名的能力。它还设计为高度安全,内置措施可防止常见类型的 DNS 攻击和数据泄露。Technitium DNS Server 旨在提供传统 DNS 服务器的替代方案,传统服务器通常存在隐私和安全问题,它非常适合寻求更安全和私密的 DNS 解析服务的用户。",
   "install_methods": [
     {
       "type": "default",

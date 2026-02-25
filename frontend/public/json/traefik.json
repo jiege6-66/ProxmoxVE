@@ -13,7 +13,7 @@
   "website": "https://traefik.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/traefik.webp",
   "config_path": "/etc/traefik/traefik.yaml",
-  "description": "Traefik (pronounced traffic) is an open-source edge router and reverse proxy that simplifies managing microservices. It automatically discovers services, dynamically updates routing rules without downtime, provides load balancing, handles SSL termination, and supports various middleware for added functionality. Ideal for cloud-native environments, it integrates seamlessly with platforms like Docker and Kubernetes.",
+  "description": "Traefik(发音为 traffic)是一个开源边缘路由器和反向代理,简化了微服务的管理。它自动发现服务,动态更新路由规则而无需停机,提供负载均衡,处理 SSL 终止,并支持各种中间件以增加功能。非常适合云原生环境,与 Docker 和 Kubernetes 等平台无缝集成。",
   "install_methods": [
     {
       "type": "default",

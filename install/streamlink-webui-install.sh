@@ -20,7 +20,7 @@ setup_nodejs
 setup_uv
 fetch_and_deploy_gh_release "streamlink-webui" "CrazyWolf13/streamlink-webui" "tarball"
 
-msg_info "Setup ${APPLICATION}"
+msg_info "设置 ${APPLICATION}"
 mkdir -p "/opt/${APPLICATION}-download"
 $STD uv venv --clear /opt/"${APPLICATION}"/backend/src/.venv
 source /opt/"${APPLICATION}"/backend/src/.venv/bin/activate
@@ -29,9 +29,9 @@ cd /opt/"${APPLICATION}"/frontend/src
 $STD yarn install
 $STD yarn build
 chmod +x /opt/"${APPLICATION}"/start.sh
-msg_ok "Setup ${APPLICATION}"
+msg_ok "设置 ${APPLICATION}"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/opt/"${APPLICATION}".env
 CLIENT_ID='your_client_id'
 CLIENT_SECRET='your_client_secret'
@@ -55,7 +55,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now "${APPLICATION}"
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

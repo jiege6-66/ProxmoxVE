@@ -13,7 +13,7 @@
   "website": "https://github.com/babybuddy/babybuddy",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/baby-buddy.webp",
   "config_path": "/opt/babybuddy/babybuddy/settings/production.py",
-  "description": "Baby Buddy is an open-source web application designed to assist caregivers in tracking various aspects of a baby's daily routine, including sleep, feedings, diaper changes, tummy time, and more. By recording this data, caregivers can better understand and anticipate their baby's needs, reducing guesswork in daily care. The application offers a user-friendly dashboard for data entry and visualization, supports multiple users, and provides features like timers and reminders. Additionally, Baby Buddy can be integrated with platforms like Home Assistant and Grafana for enhanced functionality.",
+  "description": "Baby Buddy 是一个开源 Web 应用程序,旨在帮助看护者跟踪婴儿日常生活的各个方面,包括睡眠、喂养、换尿布、趴卧时间等。通过记录这些数据,看护者可以更好地了解和预测婴儿的需求,减少日常护理中的猜测。该应用程序提供用户友好的仪表板用于数据输入和可视化,支持多用户,并提供计时器和提醒等功能。此外,Baby Buddy 可以与 Home Assistant 和 Grafana 等平台集成以增强功能。",
   "install_methods": [
     {
       "type": "default",

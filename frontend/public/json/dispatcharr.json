@@ -13,7 +13,7 @@
   "website": "https://github.com/Dispatcharr/Dispatcharr",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dispatcharr.webp",
   "config_path": "/opt/dispatcharr/.env",
-  "description": "Dispatcharr is an open-source powerhouse for managing IPTV streams and EPG data with elegance and control. Born from necessity and built with passion, it started as a personal project by OkinawaBoss and evolved with contributions from legends like dekzter, SergeantPanda and Bucatini.",
+  "description": "Dispatcharr 是一个开源强大工具，用于优雅且可控地管理 IPTV 流和 EPG 数据。它源于需求并充满热情地构建，最初是 OkinawaBoss 的个人项目，后来在 dekzter、SergeantPanda 和 Bucatini 等传奇人物的贡献下不断发展。",
   "install_methods": [
     {
       "type": "default",

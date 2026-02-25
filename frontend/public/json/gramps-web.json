@@ -13,7 +13,7 @@
   "website": "https://www.grampsweb.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/gramps.webp",
   "config_path": "/opt/gramps-web/config/config.cfg",
-  "description": "Gramps Web is a collaborative genealogy platform for browsing, editing and sharing family trees through a modern web interface.",
+  "description": "Gramps Web 是一个协作式家谱平台，用于通过现代 Web 界面浏览、编辑和分享家族树。",
   "install_methods": [
     {
       "type": "default",

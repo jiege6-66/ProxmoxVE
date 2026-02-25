@@ -25,30 +25,30 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d "/opt/sonobarr" ]]; then
-    msg_error "No sonobarr Installation Found!"
+    msg_error "No sonobarr 安装已找到！"
     exit
   fi
 
   PYTHON_VERSION="3.12" setup_uv
 
   if check_for_gh_release "sonobarr" "Dodelidoo-Labs/sonobarr"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop sonobarr
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "sonobarr" "Dodelidoo-Labs/sonobarr" "tarball"
 
-    msg_info "Updating sonobarr"
+    msg_info "正在更新 sonobarr"
     $STD uv venv -c /opt/sonobarr/venv
     $STD source /opt/sonobarr/venv/bin/activate
     $STD uv pip install --no-cache-dir -r /opt/sonobarr/requirements.txt
     sed -i "/release_version/s/=.*/=$(cat ~/.sonobarr)/" /etc/sonobarr/.env
     msg_ok "Updated sonobarr"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start sonobarr
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -57,7 +57,7 @@ start
 build_container
 description
 
-msg_ok "Completed Successfully!\n"
-echo -e "${CREATING}${GN}sonobarr setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}sonobarr 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5000${CL}"

@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up Notifiarr"
+msg_info "正在设置 Notifiarr"
 $STD groupadd notifiarr
 $STD useradd -g notifiarr notifiarr
 setup_deb822_repo \
@@ -22,7 +22,7 @@ setup_deb822_repo \
   "https://packagecloud.io/golift/pkgs/ubuntu" \
   "focal"
 $STD apt install -y notifiarr
-msg_ok "Setup Notifiarr"
+msg_ok "设置 Notifiarr"
 
 motd_ssh
 customize

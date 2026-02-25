@@ -16,7 +16,7 @@ update_os
 fetch_and_deploy_gh_release "sonobarr" "Dodelidoo-Labs/sonobarr" "tarball"
 PYTHON_VERSION="3.12" setup_uv
 
-msg_info "Setting up sonobarr"
+msg_info "正在设置 sonobarr"
 $STD uv venv -c /opt/sonobarr/venv
 source /opt/sonobarr/venv/bin/activate
 $STD uv pip install --no-cache-dir -r /opt/sonobarr/requirements.txt
@@ -28,7 +28,7 @@ echo "release_version=$(cat ~/.sonobarr)" >>/etc/sonobarr/.env
 echo "sonobarr_config_dir=/etc/sonobarr" >>/etc/sonobarr.env
 msg_ok "Set up sonobarr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/sonobarr.service
 [Unit]
 Description=sonobarr Service
@@ -45,7 +45,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now sonobarr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

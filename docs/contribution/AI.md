@@ -1,34 +1,34 @@
-# 🤖 AI Contribution Guidelines for ProxmoxVE
+# 🤖 ProxmoxVE AI 贡献指南
 
-> **This documentation is intended for all AI assistants (GitHub Copilot, Claude, ChatGPT, etc.) contributing to this project.**
+> **本文档面向所有为本项目做出贡献的 AI 助手（GitHub Copilot、Claude、ChatGPT 等）。**
 
-## 🎯 Core Principles
+## 🎯 核心原则
 
-### 1. **Maximum Use of `tools.func` Functions**
+### 1. **最大化使用 `tools.func` 函数**
 
-We have an extensive library of helper functions. **NEVER** implement your own solutions when a function already exists!
+我们有一个广泛的辅助函数库。当函数已经存在时，**绝不**自己实现解决方案！
 
-### 2. **No Pointless Variables**
+### 2. **不要创建无意义的变量**
 
-Only create variables when they:
+只在以下情况创建变量：
 
-- Are used multiple times
-- Improve readability
-- Are intended for configuration
+- 多次使用
+- 提高可读性
+- 用于配置
 
-### 3. **Consistent Script Structure**
+### 3. **一致的脚本结构**
 
-All scripts follow an identical structure. Deviations are not acceptable.
+所有脚本遵循相同的结构。不接受偏离。
 
-### 4. **Bare-Metal Installation**
+### 4. **裸机安装**
 
-We do **NOT use Docker** for our installation scripts. All applications are installed directly on the system.
+我们的安装脚本**不使用 Docker**。所有应用程序直接安装在系统上。
 
 ---
 
-## 📁 Script Types and Their Structure
+## 📁 脚本类型及其结构
 
-### CT Script (`ct/AppName.sh`)
+### CT 脚本 (`ct/AppName.sh`)
 
 ```bash
 #!/usr/bin/env bash
@@ -73,7 +73,7 @@ function update_script() {
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo" "tarball" "latest" "/opt/appname"
 
-    # Build steps...
+    # 构建步骤...
 
     msg_info "Restoring Data"
     cp -r /opt/appname_data_backup/. /opt/appname/data
@@ -98,7 +98,7 @@ echo -e "${INFO}${YW} Access it using the following URL:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:PORT${CL}"
 ```
 
-### Install Script (`install/AppName-install.sh`)
+### 安装脚本 (`install/AppName-install.sh`)
 
 ```bash
 #!/usr/bin/env bash
@@ -122,19 +122,19 @@ $STD apt-get install -y \
   dependency2
 msg_ok "Installed Dependencies"
 
-# Runtime Setup (ALWAYS use our functions!)
+# 运行时设置（始终使用我们的函数！）
 NODE_VERSION="22" setup_nodejs
-# or
+# 或
 PG_VERSION="16" setup_postgresql
-# or
+# 或
 setup_uv
-# etc.
+# 等等
 
 fetch_and_deploy_gh_release "appname" "owner/repo" "tarball" "latest" "/opt/appname"
 
 msg_info "Setting up Application"
 cd /opt/appname
-# Build/Setup Schritte...
+# 构建/设置步骤...
 msg_ok "Set up Application"
 
 msg_info "Creating Service"
@@ -164,40 +164,40 @@ cleanup_lxc
 
 ---
 
-## 🔧 Available Helper Functions
+## 🔧 可用的辅助函数
 
-### Release Management
+### 发布管理
 
-| Function                      | Description                         | Example                                                       |
-| ----------------------------- | ----------------------------------- | ------------------------------------------------------------- |
-| `fetch_and_deploy_gh_release` | Fetches and installs GitHub Release | `fetch_and_deploy_gh_release "app" "owner/repo"`              |
-| `check_for_gh_release`        | Checks for new version              | `if check_for_gh_release "app" "YourUsername/YourRepo"; then` |
+| 函数                          | 描述                  | 示例                                                          |
+| ----------------------------- | --------------------- | ------------------------------------------------------------- |
+| `fetch_and_deploy_gh_release` | 获取并安装 GitHub 发布 | `fetch_and_deploy_gh_release "app" "owner/repo"`              |
+| `check_for_gh_release`        | 检查新版本            | `if check_for_gh_release "app" "YourUsername/YourRepo"; then` |
 
-**Modes for `fetch_and_deploy_gh_release`:**
+**`fetch_and_deploy_gh_release` 的模式：**
 
 ```bash
-# Tarball/Source (Standard)
+# Tarball/源码（标准）
 fetch_and_deploy_gh_release "appname" "owner/repo"
 
-# Binary (.deb)
+# 二进制文件（.deb）
 fetch_and_deploy_gh_release "appname" "owner/repo" "binary"
 
-# Prebuilt Archive
+# 预构建归档
 fetch_and_deploy_gh_release "appname" "owner/repo" "prebuild" "latest" "/opt/appname" "filename.tar.gz"
 
-# Single Binary
+# 单个二进制文件
 fetch_and_deploy_gh_release "appname" "owner/repo" "singlefile" "latest" "/opt/appname" "binary-linux-amd64"
 ```
 
-**Clean Install Flag:**
+**清洁安装标志：**
 
 ```bash
 CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo"
 ```
 
-### Runtime/Language Setup
+### 运行时/语言设置
 
-| Function       | Variable(s)                   | Example                                              |
+| 函数           | 变量                          | 示例                                                 |
 | -------------- | ----------------------------- | ---------------------------------------------------- |
 | `setup_nodejs` | `NODE_VERSION`, `NODE_MODULE` | `NODE_VERSION="22" setup_nodejs`                     |
 | `setup_uv`     | `PYTHON_VERSION`              | `PYTHON_VERSION="3.12" setup_uv`                     |
@@ -207,9 +207,9 @@ CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo"
 | `setup_java`   | `JAVA_VERSION`                | `JAVA_VERSION="21" setup_java`                       |
 | `setup_php`    | `PHP_VERSION`, `PHP_MODULES`  | `PHP_VERSION="8.3" PHP_MODULES="redis,gd" setup_php` |
 
-### Database Setup
+### 数据库设置
 
-| Function              | Variable(s)                          | Example                                                     |
+| 函数                  | 变量                                 | 示例                                                        |
 | --------------------- | ------------------------------------ | ----------------------------------------------------------- |
 | `setup_postgresql`    | `PG_VERSION`, `PG_MODULES`           | `PG_VERSION="16" setup_postgresql`                          |
 | `setup_postgresql_db` | `PG_DB_NAME`, `PG_DB_USER`           | `PG_DB_NAME="mydb" PG_DB_USER="myuser" setup_postgresql_db` |
@@ -218,123 +218,123 @@ CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo"
 | `setup_mongodb`       | `MONGO_VERSION`                      | `setup_mongodb`                                             |
 | `setup_clickhouse`    | -                                    | `setup_clickhouse`                                          |
 
-### Tools & Utilities
+### 工具和实用程序
 
-| Function            | Description                        |
-| ------------------- | ---------------------------------- |
-| `setup_adminer`     | Installs Adminer for DB management |
-| `setup_composer`    | Install PHP Composer               |
-| `setup_ffmpeg`      | Install FFmpeg                     |
-| `setup_imagemagick` | Install ImageMagick                |
-| `setup_gs`          | Install Ghostscript                |
-| `setup_hwaccel`     | Configure hardware acceleration    |
+| 函数                | 描述                       |
+| ------------------- | -------------------------- |
+| `setup_adminer`     | 安装 Adminer 用于数据库管理 |
+| `setup_composer`    | 安装 PHP Composer          |
+| `setup_ffmpeg`      | 安装 FFmpeg                |
+| `setup_imagemagick` | 安装 ImageMagick           |
+| `setup_gs`          | 安装 Ghostscript           |
+| `setup_hwaccel`     | 配置硬件加速               |
 
-### Helper Utilities
+### 辅助工具
 
-| Function                      | Description                  | Example                                   |
-| ----------------------------- | ---------------------------- | ----------------------------------------- |
-| `import_local_ip`             | Sets `$LOCAL_IP` variable    | `import_local_ip`                         |
-| `ensure_dependencies`         | Checks/installs dependencies | `ensure_dependencies curl jq`             |
-| `install_packages_with_retry` | APT install with retry       | `install_packages_with_retry nginx redis` |
+| 函数                          | 描述                 | 示例                                      |
+| ----------------------------- | -------------------- | ----------------------------------------- |
+| `import_local_ip`             | 设置 `$LOCAL_IP` 变量 | `import_local_ip`                         |
+| `ensure_dependencies`         | 检查/安装依赖        | `ensure_dependencies curl jq`             |
+| `install_packages_with_retry` | 带重试的 APT 安装    | `install_packages_with_retry nginx redis` |
 
 ---
 
-## ❌ Anti-Patterns (NEVER use!)
+## ❌ 反模式（绝不使用！）
 
-### 1. Pointless Variables
+### 1. 无意义的变量
 
 ```bash
-# ❌ WRONG - unnecessary variables
+# ❌ 错误 - 不必要的变量
 APP_NAME="myapp"
 APP_DIR="/opt/${APP_NAME}"
 APP_USER="root"
 APP_PORT="3000"
 cd $APP_DIR
 
-# ✅ CORRECT - use directly
+# ✅ 正确 - 直接使用
 cd /opt/myapp
 ```
 
-### 2. Custom Download Logic
+### 2. 自定义下载逻辑
 
 ```bash
-# ❌ WRONG - custom wget/curl logic
+# ❌ 错误 - 自定义 wget/curl 逻辑
 RELEASE=$(curl -s https://api.github.com/repos/YourUsername/YourRepo/releases/latest | jq -r '.tag_name')
 wget https://github.com/YourUsername/YourRepo/archive/${RELEASE}.tar.gz
 tar -xzf ${RELEASE}.tar.gz
 mv repo-${RELEASE} /opt/myapp
 
-# ✅ CORRECT - use our function
+# ✅ 正确 - 使用我们的函数
 fetch_and_deploy_gh_release "myapp" "YourUsername/YourRepo" "tarball" "latest" "/opt/myapp"
 ```
 
-### 3. Custom Version-Check Logic
+### 3. 自定义版本检查逻辑
 
 ```bash
-# ❌ WRONG - custom version check
+# ❌ 错误 - 自定义版本检查
 CURRENT=$(cat /opt/myapp/version.txt)
 LATEST=$(curl -s https://api.github.com/repos/YourUsername/YourRepo/releases/latest | jq -r '.tag_name')
 if [[ "$CURRENT" != "$LATEST" ]]; then
-  # update...
+  # 更新...
 fi
 
-# ✅ CORRECT - use our function
+# ✅ 正确 - 使用我们的函数
 if check_for_gh_release "myapp" "YourUsername/YourRepo"; then
-  # update...
+  # 更新...
 fi
 ```
 
-### 4. Docker-based Installation
+### 4. 基于 Docker 的安装
 
 ```bash
-# ❌ WRONG - using Docker
+# ❌ 错误 - 使用 Docker
 docker pull myapp/myapp:latest
 docker run -d --name myapp myapp/myapp:latest
 
-# ✅ CORRECT - Bare-Metal Installation
+# ✅ 正确 - 裸机安装
 fetch_and_deploy_gh_release "myapp" "YourUsername/YourRepo"
 npm install && npm run build
 ```
 
-### 5. Custom Runtime Installation
+### 5. 自定义运行时安装
 
 ```bash
-# ❌ WRONG - custom Node.js installation
+# ❌ 错误 - 自定义 Node.js 安装
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 apt install -y nodejs
 
-# ✅ CORRECT - use our function
+# ✅ 正确 - 使用我们的函数
 NODE_VERSION="22" setup_nodejs
 ```
 
-### 6. Redundant echo Statements
+### 6. 冗余的 echo 语句
 
 ```bash
-# ❌ WRONG - custom logging messages
+# ❌ 错误 - 自定义日志消息
 echo "Installing dependencies..."
 apt install -y curl
 echo "Done!"
 
-# ✅ CORRECT - use msg_info/msg_ok
+# ✅ 正确 - 使用 msg_info/msg_ok
 msg_info "Installing Dependencies"
 $STD apt install -y curl
 msg_ok "Installed Dependencies"
 ```
 
-### 7. Missing $STD Usage
+### 7. 缺少 $STD 使用
 
 ```bash
-# ❌ WRONG - apt without $STD
+# ❌ 错误 - apt 不带 $STD
 apt install -y nginx
 
-# ✅ CORRECT - with $STD for silent output
+# ✅ 正确 - 使用 $STD 实现静默输出
 $STD apt install -y nginx
 ```
 
-### 8. Wrapping `tools.func` Functions in msg Blocks
+### 8. 在 msg 块中包装 `tools.func` 函数
 
 ```bash
-# ❌ WRONG - tools.func functions have their own msg_info/msg_ok!
+# ❌ 错误 - tools.func 函数有自己的 msg_info/msg_ok！
 msg_info "Installing Node.js"
 NODE_VERSION="22" setup_nodejs
 msg_ok "Installed Node.js"
@@ -343,13 +343,13 @@ msg_info "Updating Application"
 CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo" "tarball" "latest" "/opt/appname"
 msg_ok "Updated Application"
 
-# ✅ CORRECT - call directly without msg wrapper
+# ✅ 正确 - 直接调用，不使用 msg 包装
 NODE_VERSION="22" setup_nodejs
 
 CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo" "tarball" "latest" "/opt/appname"
 ```
 
-**Functions with built-in messages (NEVER wrap in msg blocks):**
+**带有内置消息的函数（绝不在 msg 块中包装）：**
 
 - `fetch_and_deploy_gh_release`
 - `check_for_gh_release`
@@ -371,30 +371,30 @@ CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo" "tarball" "la
 - `setup_adminer`
 - `setup_hwaccel`
 
-### 9. Creating Unnecessary System Users
+### 9. 创建不必要的系统用户
 
 ```bash
-# ❌ WRONG - LXC containers run as root, no separate user needed
+# ❌ 错误 - LXC 容器以 root 运行，不需要单独的用户
 useradd -m -s /usr/bin/bash appuser
 chown -R appuser:appuser /opt/appname
 sudo -u appuser npm install
 
-# ✅ CORRECT - run directly as root
+# ✅ 正确 - 直接以 root 运行
 cd /opt/appname
 $STD npm install
 ```
 
-### 10. Using `export` in .env Files
+### 10. 在 .env 文件中使用 `export`
 
 ```bash
-# ❌ WRONG - export is unnecessary in .env files
+# ❌ 错误 - export 在 .env 文件中是不必要的
 cat <<EOF >/opt/appname/.env
 export DATABASE_URL=postgres://...
 export SECRET_KEY=abc123
 export NODE_ENV=production
 EOF
 
-# ✅ CORRECT - simple KEY=VALUE format (files are sourced with set -a)
+# ✅ 正确 - 简单的 KEY=VALUE 格式（文件使用 set -a 加载）
 cat <<EOF >/opt/appname/.env
 DATABASE_URL=postgres://...
 SECRET_KEY=abc123
@@ -402,10 +402,10 @@ NODE_ENV=production
 EOF
 ```
 
-### 11. Using External Shell Scripts
+### 11. 使用外部 Shell 脚本
 
 ```bash
-# ❌ WRONG - external script that gets executed
+# ❌ 错误 - 执行外部脚本
 cat <<'EOF' >/opt/appname/install_script.sh
 #!/bin/bash
 cd /opt/appname
@@ -416,47 +416,47 @@ chmod +x /opt/appname/install_script.sh
 $STD bash /opt/appname/install_script.sh
 rm -f /opt/appname/install_script.sh
 
-# ✅ CORRECT - run commands directly
+# ✅ 正确 - 直接运行命令
 cd /opt/appname
 $STD npm install
 $STD npm run build
 ```
 
-### 12. Using `sudo` in LXC Containers
+### 12. 在 LXC 容器中使用 `sudo`
 
 ```bash
-# ❌ WRONG - sudo is unnecessary in LXC (already root)
+# ❌ 错误 - sudo 在 LXC 中是不必要的（已经是 root）
 sudo -u postgres psql -c "CREATE DATABASE mydb;"
 sudo -u appuser npm install
 
-# ✅ CORRECT - use functions or run directly as root
+# ✅ 正确 - 使用函数或直接以 root 运行
 PG_DB_NAME="mydb" PG_DB_USER="myuser" setup_postgresql_db
 
 cd /opt/appname
 $STD npm install
 ```
 
-### 13. Unnecessary `systemctl daemon-reload`
+### 13. 不必要的 `systemctl daemon-reload`
 
 ```bash
-# ❌ WRONG - daemon-reload is only needed when MODIFYING existing services
+# ❌ 错误 - daemon-reload 仅在修改现有服务时需要
 cat <<EOF >/etc/systemd/system/appname.service
-# ... service config ...
+# ... 服务配置 ...
 EOF
-systemctl daemon-reload  # Unnecessary for new services!
+systemctl daemon-reload  # 新服务不需要！
 systemctl enable -q --now appname
 
-# ✅ CORRECT - new services don't need daemon-reload
+# ✅ 正确 - 新服务不需要 daemon-reload
 cat <<EOF >/etc/systemd/system/appname.service
-# ... service config ...
+# ... 服务配置 ...
 EOF
 systemctl enable -q --now appname
 ```
 
-### 14. Creating Custom Credentials Files
+### 14. 创建自定义凭据文件
 
 ```bash
-# ❌ WRONG - custom credentials file is not part of the standard template
+# ❌ 错误 - 自定义凭据文件不是标准模板的一部分
 msg_info "Saving Credentials"
 cat <<EOF >~/appname.creds
 Database User: ${DB_USER}
@@ -464,14 +464,14 @@ Database Pass: ${DB_PASS}
 EOF
 msg_ok "Saved Credentials"
 
-# ✅ CORRECT - credentials are stored in .env or shown in final message only
-# If you use setup_postgresql_db / setup_mariadb_db, a standard ~/[appname].creds is created automatically
+# ✅ 正确 - 凭据存储在 .env 中或仅在最终消息中显示
+# 如果使用 setup_postgresql_db / setup_mariadb_db，会自动创建标准的 ~/[appname].creds
 ```
 
-### 15. Wrong Footer Pattern
+### 15. 错误的页脚模式
 
 ```bash
-# ❌ WRONG - old cleanup pattern with msg blocks
+# ❌ 错误 - 旧的清理模式带 msg 块
 motd_ssh
 customize
 
@@ -480,31 +480,31 @@ $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
 
-# ✅ CORRECT - use cleanup_lxc function
+# ✅ 正确 - 使用 cleanup_lxc 函数
 motd_ssh
 customize
 cleanup_lxc
 ```
 
-### 16. Manual Database Creation Instead of Functions
+### 16. 手动创建数据库而不是使用函数
 
 ```bash
-# ❌ WRONG - manual database creation
+# ❌ 错误 - 手动创建数据库
 DB_USER="myuser"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)
 $STD sudo -u postgres psql -c "CREATE ROLE $DB_USER WITH LOGIN PASSWORD '$DB_PASS';"
 $STD sudo -u postgres psql -c "CREATE DATABASE mydb WITH OWNER $DB_USER;"
 $STD sudo -u postgres psql -d mydb -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 
-# ✅ CORRECT - use setup_postgresql_db function
-# This sets PG_DB_USER, PG_DB_PASS, PG_DB_NAME automatically
+# ✅ 正确 - 使用 setup_postgresql_db 函数
+# 这会自动设置 PG_DB_USER、PG_DB_PASS、PG_DB_NAME
 PG_DB_NAME="mydb" PG_DB_USER="myuser" PG_DB_EXTENSIONS="postgis" setup_postgresql_db
 ```
 
-### 17. Writing Files Without Heredocs
+### 17. 不使用 Heredoc 写入文件
 
 ```bash
-# ❌ WRONG - echo / printf / tee
+# ❌ 错误 - echo / printf / tee
 echo "# Config" > /opt/app/config.yml
 echo "port: 3000" >> /opt/app/config.yml
 
@@ -513,7 +513,7 @@ cat config.yml | tee /opt/app/config.yml
 ```
 
 ```bash
-# ✅ CORRECT - always use a single heredoc
+# ✅ 正确 - 始终使用单个 heredoc
 cat <<EOF >/opt/app/config.yml
 # Config
 port: 3000
@@ -522,12 +522,12 @@ EOF
 
 ---
 
-## 📝 Important Rules
+## 📝 重要规则
 
-### Variable Declarations (CT Script)
+### 变量声明（CT 脚本）
 
 ```bash
-# Standard declarations (ALWAYS present)
+# 标准声明（始终存在）
 APP="AppName"
 var_tags="${var_tags:-tag1;tag2}"
 var_cpu="${var_cpu:-2}"
@@ -538,7 +538,7 @@ var_version="${var_version:-13}"
 var_unprivileged="${var_unprivileged:-1}"
 ```
 
-### Update-Script Pattern
+### 更新脚本模式
 
 ```bash
 function update_script() {
@@ -546,49 +546,49 @@ function update_script() {
   check_container_storage
   check_container_resources
 
-  # 1. Check if installation exists
+  # 1. 检查安装是否存在
   if [[ ! -d /opt/appname ]]; then
     msg_error "No ${APP} Installation Found!"
     exit
   fi
 
-  # 2. Check for update
+  # 2. 检查更新
   if check_for_gh_release "appname" "YourUsername/YourRepo"; then
-    # 3. Stop service
+    # 3. 停止服务
     msg_info "Stopping Service"
     systemctl stop appname
     msg_ok "Stopped Service"
 
-    # 4. Backup data (if present)
+    # 4. 备份数据（如果存在）
     msg_info "Backing up Data"
     cp -r /opt/appname/data /opt/appname_data_backup
     msg_ok "Backed up Data"
 
-    # 5. Perform clean install
+    # 5. 执行清洁安装
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "appname" "owner/repo" "tarball" "latest" "/opt/appname"
 
-    # 6. Rebuild (if needed)
+    # 6. 重新构建（如果需要）
     cd /opt/appname
     $STD npm install
     $STD npm run build
 
-    # 7. Restore data
+    # 7. 恢复数据
     msg_info "Restoring Data"
     cp -r /opt/appname_data_backup/. /opt/appname/data
     rm -rf /opt/appname_data_backup
     msg_ok "Restored Data"
 
-    # 8. Start service
+    # 8. 启动服务
     msg_info "Starting Service"
     systemctl start appname
     msg_ok "Started Service"
     msg_ok "Updated successfully!"
   fi
-  exit  # IMPORTANT: Always end with exit!
+  exit  # 重要：始终以 exit 结束！
 }
 ```
 
-### Systemd Service Pattern
+### Systemd 服务模式
 
 ```bash
 msg_info "Creating Service"
@@ -613,10 +613,10 @@ systemctl enable -q --now appname
 msg_ok "Created Service"
 ```
 
-### Installation Script Footer
+### 安装脚本页脚
 
 ```bash
-# ALWAYS at the end of the install script:
+# 始终在安装脚本末尾：
 motd_ssh
 customize
 cleanup_lxc
@@ -624,44 +624,44 @@ cleanup_lxc
 
 ---
 
-## 📖 Reference: Good Example Scripts
+## 📖 参考：良好的示例脚本
 
-Look at these recent well-implemented applications as reference:
+查看这些最近实现良好的应用程序作为参考：
 
-### Container Scripts (Latest 10)
+### 容器脚本（最新 10 个）
 
-- [ct/thingsboard.sh](../ct/thingsboard.sh) - IoT platform with proper update_script
-- [ct/unifi-os-server.sh](../ct/unifi-os-server.sh) - Complex setup with podman
-- [ct/trip.sh](../ct/trip.sh) - Simple Ruby app
-- [ct/fladder.sh](../ct/fladder.sh) - Media app with database
-- [ct/qui.sh](../ct/qui.sh) - Lightweight utility
-- [ct/kutt.sh](../ct/kutt.sh) - Node.js with PostgreSQL
-- [ct/flatnotes.sh](../ct/flatnotes.sh) - Python notes app
-- [ct/investbrain.sh](../ct/investbrain.sh) - Finance app
-- [ct/gwn-manager.sh](../ct/gwn-manager.sh) - Network management
-- [ct/sportarr.sh](../ct/sportarr.sh) - Specialized \*Arr variant
+- [ct/thingsboard.sh](../ct/thingsboard.sh) - 带有正确 update_script 的物联网平台
+- [ct/unifi-os-server.sh](../ct/unifi-os-server.sh) - 使用 podman 的复杂设置
+- [ct/trip.sh](../ct/trip.sh) - 简单的 Ruby 应用
+- [ct/fladder.sh](../ct/fladder.sh) - 带数据库的媒体应用
+- [ct/qui.sh](../ct/qui.sh) - 轻量级实用程序
+- [ct/kutt.sh](../ct/kutt.sh) - 带 PostgreSQL 的 Node.js
+- [ct/flatnotes.sh](../ct/flatnotes.sh) - Python 笔记应用
+- [ct/investbrain.sh](../ct/investbrain.sh) - 财务应用
+- [ct/gwn-manager.sh](../ct/gwn-manager.sh) - 网络管理
+- [ct/sportarr.sh](../ct/sportarr.sh) - 专门的 \*Arr 变体
 
-### Install Scripts (Latest)
+### 安装脚本（最新）
 
-- [install/unifi-os-server-install.sh](../install/unifi-os-server-install.sh) - Complex setup with API integration
-- [install/trip-install.sh](../install/trip-install.sh) - Rails application setup
-- [install/mail-archiver-install.sh](../install/mail-archiver-install.sh) - Email-related service
+- [install/unifi-os-server-install.sh](../install/unifi-os-server-install.sh) - 带 API 集成的复杂设置
+- [install/trip-install.sh](../install/trip-install.sh) - Rails 应用程序设置
+- [install/mail-archiver-install.sh](../install/mail-archiver-install.sh) - 电子邮件相关服务
 
-**Key things to notice:**
+**需要注意的关键点：**
 
-- Proper error handling with `catch_errors`
-- Use of `check_for_gh_release` and `fetch_and_deploy_gh_release`
-- Correct backup/restore patterns in `update_script`
-- Footer always ends with `motd_ssh`, `customize`, `cleanup_lxc`
-- JSON metadata files created for each app
+- 使用 `catch_errors` 进行正确的错误处理
+- 使用 `check_for_gh_release` 和 `fetch_and_deploy_gh_release`
+- `update_script` 中正确的备份/恢复模式
+- 页脚始终以 `motd_ssh`、`customize`、`cleanup_lxc` 结束
+- 为每个应用创建 JSON 元数据文件
 
 ---
 
-## � JSON Metadata Files
+## 📄 JSON 元数据文件
 
-Every application requires a JSON metadata file in `frontend/public/json/<appname>.json`.
+每个应用程序都需要在 `frontend/public/json/<appname>.json` 中有一个 JSON 元数据文件。
 
-### JSON Structure
+### JSON 结构
 
 ```json
 {
@@ -677,7 +677,7 @@ Every application requires a JSON metadata file in `frontend/public/json/<appnam
   "website": "https://appname.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/appname.webp",
   "config_path": "/opt/appname/.env",
-  "description": "Short description of the application and its purpose.",
+  "description": "应用程序及其用途的简短描述。",
   "install_methods": [
     {
       "type": "default",
@@ -699,170 +699,77 @@ Every application requires a JSON metadata file in `frontend/public/json/<appnam
 }
 ```
 
-### Required Fields
+### 必填字段
 
-| Field                 | Type    | Description                                        |
-| --------------------- | ------- | -------------------------------------------------- |
-| `name`                | string  | Display name of the application                    |
-| `slug`                | string  | Lowercase, no spaces, used for filenames           |
-| `categories`          | array   | Category ID(s) - see category list below           |
-| `date_created`        | string  | Creation date (YYYY-MM-DD)                         |
-| `type`                | string  | `ct` for container, `vm` for virtual machine       |
-| `updateable`          | boolean | Whether update_script is implemented               |
-| `privileged`          | boolean | Whether container needs privileged mode            |
-| `interface_port`      | number  | Primary web interface port (or `null`)             |
-| `documentation`       | string  | Link to official docs                              |
-| `website`             | string  | Link to official website                           |
-| `logo`                | string  | URL to application logo (preferably selfhst icons) |
-| `config_path`         | string  | Path to main config file (or empty string)         |
-| `description`         | string  | Brief description of the application               |
-| `install_methods`     | array   | Installation configurations                        |
-| `default_credentials` | object  | Default username/password (or null)                |
-| `notes`               | array   | Additional notes/warnings                          |
+| 字段                  | 类型    | 描述                                   |
+| --------------------- | ------- | -------------------------------------- |
+| `name`                | string  | 应用程序的显示名称                     |
+| `slug`                | string  | 小写，无空格，用于文件名               |
+| `categories`          | array   | 类别 ID - 见下面的类别列表             |
+| `date_created`        | string  | 创建日期（YYYY-MM-DD）                 |
+| `type`                | string  | `ct` 表示容器，`vm` 表示虚拟机         |
+| `updateable`          | boolean | 是否实现了 update_script               |
+| `privileged`          | boolean | 容器是否需要特权模式                   |
+| `interface_port`      | number  | 主要 Web 界面端口（或 `null`）         |
+| `documentation`       | string  | 官方文档链接                           |
+| `website`             | string  | 官方网站链接                           |
+| `logo`                | string  | 应用程序徽标 URL（最好是 selfhst 图标）|
+| `config_path`         | string  | 主配置文件路径（或空字符串）           |
+| `description`         | string  | 应用程序的简要描述                     |
+| `install_methods`     | array   | 安装配置                               |
+| `default_credentials` | object  | 默认用户名/密码（或 null）             |
+| `notes`               | array   | 附加说明/警告                          |
 
-### Categories
+### 类别
 
-| ID  | Category                  |
+| ID  | 类别                      |
 | --- | ------------------------- |
-| 0   | Miscellaneous             |
-| 1   | Proxmox & Virtualization  |
-| 2   | Operating Systems         |
-| 3   | Containers & Docker       |
-| 4   | Network & Firewall        |
-| 5   | Adblock & DNS             |
-| 6   | Authentication & Security |
-| 7   | Backup & Recovery         |
-| 8   | Databases                 |
-| 9   | Monitoring & Analytics    |
-| 10  | Dashboards & Frontends    |
-| 11  | Files & Downloads         |
-| 12  | Documents & Notes         |
-| 13  | Media & Streaming         |
-| 14  | \*Arr Suite               |
-| 15  | NVR & Cameras             |
-| 16  | IoT & Smart Home          |
-| 17  | ZigBee, Z-Wave & Matter   |
-| 18  | MQTT & Messaging          |
-| 19  | Automation & Scheduling   |
-| 20  | AI / Coding & Dev-Tools   |
-| 21  | Webservers & Proxies      |
-| 22  | Bots & ChatOps            |
-| 23  | Finance & Budgeting       |
-| 24  | Gaming & Leisure          |
-| 25  | Business & ERP            |
+| 0   | 杂项                      |
+| 1   | Proxmox 和虚拟化          |
+| 2   | 操作系统                  |
+| 3   | 容器和 Docker             |
+| 4   | 网络和防火墙              |
+| 5   | 广告拦截和 DNS            |
+| 6   | 身份验证和安全            |
+| 7   | 备份和恢复                |
+| 8   | 数据库                    |
+| 9   | 监控和分析                |
+| 10  | 仪表板和前端              |
+| 11  | 文件和下载                |
+| 12  | 文档和笔记                |
+| 13  | 媒体和流媒体              |
+| 14  | \*Arr 套件                |
+| 15  | NVR 和摄像头              |
+| 16  | 物联网和智能家居          |
+| 17  | ZigBee、Z-Wave 和 Matter |
+| 18  | MQTT 和消息传递           |
+| 19  | 自动化和调度              |
+| 20  | AI / 编码和开发工具       |
+| 21  | Web 服务器和代理          |
+| 22  | 机器人和 ChatOps          |
+| 23  | 财务和预算                |
+| 24  | 游戏和休闲                |
+| 25  | 商业和 ERP                |
 
-### Notes Format
+### 注释格式
 
 ```json
 "notes": [
     {
-        "text": "Change the default password after first login!",
+        "text": "首次登录后更改默认密码！",
         "type": "warning"
     },
     {
-        "text": "Requires at least 4GB RAM for optimal performance.",
+        "text": "需要至少 4GB RAM 以获得最佳性能。",
         "type": "info"
     }
 ]
 ```
 
-**Note types:** `info`, `warning`, `error`
+**注释类型：** `info`、`warning`、`error`
 
-### Examples with Credentials
-
-```json
-"default_credentials": {
-    "username": "admin",
-    "password": "admin"
-}
-```
-
-Or no credentials:
+### 带凭据的示例
 
 ```json
 "default_credentials": {
-    "username": null,
-    "password": null
-}
-```
-
----
-
-## 🔍 Checklist Before PR Creation
-
-- [ ] No Docker installation used
-- [ ] `fetch_and_deploy_gh_release` used for GitHub releases
-- [ ] `check_for_gh_release` used for update checks
-- [ ] `setup_*` functions used for runtimes (nodejs, postgresql, etc.)
-- [ ] **`tools.func` functions NOT wrapped in msg_info/msg_ok blocks**
-- [ ] No redundant variables (only when used multiple times)
-- [ ] `$STD` before all apt/npm/build commands
-- [ ] `msg_info`/`msg_ok`/`msg_error` for logging (only for custom code)
-- [ ] Correct script structure followed (see templates)
-- [ ] Update function present and functional (CT scripts)
-- [ ] Data backup implemented in update function (if applicable)
-- [ ] `motd_ssh`, `customize`, `cleanup_lxc` at the end of install scripts
-- [ ] No custom download/version-check logic
-- [ ] All links point to `community-scripts/ProxmoxVE` (not `ProxmoxVED`!)
-- [ ] JSON metadata file created in `frontend/public/json/<appname>.json`
-- [ ] Category IDs are valid (0-25)
-- [ ] Default OS version is Debian 13 or newer (unless special requirement)
-- [ ] Default resources are reasonable for the application
-
----
-
-## 💡 Tips for AI Assistants
-
-1. **ALWAYS search `tools.func` first** before implementing custom solutions
-2. **Use recent scripts as reference** (Thingsboard, UniFi OS, Trip, Flatnotes, etc.)
-3. **Ask when uncertain** instead of introducing wrong patterns
-4. **Test via GitHub** - push to your fork and test with curl (not local bash)
-   ```bash
-   bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/myapp.sh)"
-   # Wait 10-30 seconds after pushing - GitHub takes time to update files
-   ```
-5. **Consistency > Creativity** - follow established patterns strictly
-6. **Check the templates** - they show the correct structure
-7. **Don't wrap tools.func functions** - they handle their own msg_info/msg_ok output
-8. **Minimal variables** - only create variables that are truly reused multiple times
-9. **Always use $STD** - ensures silent/non-interactive execution
-10. **Reference good examples** - look at recent additions in each category
-
----
-
-## 🍒 Important: Cherry-Picking Your Files for PR Submission
-
-⚠️ **CRITICAL**: When you submit your PR, you must use git cherry-pick to send ONLY your 3-4 files!
-
-Why? Because `setup-fork.sh` modifies 600+ files to update links. If you commit all changes, your PR will be impossible to merge.
-
-**See**: [README.md - Cherry-Pick Section](README.md#-cherry-pick-submitting-only-your-changes) for complete instructions on:
-
-- Creating a clean submission branch
-- Cherry-picking only your files (ct/myapp.sh, install/myapp-install.sh, frontend/public/json/myapp.json)
-- Verifying your PR has only 3 file changes (not 600+)
-
-**Quick reference**:
-
-```bash
-# Create clean branch from upstream
-git fetch upstream
-git checkout -b submit/myapp upstream/main
-
-# Cherry-pick your commit(s) or manually add your 3-4 files
-# Then push to your fork and create PR
-```
-
----
-
-## 📚 Further Documentation
-
-- [CONTRIBUTING.md](CONTRIBUTING.md) - General contribution guidelines
-- [GUIDE.md](GUIDE.md) - Detailed developer documentation
-- [HELPER_FUNCTIONS.md](HELPER_FUNCTIONS.md) - Complete tools.func reference
-- [README.md](README.md) - Cherry-pick guide and workflow instructions
-- [../TECHNICAL_REFERENCE.md](../TECHNICAL_REFERENCE.md) - Technical deep dive
-- [../EXIT_CODES.md](../EXIT_CODES.md) - Exit code reference
-- [templates_ct/](templates_ct/) - CT script templates
-- [templates_install/](templates_install/) - Install script templates
-- [templates_json/](templates_json/) - JSON metadata templates
+    "username": "admin

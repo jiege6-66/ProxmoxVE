@@ -16,7 +16,7 @@ update_os
 read -r -p "${TAB3}What public URL do you want to use (e.g. pocketid.mydomain.com)? " public_url
 fetch_and_deploy_gh_release "pocket-id" "pocket-id/pocket-id" "singlefile" "latest" "/opt/pocket-id/" "pocket-id-linux-amd64"
 
-msg_info "Configuring Pocket ID"
+msg_info "正在配置 Pocket ID"
 ENCRYPTION_KEY=$(openssl rand -base64 32)
 
 cat <<EOF >/opt/pocket-id/.env
@@ -28,9 +28,9 @@ PORT=1411
 HOST=0.0.0.0
 ENCRYPTION_KEY=${ENCRYPTION_KEY}
 EOF
-msg_ok "Configured Pocket ID"
+msg_ok "已配置 Pocket ID"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/pocketid.service
 [Unit]
 Description=Pocket ID Service
@@ -49,11 +49,11 @@ RestartSec=10
 [Install]
 WantedBy=multi-user.target
 EOF
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
-msg_info "Starting Service"
+msg_info "正在启动 Service"
 systemctl enable -q --now pocketid
-msg_ok "Started Services"
+msg_ok "已启动 Services"
 
 motd_ssh
 customize

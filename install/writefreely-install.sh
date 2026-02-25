@@ -13,21 +13,21 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y crudini
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mariadb
 MARIADB_DB_NAME="writefreely" MARIADB_DB_USER="writefreely" setup_mariadb_db
 fetch_and_deploy_gh_release "writefreely" "writefreely/writefreely" "prebuild" "latest" "/opt/writefreely" "writefreely_*_linux_amd64.tar.gz"
 
-msg_info "Setting up WriteFreely"
+msg_info "正在设置 WriteFreely"
 cd /opt/writefreely
 $STD ./writefreely config generate
 $STD ./writefreely keys generate
-msg_ok "Setup WriteFreely"
+msg_ok "设置 WriteFreely"
 
-msg_info "Configuring WriteFreely"
+msg_info "正在配置 WriteFreely"
 $STD crudini --set config.ini server port 80
 $STD crudini --set config.ini server bind $LOCAL_IP
 $STD crudini --set config.ini database username $MARIADB_DB_USER
@@ -36,9 +36,9 @@ $STD crudini --set config.ini database database $MARIADB_DB_NAME
 $STD crudini --set config.ini app host http://$LOCAL_IP:80
 $STD ./writefreely db init
 ln -s /opt/writefreely/writefreely /usr/local/bin/writefreely
-msg_ok "Configured WriteFreely"
+msg_ok "已配置 WriteFreely"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/writefreely.service
 [Unit]
 Description=WriteFreely Service
@@ -56,7 +56,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now writefreely
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

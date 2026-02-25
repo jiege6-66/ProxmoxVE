@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   acl \
   fping \
@@ -26,9 +26,9 @@ $STD apt install -y \
   snmp \
   snmpd \
   whois
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 $STD apt install -y \
   python3-dotenv \
   python3-pymysql \
@@ -38,7 +38,7 @@ $STD apt install -y \
   python3-pip \
   python3-psutil \
   python3-command-runner
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
 PHP_VERSION="8.4" PHP_FPM="YES" PHP_MODULE="cli,snmp,gmp" setup_php
 setup_mariadb
@@ -47,7 +47,7 @@ PYTHON_VERSION="3.13" setup_uv
 MARIADB_DB_NAME="librenms" MARIADB_DB_USER="librenms" MARIADB_DB_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)" setup_mariadb_db
 fetch_and_deploy_gh_release "librenms" "librenms/librenms" "tarball"
 
-msg_info "Configuring LibreNMS"
+msg_info "正在配置 LibreNMS"
 $STD useradd librenms -d /opt/librenms -M -r -s "$(which bash)"
 mkdir -p /opt/librenms/{rrd,logs,bootstrap/cache,storage,html}
 cd /opt/librenms
@@ -64,12 +64,12 @@ EOF
 chown -R librenms:librenms /opt/librenms
 chmod 771 /opt/librenms
 chmod -R ug=rwX /opt/librenms/bootstrap/cache /opt/librenms/storage /opt/librenms/logs /opt/librenms/rrd
-msg_ok "Configured LibreNMS"
+msg_ok "已配置 LibreNMS"
 
 msg_info "Configure MariaDB"
 sed -i "/\[mariadb\]/a innodb_file_per_table=1\nlower_case_table_names=0" /etc/mysql/mariadb.conf.d/50-server.cnf
 systemctl enable -q --now mariadb
-msg_ok "Configured MariaDB"
+msg_ok "已配置 MariaDB"
 
 msg_info "Configure PHP-FPM"
 cp /etc/php/8.4/fpm/pool.d/www.conf /etc/php/8.4/fpm/pool.d/librenms.conf
@@ -77,7 +77,7 @@ sed -i "s/\[www\]/\[librenms\]/g" /etc/php/8.4/fpm/pool.d/librenms.conf
 sed -i "s/user = www-data/user = librenms/g" /etc/php/8.4/fpm/pool.d/librenms.conf
 sed -i "s/group = www-data/group = librenms/g" /etc/php/8.4/fpm/pool.d/librenms.conf
 sed -i "s/listen = \/run\/php\/php8.4-fpm.sock/listen = \/run\/php-fpm-librenms.sock/g" /etc/php/8.4/fpm/pool.d/librenms.conf
-msg_ok "Configured PHP-FPM"
+msg_ok "已配置 PHP-FPM"
 
 msg_info "Configure Nginx"
 cat <<EOF >/etc/nginx/sites-enabled/librenms
@@ -106,7 +106,7 @@ EOF
 rm /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
 systemctl restart php8.4-fpm
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
 msg_info "Configure Services"
 ln -s /opt/librenms/lnms /usr/bin/lnms
@@ -140,7 +140,7 @@ cp /opt/librenms/dist/librenms-scheduler.service /opt/librenms/dist/librenms-sch
 
 systemctl enable -q --now librenms-scheduler.timer
 cp /opt/librenms/misc/librenms.logrotate /etc/logrotate.d/librenms
-msg_ok "Configured Services"
+msg_ok "已配置 Services"
 
 motd_ssh
 customize

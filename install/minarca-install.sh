@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apt-transport-https \
   ca-certificates \
   lsb-release
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Minarca"
+msg_info "正在安装 Minarca"
 curl -fsSL https://www.ikus-soft.com/archive/minarca/public.key | gpg --dearmor >/usr/share/keyrings/minarca-keyring.gpg
 cat <<EOF >/etc/apt/sources.list.d/minarca.sources
 Types: deb
@@ -32,7 +32,7 @@ Signed-By: /usr/share/keyrings/minarca-keyring.gpg
 EOF
 $STD apt update
 $STD apt install -y minarca-server
-msg_ok "Installed Minarca"
+msg_ok "已安装 Minarca"
 
 motd_ssh
 customize

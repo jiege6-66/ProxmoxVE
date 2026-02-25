@@ -11,7 +11,7 @@ import { basePath } from "@/config/site-config";
 import { cn } from "@/lib/utils";
 
 function getCategoryIcon(iconName: string) {
-  // Convert kebab-case to PascalCase for Lucide icon names
+  // 将 kebab-case 转换为 PascalCase 以匹配 Lucide 图标名称
   const pascalCaseName = iconName
     .split("-")
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -54,15 +54,15 @@ export default function ScriptAccordion({
     if (selectedScript) {
       let category;
 
-      // If we have a selected category, try to find the script in that specific category
+      // 如果有选中的分类，尝试在该特定分类中查找脚本
       if (selectedCategory) {
         category = items.find(
           cat => cat.name === selectedCategory && cat.scripts.some(script => script.slug === selectedScript),
         );
       }
 
-      // Fallback: if no category is selected or script not found in selected category,
-      // use the first category containing the script (backward compatibility)
+      // 回退：如果没有选中分类或在选中分类中未找到脚本，
+      // 使用第一个包含该脚本的分类（向后兼容）
       if (!category) {
         category = items.find(category => category.scripts.some(script => script.slug === selectedScript));
       }

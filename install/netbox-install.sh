@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apache2 \
   redis-server \
@@ -24,22 +24,22 @@ $STD apt install -y \
   libpq-dev \
   libssl-dev \
   zlib1g-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="16" setup_postgresql
 PG_DB_NAME="netbox" PG_DB_USER="netbox" setup_postgresql_db
 
-msg_info "Installing Python"
+msg_info "正在安装 Python"
 $STD apt install -y \
   python3 \
   python3-pip \
   python3-venv \
   python3-dev
-msg_ok "Installed Python"
+msg_ok "已安装 Python"
 
 fetch_and_deploy_gh_release "netbox" "netbox-community/netbox" "tarball"
 
-msg_info "Configuring NetBox (Patience)"
+msg_info "正在配置 NetBox (Patience)"
 cd /opt/netbox
 mkdir -p /opt/netbox/netbox/media
 
@@ -70,9 +70,9 @@ mv /opt/netbox/contrib/*.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable -q --now netbox netbox-rq
 echo -e "Netbox Secret: \e[32m$SECRET_KEY\e[0m" >>~/netbox.creds
-msg_ok "Configured NetBox"
+msg_ok "已配置 NetBox"
 
-msg_info "Setting up Django Admin"
+msg_info "正在设置 Django Admin"
 DJANGO_USER=Admin
 DJANGO_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)
 
@@ -91,7 +91,7 @@ EOF
   echo -e "Django User: \e[32m$DJANGO_USER\e[0m"
   echo -e "Django Password: \e[32m$DJANGO_PASS\e[0m"
 } >>~/netbox.creds
-msg_ok "Setup Django Admin"
+msg_ok "设置 Django Admin"
 
 motd_ssh
 customize

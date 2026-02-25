@@ -25,18 +25,18 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d "/opt/discopanel" ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   setup_docker
 
   if check_for_gh_release "discopanel" "nickheyer/discopanel"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop discopanel
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     mkdir -p /opt/discopanel_backup_temp
     cp -r /opt/discopanel/data/discopanel.db \
       /opt/discopanel/data/.recovery_key \
@@ -44,35 +44,35 @@ function update_script() {
     if [[ -d /opt/discopanel/data/servers ]]; then
       cp -r /opt/discopanel/data/servers /opt/discopanel_backup_temp/
     fi
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "discopanel" "nickheyer/discopanel" "tarball" "latest" "/opt/discopanel"
 
-    msg_info "Setting up DiscoPanel"
+    msg_info "正在设置 DiscoPanel"
     cd /opt/discopanel 
     $STD make gen
     cd /opt/discopanel/web/discopanel 
     $STD npm install
     $STD npm run build
-    msg_ok "Built Web Interface"
+    msg_ok "已构建 Web Interface"
 
     setup_go
 
-    msg_info "Building DiscoPanel"
+    msg_info "正在构建 DiscoPanel"
     cd /opt/discopanel 
     $STD go build -o discopanel cmd/discopanel/main.go
-    msg_ok "Built DiscoPanel"
+    msg_ok "已构建 DiscoPanel"
 
-    msg_info "Restoring Data"
+    msg_info "正在恢复 Data"
     mkdir -p /opt/discopanel/data
     cp -a /opt/discopanel_backup_temp/. /opt/discopanel/data/
     rm -rf /opt/discopanel_backup_temp
-    msg_ok "Restored Data"
+    msg_ok "已恢复 Data"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start discopanel
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -81,7 +81,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

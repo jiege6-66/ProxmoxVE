@@ -13,7 +13,7 @@
   "website": "https://2fauth.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/2fauth.webp",
   "config_path": "cat /opt/2fauth/.env",
-  "description": "2FAuth is a web based self-hosted alternative to One Time Passcode (OTP) generators like Google Authenticator, designed for both mobile and desktop. It aims to ease you perform your 2FA authentication steps whatever the device you handle, with a clean and suitable interface.",
+  "description": "2FAuth 是一个基于 Web 的自托管替代方案，可替代 Google Authenticator 等一次性密码 (OTP) 生成器，专为移动设备和桌面设备设计。它旨在让您无论使用何种设备都能轻松执行 2FA 身份验证步骤，并提供简洁适用的界面。",
   "install_methods": [
     {
       "type": "default",

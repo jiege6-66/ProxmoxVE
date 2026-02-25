@@ -21,7 +21,7 @@ fetch_and_deploy_gh_release "zipline" "diced/zipline" "tarball"
 SECRET_KEY="$(openssl rand -base64 42 | tr -dc 'a-zA-Z0-9')"
 echo "Zipline Secret Key: ${SECRET_KEY}" >>~/zipline.creds
 
-msg_info "Installing Zipline (Patience)"
+msg_info "正在安装 Zipline (Patience)"
 cd /opt/zipline
 cat <<EOF >/opt/zipline/.env
 DATABASE_URL=postgres://$PG_DB_USER:$PG_DB_PASS@localhost:5432/$PG_DB_NAME
@@ -35,9 +35,9 @@ EOF
 mkdir -p /opt/zipline-uploads
 $STD pnpm install
 $STD pnpm build
-msg_ok "Installed Zipline"
+msg_ok "已安装 Zipline"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/zipline.service
 [Unit]
 Description=Zipline Service
@@ -52,7 +52,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now zipline
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

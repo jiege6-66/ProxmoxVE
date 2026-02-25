@@ -27,7 +27,7 @@ if [ -d /dev/dri ]; then
   read -r -p "${TAB3}Select machine-learning type [1]: " ML_TYPE
   ML_TYPE="${ML_TYPE:-1}"
   if [[ "$ML_TYPE" == "2" ]]; then
-    msg_info "Installing OpenVINO dependencies"
+    msg_info "正在安装 OpenVINO dependencies"
     touch ~/.openvino
     $STD apt install -y --no-install-recommends patchelf
     tmp_dir=$(mktemp -d)
@@ -47,11 +47,11 @@ if [ -d /dev/dri ]; then
     $STD popd
     rm -rf "$tmp_dir"
     dpkg-query -W -f='${Version}\n' intel-opencl-icd >~/.intel_version
-    msg_ok "Installed OpenVINO dependencies"
+    msg_ok "已安装 OpenVINO dependencies"
   fi
 fi
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install --no-install-recommends -y \
   git \
   redis \
@@ -118,16 +118,16 @@ if [[ "$CTTYPE" == "0" && -d /dev/dri ]]; then
   $STD adduser "$(id -u -n)" video 2>/dev/null || true
   $STD adduser "$(id -u -n)" render 2>/dev/null || true
 fi
-msg_ok "Dependencies Installed"
+msg_ok "Dependencies 已安装"
 
-msg_info "Installing Mise"
+msg_info "正在安装 Mise"
 curl -fSs https://mise.jdx.dev/gpg-key.pub | tee /etc/apt/keyrings/mise-archive-keyring.pub 1>/dev/null
 echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.pub arch=amd64] https://mise.jdx.dev/deb stable main" >/etc/apt/sources.list.d/mise.list
 $STD apt update
 $STD apt install -y mise
-msg_ok "Installed Mise"
+msg_ok "已安装 Mise"
 
-msg_info "Configuring Debian Testing Repo"
+msg_info "正在配置 Debian Testing Repo"
 sed -i 's/ trixie-updates/ trixie-updates testing/g' /etc/apt/sources.list.d/debian.sources
 cat <<EOF >/etc/apt/preferences.d/preferences
 Package: *
@@ -139,10 +139,10 @@ Pin:release a=testing
 Pin-Priority: 450
 EOF
 $STD apt update
-msg_ok "Configured Debian Testing repo"
-msg_info "Installing packages from Debian Testing repo"
+msg_ok "已配置 Debian Testing repo"
+msg_info "正在安装 packages from Debian Testing repo"
 $STD apt install -t testing --no-install-recommends -yqq libmimalloc3 libde265-dev
-msg_ok "Installed packages from Debian Testing repo"
+msg_ok "已安装 packages from Debian Testing repo"
 
 setup_uv
 PG_VERSION="16" PG_MODULES="pgvector" setup_postgresql
@@ -154,7 +154,7 @@ sed -i -e "/^#shared_preload/s/^#//;/^shared_preload/s/''/'vchord.so'/" /etc/pos
 systemctl restart postgresql.service
 PG_DB_NAME="immich" PG_DB_USER="immich" PG_DB_GRANT_SUPERUSER="true" PG_DB_SKIP_ALTER_ROLE="true" setup_postgresql_db
 
-msg_info "Compiling Custom Photo-processing Library (extreme patience)"
+msg_info "正在编译 Custom Photo-processing Library (extreme patience)"
 LD_LIBRARY_PATH=/usr/local/lib
 export LD_RUN_PATH=/usr/local/lib
 STAGING_DIR=/opt/staging
@@ -164,7 +164,7 @@ SOURCE_DIR=${STAGING_DIR}/image-source
 $STD git clone -b main "$BASE_REPO" "$BASE_DIR"
 mkdir -p "$SOURCE_DIR"
 
-msg_info "(1/5) Compiling libjxl"
+msg_info "(1/5) 正在编译 libjxl"
 cd "$STAGING_DIR"
 SOURCE=${SOURCE_DIR}/libjxl
 JPEGLI_LIBJPEG_LIBRARY_SOVERSION="62"
@@ -202,9 +202,9 @@ ldconfig /usr/local/lib
 $STD make clean
 cd "$STAGING_DIR"
 rm -rf "$SOURCE"/{build,third_party}
-msg_ok "(1/5) Compiled libjxl"
+msg_ok "(1/5) 已编译 libjxl"
 
-msg_info "(2/5) Compiling libheif"
+msg_info "(2/5) 正在编译 libheif"
 SOURCE=${SOURCE_DIR}/libheif
 : "${LIBHEIF_REVISION:=$(jq -cr '.revision' $BASE_DIR/server/sources/libheif.json)}"
 $STD git clone https://github.com/strukturag/libheif.git "$SOURCE"
@@ -227,9 +227,9 @@ ldconfig /usr/local/lib
 $STD make clean
 cd "$STAGING_DIR"
 rm -rf "$SOURCE"/build
-msg_ok "(2/5) Compiled libheif"
+msg_ok "(2/5) 已编译 libheif"
 
-msg_info "(3/5) Compiling libraw"
+msg_info "(3/5) 正在编译 libraw"
 SOURCE=${SOURCE_DIR}/libraw
 : "${LIBRAW_REVISION:=$(jq -cr '.revision' $BASE_DIR/server/sources/libraw.json)}"
 $STD git clone https://github.com/libraw/libraw.git "$SOURCE"
@@ -242,9 +242,9 @@ $STD make install
 ldconfig /usr/local/lib
 $STD make clean
 cd "$STAGING_DIR"
-msg_ok "(3/5) Compiled libraw"
+msg_ok "(3/5) 已编译 libraw"
 
-msg_info "(4/5) Compiling imagemagick"
+msg_info "(4/5) 正在编译 imagemagick"
 SOURCE=$SOURCE_DIR/imagemagick
 : "${IMAGEMAGICK_REVISION:=$(jq -cr '.revision' $BASE_DIR/server/sources/imagemagick.json)}"
 $STD git clone https://github.com/ImageMagick/ImageMagick.git "$SOURCE"
@@ -256,9 +256,9 @@ $STD make install
 ldconfig /usr/local/lib
 $STD make clean
 cd "$STAGING_DIR"
-msg_ok "(4/5) Compiled imagemagick"
+msg_ok "(4/5) 已编译 imagemagick"
 
-msg_info "(5/5) Compiling libvips"
+msg_info "(5/5) 正在编译 libvips"
 SOURCE=$SOURCE_DIR/libvips
 : "${LIBVIPS_REVISION:=$(jq -cr '.revision' $BASE_DIR/server/sources/libvips.json)}"
 $STD git clone https://github.com/libvips/libvips.git "$SOURCE"
@@ -270,7 +270,7 @@ $STD ninja install
 ldconfig /usr/local/lib
 cd "$STAGING_DIR"
 rm -rf "$SOURCE"/build
-msg_ok "(5/5) Compiled libvips"
+msg_ok "(5/5) 已编译 libvips"
 {
   echo "imagemagick: $IMAGEMAGICK_REVISION"
   echo "libheif: $LIBHEIF_REVISION"
@@ -278,7 +278,7 @@ msg_ok "(5/5) Compiled libvips"
   echo "libraw: $LIBRAW_REVISION"
   echo "libvips: $LIBVIPS_REVISION"
 } >~/.immich_library_revisions
-msg_ok "Custom Photo-processing Libraries Compiled Successfully"
+msg_ok "Custom Photo-processing Libraries 已编译 Successfully"
 
 INSTALL_DIR="/opt/${APPLICATION}"
 UPLOAD_DIR="${INSTALL_DIR}/upload"
@@ -293,7 +293,7 @@ fetch_and_deploy_gh_release "Immich" "immich-app/immich" "tarball" "v2.5.6" "$SR
 PNPM_VERSION="$(jq -r '.packageManager | split("@")[1]' ${SRC_DIR}/package.json)"
 NODE_VERSION="24" NODE_MODULE="pnpm@${PNPM_VERSION}" setup_nodejs
 
-msg_info "Installing Immich (patience)"
+msg_info "正在安装 Immich (patience)"
 
 cd "$SRC_DIR"/server
 export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
@@ -334,22 +334,22 @@ $STD mise run build
 mkdir -p "$PLUGIN_DIR"
 cp -r ./dist "$PLUGIN_DIR"/dist
 cp ./manifest.json "$PLUGIN_DIR"
-msg_ok "Installed Immich Server, Web and Plugin Components"
+msg_ok "已安装 Immich Server, Web and Plugin Components"
 
 cd "$SRC_DIR"/machine-learning
 $STD useradd -U -s /usr/sbin/nologin -r -M -d "$INSTALL_DIR" immich
 mkdir -p "$ML_DIR" && chown -R immich:immich "$INSTALL_DIR"
 export VIRTUAL_ENV="${ML_DIR}/ml-venv"
 if [[ -f ~/.openvino ]]; then
-  msg_info "Installing HW-accelerated machine-learning"
+  msg_info "正在安装 HW-accelerated machine-learning"
   $STD uv add --no-sync --optional openvino onnxruntime-openvino==1.20.0 --active -n -p python3.12 --managed-python
   $STD sudo --preserve-env=VIRTUAL_ENV -nu immich uv sync --extra openvino --no-dev --active --link-mode copy -n -p python3.12 --managed-python
   patchelf --clear-execstack "${VIRTUAL_ENV}/lib/python3.12/site-packages/onnxruntime/capi/onnxruntime_pybind11_state.cpython-312-x86_64-linux-gnu.so"
-  msg_ok "Installed HW-accelerated machine-learning"
+  msg_ok "已安装 HW-accelerated machine-learning"
 else
-  msg_info "Installing machine-learning"
+  msg_info "正在安装 machine-learning"
   $STD sudo --preserve-env=VIRTUAL_ENV -nu immich uv sync --extra cpu --no-dev --active --link-mode copy -n -p python3.11 --managed-python
-  msg_ok "Installed machine-learning"
+  msg_ok "已安装 machine-learning"
 fi
 cd "$SRC_DIR"
 cp -a machine-learning/{ann,immich_ml} "$ML_DIR"
@@ -363,7 +363,7 @@ sed -i "s@\"/cache\"@\"$INSTALL_DIR/cache\"@g" "$ML_DIR"/immich_ml/config.py
 ln -s "$UPLOAD_DIR" "$APP_DIR"/upload
 ln -s "$UPLOAD_DIR" "$ML_DIR"/upload
 
-msg_info "Installing GeoNames data"
+msg_info "正在安装 GeoNames data"
 cd "$GEO_DIR"
 curl -fsSLZ -O "https://download.geonames.org/export/dump/admin1CodesASCII.txt" \
   -O "https://download.geonames.org/export/dump/admin2Codes.txt" \
@@ -374,11 +374,11 @@ date --iso-8601=seconds | tr -d "\n" >geodata-date.txt
 rm cities500.zip
 cd "$INSTALL_DIR"
 ln -s "$GEO_DIR" "$APP_DIR"
-msg_ok "Installed GeoNames data"
+msg_ok "已安装 GeoNames data"
 
 mkdir -p /var/log/immich
 touch /var/log/immich/{web.log,ml.log}
-msg_ok "Installed Immich"
+msg_ok "已安装 Immich"
 
 msg_info "Modifying user, creating env file, scripts & services"
 usermod -aG video,render immich

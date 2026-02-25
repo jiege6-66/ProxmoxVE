@@ -24,15 +24,15 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/keycloak ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "keycloak_app" "keycloak/keycloak"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop keycloak
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating packages"
+    msg_info "正在更新 packages"
     $STD apt-get update
     $STD apt-get -y upgrade
     msg_ok "Updated packages"
@@ -44,7 +44,7 @@ function update_script() {
 
     fetch_and_deploy_gh_release "keycloak_app" "keycloak/keycloak" "prebuild" "latest" "/opt/keycloak" "keycloak-*.tar.gz"
 
-    msg_info "Updating Keycloak"
+    msg_info "正在更新 Keycloak"
     cd /opt
     cp -a keycloak.old/conf/. keycloak/conf/
     cp -a keycloak.old/providers/. keycloak/providers/ 2>/dev/null || true
@@ -52,10 +52,10 @@ function update_script() {
     rm -rf keycloak.old
     msg_ok "Updated Keycloak"
 
-    msg_info "Restarting Service"
+    msg_info "正在重启 Service"
     systemctl restart keycloak
-    msg_ok "Restarted Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已重启 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -64,7 +64,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080/admin${CL}"

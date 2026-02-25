@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apt-transport-https
 curl -fsSL "https://dl.ui.com/unifi/unifi-repo.gpg" -o "/usr/share/keyrings/unifi-repo.gpg"
 cat <<EOF | sudo tee /etc/apt/sources.list.d/100-ubnt-unifi.sources >/dev/null
@@ -25,7 +25,7 @@ Architectures: amd64
 Signed-By: /usr/share/keyrings/unifi-repo.gpg
 EOF
 $STD apt update
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 JAVA_VERSION="21" setup_java
 
@@ -37,16 +37,16 @@ else
 fi
 
 if ! dpkg -l | grep -q 'libssl1.1'; then
-  msg_info "Installing libssl (if needed)"
+  msg_info "正在安装 libssl (if needed)"
   curl -fsSL "https://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.1_1.1.1w-0+deb11u4_amd64.deb" -o "/tmp/libssl.deb"
   $STD dpkg -i /tmp/libssl.deb
   rm -f /tmp/libssl.deb
-  msg_ok "Installed libssl1.1"
+  msg_ok "已安装 libssl1.1"
 fi
 
-msg_info "Installing UniFi Network Server"
+msg_info "正在安装 UniFi Network Server"
 $STD apt install -y unifi
-msg_ok "Installed UniFi Network Server"
+msg_ok "已安装 UniFi Network Server"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y \
   redis \
   build-essential \
@@ -41,14 +41,14 @@ $STD apt install -y \
   tesseract-ocr \
   tesseract-ocr-eng \
   ghostscript
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="16" setup_postgresql
 PG_DB_NAME="paperlessdb" PG_DB_USER="paperless" setup_postgresql_db
 PYTHON_VERSION="3.13" setup_uv
 fetch_and_deploy_gh_release "paperless" "paperless-ngx/paperless-ngx" "prebuild" "latest" "/opt/paperless" "paperless*tar.xz"
 
-msg_info "Setup Paperless-ngx"
+msg_info "设置 Paperless-ngx"
 cd /opt/paperless
 rm -rf /opt/paperless/docker
 $STD uv sync --all-extras
@@ -81,9 +81,9 @@ set -a
 . /opt/paperless/paperless.conf
 set +a
 $STD uv run -- python manage.py migrate
-msg_ok "Setup Paperless-ngx"
+msg_ok "设置 Paperless-ngx"
 
-msg_info "Setting up admin Paperless-ngx User & Password"
+msg_info "正在设置 admin Paperless-ngx User & Password"
 cat <<EOF | uv run -- python /opt/paperless/src/manage.py shell
 from django.contrib.auth import get_user_model
 UserModel = get_user_model()
@@ -94,7 +94,7 @@ user.save()
 EOF
 msg_ok "Set up admin Paperless-ngx User & Password"
 
-msg_info "Installing Natural Language Toolkit (Patience)"
+msg_info "正在安装 Natural Language Toolkit (Patience)"
 cd /opt/paperless
 $STD uv run python -m nltk.downloader -d /usr/share/nltk_data snowball_data
 $STD uv run python -m nltk.downloader -d /usr/share/nltk_data stopwords
@@ -105,9 +105,9 @@ for policy_file in /etc/ImageMagick-6/policy.xml /etc/ImageMagick-7/policy.xml; 
     sed -i -e 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/' "$policy_file"
   fi
 done
-msg_ok "Installed Natural Language Toolkit"
+msg_ok "已安装 Natural Language Toolkit"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/paperless-scheduler.service
 [Unit]
 Description=Paperless Celery beat
@@ -167,7 +167,7 @@ Environment=GRANIAN_WORKERS=1
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now paperless-webserver paperless-scheduler paperless-task-queue paperless-consumer
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 read -r -p "${TAB3}Would you like to add Adminer? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then

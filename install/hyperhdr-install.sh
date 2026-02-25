@@ -14,16 +14,16 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing HyperHDR"
+msg_info "正在安装 HyperHDR"
 setup_deb822_repo \
   "hyperhdr" \
   "https://awawa-dev.github.io/hyperhdr.public.apt.gpg.key" \
   "https://awawa-dev.github.io" \
   "$(get_os_info codename)"
 $STD apt install -y hyperhdr
-msg_ok "Installed HyperHDR"
+msg_ok "已安装 HyperHDR"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/hyperhdr.service
 [Unit]
 Description=HyperHDR Service
@@ -39,7 +39,7 @@ ExecStart=/usr/bin/hyperhdr
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now hyperhdr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

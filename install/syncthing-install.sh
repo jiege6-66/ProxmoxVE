@@ -20,13 +20,13 @@ setup_deb822_repo \
   "syncthing" \
   "stable-v2"
 
-msg_info "Setting up Syncthing"
+msg_info "正在设置 Syncthing"
 $STD apt install -y syncthing
 systemctl enable -q --now syncthing@root
 sleep 5
 sed -i "{s/127.0.0.1:8384/0.0.0.0:8384/g}" /root/.local/state/syncthing/config.xml
 systemctl restart syncthing@root
-msg_ok "Setup Syncthing"
+msg_ok "设置 Syncthing"
 
 motd_ssh
 customize

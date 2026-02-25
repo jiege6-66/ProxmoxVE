@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y \
   build-essential \
   redis-server \
   expect \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mongodb
 NODE_VERSION="22" setup_nodejs
 
-msg_info "Configuring MongoDB"
+msg_info "正在配置 MongoDB"
 MONGO_ADMIN_USER="admin"
 MONGO_ADMIN_PWD="$(openssl rand -base64 18 | cut -c1-13)"
 NODEBB_USER="nodebb"
@@ -67,7 +67,7 @@ msg_ok "MongoDB configured"
 
 fetch_and_deploy_gh_release "nodebb" "NodeBB/NodeBB" "tarball"
 
-msg_info "Configuring NodeBB"
+msg_info "正在配置 NodeBB"
 cd /opt/nodebb
 touch pidfile
 expect <<EOF >/dev/null 2>&1
@@ -104,9 +104,9 @@ expect "Confirm Password" {
 }
 expect eof
 EOF
-msg_ok "Configured NodeBB"
+msg_ok "已配置 NodeBB"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/nodebb.service
 [Unit]
 Description=NodeBB
@@ -126,7 +126,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now nodebb
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

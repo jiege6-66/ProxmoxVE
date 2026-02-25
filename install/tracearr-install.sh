@@ -13,21 +13,21 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y redis-server
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="24" setup_nodejs
 PG_VERSION="18" setup_postgresql
 
-msg_info "Installing pnpm"
+msg_info "正在安装 pnpm"
 PNPM_VERSION="$(curl -fsSL "https://raw.githubusercontent.com/connorgallopo/Tracearr/refs/heads/main/package.json" | jq -r '.packageManager | split("@")[1]' | cut -d'+' -f1)"
 export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 $STD corepack enable pnpm
 $STD corepack prepare pnpm@${PNPM_VERSION} --activate
-msg_ok "Installed pnpm"
+msg_ok "已安装 pnpm"
 
-msg_info "Installing TimescaleDB"
+msg_info "正在安装 TimescaleDB"
 setup_deb822_repo \
   "timescaledb" \
   "https://packagecloud.io/timescale/timescaledb/gpgkey" \
@@ -42,12 +42,12 @@ total_ram_kb=$(grep MemTotal /proc/meminfo | awk '{print $2}')
 ram_for_tsdb=$((total_ram_kb / 1024 / 2))
 $STD timescaledb-tune -yes -memory "$ram_for_tsdb"MB
 $STD systemctl restart postgresql
-msg_ok "Installed TimescaleDB"
+msg_ok "已安装 TimescaleDB"
 
 PG_DB_NAME="tracearr_db" PG_DB_USER="tracearr" PG_DB_EXTENSIONS="timescaledb,timescaledb_toolkit" setup_postgresql_db
 fetch_and_deploy_gh_release "tracearr" "connorgallopo/Tracearr" "tarball" "latest" "/opt/tracearr.build"
 
-msg_info "Building Tracearr"
+msg_info "正在构建 Tracearr"
 export TZ=$(cat /etc/timezone)
 cd /opt/tracearr.build
 $STD pnpm install --frozen-lockfile --force
@@ -69,9 +69,9 @@ mkdir -p /opt/tracearr/data/image-cache
 rm -rf /opt/tracearr.build
 cd /opt/tracearr
 $STD pnpm install --prod --frozen-lockfile --ignore-scripts
-msg_ok "Built Tracearr"
+msg_ok "已构建 Tracearr"
 
-msg_info "Configuring Tracearr"
+msg_info "正在配置 Tracearr"
 $STD useradd -r -s /bin/false -U tracearr
 $STD chown -R tracearr:tracearr /opt/tracearr
 install -d -m 750 -o tracearr -g tracearr /data/tracearr
@@ -93,9 +93,9 @@ APP_VERSION=$(cat /root/.tracearr)
 EOF
 chmod 600 /data/tracearr/.env
 chown -R tracearr:tracearr /data/tracearr
-msg_ok "Configured Tracearr"
+msg_ok "已配置 Tracearr"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/data/tracearr/prestart.sh
 #!/usr/bin/env bash
 # =============================================================================
@@ -162,7 +162,7 @@ User=tracearr
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now postgresql redis-server tracearr
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

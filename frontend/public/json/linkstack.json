@@ -13,7 +13,7 @@
   "documentation": "https://docs.linkstack.org/",
   "website": "https://linkstack.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/linkstack.webp",
-  "description": "LinkStack is an open-source, self-hosted alternative to Linktree, allowing users to create a customizable profile page to share multiple links, hosted on their own server.",
+  "description": "LinkStack 是一个开源的、自托管的 Linktree 替代品,允许用户创建可自定义的个人资料页面来共享多个链接,托管在自己的服务器上。",
   "install_methods": [
     {
       "type": "default",

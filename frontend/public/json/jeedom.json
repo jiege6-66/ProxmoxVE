@@ -13,7 +13,7 @@
   "config_path": "",
   "website": "https://jeedom.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/jeedom.webp",
-  "description": "Jeedom is a home automation system that is free, open, and cloudless. It allows users to manage and automate various aspects of their homes by creating objects, installing plugins for added functionalities, and connecting to a Market account for services. It also supports direct access URLs and user management.",
+  "description": "Jeedom 是一个免费、开放且无云的家庭自动化系统。它允许用户通过创建对象、安装插件以增加功能以及连接到 Market 账户获取服务来管理和自动化家庭的各个方面。它还支持直接访问 URL 和用户管理。",
   "install_methods": [
     {
       "type": "default",

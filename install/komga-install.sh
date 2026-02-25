@@ -13,20 +13,20 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt -y install \
   libarchive-dev \
   libjxl-dev \
   libheif-dev \
   libwebp-dev
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 JAVA_VERSION="23" setup_java
 fetch_and_deploy_gh_release "kepubify" "pgaskin/kepubify" "singlefile" "latest" "/usr/bin" "kepubify-linux-64bit"
 USE_ORIGINAL_FILENAME="true" fetch_and_deploy_gh_release "komga-org" "gotson/komga" "singlefile" "latest" "/opt/komga" "komga*.jar"
 mv /opt/komga/komga-*.jar /opt/komga/komga.jar
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/komga.service
 [Unit]
 Description=Komga
@@ -45,7 +45,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now komga
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

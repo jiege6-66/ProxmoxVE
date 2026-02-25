@@ -13,7 +13,7 @@
   "config_path": "/opt/ots/.env",
   "website": "https://github.com/Luzifer/ots",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/ots.webp",
-  "description": "One-Time-Secret sharing platform with a symmetric 256bit AES encryption in the browser.",
+  "description": "一次性密钥共享平台,在浏览器中使用对称 256 位 AES 加密。",
   "install_methods": [
     {
       "type": "default",

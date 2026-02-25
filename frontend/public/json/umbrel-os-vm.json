@@ -13,7 +13,7 @@
   "website": "https://umbrel.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/umbrelos.webp",
   "config_path": "",
-  "description": "Take control of your digital life with Umbrel — a private, personal server that lets you self-host powerful open source apps with ease. Whether you want to run a Bitcoin or Lightning node, manage your files with Nextcloud, stream media, block ads across your network, or explore self-hosted AI tools, Umbrel gives you full ownership and privacy. All through a beautiful, user-friendly interface — no cloud, no tracking, just your data under your control.",
+  "description": "使用 Umbrel 掌控您的数字生活——一个私密的个人服务器，让您轻松自托管强大的开源应用。无论您想运行 Bitcoin 或 Lightning 节点、使用 Nextcloud 管理文件、流媒体播放、在网络中屏蔽广告，还是探索自托管 AI 工具，Umbrel 都能为您提供完全的所有权和隐私保护。所有这些都通过一个美观、用户友好的界面实现——无云服务、无跟踪，只有您完全掌控的数据。",
   "install_methods": [
     {
       "type": "default",

@@ -22,14 +22,14 @@ catch_errors
 function update_script() {
   header_info
   if [[ ! -d /opt/rustdesk-server ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   APIRELEASE=$(curl -s https://api.github.com/repos/lejianwen/rustdesk-api/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
   RELEASE=$(curl -s https://api.github.com/repos/rustdesk/rustdesk-server/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
   if [ "${RELEASE}" != "$(cat ~/.rustdesk-server 2>/dev/null)" ] || [ ! -f ~/.rustdesk-server ]; then
-    msg_info "Updating RustDesk Server to v${RELEASE}"
+    msg_info "正在更新 RustDesk Server to v${RELEASE}"
     $STD apk -U upgrade
     $STD service rustdesk-server-hbbs stop
     $STD service rustdesk-server-hbbr stop
@@ -44,10 +44,10 @@ function update_script() {
     rm -f $temp_file1
     msg_ok "Updated RustDesk Server"
   else
-    msg_ok "No update required. ${APP} is already at v${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at v${RELEASE}"
   fi
   if [ "${APIRELEASE}" != "$(cat ~/.rustdesk-api)" ] || [ ! -f ~/.rustdesk-api ]; then
-    msg_info "Updating RustDesk API to v${APIRELEASE}"
+    msg_info "正在更新 RustDesk API to v${APIRELEASE}"
     $STD service rustdesk-api stop
     temp_file2=$(mktemp)
     curl -fsSL "https://github.com/lejianwen/rustdesk-api/releases/download/v${APIRELEASE}/linux-amd64.tar.gz" -o "$temp_file2"
@@ -59,9 +59,9 @@ function update_script() {
     rm -f $temp_file2
     msg_ok "Updated RustDesk API"
   else
-    msg_ok "No update required. RustDesk API is already at v${APIRELEASE}"
+    msg_ok "无需更新。 RustDesk API is already at v${APIRELEASE}"
   fi
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit 0
 }
 
@@ -69,7 +69,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access it using the following IP:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:21114${CL}"

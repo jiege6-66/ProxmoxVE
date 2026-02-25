@@ -13,7 +13,7 @@
   "config_path": "/opt/sportarr/.env, /opt/sportarr-data/config/config.xml",
   "website": "https://sportarr.net/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/sportarr.webp",
-  "description": "Sportarr is an automated media management application for all sports. It works similar to Sonarr and Radarr but specifically designed for combat sports, basketball, football, hockey, motorsports, and hundreds of other sports worldwide.",
+  "description": "Sportarr 是一个用于所有体育项目的自动化媒体管理应用程序。它的工作方式类似于 Sonarr 和 Radarr，但专门为格斗运动、篮球、足球、曲棍球、赛车运动以及全球数百种其他体育项目设计。",
   "install_methods": [
     {
       "type": "default",

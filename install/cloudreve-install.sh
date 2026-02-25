@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "cloudreve" "cloudreve/cloudreve" "prebuild" "latest" "/opt/cloudreve" "*linux_amd64.tar.gz"
 
-msg_info "Setup Service"
+msg_info "设置 Service"
 cat <<EOF >/etc/systemd/system/cloudreve.service
 [Unit]
 Description=Cloudreve Service

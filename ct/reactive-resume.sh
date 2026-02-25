@@ -25,18 +25,18 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /etc/systemd/system/Reactive-Resume.service ]]; then
-    msg_error "No $APP Installation Found!"
+    msg_error "No $APP 安装已找到！"
     exit
   fi
   if check_for_gh_release "Reactive-Resume" "lazy-media/Reactive-Resume"; then
-    msg_info "Stopping services"
+    msg_info "正在停止 services"
     systemctl stop Reactive-Resume
-    msg_ok "Stopped services"
+    msg_ok "已停止 services"
 
     cp /opt/Reactive-Resume/.env /opt/rxresume.env
     fetch_and_deploy_gh_release "Reactive-Resume" "lazy-media/Reactive-Resume" "tarball" "latest" "/opt/Reactive-Resume"
 
-    msg_info "Updating Reactive-Resume"
+    msg_info "正在更新 Reactive-Resume"
     cd /opt/Reactive-Resume
     export PUPPETEER_SKIP_DOWNLOAD="true"
     export NEXT_TELEMETRY_DISABLED=1
@@ -48,7 +48,7 @@ function update_script() {
     mv /opt/rxresume.env /opt/Reactive-Resume/.env
     msg_ok "Updated Reactive-Resume"
 
-    msg_info "Updating Minio"
+    msg_info "正在更新 Minio"
     systemctl stop minio
     cd /tmp
     curl -fsSL https://dl.min.io/server/minio/release/linux-amd64/minio.deb -o minio.deb
@@ -56,7 +56,7 @@ function update_script() {
     rm -f /tmp/minio.deb
     msg_ok "Updated Minio"
 
-    msg_info "Updating Browserless (Patience)"
+    msg_info "正在更新 Browserless (Patience)"
     systemctl stop browserless
     cp /opt/browserless/.env /opt/browserless.env
     rm -rf /opt/browserless
@@ -78,10 +78,10 @@ function update_script() {
     rm -f "$brwsr_tmp"
     msg_ok "Updated Browserless"
 
-    msg_info "Restarting services"
+    msg_info "正在重启 services"
     systemctl start minio Reactive-Resume browserless
-    msg_ok "Restarted services"
-    msg_ok "Updated successfully!"
+    msg_ok "已重启 services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -90,7 +90,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

@@ -13,7 +13,7 @@
   "website": "https://jellyfin.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/jellyfin.webp",
   "config_path": "/etc/jellyfin/",
-  "description": "Jellyfin is a free and open-source media server and suite of multimedia applications designed to organize, manage, and share digital media files to networked devices.",
+  "description": "Jellyfin 是一个免费的开源媒体服务器和多媒体应用套件，旨在组织、管理数字媒体文件并将其共享到网络设备。",
   "install_methods": [
     {
       "type": "default",

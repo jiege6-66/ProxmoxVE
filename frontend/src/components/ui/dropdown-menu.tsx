@@ -179,7 +179,7 @@ function DropdownMenuShortcut({
     />
   );
 }
-DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
+DropdownMenuShortcut.displayName = "下拉菜单快捷键";
 
 export {
   DropdownMenu,

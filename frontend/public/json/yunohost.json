@@ -13,7 +13,7 @@
   "website": "https://yunohost.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/yunohost.webp",
   "config_path": "",
-  "description": "YunoHost is an operating system aiming for the simplest administration of a server, and therefore democratize self-hosting, while making sure it stays reliable, secure, ethical and lightweight.",
+  "description": "YunoHost 是一个旨在实现最简单服务器管理的操作系统,从而使自托管民主化,同时确保其可靠、安全、符合道德且轻量。",
   "install_methods": [
     {
       "type": "default",

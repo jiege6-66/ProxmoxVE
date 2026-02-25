@@ -13,23 +13,23 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   python3-pip \
   python3-libtorrent \
   python3-setuptools
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Deluge"
+msg_info "正在安装 Deluge"
 mkdir -p ~/.config/pip
 cat >~/.config/pip/pip.conf <<EOF
 [global]
 break-system-packages = true
 EOF
 $STD pip install deluge[all]
-msg_ok "Installed Deluge"
+msg_ok "已安装 Deluge"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/deluged.service
 [Unit]
 Description=Deluge Bittorrent Client Daemon
@@ -64,7 +64,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q deluged.service deluge-web.service
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

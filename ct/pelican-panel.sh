@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/pelican-panel ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -33,17 +33,17 @@ function update_script() {
   setup_composer
 
   if [[ "$CURRENT_PHP" != "8.4" ]]; then
-    msg_info "Migrating PHP $CURRENT_PHP to 8.4"
+    msg_info "正在迁移 PHP $CURRENT_PHP to 8.4"
     $STD apt remove -y php"${CURRENT_PHP//./}"*
     PHP_VERSION="8.4" PHP_APACHE="YES" PHP_FPM="YES" setup_php
-    msg_ok "Migrated PHP $CURRENT_PHP to 8.4"
+    msg_ok "已迁移 PHP $CURRENT_PHP to 8.4"
   fi
 
   if check_for_gh_release "pelican-panel" "pelican-dev/panel"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     cd /opt/pelican-panel
     $STD php artisan down
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     cp -r /opt/pelican-panel/.env /opt/
     SQLITE_INSTALL=$(ls /opt/pelican-panel/database/*.sqlite 1>/dev/null 2>&1 && echo "true" || echo "false")
@@ -51,7 +51,7 @@ function update_script() {
     rm -rf * .*
     fetch_and_deploy_gh_release "pelican-panel" "pelican-dev/panel" "prebuild" "latest" "/opt/pelican-panel" "panel.tar.gz"
 
-    msg_info "Updating Pelican Panel"
+    msg_info "正在更新 Pelican Panel"
     mv /opt/.env /opt/pelican-panel/
     $SQLITE_INSTALL && mv /opt/*.sqlite /opt/pelican-panel/database/
     $STD composer install --no-dev --optimize-autoloader --no-interaction
@@ -64,11 +64,11 @@ function update_script() {
     chmod -R 755 /opt/pelican-panel/storage /opt/pelican-panel/bootstrap/cache/
     msg_ok "Updated Pelican Panel"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     $STD php artisan queue:restart
     $STD php artisan up
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -77,7 +77,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}/installer${CL}"

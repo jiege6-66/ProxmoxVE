@@ -13,7 +13,7 @@
   "config_path": "/opt/metabase/.env",
   "website": "https://www.metabase.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/metabase.webp",
-  "description": "Metabase is an open-source business intelligence platform. You can use Metabase to ask questions about your data, or embed Metabase in your app to let your customers explore their data on their own.",
+  "description": "Metabase 是一个开源的商业智能平台。您可以使用 Metabase 查询您的数据，或将 Metabase 嵌入您的应用程序中，让您的客户自行探索他们的数据。",
   "install_methods": [
     {
       "type": "default",

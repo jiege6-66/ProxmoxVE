@@ -16,7 +16,7 @@ update_os
 PYTHON_VERSION="3.13" setup_uv
 fetch_and_deploy_gh_release "scrappar" "thecfu/scraparr" "tarball" "latest" "/opt/scraparr"
 
-msg_info "Installing Scraparr"
+msg_info "正在安装 Scraparr"
 cd /opt/scraparr
 $STD uv venv --clear /opt/scraparr/.venv
 $STD /opt/scraparr/.venv/bin/python -m ensurepip --upgrade
@@ -26,9 +26,9 @@ chmod -R 755 /opt/scraparr
 mkdir -p /scraparr/config
 mv /opt/scraparr/config.yaml /scraparr/config/config.yaml
 chmod -R 755 /scraparr
-msg_ok "Installed Scraparr"
+msg_ok "已安装 Scraparr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/scraparr.service
 [Unit]
 Description=Scraparr
@@ -45,7 +45,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now scraparr
-msg_ok "Configured Service"
+msg_ok "已配置 Service"
 
 motd_ssh
 customize

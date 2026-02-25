@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   python3 \
@@ -26,23 +26,23 @@ $STD apt install -y \
   libharfbuzz0b \
   libpangoft2-1.0-0 \
   fonts-liberation
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Calibre (for eBook conversion)"
+msg_info "正在安装 Calibre (for eBook conversion)"
 $STD apt install -y calibre
-msg_ok "Installed Calibre"
+msg_ok "已安装 Calibre"
 
 fetch_and_deploy_gh_release "Calibre-Web" "janeczku/calibre-web" "prebuild" "latest" "/opt/calibre-web" "calibre-web*.tar.gz"
 setup_uv
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 cd /opt/calibre-web
 $STD uv venv
 $STD uv pip install --python /opt/calibre-web/.venv/bin/python --no-cache-dir --upgrade pip setuptools wheel
 $STD uv pip install --python /opt/calibre-web/.venv/bin/python --no-cache-dir -r requirements.txt
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 mkdir -p /opt/calibre-web/data
 cat <<EOF >/etc/systemd/system/calibre-web.service
 [Unit]
@@ -61,7 +61,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now calibre-web
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

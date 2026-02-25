@@ -13,7 +13,7 @@
   "website": "https://ghostfol.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/ghostfolio.webp",
   "config_path": "/opt/ghostfolio/.env",
-  "description": "Ghostfolio is an open source wealth management software built with web technology. The application empowers busy people to keep track of stocks, ETFs or cryptocurrencies and make solid, data-driven investment decisions.",
+  "description": "Ghostfolio 是一个使用 Web 技术构建的开源财富管理软件。该应用程序帮助忙碌的人们跟踪股票、ETF 或加密货币，并做出可靠的、数据驱动的投资决策。",
   "install_methods": [
     {
       "type": "default",

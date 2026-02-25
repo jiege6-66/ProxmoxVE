@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y \
   build-essential \
   python3 \
@@ -28,7 +28,7 @@ $STD apt install -y \
   libxmlsec1-dev \
   libxml2-dev \
   libxmlsec1-openssl
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
 fetch_and_deploy_gh_release "tandoor" "TandoorRecipes/recipes" "tarball" "latest" "/opt/tandoor"
@@ -37,7 +37,7 @@ PYTHON_VERSION="3.13" setup_uv
 PG_DB_USER="tandoor" PG_DB_NAME="db_recipes" PG_DB_EXTENSIONS="unaccent,pg_trgm" setup_postgresql_db
 SECRET_KEY=$(openssl rand -base64 45 | sed 's/\//\\\//g')
 
-msg_info "Setup Tandoor"
+msg_info "设置 Tandoor"
 mkdir -p /opt/tandoor/{config,api,mediafiles,staticfiles}
 cd /opt/tandoor
 $STD uv venv --clear .venv --python=python3
@@ -70,9 +70,9 @@ EOF
 cd /opt/tandoor
 $STD /opt/tandoor/.venv/bin/python manage.py migrate
 $STD /opt/tandoor/.venv/bin/python manage.py collectstatic --no-input
-msg_ok "Installed Tandoor"
+msg_ok "已安装 Tandoor"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/tandoor.service
 [Unit]
 Description=gunicorn daemon for tandoor
@@ -116,7 +116,7 @@ server {
 EOF
 systemctl reload nginx
 systemctl enable -q --now tandoor
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

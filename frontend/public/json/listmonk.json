@@ -13,7 +13,7 @@
   "website": "https://listmonk.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/listmonk.webp",
   "config_path": "/opt/listmonk/config.toml",
-  "description": "High performance, self-hosted, newsletter and mailing list manager with a modern dashboard.",
+  "description": "高性能、自托管的新闻通讯和邮件列表管理器,具有现代化的仪表板。",
   "install_methods": [
     {
       "type": "default",

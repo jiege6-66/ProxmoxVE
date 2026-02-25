@@ -19,12 +19,12 @@ NODE_VERSION="22" setup_nodejs
 
 fetch_and_deploy_gh_release "domain-locker" "Lissy93/domain-locker" "tarball"
 
-msg_info "Installing Modules (patience)"
+msg_info "正在安装 Modules (patience)"
 cd /opt/domain-locker
 $STD npm install
-msg_ok "Installed Modules"
+msg_ok "已安装 Modules"
 
-msg_info "Building Domain-Locker (a lot of patience)"
+msg_info "正在构建 Domain-Locker (a lot of patience)"
 cat <<EOF >/opt/domain-locker.env
 # Database connection
 DL_PG_HOST=localhost
@@ -42,14 +42,14 @@ set -a
 source /opt/domain-locker.env
 set +a
 $STD npm run build
-msg_info "Built Domain-Locker"
+msg_info "已构建 Domain-Locker"
 
-msg_info "Building Database schema"
+msg_info "正在构建 Database schema"
 export PGPASSWORD="$DL_PG_PASSWORD"
 $STD psql -h "$DL_PG_HOST" -p "$DL_PG_PORT" -U "$DL_PG_USER" -d "$DL_PG_NAME" -f "/opt/domain-locker/db/schema.sql"
-msg_ok "Built Database schema"
+msg_ok "已构建 Database schema"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/domain-locker.service
 [Unit]
 Description=Domain-Locker Service
@@ -65,7 +65,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now domain-locker
-msg_info "Created Service"
+msg_info "已创建 Service"
 
 motd_ssh
 customize

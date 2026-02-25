@@ -13,7 +13,7 @@
   "website": "https://aria2.github.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/aria2.webp",
   "config_path": "/root/aria2.daemon",
-  "description": "Aria2 is a lightweight multi-protocol & multi-source, cross platform download utility operated in command-line. It supports HTTP/HTTPS, FTP, SFTP, BitTorrent and Metalink.",
+  "description": "Aria2 是一个轻量级的多协议和多源跨平台下载工具,在命令行中操作。它支持 HTTP/HTTPS、FTP、SFTP、BitTorrent 和 Metalink。",
   "install_methods": [
     {
       "type": "default",

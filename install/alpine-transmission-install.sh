@@ -13,21 +13,21 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Transmission"
+msg_info "正在安装 Transmission"
 $STD apk add --no-cache transmission-cli transmission-daemon
 $STD rc-service transmission-daemon start
 sleep 5
 $STD rc-service transmission-daemon stop
 sed -i '{s/"rpc-whitelist-enabled": true/"rpc-whitelist-enabled": false/g; s/"rpc-host-whitelist-enabled": true,/"rpc-host-whitelist-enabled": false,/g}' /var/lib/transmission/config/settings.json
-msg_ok "Installed Transmission"
+msg_ok "已安装 Transmission"
 
-msg_info "Enabling Transmission Service"
+msg_info "正在启用 Transmission Service"
 $STD rc-update add transmission-daemon default
-msg_ok "Enabled Transmission Service"
+msg_ok "已启用 Transmission Service"
 
-msg_info "Starting Transmission"
+msg_info "正在启动 Transmission"
 $STD rc-service transmission-daemon start
-msg_ok "Started Transmission"
+msg_ok "已启动 Transmission"
 
 motd_ssh
 customize

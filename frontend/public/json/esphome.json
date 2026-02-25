@@ -13,7 +13,7 @@
   "website": "https://esphome.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/esphome.webp",
   "config_path": "/root/config/",
-  "description": "ESPHome is a platform for controlling ESP8266/ESP32-based devices using configuration files and integrating them with Home Automation systems. It provides a simple and flexible way to set up and manage the functionality of these devices, including defining and automating actions, monitoring sensors, and connecting to networks and other services. ESPHome is designed to be user-friendly and easy to use, and supports a wide range of features and integrations, making it a popular choice for home automation projects and IoT applications.",
+  "description": "ESPHome 是一个用于控制基于 ESP8266/ESP32 设备的平台，通过配置文件并将它们集成到家庭自动化系统中。它提供了一种简单灵活的方式来设置和管理这些设备的功能，包括定义和自动化操作、监控传感器以及连接到网络和其他服务。ESPHome 设计为用户友好且易于使用，支持广泛的功能和集成，使其成为家庭自动化项目和 IoT 应用的热门选择。",
   "install_methods": [
     {
       "type": "default",

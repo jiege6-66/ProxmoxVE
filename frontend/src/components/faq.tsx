@@ -28,3 +28,5 @@ export default function FAQ() {
     </div>
   );
 }
+
+这段代码中没有用户可见的硬编码 UI 文本需要翻译。所有显示的文本内容都来自 `FAQ_Items` 配置文件，你需要在 `../config/faq-config` 文件中翻译实际的 FAQ 内容。

@@ -13,7 +13,7 @@
   "website": "https://www.networkoptix.com/nx-witness",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/nx-witness.webp",
   "config_path": "",
-  "description": "Nx Witness is a professional video management system (VMS) designed for IP cameras and surveillance systems. It provides real-time video streaming, recording, and remote access with an intuitive user interface. The software supports AI-based video analytics, integrates with third-party security systems, and offers advanced search and event management features. It is used for security monitoring, business intelligence, and large-scale surveillance deployments.",
+  "description": "Nx Witness 是一个专业的视频管理系统 (VMS)，专为 IP 摄像头和监控系统设计。它提供实时视频流、录制和远程访问，具有直观的用户界面。该软件支持基于 AI 的视频分析，与第三方安全系统集成，并提供高级搜索和事件管理功能。它用于安全监控、商业智能和大规模监控部署。",
   "install_methods": [
     {
       "type": "default",

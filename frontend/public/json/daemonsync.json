@@ -13,7 +13,7 @@
   "website": "https://daemonsync.me/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/daemon-sync.webp",
   "config_path": "",
-  "description": "Sync files from app to server, share photos & videos, back up your data and stay secure inside local network.",
+  "description": "将文件从应用同步到服务器，共享照片和视频，备份数据并在本地网络内保持安全。",
   "install_methods": [
     {
       "type": "default",

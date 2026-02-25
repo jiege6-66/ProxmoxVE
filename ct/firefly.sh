@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/firefly ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
@@ -43,7 +43,7 @@ function update_script() {
     fetch_and_deploy_gh_release "firefly" "firefly-iii/firefly-iii" "prebuild" "latest" "/opt/firefly" "FireflyIII-*.zip"
     setup_composer
 
-    msg_info "Updating Firefly"
+    msg_info "正在更新 Firefly"
     rm -rf /opt/firefly/storage
     cp -r /opt/storage /opt/firefly/storage
     cp /opt/.env /opt/firefly/.env
@@ -76,7 +76,7 @@ function update_script() {
     if [[ "${IMPORTER_INSTALLED:-0}" -eq 1 ]]; then
       CLEAN_INSTALL=1 fetch_and_deploy_gh_release "dataimporter" "firefly-iii/data-importer" "prebuild" "latest" "/opt/firefly/dataimporter" "DataImporter-v*.tar.gz"
 
-      msg_info "Updating Firefly Importer"
+      msg_info "正在更新 Firefly Importer"
       if [[ -f /opt/dataimporter.env ]]; then
         cp /opt/dataimporter.env /opt/firefly/dataimporter/.env
       fi
@@ -85,7 +85,7 @@ function update_script() {
     fi
     rm -rf /opt/storage /opt/.env /opt/dataimporter.env
     systemctl start apache2
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -94,7 +94,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

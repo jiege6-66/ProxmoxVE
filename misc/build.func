@@ -54,7 +54,7 @@ variables() {
   # Parse dev_mode early
   parse_dev_mode
 
-  # Setup persistent log directory if logs mode active
+  # 设置 persistent log directory if logs mode active
   if [[ "${DEV_MODE_LOGS:-false}" == "true" ]]; then
     mkdir -p /var/log/community-scripts
     BUILD_LOG="/var/log/community-scripts/create-lxc-${SESSION_ID}-$(date +%Y%m%d_%H%M%S).log"
@@ -255,7 +255,7 @@ install_ssh_keys_into_ct() {
   fi
 
   if [[ -n "$SSH_KEYS_FILE" && -s "$SSH_KEYS_FILE" ]]; then
-    msg_info "Installing selected SSH keys into CT ${CTID}"
+    msg_info "正在安装 selected SSH keys into CT ${CTID}"
     pct exec "$CTID" -- sh -c 'mkdir -p /root/.ssh && chmod 700 /root/.ssh' || {
       msg_error "prepare /root/.ssh failed"
       return 1
@@ -266,7 +266,7 @@ install_ssh_keys_into_ct() {
       return 1
     }
     pct exec "$CTID" -- sh -c 'chmod 600 /root/.ssh/authorized_keys' || true
-    msg_ok "Installed SSH keys into CT ${CTID}"
+    msg_ok "已安装 SSH keys into CT ${CTID}"
     return 0
   fi
 
@@ -766,7 +766,7 @@ resolve_ip_from_range() {
 
   for ((ip_int = start_int; ip_int <= end_int; ip_int++)); do
     local ip=$(int_to_ip $ip_int)
-    msg_info "Checking IP: $ip"
+    msg_info "正在检查 IP: $ip"
     if ! ping -c 1 -W 1 "$ip" >/dev/null 2>&1; then
       NET_RESOLVED="$ip/$cidr"
       msg_ok "Found free IP: ${BGN}$NET_RESOLVED${CL}"
@@ -975,7 +975,7 @@ base_settings() {
   if [[ -n "$APT_CACHER_IP" && "$APT_CACHER" == "yes" ]]; then
     if ! curl -s --connect-timeout 2 "http://${APT_CACHER_IP}:3142" >/dev/null 2>&1; then
       msg_warn "APT Cacher configured but not reachable at ${APT_CACHER_IP}:3142"
-      msg_custom "⚠️" "${YW}" "Disabling APT Cacher for this installation"
+      msg_custom "⚠️" "${YW}" "正在禁用 APT Cacher for this installation"
       APT_CACHER=""
       APT_CACHER_IP=""
     else
@@ -1025,7 +1025,7 @@ load_vars_file() {
   local file="$1"
   local force="${2:-no}" # If "yes", override existing variables
   [ -f "$file" ] || return 0
-  msg_info "Loading defaults from ${file}"
+  msg_info "正在加载 defaults from ${file}"
 
   # Allowed var_* keys
   local VAR_WHITELIST=(
@@ -1105,7 +1105,7 @@ load_vars_file() {
           ;;
         var_brg)
           if ! validate_bridge "$var_val"; then
-            msg_warn "Bridge '$var_val' not found in $file, ignoring"
+            msg_warn "Bridge '$var_val' 未找到 in $file, ignoring"
             continue
           fi
           ;;
@@ -1195,7 +1195,7 @@ load_vars_file() {
       fi
     fi
   done <"$file"
-  msg_ok "Loaded ${file}"
+  msg_ok "已加载 ${file}"
 }
 
 # ------------------------------------------------------------------------------
@@ -1209,7 +1209,7 @@ load_vars_file() {
 # ------------------------------------------------------------------------------
 default_var_settings() {
   # Allowed var_* keys (alphabetically sorted)
-  # Note: Removed var_ctid (can only exist once), var_ipv6_static (static IPs are unique)
+  # Note: 已移除 var_ctid (can only exist once), var_ipv6_static (static IPs are unique)
   local VAR_WHITELIST=(
     var_apt_cacher var_apt_cacher_ip var_brg var_cpu var_disk var_fuse var_gpu var_keyctl
     var_gateway var_hostname var_ipv6_method var_mac var_mknod var_mount_fs var_mtu
@@ -1329,7 +1329,7 @@ EOF
   # 2) Load file
   local dv
   dv="$(_find_default_vars)" || {
-    msg_error "default.vars not found after ensure step"
+    msg_error "default.vars 未找到 after ensure step"
     return 1
   }
   load_vars_file "$dv"
@@ -1371,7 +1371,7 @@ get_app_defaults_path() {
 # - Extracts raw values from flags like ",gw=..." ",mtu=..." etc.
 # ------------------------------------------------------------------------------
 if ! declare -p VAR_WHITELIST >/dev/null 2>&1; then
-  # Note: Removed var_ctid (can only exist once), var_ipv6_static (static IPs are unique)
+  # Note: 已移除 var_ctid (can only exist once), var_ipv6_static (static IPs are unique)
   declare -ag VAR_WHITELIST=(
     var_apt_cacher var_apt_cacher_ip var_brg var_cpu var_disk var_fuse var_gpu
     var_gateway var_hostname var_ipv6_method var_mac var_mtu
@@ -1443,7 +1443,7 @@ _build_vars_diff() {
 
   local found_change=0
 
-  # Changed & Removed
+  # Changed & 已移除
   for k in "${!OLD[@]}"; do
     if [[ -v NEW["$k"] ]]; then
       if [[ "${OLD[$k]}" != "${NEW[$k]}" ]]; then
@@ -1456,7 +1456,7 @@ _build_vars_diff() {
     fi
   done
 
-  # Added
+  # 已添加
   for k in "${!NEW[@]}"; do
     if [[ ! -v OLD["$k"] ]]; then
       out+="+ ${k}\n    + new: ${NEW[$k]}\n"
@@ -1545,7 +1545,7 @@ _build_current_app_vars_tmp() {
 
   {
     echo "# App-specific defaults for ${APP} (${NSAPP})"
-    echo "# Generated on $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    echo "# 已生成 on $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
     echo
 
     echo "var_unprivileged=$(_sanitize_value "$_unpriv")"
@@ -2032,7 +2032,7 @@ advanced_settings() {
           _bridge="vmbr0"
           ((STEP++))
         else
-          whiptail --msgbox "Default bridge 'vmbr0' not found!\n\nPlease configure a network bridge in Proxmox first." 10 58
+          whiptail --msgbox "Default bridge 'vmbr0' 未找到!\n\nPlease configure a network bridge in Proxmox first." 10 58
           exit 1
         fi
       else
@@ -2168,7 +2168,7 @@ advanced_settings() {
         "dhcp" "DHCPv6 - DHCP-assigned IPv6 address" \
         "static" "Static - Manual IPv6 address configuration" \
         "none" "None - No IPv6 assignment (most containers)" \
-        "disable" "Fully Disabled - (breaks some services)" \
+        "disable" "Fully 已禁用 - (breaks some services)" \
         3>&1 1>&2 2>&3); then
 
         _ipv6_method="$result"
@@ -2572,7 +2572,7 @@ advanced_settings() {
         --title "DEVICE NODE CREATION" \
         --ok-button "Next" --cancel-button "Back" \
         $mknod_default_flag \
-        --yesno "\nAllow device node creation (mknod)?\n\nRequired for: Creating device files inside container.\nExperimental feature (requires kernel 5.3+).\n\n(App default: ${var_mknod:-0})" 14 62; then
+        --yesno "\nAllow device node creation (mknod)?\n\nRequired for: 正在创建 device files inside container.\nExperimental feature (requires kernel 5.3+).\n\n(App default: ${var_mknod:-0})" 14 62; then
         _enable_mknod="1"
       else
         if [ $? -eq 1 ]; then
@@ -2623,11 +2623,11 @@ advanced_settings() {
       local ct_type_desc="Unprivileged"
       [[ "$_ct_type" == "0" ]] && ct_type_desc="Privileged"
 
-      local nesting_desc="Disabled"
-      [[ "$_enable_nesting" == "1" ]] && nesting_desc="Enabled"
+      local nesting_desc="已禁用"
+      [[ "$_enable_nesting" == "1" ]] && nesting_desc="已启用"
 
-      local keyctl_desc="Disabled"
-      [[ "$_enable_keyctl" == "1" ]] && keyctl_desc="Enabled"
+      local keyctl_desc="已禁用"
+      [[ "$_enable_keyctl" == "1" ]] && keyctl_desc="已启用"
 
       local protect_desc="No"
       [[ "$_protect_ct" == "yes" || "$_protect_ct" == "1" ]] && protect_desc="Yes"
@@ -2750,14 +2750,14 @@ Advanced:
   echo -e "${NETWORK}${BOLD}${DGN}IPv6: ${BGN}$IPV6_METHOD${CL}"
   echo -e "${FUSE}${BOLD}${DGN}FUSE Support: ${BGN}${ENABLE_FUSE:-no}${CL}"
   [[ "${ENABLE_TUN:-no}" == "yes" ]] && echo -e "${NETWORK}${BOLD}${DGN}TUN/TAP Support: ${BGN}$ENABLE_TUN${CL}"
-  echo -e "${CONTAINERTYPE}${BOLD}${DGN}Nesting: ${BGN}$([ "${ENABLE_NESTING:-1}" == "1" ] && echo "Enabled" || echo "Disabled")${CL}"
-  [[ "${ENABLE_KEYCTL:-0}" == "1" ]] && echo -e "${CONTAINERTYPE}${BOLD}${DGN}Keyctl: ${BGN}Enabled${CL}"
+  echo -e "${CONTAINERTYPE}${BOLD}${DGN}Nesting: ${BGN}$([ "${ENABLE_NESTING:-1}" == "1" ] && echo "已启用" || echo "已禁用")${CL}"
+  [[ "${ENABLE_KEYCTL:-0}" == "1" ]] && echo -e "${CONTAINERTYPE}${BOLD}${DGN}Keyctl: ${BGN}已启用${CL}"
   echo -e "${GPU}${BOLD}${DGN}GPU Passthrough: ${BGN}${ENABLE_GPU:-no}${CL}"
-  [[ "${PROTECT_CT:-no}" == "yes" || "${PROTECT_CT:-no}" == "1" ]] && echo -e "${CONTAINERTYPE}${BOLD}${DGN}Protection: ${BGN}Enabled${CL}"
+  [[ "${PROTECT_CT:-no}" == "yes" || "${PROTECT_CT:-no}" == "1" ]] && echo -e "${CONTAINERTYPE}${BOLD}${DGN}Protection: ${BGN}已启用${CL}"
   [[ -n "${CT_TIMEZONE:-}" ]] && echo -e "${INFO}${BOLD}${DGN}Timezone: ${BGN}$CT_TIMEZONE${CL}"
   [[ "$APT_CACHER" == "yes" ]] && echo -e "${INFO}${BOLD}${DGN}APT Cacher: ${BGN}$APT_CACHER_IP${CL}"
   echo -e "${SEARCH}${BOLD}${DGN}Verbose Mode: ${BGN}$VERBOSE${CL}"
-  echo -e "${CREATING}${BOLD}${RD}Creating an LXC of ${APP} using the above advanced settings${CL}"
+  echo -e "${CREATING}${BOLD}${RD}正在创建 an LXC of ${APP} using the above advanced settings${CL}"
 
   # Log settings to file
   log_section "CONTAINER SETTINGS (ADVANCED) - ${APP}"
@@ -2774,7 +2774,7 @@ Advanced:
   log_msg "IPv4: $NET"
   log_msg "IPv6: $IPV6_METHOD"
   log_msg "FUSE Support: ${ENABLE_FUSE:-no}"
-  log_msg "Nesting: $([ "${ENABLE_NESTING:-1}" == "1" ] && echo "Enabled" || echo "Disabled")"
+  log_msg "Nesting: $([ "${ENABLE_NESTING:-1}" == "1" ] && echo "已启用" || echo "已禁用")"
   log_msg "GPU Passthrough: ${ENABLE_GPU:-no}"
   log_msg "Verbose Mode: $VERBOSE"
   log_msg "Session ID: ${SESSION_ID}"
@@ -2892,12 +2892,12 @@ echo_default() {
   echo -e "${CPUCORE}${BOLD}${DGN}CPU Cores: ${BGN}${CORE_COUNT}${CL}"
   echo -e "${RAMSIZE}${BOLD}${DGN}RAM Size: ${BGN}${RAM_SIZE} MiB${CL}"
   if [[ -n "${var_gpu:-}" && "${var_gpu}" == "yes" ]]; then
-    echo -e "${GPU}${BOLD}${DGN}GPU Passthrough: ${BGN}Enabled${CL}"
+    echo -e "${GPU}${BOLD}${DGN}GPU Passthrough: ${BGN}已启用${CL}"
   fi
   if [ "$VERBOSE" == "yes" ]; then
-    echo -e "${SEARCH}${BOLD}${DGN}Verbose Mode: ${BGN}Enabled${CL}"
+    echo -e "${SEARCH}${BOLD}${DGN}Verbose Mode: ${BGN}已启用${CL}"
   fi
-  echo -e "${CREATING}${BOLD}${BL}Creating a ${APP} LXC using the above default settings${CL}"
+  echo -e "${CREATING}${BOLD}${BL}正在创建 a ${APP} LXC using the above default settings${CL}"
   echo -e "  "
 
   # Log settings to file
@@ -2910,8 +2910,8 @@ echo_default() {
   log_msg "Disk Size: ${DISK_SIZE} GB"
   log_msg "CPU Cores: ${CORE_COUNT}"
   log_msg "RAM Size: ${RAM_SIZE} MiB"
-  [[ -n "${var_gpu:-}" && "${var_gpu}" == "yes" ]] && log_msg "GPU Passthrough: Enabled"
-  [[ "$VERBOSE" == "yes" ]] && log_msg "Verbose Mode: Enabled"
+  [[ -n "${var_gpu:-}" && "${var_gpu}" == "yes" ]] && log_msg "GPU Passthrough: 已启用"
+  [[ "$VERBOSE" == "yes" ]] && log_msg "Verbose Mode: 已启用"
   log_msg "Session ID: ${SESSION_ID}"
 }
 
@@ -3020,7 +3020,7 @@ install_script() {
       ;;
     3 | mydefaults | MYDEFAULTS | userdefaults | USERDEFAULTS)
       default_var_settings || {
-        msg_error "Failed to apply default.vars"
+        msg_error "无法 apply default.vars"
         exit 1
       }
       defaults_target="/usr/local/community-scripts/default.vars"
@@ -3703,7 +3703,7 @@ $PCT_OPTIONS_STRING"
 
     # Check for Intel GPU - look for Intel vendor ID [8086]
     if echo "$pci_vga_info" | grep -q "\[8086:"; then
-      msg_custom "🎮" "${BL}" "Detected Intel GPU"
+      msg_custom "🎮" "${BL}" "已检测到 Intel GPU"
       if [[ -d /dev/dri ]]; then
         for d in /dev/dri/renderD* /dev/dri/card*; do
           [[ -e "$d" ]] && INTEL_DEVICES+=("$d")
@@ -3713,7 +3713,7 @@ $PCT_OPTIONS_STRING"
 
     # Check for AMD GPU - look for AMD vendor IDs [1002] (AMD/ATI) or [1022] (AMD)
     if echo "$pci_vga_info" | grep -qE "\[1002:|\[1022:"; then
-      msg_custom "🎮" "${RD}" "Detected AMD GPU"
+      msg_custom "🎮" "${RD}" "已检测到 AMD GPU"
       if [[ -d /dev/dri ]]; then
         # Only add if not already claimed by Intel
         if [[ ${#INTEL_DEVICES[@]} -eq 0 ]]; then
@@ -3726,7 +3726,7 @@ $PCT_OPTIONS_STRING"
 
     # Check for NVIDIA GPU - look for NVIDIA vendor ID [10de]
     if echo "$pci_vga_info" | grep -q "\[10de:"; then
-      msg_custom "🎮" "${GN}" "Detected NVIDIA GPU"
+      msg_custom "🎮" "${GN}" "已检测到 NVIDIA GPU"
 
       # Simple passthrough - just bind /dev/nvidia* devices if they exist
       # Only include character devices (-c), skip directories like /dev/nvidia-caps
@@ -3744,7 +3744,7 @@ $PCT_OPTIONS_STRING"
         msg_custom "🎮" "${GN}" "Found ${#NVIDIA_DEVICES[@]} NVIDIA device(s) for passthrough"
       else
         msg_warn "NVIDIA GPU detected via PCI but no /dev/nvidia* devices found"
-        msg_custom "ℹ️" "${YW}" "Skipping NVIDIA passthrough (host drivers may not be loaded)"
+        msg_custom "ℹ️" "${YW}" "正在跳过 NVIDIA passthrough (host drivers may not be loaded)"
       fi
     fi
 
@@ -3760,7 +3760,7 @@ $PCT_OPTIONS_STRING"
       return 0
     fi
 
-    msg_info "Configuring automatic USB passthrough (privileged container)"
+    msg_info "正在配置 automatic USB passthrough (privileged container)"
     cat <<EOF >>"$LXC_CONFIG"
 # Automatic USB passthrough (privileged container)
 lxc.cgroup2.devices.allow: a
@@ -3782,8 +3782,8 @@ EOF
     # GPU passthrough is enabled when var_gpu="yes":
     # - Set via environment variable: var_gpu=yes bash -c "..."
     # - Set in CT script: var_gpu="${var_gpu:-no}"
-    # - Enabled in advanced_settings wizard
-    # - Configured in app defaults file
+    # - 已启用 in advanced_settings wizard
+    # - 已配置 in app defaults file
     if ! is_gpu_app "$APP"; then
       return 0
     fi
@@ -3836,7 +3836,7 @@ EOF
       done
 
       if [[ $valid -eq 0 ]]; then
-        msg_warn "Invalid selection. Skipping GPU passthrough."
+        msg_warn "Invalid selection. 正在跳过 GPU passthrough."
         return 0
       fi
     fi
@@ -3894,7 +3894,7 @@ EOF
 
     # Coral TPU passthrough
     if [[ -e /dev/apex_0 ]]; then
-      msg_custom "🔌" "${BL}" "Detected Coral TPU - configuring passthrough"
+      msg_custom "🔌" "${BL}" "已检测到 Coral TPU - configuring passthrough"
       echo "lxc.mount.entry: /dev/apex_0 dev/apex_0 none bind,optional,create=file" >>"$LXC_CONFIG"
     fi
   }
@@ -3908,13 +3908,13 @@ EOF
   # START CONTAINER AND INSTALL USERLAND
   # ============================================================================
 
-  msg_info "Starting LXC Container"
+  msg_info "正在启动 LXC Container"
   pct start "$CTID"
 
   # Wait for container to be running
   for i in {1..10}; do
     if pct status "$CTID" | grep -q "status: running"; then
-      msg_ok "Started LXC Container"
+      msg_ok "已启动 LXC Container"
       break
     fi
     sleep 1
@@ -3975,7 +3975,7 @@ EOF
   get_container_gid() {
     local group="$1"
     local gid=$(pct exec "$CTID" -- getent group "$group" 2>/dev/null | cut -d: -f3)
-    echo "${gid:-44}" # Default to 44 if not found
+    echo "${gid:-44}" # Default to 44 if 未找到
   }
 
   fix_gpu_gids
@@ -4030,7 +4030,7 @@ EOF'
       # Create /etc/timezone for backwards compatibility with older scripts
       pct exec "$CTID" -- bash -c "tz='$tz'; ln -sf \"/usr/share/zoneinfo/\$tz\" /etc/localtime && echo \"\$tz\" >/etc/timezone || true"
     else
-      msg_warn "Skipping timezone setup – zone '$tz' not found in container"
+      msg_warn "正在跳过 timezone setup – zone '$tz' 未找到 in container"
     fi
 
     pct exec "$CTID" -- bash -c "apt-get update >/dev/null && apt-get install -y sudo curl mc gnupg2 jq >/dev/null" || {
@@ -4227,7 +4227,7 @@ EOF'
       ;;
     esac
 
-    # Command not found detection
+    # Command 未找到 detection
     if [[ $install_exit_code -eq 127 ]]; then
       is_cmd_not_found=true
     fi
@@ -4236,13 +4236,13 @@ EOF'
     case "$install_exit_code" in
     6 | 7 | 22 | 28 | 35 | 52 | 56 | 57 | 75 | 78) is_network_issue=true ;;
     100)
-      # APT can fail due to network (Failed to fetch)
-      if [[ -f "$combined_log" ]] && grep -qiE 'Failed to fetch|Could not resolve|Connection failed|Network is unreachable|Temporary failure resolving' "$combined_log"; then
+      # APT can fail due to network (无法 fetch)
+      if [[ -f "$combined_log" ]] && grep -qiE '无法 fetch|Could not resolve|Connection failed|Network is unreachable|Temporary failure resolving' "$combined_log"; then
         is_network_issue=true
       fi
       ;;
     128)
-      if [[ -f "$combined_log" ]] && grep -qiE 'RPC failed|early EOF|fetch-pack|HTTP/2 stream|Could not resolve host|Temporary failure resolving|Failed to fetch|Connection reset|Network is unreachable' "$combined_log"; then
+      if [[ -f "$combined_log" ]] && grep -qiE 'RPC failed|early EOF|fetch-pack|HTTP/2 stream|Could not resolve host|Temporary failure resolving|无法 fetch|Connection reset|Network is unreachable' "$combined_log"; then
         is_network_issue=true
       fi
       ;;
@@ -4251,16 +4251,16 @@ EOF'
     # Exit 1 subclassification: analyze logs to identify actual root cause
     # Many exit 1 errors are actually APT, OOM, network, or command-not-found issues
     if [[ $install_exit_code -eq 1 && -f "$combined_log" ]]; then
-      if grep -qiE 'E: Unable to|E: Package|E: Failed to fetch|dpkg.*error|broken packages|unmet dependencies|dpkg --configure -a' "$combined_log"; then
+      if grep -qiE 'E: Unable to|E: Package|E: 无法 fetch|dpkg.*error|broken packages|unmet dependencies|dpkg --configure -a' "$combined_log"; then
         is_apt_issue=true
       fi
       if grep -qiE 'Cannot allocate memory|Out of memory|oom-killer|Killed process|JavaScript heap' "$combined_log"; then
         is_oom=true
       fi
-      if grep -qiE 'Could not resolve|DNS|Connection refused|Network is unreachable|No route to host|Temporary failure resolving|Failed to fetch' "$combined_log"; then
+      if grep -qiE 'Could not resolve|DNS|Connection refused|Network is unreachable|No route to host|Temporary failure resolving|无法 fetch' "$combined_log"; then
         is_network_issue=true
       fi
-      if grep -qiE ': command not found|No such file or directory.*/s?bin/' "$combined_log"; then
+      if grep -qiE ': command 未找到|No such file or directory.*/s?bin/' "$combined_log"; then
         is_cmd_not_found=true
       fi
     fi
@@ -4287,7 +4287,7 @@ EOF'
     if [[ "$is_cmd_not_found" == true ]]; then
       local missing_cmd=""
       if [[ -f "$combined_log" ]]; then
-        missing_cmd=$(grep -oiE '[a-zA-Z0-9_.-]+: command not found' "$combined_log" | tail -1 | sed 's/: command not found//')
+        missing_cmd=$(grep -oiE '[a-zA-Z0-9_.-]+: command 未找到' "$combined_log" | tail -1 | sed 's/: command 未找到//')
       fi
       if [[ -n "$missing_cmd" ]]; then
         echo -e "${TAB}${INFO} Missing command: ${GN}${missing_cmd}${CL}"
@@ -4343,16 +4343,16 @@ EOF'
       case "${response:-1}" in
       1)
         # Remove container
-        echo -e "\n${TAB}${HOLD}${YW}Removing container ${CTID}${CL}"
+        echo -e "\n${TAB}${HOLD}${YW}正在移除 container ${CTID}${CL}"
         pct stop "$CTID" &>/dev/null || true
         pct destroy "$CTID" &>/dev/null || true
         echo -e "${BFR}${CM}${GN}Container ${CTID} removed${CL}"
         ;;
       2)
         echo -e "\n${TAB}${YW}Container ${CTID} kept for debugging${CL}"
-        # Dev mode: Setup MOTD/SSH for debugging access to broken container
+        # Dev mode: 设置 MOTD/SSH for debugging access to broken container
         if [[ "${DEV_MODE_MOTD:-false}" == "true" ]]; then
-          echo -e "${TAB}${HOLD}${DGN}Setting up MOTD and SSH for debugging...${CL}"
+          echo -e "${TAB}${HOLD}${DGN}正在设置 MOTD and SSH for debugging...${CL}"
           if pct exec "$CTID" -- bash -c "
               source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/install.func)
               declare -f motd_ssh >/dev/null 2>&1 && motd_ssh || true
@@ -4365,7 +4365,7 @@ EOF'
         ;;
       3)
         # Retry with verbose mode (full rebuild)
-        echo -e "\n${TAB}${HOLD}${YW}Removing container ${CTID} for rebuild...${CL}"
+        echo -e "\n${TAB}${HOLD}${YW}正在移除 container ${CTID} for rebuild...${CL}"
         pct stop "$CTID" &>/dev/null || true
         pct destroy "$CTID" &>/dev/null || true
         echo -e "${BFR}${CM}${GN}Container ${CTID} removed${CL}"
@@ -4383,7 +4383,7 @@ EOF'
         echo -e "  Network: ${NET:-dhcp} | Bridge: ${BRG:-vmbr0}"
         echo -e "  Verbose: ${GN}enabled${CL}"
         echo ""
-        msg_info "Restarting installation..."
+        msg_info "正在重启 installation..."
         # Re-run build_container
         build_container
         return $?
@@ -4459,7 +4459,7 @@ EOF'
         if [[ -n "${OOM_OPTION}" && "${response}" == "${OOM_OPTION}" ]]; then
           # Retry with doubled resources
           handled=true
-          echo -e "\n${TAB}${HOLD}${YW}Removing container ${CTID} for rebuild with more resources...${CL}"
+          echo -e "\n${TAB}${HOLD}${YW}正在移除 container ${CTID} for rebuild with more resources...${CL}"
           pct stop "$CTID" &>/dev/null || true
           pct destroy "$CTID" &>/dev/null || true
           echo -e "${BFR}${CM}${GN}Container ${CTID} removed${CL}"
@@ -4483,7 +4483,7 @@ EOF'
           echo -e "  Disk: ${DISK_SIZE} GB | Network: ${NET:-dhcp} | Bridge: ${BRG:-vmbr0}"
           echo -e "  Verbose: ${GN}enabled${CL}"
           echo ""
-          msg_info "Restarting installation..."
+          msg_info "正在重启 installation..."
           build_container
           return $?
         fi
@@ -4491,7 +4491,7 @@ EOF'
         if [[ -n "${DNS_OPTION}" && "${response}" == "${DNS_OPTION}" ]]; then
           # Retry with DNS override in LXC
           handled=true
-          echo -e "\n${TAB}${HOLD}${YW}Removing container ${CTID} for rebuild with DNS override...${CL}"
+          echo -e "\n${TAB}${HOLD}${YW}正在移除 container ${CTID} for rebuild with DNS override...${CL}"
           pct stop "$CTID" &>/dev/null || true
           pct destroy "$CTID" &>/dev/null || true
           echo -e "${BFR}${CM}${GN}Container ${CTID} removed${CL}"
@@ -4507,7 +4507,7 @@ EOF'
           echo -e "  DNS: ${GN}8.8.8.8, 1.1.1.1${CL} (inside LXC only)"
           echo -e "  Verbose: ${GN}enabled${CL}"
           echo ""
-          msg_info "Restarting installation..."
+          msg_info "正在重启 installation..."
           build_container
           return $?
         fi
@@ -4561,9 +4561,9 @@ destroy_lxc() {
   case "${prompt,,}" in
   y | yes)
     if pct stop "$CT_ID" &>/dev/null && pct destroy "$CT_ID" &>/dev/null; then
-      msg_ok "Removed Container $CT_ID"
+      msg_ok "已移除 Container $CT_ID"
     else
-      msg_error "Failed to remove Container $CT_ID"
+      msg_error "无法 remove Container $CT_ID"
       return 1
     fi
     ;;
@@ -4588,7 +4588,7 @@ resolve_storage_preselect() {
   esac
   [[ -z "$preselect" ]] && return 1
   if ! pvesm status -content "$required_content" | awk 'NR>1{print $1}' | grep -qx -- "$preselect"; then
-    msg_warn "Preselected storage '${preselect}' does not support content '${required_content}' (or not found)"
+    msg_warn "Preselected storage '${preselect}' does not support content '${required_content}' (or 未找到)"
     return 1
   fi
 
@@ -4619,7 +4619,7 @@ fix_gpu_gids() {
     return 0
   fi
 
-  msg_info "Detecting and setting correct GPU group IDs"
+  msg_info "正在检测 and setting correct GPU group IDs"
 
   # Get actual GIDs from container
   local video_gid=$(pct exec "$CTID" -- sh -c "getent group video 2>/dev/null | cut -d: -f3")
@@ -4790,7 +4790,7 @@ validate_storage_space() {
 
   # Check if storage exists and is active
   if [[ -z "$storage_line" ]]; then
-    [[ "$show_dialog" == "yes" ]] && whiptail --msgbox "⚠️  Warning: Storage '$storage' not found!\n\nThe storage may be unavailable or disabled." 10 60
+    [[ "$show_dialog" == "yes" ]] && whiptail --msgbox "⚠️  Warning: Storage '$storage' 未找到!\n\nThe storage may be unavailable or disabled." 10 60
     return 2
   fi
 
@@ -4893,7 +4893,7 @@ create_lxc_container() {
     read -rp "Do you want to upgrade now? [y/N] " _ans
     case "${_ans,,}" in
     y | yes)
-      msg_info "Upgrading Proxmox LXC stack (pve-container, lxc-pve)"
+      msg_info "正在升级 Proxmox LXC stack (pve-container, lxc-pve)"
       if $STD apt-get update && $STD apt-get install -y --only-upgrade pve-container lxc-pve; then
         msg_ok "LXC stack upgraded."
         if [[ "$do_retry" == "yes" ]]; then
@@ -5019,7 +5019,7 @@ create_lxc_container() {
 
   # Cluster quorum (if cluster)
   if [[ -f /etc/pve/corosync.conf ]]; then
-    msg_info "Checking cluster quorum"
+    msg_info "正在检查 cluster quorum"
     if ! pvecm status | awk -F':' '/^Quorate/ { exit ($2 ~ /Yes/) ? 0 : 1 }'; then
       msg_error "Cluster is not quorate. Start all nodes or configure quorum device (QDevice)."
       exit 210
@@ -5037,7 +5037,7 @@ create_lxc_container() {
   *) TEMPLATE_PATTERN="" ;;
   esac
 
-  msg_info "Searching for template '$TEMPLATE_SEARCH'"
+  msg_info "正在搜索 for template '$TEMPLATE_SEARCH'"
 
   # Initialize variables
   ONLINE_TEMPLATE=""
@@ -5168,7 +5168,7 @@ create_lxc_container() {
         if [[ "$choice" =~ ^[0-9]+$ ]] && [[ "$choice" -ge 1 ]] && [[ "$choice" -le ${#AVAILABLE_VERSIONS[@]} ]]; then
           export var_version="${AVAILABLE_VERSIONS[$((choice - 1))]}"
           export PCT_OSVERSION="$var_version"
-          msg_ok "Switched to ${PCT_OSTYPE} ${var_version}"
+          msg_ok "已切换至 ${PCT_OSTYPE} ${var_version}"
 
           # Retry template search with new version
           TEMPLATE_SEARCH="${PCT_OSTYPE}-${PCT_OSVERSION:-}"
@@ -5208,7 +5208,7 @@ create_lxc_container() {
           fi
 
           [[ -n "$TEMPLATE_PATH" ]] || {
-            msg_error "Template still not found after version change"
+            msg_error "Template still 未找到 after version change"
             exit 220
           }
         else
@@ -5272,7 +5272,7 @@ create_lxc_container() {
   if [[ "$NEED_DOWNLOAD" -eq 1 ]]; then
     [[ -f "$TEMPLATE_PATH" ]] && rm -f "$TEMPLATE_PATH"
     for attempt in {1..3}; do
-      msg_info "Attempt $attempt: Downloading template $TEMPLATE to $TEMPLATE_STORAGE"
+      msg_info "Attempt $attempt: 正在下载 template $TEMPLATE to $TEMPLATE_STORAGE"
       if pveam download "$TEMPLATE_STORAGE" "$TEMPLATE" >/dev/null 2>&1; then
         msg_ok "Template download successful."
         break
@@ -5303,7 +5303,7 @@ create_lxc_container() {
   # ------------------------------------------------------------------------------
   # Create LXC Container
   # ------------------------------------------------------------------------------
-  msg_info "Creating LXC container"
+  msg_info "正在创建 LXC container"
 
   # Ensure subuid/subgid entries exist
   grep -q "root:100000:65536" /etc/subuid || echo "root:100000:65536" >>/etc/subuid
@@ -5323,13 +5323,13 @@ create_lxc_container() {
   if [[ -f "$lockfile" ]]; then
     local lock_age=$(($(date +%s) - $(stat -c %Y "$lockfile" 2>/dev/null || echo 0)))
     if [[ $lock_age -gt 3600 ]]; then
-      msg_warn "Removing stale template lock file (age: ${lock_age}s)"
+      msg_warn "正在移除 stale template lock file (age: ${lock_age}s)"
       rm -f "$lockfile"
     fi
   fi
 
   exec 9>"$lockfile" || {
-    msg_error "Failed to create lock file '$lockfile'."
+    msg_error "无法 create lock file '$lockfile'."
     exit 200
   }
 
@@ -5363,7 +5363,7 @@ create_lxc_container() {
       pveam download "$TEMPLATE_STORAGE" "$TEMPLATE" >/dev/null 2>&1
       msg_ok "Template re-downloaded"
     else
-      msg_warn "Template appears corrupted, but no online version exists. Skipping re-download."
+      msg_warn "Template appears corrupted, but no online version exists. 正在跳过 re-download."
     fi
   fi
 
@@ -5375,7 +5375,7 @@ create_lxc_container() {
 
   # First attempt (PCT_OPTIONS is a multi-line string, use it directly)
   if ! pct create "$CTID" "${TEMPLATE_STORAGE}:vztmpl/${TEMPLATE}" $PCT_OPTIONS >"$LOGFILE" 2>&1; then
-    msg_debug "Container creation failed on ${TEMPLATE_STORAGE}. Checking error..."
+    msg_debug "Container creation failed on ${TEMPLATE_STORAGE}. 正在检查 error..."
 
     # Check if template issue - retry with fresh download
     if grep -qiE 'unable to open|corrupt|invalid' "$LOGFILE"; then
@@ -5393,7 +5393,7 @@ create_lxc_container() {
         LOCAL_TEMPLATE_PATH="/var/lib/vz/template/cache/$TEMPLATE"
         if [[ ! -f "$LOCAL_TEMPLATE_PATH" ]]; then
           msg_ok "Trying local storage fallback"
-          msg_info "Downloading template to local"
+          msg_info "正在下载 template to local"
           pveam download local "$TEMPLATE" >/dev/null 2>&1
           msg_ok "Template downloaded to local"
         else

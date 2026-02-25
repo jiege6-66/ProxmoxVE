@@ -24,15 +24,15 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/adventurelog ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   ensure_dependencies memcached libmemcached-tools
   if check_for_gh_release "adventurelog" "seanmorley15/adventurelog"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop adventurelog-backend
     systemctl stop adventurelog-frontend
-    msg_ok "Services Stopped"
+    msg_ok "Services 已停止"
 
     msg_info "Backup Old Installation"
     cp -r /opt/adventurelog /opt/adventurelog-backup
@@ -46,7 +46,7 @@ function update_script() {
     $STD sudo -u postgres psql -d adventurelog_db -c "CREATE EXTENSION IF NOT EXISTS postgis;"
     msg_ok "PostgreSQL Extensions Ready"
 
-    msg_info "Updating ${APP}"
+    msg_info "正在更新 ${APP}"
     cp /opt/adventurelog-backup/backend/server/.env /opt/adventurelog/backend/server/.env
     cp -r /opt/adventurelog-backup/backend/server/media /opt/adventurelog/backend/server/media
     cd /opt/adventurelog/backend/server
@@ -66,12 +66,12 @@ function update_script() {
     rm -rf /opt/adventurelog-backup
     msg_ok "Updated ${APP}"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl daemon-reexec
     systemctl start adventurelog-backend
     systemctl start adventurelog-frontend
-    msg_ok "Services Started"
-    msg_ok "Updated successfully!"
+    msg_ok "Services 已启动"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -80,7 +80,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

@@ -13,7 +13,7 @@
   "config_path": "/opt/litellm/litellm.yaml",
   "website": "https://www.litellm.ai/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/litellm-light.webp",
-  "description": "LLM proxy to call 100+ LLMs in a unified interface & track spend, set budgets per virtual key/user",
+  "description": "LLM 代理,可在统一界面中调用 100 多个 LLM 并跟踪支出,为每个虚拟密钥/用户设置预算",
   "install_methods": [
     {
       "type": "default",

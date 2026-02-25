@@ -14,7 +14,7 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y \
   mediainfo \
   libmediainfo-dev \
@@ -26,14 +26,14 @@ $STD apt install -y \
   dtv-scan-tables \
   libc6-dev \
   ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setup NextPVR (Patience)"
+msg_info "设置 NextPVR (Patience)"
 cd /opt
 curl -fsSL "https://nextpvr.com/nextpvr-helper.deb" -o "/opt/nextpvr-helper.deb"
 $STD dpkg -i nextpvr-helper.deb
 rm -rf /opt/nextpvr-helper.deb
-msg_ok "Installed NextPVR"
+msg_ok "已安装 NextPVR"
 
 motd_ssh
 customize

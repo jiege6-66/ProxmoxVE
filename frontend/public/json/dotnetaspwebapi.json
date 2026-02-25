@@ -13,7 +13,7 @@
   "website": "https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-9.0&tabs=linux-ubuntu",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/asp-net-core.webp",
   "config_path": "",
-  "description": "Automatically setup a ASP.NET server up, as well as a FTP server so you can publish to this container from Visual Studio.",
+  "description": "自动设置 ASP.NET 服务器以及 FTP 服务器,以便你可以从 Visual Studio 发布到此容器。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "website": "https://tautulli.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tautulli.webp",
   "config_path": "/opt/Tautulli/config.ini",
-  "description": "Tautulli allows you to monitor and track your Plex Media Server usage, such as viewing statistics and analysis of your media library. It can be used to monitor user activity, get notifications about new media added to your library, and even generate reports on your media usage.",
+  "description": "Tautulli 允许您监控和跟踪 Plex Media Server 的使用情况,例如查看媒体库的统计数据和分析。它可用于监控用户活动,获取有关添加到库中的新媒体的通知,甚至生成媒体使用报告。",
   "install_methods": [
     {
       "type": "default",

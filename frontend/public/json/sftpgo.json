@@ -13,7 +13,7 @@
   "website": "https://github.com/drakkan/sftpgo",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/sftpgo.webp",
   "config_path": "/etc/sftpgo/sftpgo.json",
-  "description": "SFTPGo is a fully featured and highly configurable SFTP server with optional HTTP/S, FTP/S and WebDAV support. Several storage backends are supported: local filesystem, encrypted local filesystem, S3 (compatible) Object Storage, Google Cloud Storage, Azure Blob Storage, SFTP.",
+  "description": "SFTPGo 是一个功能齐全且高度可配置的 SFTP 服务器，可选支持 HTTP/S、FTP/S 和 WebDAV。支持多种存储后端：本地文件系统、加密本地文件系统、S3（兼容）对象存储、Google Cloud Storage、Azure Blob Storage、SFTP。",
   "install_methods": [
     {
       "type": "default",

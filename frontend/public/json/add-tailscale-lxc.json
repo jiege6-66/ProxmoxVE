@@ -13,7 +13,7 @@
   "website": "https://tailscale.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tailscale.webp",
   "config_path": "",
-  "description": "Tailscale is a software-defined networking solution that enables secure communication between devices over the internet. It creates a virtual private network (VPN) that enables devices to communicate with each other as if they were on the same local network. Tailscale works even when the devices are separated by firewalls or subnets, and provides secure and encrypted communication between devices. With Tailscale, users can connect devices, servers, computers, and cloud instances to create a secure network, making it easier to manage and control access to resources. Tailscale is designed to be easy to set up and use, providing a streamlined solution for secure communication between devices over the internet.",
+  "description": "Tailscale 是一种软件定义网络解决方案,可实现设备之间通过互联网进行安全通信。它创建一个虚拟专用网络 (VPN),使设备能够像在同一本地网络上一样相互通信。即使设备被防火墙或子网分隔,Tailscale 也能正常工作,并在设备之间提供安全加密的通信。使用 Tailscale,用户可以连接设备、服务器、计算机和云实例以创建安全网络,从而更轻松地管理和控制对资源的访问。Tailscale 设计简单易用,为设备之间通过互联网进行安全通信提供了简化的解决方案。",
   "install_methods": [
     {
       "type": "default",

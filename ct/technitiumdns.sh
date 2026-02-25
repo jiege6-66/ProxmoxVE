@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /etc/dns ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if [[ -f /etc/systemd/system/dns.service ]]; then
@@ -47,16 +47,16 @@ function update_script() {
 
   RELEASE=$(curl -fsSL https://technitium.com/dns/ | grep -oP 'Version \K[\d.]+')
   if [[ ! -f ~/.technitium || ${RELEASE} != "$(cat ~/.technitium)" ]]; then
-    msg_info "Updating Technitium DNS"
+    msg_info "正在更新 Technitium DNS"
     curl -fsSL "https://download.technitium.com/dns/DnsServerPortable.tar.gz" -o /opt/DnsServerPortable.tar.gz
     $STD tar zxvf /opt/DnsServerPortable.tar.gz -C /opt/technitium/dns/
     rm -f /opt/DnsServerPortable.tar.gz
     echo "${RELEASE}" >~/.technitium
     systemctl restart technitium
     msg_ok "Updated Technitium DNS"
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required.  Technitium DNS is already at v${RELEASE}."
+    msg_ok "无需更新。  Technitium DNS is already at v${RELEASE}."
   fi
   exit
 }
@@ -65,7 +65,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5380${CL}"

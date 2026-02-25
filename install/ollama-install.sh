@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   pkg-config \
   zstd
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setting up Intel® Repositories"
+msg_info "正在设置 Intel® Repositories"
 mkdir -p /usr/share/keyrings
 curl -fsSL https://repositories.intel.com/gpu/intel-graphics.key | gpg --dearmor -o /usr/share/keyrings/intel-graphics.gpg
 cat <<EOF >/etc/apt/sources.list.d/intel-gpu.sources
@@ -44,26 +44,26 @@ msg_ok "Set up Intel® Repositories"
 
 setup_hwaccel
 
-msg_info "Installing Intel® Level Zero"
+msg_info "正在安装 Intel® Level Zero"
 # Debian 13+ has newer Level Zero packages in system repos that conflict with Intel repo packages
 if is_debian && [[ "$(get_os_version_major)" -ge 13 ]]; then
   # Use system packages on Debian 13+ (avoid conflicts with libze1)
   $STD apt -y install libze1 libze-dev intel-level-zero-gpu 2>/dev/null || {
-    msg_warn "Failed to install some Level Zero packages, continuing anyway"
+    msg_warn "无法 install some Level Zero packages, continuing anyway"
   }
 else
   # Use Intel repository packages for older systems
   $STD apt -y install intel-level-zero-gpu level-zero level-zero-dev 2>/dev/null || {
-    msg_warn "Failed to install Intel Level Zero packages, continuing anyway"
+    msg_warn "无法 install Intel Level Zero packages, continuing anyway"
   }
 fi
-msg_ok "Installed Intel® Level Zero"
+msg_ok "已安装 Intel® Level Zero"
 
-msg_info "Installing Intel® oneAPI Base Toolkit (Patience)"
+msg_info "正在安装 Intel® oneAPI Base Toolkit (Patience)"
 $STD apt install -y --no-install-recommends intel-basekit-2024.1
-msg_ok "Installed Intel® oneAPI Base Toolkit"
+msg_ok "已安装 Intel® oneAPI Base Toolkit"
 
-msg_info "Installing Ollama (Patience)"
+msg_info "正在安装 Ollama (Patience)"
 RELEASE=$(curl -fsSL https://api.github.com/repos/ollama/ollama/releases/latest | grep "tag_name" | awk -F '"' '{print $4}')
 OLLAMA_INSTALL_DIR="/usr/local/lib/ollama"
 BINDIR="/usr/local/bin"
@@ -75,7 +75,7 @@ if curl -fL# -C - -o "$TMP_TAR" "$OLLAMA_URL"; then
   if tar --zstd -xf "$TMP_TAR" -C "$OLLAMA_INSTALL_DIR"; then
     ln -sf "$OLLAMA_INSTALL_DIR/bin/ollama" "$BINDIR/ollama"
     echo "${RELEASE}" >/opt/Ollama_version.txt
-    msg_ok "Installed Ollama ${RELEASE}"
+    msg_ok "已安装 Ollama ${RELEASE}"
   else
     msg_error "Extraction failed – archive corrupt or incomplete"
     exit 1
@@ -85,16 +85,16 @@ else
   exit 1
 fi
 
-msg_info "Creating ollama User and Group"
+msg_info "正在创建 ollama User and Group"
 if ! id ollama >/dev/null 2>&1; then
   useradd -r -s /usr/sbin/nologin -U -m -d /usr/share/ollama ollama
 fi
 $STD usermod -aG render ollama || true
 $STD usermod -aG video ollama || true
 $STD usermod -aG ollama $(id -u -n)
-msg_ok "Created ollama User and adjusted Groups"
+msg_ok "已创建 ollama User and adjusted Groups"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/ollama.service
 [Unit]
 Description=Ollama Service
@@ -116,7 +116,7 @@ RestartSec=3
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now ollama
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

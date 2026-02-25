@@ -14,7 +14,7 @@
   "website": "https://docs.wizarr.dev/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wizarr.webp",
   "config_path": "/opt/wizarr/.env",
-  "description": "Wizarr is an automatic user invitation system for Plex, Jellyfin and Emby. Create a unique link and share it to a user and they will automatically be invited to your media Server",
+  "description": "Wizarr 是一个面向 Plex、Jellyfin 和 Emby 的自动用户邀请系统。创建一个唯一链接并分享给用户,他们将自动被邀请到您的媒体服务器。",
   "install_methods": [
     {
       "type": "default",

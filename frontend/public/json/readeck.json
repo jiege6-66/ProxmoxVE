@@ -13,7 +13,7 @@
   "website": "https://readeck.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/readeck.webp",
   "config_path": "/opt/readeck/config.toml",
-  "description": "Readeck helps you keep all that web content you want to revisit in an hour, tomorrow, or in 20 years.",
+  "description": "Readeck 帮助您保存所有想在一小时后、明天或 20 年后重新访问的网页内容。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "website": "https://snipeitapp.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/snipe-it.webp",
   "config_path": "/opt/snipe-it/.env",
-  "description": "This is a FOSS project for asset management in IT Operations. Knowing who has which laptop, when it was purchased in order to depreciate it correctly, handling software licenses, etc.",
+  "description": "这是一个用于 IT 运营中资产管理的自由开源项目。了解谁拥有哪台笔记本电脑、何时购买以便正确折旧、处理软件许可证等。",
   "install_methods": [
     {
       "type": "default",

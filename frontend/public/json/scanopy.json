@@ -13,7 +13,7 @@
   "config_path": "/opt/scanopy/.env, OIDC: /opt/scanopy/oidc.toml",
   "website": "https://scanopy.net",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/scanopy.webp",
-  "description": "Automatically discover and visually document network infrastructure",
+  "description": "自动发现并可视化记录网络基础设施",
   "install_methods": [
     {
       "type": "default",

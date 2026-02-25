@@ -108,7 +108,7 @@ export default function JSONGenerator() {
   useEffect(() => {
     if (!isValid && currentTab === "preview") {
       setCurrentTab("json");
-      toast.error("Switched to JSON tab due to invalid configuration.");
+      toast.error("由于配置无效，已切换到 JSON 标签页。");
     }
   }, [isValid, currentTab]);
 
@@ -145,11 +145,11 @@ export default function JSONGenerator() {
   }, []);
 
   const handleCopy = useCallback(() => {
-    if (!isValid) toast.warning("JSON schema is invalid. Copying anyway.");
+    if (!isValid) toast.warning("JSON 架构无效。仍然复制。");
     navigator.clipboard.writeText(JSON.stringify(script, null, 2));
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
-    if (isValid) toast.success("Copied metadata to clipboard");
+    if (isValid) toast.success("已复制元数据到剪贴板");
   }, [script]);
 
   const importScript = (script: Script) => {
@@ -158,16 +158,16 @@ export default function JSONGenerator() {
       if (!result.success) {
         setIsValid(false);
         setZodErrors(result.error);
-        toast.error("Imported JSON is invalid according to the schema.");
+        toast.error("导入的 JSON 不符合架构。");
         return;
       }
 
       setScript(result.data);
       setIsValid(true);
       setZodErrors(null);
-      toast.success("Imported JSON successfully");
+      toast.success("成功导入 JSON");
     } catch (error) {
-      toast.error("Failed to read or parse the JSON file.");
+      toast.error("读取或解析 JSON 文件失败。");
     }
 
   }
@@ -188,9 +188,9 @@ export default function JSONGenerator() {
           const content = event.target?.result as string;
           const parsed = JSON.parse(content);
           importScript(parsed);
-          toast.success("Imported JSON successfully");
+          toast.success("成功导入 JSON");
         } catch (error) {
-          toast.error("Failed to read the JSON file.");
+          toast.error("读取 JSON 文件失败。");
         }
       };
       reader.readAsText(file);
@@ -201,7 +201,7 @@ export default function JSONGenerator() {
 
   const handleDownload = useCallback(() => {
     if (isValid === false) {
-      toast.error("Cannot download invalid JSON");
+      toast.error("无法下载无效的 JSON");
       return;
     }
     const jsonString = JSON.stringify(script, null, 2);
@@ -233,11 +233,11 @@ export default function JSONGenerator() {
   const validationAlert = useMemo(
     () => (
       <Alert className={cn("text-black", isValid ? "bg-green-100" : "bg-red-100")}>
-        <AlertTitle>{isValid ? "Valid JSON" : "Invalid JSON"}</AlertTitle>
+        <AlertTitle>{isValid ? "有效的 JSON" : "无效的 JSON"}</AlertTitle>
         <AlertDescription>
           {isValid
-            ? "The current JSON is valid according to the schema."
-            : "The current JSON does not match the required schema."}
+            ? "当前 JSON 符合架构要求。"
+            : "当前 JSON 不符合所需架构。"}
         </AlertDescription>
         {zodErrors && (
           <div className="mt-2 space-y-1">
@@ -257,28 +257,28 @@ export default function JSONGenerator() {
     <div className="flex h-screen mt-20">
       <div className="w-1/2 p-4 overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">JSON Generator</h2>
+          <h2 className="text-2xl font-bold">JSON 生成器</h2>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button>Import</Button>
+              <Button>导入</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-52" align="start">
               <DropdownMenuGroup>
-                <DropdownMenuItem onSelect={handleFileImport}>Import local JSON file</DropdownMenuItem>
+                <DropdownMenuItem onSelect={handleFileImport}>导入本地 JSON 文件</DropdownMenuItem>
                 <Dialog
                   open={isImportDialogOpen}
                   onOpenChange={setIsImportDialogOpen}
                 >
                   <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                      Import existing script
+                      导入现有脚本
                     </DropdownMenuItem>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md w-full">
                     <DialogHeader>
-                      <DialogTitle>Import existing script</DialogTitle>
+                      <DialogTitle>导入现有脚本</DialogTitle>
                       <DialogDescription>
-                        Select one of the puplished scripts to import its metadata.
+                        选择一个已发布的脚本以导入其元数据。
                       </DialogDescription>
 
                     </DialogHeader>
@@ -289,7 +289,7 @@ export default function JSONGenerator() {
                           onValueChange={setSelectedCategory}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Category" />
+                            <SelectValue placeholder="分类" />
                           </SelectTrigger>
                           <SelectContent>
                             {categories.map((category) => (
@@ -300,17 +300,17 @@ export default function JSONGenerator() {
                           </SelectContent>
                         </Select>
                         <Input
-                          placeholder="Search for a script..."
+                          placeholder="搜索脚本..."
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                         />
                         {!selectedCategory && !searchQuery ? (
                           <p className="text-muted-foreground text-sm text-center">
-                            Select a category or search for a script
+                            选择一个分类或搜索脚本
                           </p>
                         ) : scripts.length === 0 ? (
                           <p className="text-muted-foreground text-sm text-center">
-                            No scripts found
+                            未找到脚本
                           </p>
                         ) : (
                           <div className="grid grid-cols-3 auto-rows-min h-64 overflow-y-auto gap-4">
@@ -348,13 +348,13 @@ export default function JSONGenerator() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label>
-                Name <span className="text-red-500">*</span>
+                名称 <span className="text-red-500">*</span>
               </Label>
-              <Input placeholder="Example" value={script.name} onChange={(e) => updateScript("name", e.target.value)} />
+              <Input placeholder="示例" value={script.name} onChange={(e) => updateScript("name", e.target.value)} />
             </div>
             <div>
               <Label>
-                Slug <span className="text-red-500">*</span>
+                标识符 <span className="text-red-500">*</span>
               </Label>
               <Input placeholder="example" value={script.slug} onChange={(e) => updateScript("slug", e.target.value)} />
             </div>
@@ -364,25 +364,25 @@ export default function JSONGenerator() {
               Logo
             </Label>
             <Input
-              placeholder="Full logo URL"
+              placeholder="完整 logo URL"
               value={script.logo || ""}
               onChange={(e) => updateScript("logo", e.target.value || null)}
             />
           </div>
           <div>
-            <Label>Config Path</Label>
+            <Label>配置路径</Label>
             <Input
-              placeholder="Path to config file"
+              placeholder="配置文件路径"
               value={script.config_path || ""}
               onChange={(e) => updateScript("config_path", e.target.value || "")}
             />
           </div>
           <div>
             <Label>
-              Description <span className="text-red-500">*</span>
+              描述 <span className="text-red-500">*</span>
             </Label>
             <Textarea
-              placeholder="Example"
+              placeholder="示例"
               value={script.description}
               onChange={(e) => updateScript("description", e.target.value)}
             />
@@ -391,7 +391,7 @@ export default function JSONGenerator() {
           <div className="flex gap-2">
             <div className="flex flex-col gap-2 w-full">
               <Label>
-                Date Created <span className="text-red-500">*</span>
+                创建日期 <span className="text-red-500">*</span>
               </Label>
               <Popover>
                 <PopoverTrigger asChild className="flex-1">
@@ -399,7 +399,7 @@ export default function JSONGenerator() {
                     variant="outline"
                     className={cn("pl-3 text-left font-normal w-full", !script.date_created && "text-muted-foreground")}
                   >
-                    {formattedDate || <span>Pick a date</span>}
+                    {formattedDate || <span>选择日期</span>}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -414,16 +414,16 @@ export default function JSONGenerator() {
               </Popover>
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <Label>Type</Label>
+              <Label>类型</Label>
               <Select value={script.type} onValueChange={(value) => updateScript("type", value)}>
                 <SelectTrigger className="flex-1">
-                  <SelectValue placeholder="Type" />
+                  <SelectValue placeholder="类型" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ct">LXC Container</SelectItem>
-                  <SelectItem value="vm">Virtual Machine</SelectItem>
-                  <SelectItem value="pve">PVE-Tool</SelectItem>
-                  <SelectItem value="addon">Add-On</SelectItem>
+                  <SelectItem value="ct">LXC 容器</SelectItem>
+                  <SelectItem value="vm">虚拟机</SelectItem>
+                  <SelectItem value="pve">PVE 工具</SelectItem>
+                  <SelectItem value="addon">附加组件</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -431,54 +431,54 @@ export default function JSONGenerator() {
           <div className="w-full flex gap-5">
             <div className="flex items-center space-x-2">
               <Switch checked={script.updateable} onCheckedChange={(checked) => updateScript("updateable", checked)} />
-              <label>Updateable</label>
+              <label>可更新</label>
             </div>
             <div className="flex items-center space-x-2">
               <Switch checked={script.privileged} onCheckedChange={(checked) => updateScript("privileged", checked)} />
-              <label>Privileged</label>
+              <label>特权模式</label>
             </div>
             <div className="flex items-center space-x-2">
               <Switch
                 checked={script.disable || false}
                 onCheckedChange={(checked) => updateScript("disable", checked)}
               />
-              <label>Disabled</label>
+              <label>已禁用</label>
             </div>
           </div>
           {script.disable && (
             <div>
               <Label>
-                Disable Description <span className="text-red-500">*</span>
+                禁用说明 <span className="text-red-500">*</span>
               </Label>
               <Textarea
-                placeholder="Explain why this script is disabled..."
+                placeholder="解释为什么禁用此脚本..."
                 value={script.disable_description || ""}
                 onChange={(e) => updateScript("disable_description", e.target.value)}
               />
             </div>
           )}
           <Input
-            placeholder="Interface Port"
+            placeholder="接口端口"
             type="number"
             value={script.interface_port || ""}
             onChange={(e) => updateScript("interface_port", e.target.value ? Number(e.target.value) : null)}
           />
           <div className="flex gap-2">
             <Input
-              placeholder="Website URL"
+              placeholder="网站 URL"
               value={script.website || ""}
               onChange={(e) => updateScript("website", e.target.value || null)}
             />
             <Input
-              placeholder="Documentation URL"
+              placeholder="文档 URL"
               value={script.documentation || ""}
               onChange={(e) => updateScript("documentation", e.target.value || null)}
             />
           </div>
           <InstallMethod script={script} setScript={setScript} setIsValid={setIsValid} setZodErrors={setZodErrors} />
-          <h3 className="text-xl font-semibold">Default Credentials</h3>
+          <h3 className="text-xl font-semibold">默认凭据</h3>
           <Input
-            placeholder="Username"
+            placeholder="用户名"
             value={script.default_credentials.username || ""}
             onChange={(e) =>
               updateScript("default_credentials", {
@@ -488,7 +488,7 @@ export default function JSONGenerator() {
             }
           />
           <Input
-            placeholder="Password"
+            placeholder="密码"
             value={script.default_credentials.password || ""}
             onChange={(e) =>
               updateScript("default_credentials", {
@@ -509,7 +509,7 @@ export default function JSONGenerator() {
         >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="json">JSON</TabsTrigger>
-            <TabsTrigger disabled={!isValid} value="preview">Preview</TabsTrigger>
+            <TabsTrigger disabled={!isValid} value="preview">预览</TabsTrigger>
           </TabsList>
           <TabsContent value="json" className="h-full w-full">
             {validationAlert}

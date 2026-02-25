@@ -13,7 +13,7 @@
   "website": "https://teamspeak.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/teamspeak-light.webp",
   "config_path": "",
-  "description": "TeamSpeak is a voice over IP (VoIP) application, primarily used by gamers and teams to chat in real time on dedicated servers. It delivers crystal‑clear, low‑latency voice communication.",
+  "description": "TeamSpeak 是一个语音通话 (VoIP) 应用程序,主要供游戏玩家和团队在专用服务器上实时聊天使用。它提供清晰、低延迟的语音通信。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "documentation": "https://wanderer.to/welcome",
   "website": "https://wanderer.to",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wanderer-light.webp",
-  "description": "Wanderer is a decentralized, self-hosted trail database. You can upload your recorded GPS tracks or create new ones and add various metadata to build an easily searchable catalogue.",
+  "description": "Wanderer 是一个去中心化的自托管路径数据库。您可以上传录制的 GPS 轨迹或创建新轨迹，并添加各种元数据以构建易于搜索的目录。",
   "install_methods": [
     {
       "type": "default",

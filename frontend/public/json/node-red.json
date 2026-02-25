@@ -13,7 +13,7 @@
   "website": "https://nodered.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/node-red.webp",
   "config_path": "~/.node-red/settings.js",
-  "description": "Node-RED is a visual programming tool that allows developers and non-developers alike to easily wire together hardware devices, APIs, and online services to create custom applications. It provides a visual interface for building workflows, making it easy to create and modify complex integrations without having to write any code. Node-RED is used in a wide range of applications, from simple automations to complex integrations, and is known for its simplicity, versatility, and ease of use.",
+  "description": "Node-RED 是一个可视化编程工具，允许开发人员和非开发人员轻松地将硬件设备、API 和在线服务连接在一起以创建自定义应用程序。它提供了一个可视化界面来构建工作流，使创建和修改复杂集成变得容易，而无需编写任何代码。Node-RED 用于广泛的应用，从简单的自动化到复杂的集成，以其简单性、多功能性和易用性而闻名。",
   "install_methods": [
     {
       "type": "default",

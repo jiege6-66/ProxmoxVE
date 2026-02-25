@@ -24,13 +24,13 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/esphomeDashboard.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Stopping Service"
+  msg_info "正在停止 Service"
   systemctl stop esphomeDashboard
-  msg_ok "Stopped Service"
+  msg_ok "已停止 Service"
 
   VENV_PATH="/opt/esphome/.venv"
   ESPHOME_BIN="${VENV_PATH}/bin/esphome"
@@ -38,7 +38,7 @@ function update_script() {
 
   if [[ ! -d "$VENV_PATH" || ! -x "$ESPHOME_BIN" ]]; then
     PYTHON_VERSION="3.12" setup_uv
-    msg_info "Migrating to uv/venv"
+    msg_info "正在迁移 to uv/venv"
     rm -rf "$VENV_PATH"
     mkdir -p /opt/esphome
     cd /opt/esphome
@@ -46,16 +46,16 @@ function update_script() {
     $STD "$VENV_PATH/bin/python" -m ensurepip --upgrade
     $STD "$VENV_PATH/bin/python" -m pip install --upgrade pip
     $STD "$VENV_PATH/bin/python" -m pip install esphome tornado esptool
-    msg_ok "Migrated to uv/venv"
+    msg_ok "已迁移 to uv/venv"
   else
-    msg_info "Updating ESPHome"
+    msg_info "正在更新 ESPHome"
     PYTHON_VERSION="3.12" setup_uv
     $STD "$VENV_PATH/bin/python" -m pip install --upgrade esphome tornado esptool
     msg_ok "Updated ESPHome"
   fi
   SERVICE_FILE="/etc/systemd/system/esphomeDashboard.service"
   if ! grep -q "${VENV_PATH}/bin/esphome" "$SERVICE_FILE"; then
-    msg_info "Updating systemd service"
+    msg_info "正在更新 systemd service"
     cat <<EOF >"$SERVICE_FILE"
 [Unit]
 Description=ESPHome Dashboard
@@ -78,10 +78,10 @@ EOF
   ln -s /opt/esphome/.venv/bin/esphome /usr/local/bin/esphome
   msg_ok "Linked esphome binary"
 
-  msg_info "Starting Service"
+  msg_info "正在启动 Service"
   systemctl start esphomeDashboard
-  msg_ok "Started Service"
-  msg_ok "Updated successfully!"
+  msg_ok "已启动 Service"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -89,7 +89,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:6052${CL}"

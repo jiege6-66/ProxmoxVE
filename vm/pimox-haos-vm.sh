@@ -23,7 +23,7 @@ EOF
 }
 clear
 header_info
-echo -e "\n Loading..."
+echo -e "\n 正在加载..."
 GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
 RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)"
 VERSIONS=(stable beta dev)
@@ -240,7 +240,7 @@ function default_settings() {
   MTU=""
   echo -e "${DGN}Start VM when completed: ${BGN}yes${CL}"
   START_VM="yes"
-  echo -e "${BL}Creating a HAOS VM using the above default settings${CL}"
+  echo -e "${BL}正在创建 a HAOS VM using the above default settings${CL}"
 }
 function advanced_settings() {
   METHOD="advanced"
@@ -343,7 +343,7 @@ function advanced_settings() {
     START_VM="no"
   fi
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create HAOS ${BRANCH} VM?" --no-button Do-Over 10 58); then
-    echo -e "${RD}Creating a HAOS VM using the above advanced settings${CL}"
+    echo -e "${RD}正在创建 a HAOS VM using the above advanced settings${CL}"
   else
     clear
     header_info
@@ -400,8 +400,8 @@ msg_ok "${CL}${BL}${URL}${CL}"
 curl -f#SL -o "$(basename "$URL")" "$URL"
 echo -en "\e[1A\e[0K"
 FILE=$(basename $URL)
-msg_ok "Downloaded ${CL}${BL}haos_generic-aarch64-${BRANCH}.qcow2.xz${CL}"
-msg_info "Extracting Disk Image"
+msg_ok "已下载 ${CL}${BL}haos_generic-aarch64-${BRANCH}.qcow2.xz${CL}"
+msg_info "正在解压 Disk Image"
 unxz $FILE
 STORAGE_TYPE=$(pvesm status -storage $STORAGE | awk 'NR>1 {print $2}')
 case $STORAGE_TYPE in
@@ -421,8 +421,8 @@ for i in {0,1}; do
   eval DISK${i}=vm-${VMID}-disk-${i}${DISK_EXT:-}
   eval DISK${i}_REF=${STORAGE}:${DISK_REF:-}${!disk}
 done
-msg_ok "Extracted Disk Image"
-msg_info "Creating HAOS VM"
+msg_ok "已解压 Disk Image"
+msg_info "正在创建 HAOS VM"
 qm create $VMID -bios ovmf -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
   -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
 pvesm alloc $STORAGE $VMID $DISK0 64M 1>&/dev/null
@@ -472,11 +472,11 @@ else
   qm resize $VMID scsi0 ${DEFAULT_DISK_SIZE} >/dev/null
 fi
 
-msg_ok "Created HAOS VM ${CL}${BL}(${HN})"
+msg_ok "已创建 HAOS VM ${CL}${BL}(${HN})"
 if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Home Assistant OS VM"
+  msg_info "正在启动 Home Assistant OS VM"
   qm start $VMID
-  msg_ok "Started Home Assistant OS VM"
+  msg_ok "已启动 Home Assistant OS VM"
 fi
 post_update_to_api "done" "none"
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"

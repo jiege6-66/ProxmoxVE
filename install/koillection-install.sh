@@ -21,7 +21,7 @@ PG_DB_NAME="koillection" PG_DB_USER="koillection" setup_postgresql_db
 
 fetch_and_deploy_gh_release "koillection" "benjaminjonard/koillection" "tarball"
 
-msg_info "Configuring Koillection"
+msg_info "正在配置 Koillection"
 cd /opt/koillection
 cp /opt/koillection/.env /opt/koillection/.env.local
 APP_SECRET=$(openssl rand -base64 32)
@@ -43,9 +43,9 @@ $STD yarn install
 $STD yarn build
 mkdir -p /opt/koillection/public/uploads
 chown -R www-data:www-data /opt/koillection/public/uploads
-msg_ok "Configured Koillection"
+msg_ok "已配置 Koillection"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/koillection.conf
 <VirtualHost *:80>
     ServerName koillection
@@ -69,7 +69,7 @@ $STD a2ensite koillection
 $STD a2enmod rewrite
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

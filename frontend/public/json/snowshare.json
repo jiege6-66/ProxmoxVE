@@ -13,7 +13,7 @@
   "config_path": "/opt/snowshare.env",
   "website": "https://github.com/TuroYT/snowshare",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/snowshare.png",
-  "description": "A modern, secure file and link sharing platform built with Next.js, Prisma, and NextAuth. Share URLs, code snippets, and files with customizable expiration, privacy, and QR codes.",
+  "description": "一个使用 Next.js、Prisma 和 NextAuth 构建的现代、安全的文件和链接共享平台。分享 URL、代码片段和文件，支持自定义过期时间、隐私设置和二维码。",
   "install_methods": [
     {
       "type": "default",

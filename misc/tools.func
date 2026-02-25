@@ -119,7 +119,7 @@ cleanup_legacy_install() {
   case "$tool_name" in
   nodejs | node)
     if [[ -d "$HOME/.nvm" ]]; then
-      msg_info "Removing legacy nvm installation"
+      msg_info "正在移除 legacy nvm installation"
       rm -rf "$HOME/.nvm" "$HOME/.npm" "$HOME/.bower" "$HOME/.config/yarn" 2>/dev/null || true
       sed -i '/NVM_DIR/d' "$HOME/.bashrc" "$HOME/.profile" 2>/dev/null || true
       msg_ok "Legacy nvm installation removed"
@@ -127,7 +127,7 @@ cleanup_legacy_install() {
     ;;
   ruby)
     if [[ -d "$HOME/.rbenv" ]]; then
-      msg_info "Removing legacy rbenv installation"
+      msg_info "正在移除 legacy rbenv installation"
       rm -rf "$HOME/.rbenv" 2>/dev/null || true
       sed -i '/rbenv/d' "$HOME/.bashrc" "$HOME/.profile" 2>/dev/null || true
       msg_ok "Legacy rbenv installation removed"
@@ -135,7 +135,7 @@ cleanup_legacy_install() {
     ;;
   rust)
     if [[ -d "$HOME/.cargo" ]] || [[ -d "$HOME/.rustup" ]]; then
-      msg_info "Removing legacy rustup installation"
+      msg_info "正在移除 legacy rustup installation"
       rm -rf "$HOME/.cargo" "$HOME/.rustup" 2>/dev/null || true
       sed -i '/cargo/d' "$HOME/.bashrc" "$HOME/.profile" 2>/dev/null || true
       msg_ok "Legacy rustup installation removed"
@@ -143,7 +143,7 @@ cleanup_legacy_install() {
     ;;
   go | golang)
     if [[ -d "$HOME/go" ]]; then
-      msg_info "Removing legacy Go workspace"
+      msg_info "正在移除 legacy Go workspace"
       # Keep user code, just remove GOPATH env
       sed -i '/GOPATH/d' "$HOME/.bashrc" "$HOME/.profile" 2>/dev/null || true
       msg_ok "Legacy Go workspace cleaned"
@@ -307,7 +307,7 @@ is_tool_installed() {
   fi
 
   echo "$installed_version"
-  return 0 # Installed and version matches (if specified)
+  return 0 # 已安装 and version matches (if specified)
 }
 
 # ------------------------------------------------------------------------------
@@ -440,7 +440,7 @@ manage_tool_repository() {
     distro_codename=$(awk -F= '/^VERSION_CODENAME=/{print $2}' /etc/os-release)
     suite=$(get_fallback_suite "$distro_id" "$distro_codename" "$repo_url/$distro_id")
 
-    # Setup new repository using deb822 format
+    # 设置 new repository using deb822 format
     setup_deb822_repo \
       "mariadb" \
       "$gpg_key_url" \
@@ -462,12 +462,12 @@ manage_tool_repository() {
     # Import GPG key
     mkdir -p /etc/apt/keyrings
     if ! curl -fsSL "$gpg_key_url" | gpg --dearmor --yes -o "/etc/apt/keyrings/mongodb-server-${version}.gpg" 2>/dev/null; then
-      msg_error "Failed to download MongoDB GPG key"
+      msg_error "无法 download MongoDB GPG key"
       return 1
     fi
     chmod 644 "/etc/apt/keyrings/mongodb-server-${version}.gpg"
 
-    # Setup repository
+    # 设置 repository
     local distro_codename
     distro_codename=$(awk -F= '/^VERSION_CODENAME=/{print $2}' /etc/os-release)
 
@@ -547,7 +547,7 @@ EOF
 
     # Download GPG key from NodeSource
     curl -fsSL "$gpg_key_url" | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg || {
-      msg_error "Failed to import NodeSource GPG key"
+      msg_error "无法 import NodeSource GPG key"
       return 1
     }
 
@@ -572,18 +572,18 @@ EOF
 
     # Download and install keyring
     curl -fsSLo /tmp/debsuryorg-archive-keyring.deb "$gpg_key_url" || {
-      msg_error "Failed to download PHP keyring"
+      msg_error "无法 download PHP keyring"
       return 1
     }
     # Don't use /dev/null redirection for dpkg as it may use background processes
     dpkg -i /tmp/debsuryorg-archive-keyring.deb >>"$(get_active_logfile)" 2>&1 || {
-      msg_error "Failed to install PHP keyring"
+      msg_error "无法 install PHP keyring"
       rm -f /tmp/debsuryorg-archive-keyring.deb
       return 1
     }
     rm -f /tmp/debsuryorg-archive-keyring.deb
 
-    # Setup repository
+    # 设置 repository
     local distro_codename
     distro_codename=$(awk -F= '/^VERSION_CODENAME=/{print $2}' /etc/os-release)
     cat <<EOF >/etc/apt/sources.list.d/php.sources
@@ -610,11 +610,11 @@ EOF
 
     # Import PostgreSQL key
     curl -fsSL "$gpg_key_url" | gpg --dearmor -o /etc/apt/keyrings/postgresql.gpg || {
-      msg_error "Failed to import PostgreSQL GPG key"
+      msg_error "无法 import PostgreSQL GPG key"
       return 1
     }
 
-    # Setup repository
+    # 设置 repository
     local distro_codename
     distro_codename=$(awk -F= '/^VERSION_CODENAME=/{print $2}' /etc/os-release)
     cat <<EOF >/etc/apt/sources.list.d/postgresql.sources
@@ -660,7 +660,7 @@ upgrade_package() {
   fi
 
   $STD apt install --only-upgrade -y "$package" || {
-    msg_warn "Failed to upgrade $package"
+    msg_warn "无法 upgrade $package"
     return 1
   }
 }
@@ -712,7 +712,7 @@ ensure_dependencies() {
     fi
 
     $STD apt install -y "${missing[@]}" || {
-      msg_error "Failed to install dependencies: ${missing[*]}"
+      msg_error "无法 install dependencies: ${missing[*]}"
       return 1
     }
   fi
@@ -805,7 +805,7 @@ github_api_call() {
       return 1
       ;;
     404)
-      msg_error "GitHub API endpoint not found: $url"
+      msg_error "GitHub API endpoint 未找到: $url"
       return 1
       ;;
     *)
@@ -853,7 +853,7 @@ codeberg_api_call() {
       return 1
       ;;
     404)
-      msg_error "Codeberg API endpoint not found: $url"
+      msg_error "Codeberg API endpoint 未找到: $url"
       return 1
       ;;
     *)
@@ -950,7 +950,7 @@ download_file() {
     fi
   done
 
-  msg_error "Failed to download: $url"
+  msg_error "无法 download: $url"
   return 1
 }
 
@@ -1291,7 +1291,7 @@ setup_deb822_repo() {
   cleanup_orphaned_sources
 
   mkdir -p /etc/apt/keyrings || {
-    msg_error "Failed to create /etc/apt/keyrings"
+    msg_error "无法 create /etc/apt/keyrings"
     return 1
   }
 
@@ -1299,7 +1299,7 @@ setup_deb822_repo() {
   local tmp_gpg
   tmp_gpg=$(mktemp) || return 1
   curl -fsSL "$gpg_url" -o "$tmp_gpg" || {
-    msg_error "Failed to download GPG key for ${name}"
+    msg_error "无法 download GPG key for ${name}"
     rm -f "$tmp_gpg"
     return 1
   }
@@ -1307,14 +1307,14 @@ setup_deb822_repo() {
   if grep -q "BEGIN PGP" "$tmp_gpg" 2>/dev/null; then
     # ASCII-armored — dearmor to binary
     gpg --dearmor --yes -o "/etc/apt/keyrings/${name}.gpg" <"$tmp_gpg" || {
-      msg_error "Failed to dearmor GPG key for ${name}"
+      msg_error "无法 dearmor GPG key for ${name}"
       rm -f "$tmp_gpg"
       return 1
     }
   else
     # Already in binary GPG format — copy directly
     cp "$tmp_gpg" "/etc/apt/keyrings/${name}.gpg" || {
-      msg_error "Failed to install GPG key for ${name}"
+      msg_error "无法 install GPG key for ${name}"
       rm -f "$tmp_gpg"
       return 1
     }
@@ -1333,7 +1333,7 @@ setup_deb822_repo() {
     fi
     [[ -n "$architectures" ]] && echo "Architectures: $architectures"
     echo "Signed-By: /etc/apt/keyrings/${name}.gpg"
-    [[ -n "$enabled" ]] && echo "Enabled: $enabled"
+    [[ -n "$enabled" ]] && echo "已启用: $enabled"
   } >/etc/apt/sources.list.d/${name}.sources
 
   $STD apt update
@@ -1365,7 +1365,7 @@ safe_service_restart() {
   fi
 
   if ! systemctl is-active --quiet "$service"; then
-    msg_error "Failed to start $service"
+    msg_error "无法 start $service"
     systemctl status "$service" --no-pager
     return 1
   fi
@@ -1383,7 +1383,7 @@ enable_and_start_service() {
   fi
 
   if ! systemctl start "$service" &>/dev/null; then
-    msg_error "Failed to start $service"
+    msg_error "无法 start $service"
     systemctl status "$service" --no-pager
     return 1
   fi
@@ -1557,7 +1557,7 @@ check_for_gh_release() {
   app_lc="$(echo "${app,,}" | tr -d ' ')"
   local current_file="$HOME/.${app_lc}"
 
-  msg_info "Checking for update: ${app}"
+  msg_info "正在检查 for update: ${app}"
 
   # DNS check
   if ! getent hosts api.github.com >/dev/null 2>&1; then
@@ -1647,7 +1647,7 @@ check_for_gh_release() {
   fi
   current="${current#v}"
 
-  # Pinned version handling
+  # 已固定 version handling
   if [[ -n "$pinned_version_in" ]]; then
     local pin_clean="${pinned_version_in#v}"
     local match_raw=""
@@ -1659,7 +1659,7 @@ check_for_gh_release() {
     done
 
     if [[ -z "$match_raw" ]]; then
-      msg_error "Pinned version ${pinned_version_in} not found upstream"
+      msg_error "已固定 version ${pinned_version_in} 未找到 upstream"
       return 1
     fi
 
@@ -1711,7 +1711,7 @@ check_for_codeberg_release() {
   local app_lc="${app,,}"
   local current_file="$HOME/.${app_lc}"
 
-  msg_info "Checking for update: ${app}"
+  msg_info "正在检查 for update: ${app}"
 
   # DNS check
   if ! getent hosts codeberg.org >/dev/null 2>&1; then
@@ -1760,7 +1760,7 @@ check_for_codeberg_release() {
   fi
   current="${current#v}"
 
-  # Pinned version handling
+  # 已固定 version handling
   if [[ -n "$pinned_version_in" ]]; then
     local pin_clean="${pinned_version_in#v}"
     local match_raw=""
@@ -1772,7 +1772,7 @@ check_for_codeberg_release() {
     done
 
     if [[ -z "$match_raw" ]]; then
-      msg_error "Pinned version ${pinned_version_in} not found upstream"
+      msg_error "已固定 version ${pinned_version_in} 未找到 upstream"
       return 1
     fi
 
@@ -1819,7 +1819,7 @@ create_self_signed_cert() {
 
   # Use ensure_dependencies for cleaner handling
   ensure_dependencies openssl || {
-    msg_error "Failed to install OpenSSL"
+    msg_error "无法 install OpenSSL"
     return 1
   }
 
@@ -1829,7 +1829,7 @@ create_self_signed_cert() {
     -addext "subjectAltName=DNS:${APP_NAME}" \
     -keyout "$CERT_KEY" \
     -out "$CERT_CRT" || {
-    msg_error "Failed to create self-signed certificate"
+    msg_error "无法 create self-signed certificate"
     return 1
   }
 
@@ -1985,7 +1985,7 @@ function fetch_and_deploy_codeberg_release() {
     local tmpdir
     tmpdir=$(mktemp -d) || return 1
 
-    msg_info "Fetching Codeberg tag: $app ($tag_name)"
+    msg_info "正在获取 Codeberg tag: $app ($tag_name)"
 
     local safe_version="${version//@/_}"
     safe_version="${safe_version//\//_}"
@@ -2010,7 +2010,7 @@ function fetch_and_deploy_codeberg_release() {
     fi
 
     tar --no-same-owner -xzf "$tmpdir/$filename" -C "$tmpdir" || {
-      msg_error "Failed to extract tarball"
+      msg_error "无法 extract tarball"
       rm -rf "$tmpdir"
       return 1
     }
@@ -2050,7 +2050,7 @@ function fetch_and_deploy_codeberg_release() {
   done
 
   if ! $success; then
-    msg_error "Failed to fetch release metadata from $api_url after $max_retries attempts"
+    msg_error "无法 fetch release metadata from $api_url after $max_retries attempts"
     return 1
   fi
 
@@ -2080,7 +2080,7 @@ function fetch_and_deploy_codeberg_release() {
   tmpdir=$(mktemp -d) || return 1
   local filename="" url=""
 
-  msg_info "Fetching Codeberg release: $app ($version)"
+  msg_info "正在获取 Codeberg release: $app ($version)"
 
   ### Tarball Mode ###
   if [[ "$mode" == "tarball" || "$mode" == "source" ]]; then
@@ -2107,7 +2107,7 @@ function fetch_and_deploy_codeberg_release() {
     fi
 
     tar --no-same-owner -xzf "$tmpdir/$filename" -C "$tmpdir" || {
-      msg_error "Failed to extract tarball"
+      msg_error "无法 extract tarball"
       rm -rf "$tmpdir"
       return 1
     }
@@ -2224,13 +2224,13 @@ function fetch_and_deploy_codeberg_release() {
     if [[ "$filename" == *.zip ]]; then
       ensure_dependencies unzip
       unzip -q "$tmpdir/$filename" -d "$unpack_tmp" || {
-        msg_error "Failed to extract ZIP archive"
+        msg_error "无法 extract ZIP archive"
         rm -rf "$tmpdir" "$unpack_tmp"
         return 1
       }
     elif [[ "$filename" == *.tar.* || "$filename" == *.tgz ]]; then
       tar --no-same-owner -xf "$tmpdir/$filename" -C "$unpack_tmp" || {
-        msg_error "Failed to extract TAR archive"
+        msg_error "无法 extract TAR archive"
         rm -rf "$tmpdir" "$unpack_tmp"
         return 1
       }
@@ -2249,7 +2249,7 @@ function fetch_and_deploy_codeberg_release() {
       shopt -s dotglob nullglob
       if compgen -G "$inner_dir/*" >/dev/null; then
         cp -r "$inner_dir"/* "$target/" || {
-          msg_error "Failed to copy contents from $inner_dir to $target"
+          msg_error "无法 copy contents from $inner_dir to $target"
           rm -rf "$tmpdir" "$unpack_tmp"
           return 1
         }
@@ -2263,7 +2263,7 @@ function fetch_and_deploy_codeberg_release() {
       shopt -s dotglob nullglob
       if compgen -G "$unpack_tmp/*" >/dev/null; then
         cp -r "$unpack_tmp"/* "$target/" || {
-          msg_error "Failed to copy contents to $target"
+          msg_error "无法 copy contents to $target"
           rm -rf "$tmpdir" "$unpack_tmp"
           return 1
         }
@@ -2537,7 +2537,7 @@ function fetch_and_deploy_gh_release() {
       msg_error "To increase the limit, export a GitHub token before running the script:"
       msg_error "  export GITHUB_TOKEN=\"ghp_your_token_here\""
     else
-      msg_error "Failed to fetch release metadata from $api_url after $max_retries attempts (HTTP $http_code)"
+      msg_error "无法 fetch release metadata from $api_url after $max_retries attempts (HTTP $http_code)"
     fi
     return 1
   fi
@@ -2556,7 +2556,7 @@ function fetch_and_deploy_gh_release() {
   tmpdir=$(mktemp -d) || return 1
   local filename="" url=""
 
-  msg_info "Fetching GitHub release: $app ($version)"
+  msg_info "正在获取 GitHub release: $app ($version)"
 
   local clean_install=false
   [[ -n "${CLEAN_INSTALL:-}" && "$CLEAN_INSTALL" == "1" ]] && clean_install=true
@@ -2580,7 +2580,7 @@ function fetch_and_deploy_gh_release() {
     fi
 
     tar --no-same-owner -xzf "$tmpdir/$filename" -C "$tmpdir" || {
-      msg_error "Failed to extract tarball"
+      msg_error "无法 extract tarball"
       rm -rf "$tmpdir"
       return 1
     }
@@ -2637,7 +2637,7 @@ function fetch_and_deploy_gh_release() {
         json="$fallback_json"
         tag_name=$(echo "$json" | jq -r '.tag_name // .name // empty')
         [[ "$tag_name" =~ ^v ]] && version="${tag_name:1}" || version="$tag_name"
-        msg_info "Fetching GitHub release: $app ($version)"
+        msg_info "正在获取 GitHub release: $app ($version)"
         assets=$(echo "$json" | jq -r '.assets[].browser_download_url')
         if [[ -n "$asset_pattern" ]]; then
           for u in $assets; do
@@ -2719,7 +2719,7 @@ function fetch_and_deploy_gh_release() {
         json="$fallback_json"
         tag_name=$(echo "$json" | jq -r '.tag_name // .name // empty')
         [[ "$tag_name" =~ ^v ]] && version="${tag_name:1}" || version="$tag_name"
-        msg_info "Fetching GitHub release: $app ($version)"
+        msg_info "正在获取 GitHub release: $app ($version)"
         for u in $(echo "$json" | jq -r '.assets[].browser_download_url'); do
           filename_candidate="${u##*/}"
           case "$filename_candidate" in $pattern)
@@ -2754,13 +2754,13 @@ function fetch_and_deploy_gh_release() {
     if [[ "$filename" == *.zip ]]; then
       ensure_dependencies unzip
       unzip -q "$tmpdir/$filename" -d "$unpack_tmp" || {
-        msg_error "Failed to extract ZIP archive"
+        msg_error "无法 extract ZIP archive"
         rm -rf "$tmpdir" "$unpack_tmp"
         return 1
       }
     elif [[ "$filename" == *.tar.* || "$filename" == *.tgz || "$filename" == *.txz ]]; then
       tar --no-same-owner -xf "$tmpdir/$filename" -C "$unpack_tmp" || {
-        msg_error "Failed to extract TAR archive"
+        msg_error "无法 extract TAR archive"
         rm -rf "$tmpdir" "$unpack_tmp"
         return 1
       }
@@ -2780,7 +2780,7 @@ function fetch_and_deploy_gh_release() {
       shopt -s dotglob nullglob
       if compgen -G "$inner_dir/*" >/dev/null; then
         cp -r "$inner_dir"/* "$target/" || {
-          msg_error "Failed to copy contents from $inner_dir to $target"
+          msg_error "无法 copy contents from $inner_dir to $target"
           rm -rf "$tmpdir" "$unpack_tmp"
           return 1
         }
@@ -2795,7 +2795,7 @@ function fetch_and_deploy_gh_release() {
       shopt -s dotglob nullglob
       if compgen -G "$unpack_tmp/*" >/dev/null; then
         cp -r "$unpack_tmp"/* "$target/" || {
-          msg_error "Failed to copy contents to $target"
+          msg_error "无法 copy contents to $target"
           rm -rf "$tmpdir" "$unpack_tmp"
           return 1
         }
@@ -2835,7 +2835,7 @@ function fetch_and_deploy_gh_release() {
         json="$fallback_json"
         tag_name=$(echo "$json" | jq -r '.tag_name // .name // empty')
         [[ "$tag_name" =~ ^v ]] && version="${tag_name:1}" || version="$tag_name"
-        msg_info "Fetching GitHub release: $app ($version)"
+        msg_info "正在获取 GitHub release: $app ($version)"
         for u in $(echo "$json" | jq -r '.assets[].browser_download_url'); do
           filename_candidate="${u##*/}"
           case "$filename_candidate" in $pattern)
@@ -2890,30 +2890,30 @@ function fetch_and_deploy_gh_release() {
 
 function setup_adminer() {
   if grep -qi alpine /etc/os-release; then
-    msg_info "Setup Adminer (Alpine)"
+    msg_info "设置 Adminer (Alpine)"
     mkdir -p /var/www/localhost/htdocs/adminer
     curl -fsSL https://github.com/vrana/adminer/releases/latest/download/adminer.php \
       -o /var/www/localhost/htdocs/adminer/index.php || {
-      msg_error "Failed to download Adminer"
+      msg_error "无法 download Adminer"
       return 1
     }
     cache_installed_version "adminer" "latest-alpine"
-    msg_ok "Setup Adminer (Alpine)"
+    msg_ok "设置 Adminer (Alpine)"
   else
-    msg_info "Setup Adminer (Debian/Ubuntu)"
+    msg_info "设置 Adminer (Debian/Ubuntu)"
     ensure_dependencies adminer
     $STD a2enconf adminer || {
-      msg_error "Failed to enable Adminer Apache config"
+      msg_error "无法 enable Adminer Apache config"
       return 1
     }
     $STD systemctl reload apache2 || {
-      msg_error "Failed to reload Apache"
+      msg_error "无法 reload Apache"
       return 1
     }
     local VERSION
     VERSION=$(dpkg -s adminer 2>/dev/null | grep '^Version:' | awk '{print $2}' 2>/dev/null || echo 'unknown')
     cache_installed_version "adminer" "${VERSION:-unknown}"
-    msg_ok "Setup Adminer (Debian/Ubuntu)"
+    msg_ok "设置 Adminer (Debian/Ubuntu)"
   fi
 }
 
@@ -2948,7 +2948,7 @@ function setup_composer() {
   fi
 
   # Scenario 2: Fresh install
-  msg_info "Setup Composer"
+  msg_info "设置 Composer"
 
   for old in /usr/bin/composer /bin/composer /root/.composer/vendor/bin/composer; do
     [[ -e "$old" && "$old" != "$COMPOSER_BIN" ]] && rm -f "$old"
@@ -2958,12 +2958,12 @@ function setup_composer() {
   export PATH="/usr/local/bin:$PATH"
 
   curl -fsSL https://getcomposer.org/installer -o /tmp/composer-setup.php || {
-    msg_error "Failed to download Composer installer"
+    msg_error "无法 download Composer installer"
     return 1
   }
 
   $STD php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer || {
-    msg_error "Failed to install Composer"
+    msg_error "无法 install Composer"
     rm -f /tmp/composer-setup.php
     return 1
   }
@@ -2980,7 +2980,7 @@ function setup_composer() {
   local FINAL_VERSION
   FINAL_VERSION=$("$COMPOSER_BIN" --version 2>/dev/null | awk '{print $3}')
   cache_installed_version "composer" "$FINAL_VERSION"
-  msg_ok "Setup Composer"
+  msg_ok "设置 Composer"
 }
 
 # ------------------------------------------------------------------------------
@@ -3014,17 +3014,17 @@ function setup_ffmpeg() {
     INSTALLED_VERSION=$(ffmpeg -version 2>/dev/null | head -n1 | awk '{print $3}')
   fi
 
-  msg_info "Setup FFmpeg ${VERSION} ($TYPE)"
+  msg_info "设置 FFmpeg ${VERSION} ($TYPE)"
 
   # Binary fallback mode
   if [[ "$TYPE" == "binary" ]]; then
     curl -fsSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o "$TMP_DIR/ffmpeg.tar.xz" || {
-      msg_error "Failed to download FFmpeg binary"
+      msg_error "无法 download FFmpeg binary"
       rm -rf "$TMP_DIR"
       return 1
     }
     tar -xf "$TMP_DIR/ffmpeg.tar.xz" -C "$TMP_DIR" || {
-      msg_error "Failed to extract FFmpeg binary"
+      msg_error "无法 extract FFmpeg binary"
       rm -rf "$TMP_DIR"
       return 1
     }
@@ -3037,7 +3037,7 @@ function setup_ffmpeg() {
     rm -rf "$TMP_DIR"
     cache_installed_version "ffmpeg" "$FINAL_VERSION"
     ensure_usr_local_bin_persist
-    [[ -n "$INSTALLED_VERSION" ]] && msg_ok "Upgrade FFmpeg $INSTALLED_VERSION → $FINAL_VERSION" || msg_ok "Setup FFmpeg $FINAL_VERSION"
+    [[ -n "$INSTALLED_VERSION" ]] && msg_ok "Upgrade FFmpeg $INSTALLED_VERSION → $FINAL_VERSION" || msg_ok "设置 FFmpeg $FINAL_VERSION"
     return 0
   fi
 
@@ -3092,40 +3092,40 @@ function setup_ffmpeg() {
   # Try to download source if VERSION is set
   if [[ -n "$VERSION" ]]; then
     curl -fsSL "https://github.com/${GITHUB_REPO}/archive/refs/tags/${VERSION}.tar.gz" -o "$TMP_DIR/ffmpeg.tar.gz" || {
-      msg_warn "Failed to download FFmpeg source ${VERSION}, falling back to pre-built binary"
+      msg_warn "无法 download FFmpeg source ${VERSION}, falling back to pre-built binary"
       VERSION=""
     }
   fi
 
   # If no source download (either VERSION empty or download failed), use binary
   if [[ -z "$VERSION" ]]; then
-    msg_info "Setup FFmpeg from pre-built binary"
+    msg_info "设置 FFmpeg from pre-built binary"
     curl -fsSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o "$TMP_DIR/ffmpeg.tar.xz" || {
-      msg_error "Failed to download FFmpeg pre-built binary"
+      msg_error "无法 download FFmpeg pre-built binary"
       rm -rf "$TMP_DIR"
       return 1
     }
 
     tar -xJf "$TMP_DIR/ffmpeg.tar.xz" -C "$TMP_DIR" || {
-      msg_error "Failed to extract FFmpeg binary archive"
+      msg_error "无法 extract FFmpeg binary archive"
       rm -rf "$TMP_DIR"
       return 1
     }
 
     if ! cp "$TMP_DIR/ffmpeg-"*/ffmpeg /usr/local/bin/ffmpeg 2>/dev/null; then
-      msg_error "Failed to install FFmpeg binary"
+      msg_error "无法 install FFmpeg binary"
       rm -rf "$TMP_DIR"
       return 1
     fi
 
     cache_installed_version "ffmpeg" "static"
     rm -rf "$TMP_DIR"
-    msg_ok "Setup FFmpeg from pre-built binary"
+    msg_ok "设置 FFmpeg from pre-built binary"
     return 0
   fi
 
   tar -xzf "$TMP_DIR/ffmpeg.tar.gz" -C "$TMP_DIR" || {
-    msg_error "Failed to extract FFmpeg source"
+    msg_error "无法 extract FFmpeg source"
     rm -rf "$TMP_DIR"
     return 1
   }
@@ -3196,7 +3196,7 @@ function setup_ffmpeg() {
   rm -rf "$TMP_DIR"
   cache_installed_version "ffmpeg" "$FINAL_VERSION"
   ensure_usr_local_bin_persist
-  [[ -n "$INSTALLED_VERSION" ]] && msg_ok "Upgrade FFmpeg $INSTALLED_VERSION → $FINAL_VERSION" || msg_ok "Setup FFmpeg $FINAL_VERSION"
+  [[ -n "$INSTALLED_VERSION" ]] && msg_ok "Upgrade FFmpeg $INSTALLED_VERSION → $FINAL_VERSION" || msg_ok "设置 FFmpeg $FINAL_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -3254,7 +3254,7 @@ function setup_go() {
     msg_info "Upgrade Go from $CURRENT_VERSION to $GO_VERSION"
     remove_old_tool_version "go"
   else
-    msg_info "Setup Go $GO_VERSION"
+    msg_info "设置 Go $GO_VERSION"
   fi
 
   local TARBALL="go${GO_VERSION}.linux-${ARCH}.tar.gz"
@@ -3262,13 +3262,13 @@ function setup_go() {
   local TMP_TAR=$(mktemp)
 
   curl -fsSL "$URL" -o "$TMP_TAR" || {
-    msg_error "Failed to download Go $GO_VERSION"
+    msg_error "无法 download Go $GO_VERSION"
     rm -f "$TMP_TAR"
     return 1
   }
 
   $STD tar -C /usr/local -xzf "$TMP_TAR" || {
-    msg_error "Failed to extract Go tarball"
+    msg_error "无法 extract Go tarball"
     rm -f "$TMP_TAR"
     return 1
   }
@@ -3279,7 +3279,7 @@ function setup_go() {
 
   cache_installed_version "go" "$GO_VERSION"
   ensure_usr_local_bin_persist
-  msg_ok "Setup Go $GO_VERSION"
+  msg_ok "设置 Go $GO_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -3338,30 +3338,30 @@ function setup_gs() {
   if [[ "$CURRENT_VERSION" != "0" && "$CURRENT_VERSION" != "$LATEST_VERSION_DOTTED" ]]; then
     msg_info "Upgrade Ghostscript from $CURRENT_VERSION to $LATEST_VERSION_DOTTED"
   else
-    msg_info "Setup Ghostscript $LATEST_VERSION_DOTTED"
+    msg_info "设置 Ghostscript $LATEST_VERSION_DOTTED"
   fi
 
   curl -fsSL "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${LATEST_VERSION}/ghostscript-${LATEST_VERSION_DOTTED}.tar.gz" -o "$TMP_DIR/ghostscript.tar.gz" || {
-    msg_error "Failed to download Ghostscript"
+    msg_error "无法 download Ghostscript"
     rm -rf "$TMP_DIR"
     return 1
   }
 
   if ! tar -xzf "$TMP_DIR/ghostscript.tar.gz" -C "$TMP_DIR"; then
-    msg_error "Failed to extract Ghostscript archive"
+    msg_error "无法 extract Ghostscript archive"
     rm -rf "$TMP_DIR"
     return 1
   fi
 
   # Verify directory exists before cd
   if [[ ! -d "$TMP_DIR/ghostscript-${LATEST_VERSION_DOTTED}" ]]; then
-    msg_error "Ghostscript source directory not found: $TMP_DIR/ghostscript-${LATEST_VERSION_DOTTED}"
+    msg_error "Ghostscript source directory 未找到: $TMP_DIR/ghostscript-${LATEST_VERSION_DOTTED}"
     rm -rf "$TMP_DIR"
     return 1
   fi
 
   cd "$TMP_DIR/ghostscript-${LATEST_VERSION_DOTTED}" || {
-    msg_error "Failed to enter Ghostscript source directory"
+    msg_error "无法 enter Ghostscript source directory"
     rm -rf "$TMP_DIR"
     return 1
   }
@@ -3394,7 +3394,7 @@ function setup_gs() {
   rm -rf "$TMP_DIR"
   cache_installed_version "ghostscript" "$LATEST_VERSION_DOTTED"
   ensure_usr_local_bin_persist
-  msg_ok "Setup Ghostscript $LATEST_VERSION_DOTTED"
+  msg_ok "设置 Ghostscript $LATEST_VERSION_DOTTED"
 }
 
 # ------------------------------------------------------------------------------
@@ -3422,20 +3422,20 @@ function setup_hwaccel() {
 
   # Check if GPU passthrough is enabled (device nodes must exist)
   if [[ ! -d /dev/dri && ! -e /dev/nvidia0 && ! -e /dev/kfd ]]; then
-    msg_warn "No GPU passthrough detected (/dev/dri, /dev/nvidia*, /dev/kfd not found) - skipping hardware acceleration setup"
+    msg_warn "No GPU passthrough detected (/dev/dri, /dev/nvidia*, /dev/kfd 未找到) - skipping hardware acceleration setup"
     return 0
   fi
 
-  msg_info "Setup Hardware Acceleration"
+  msg_info "设置 Hardware Acceleration"
 
   # Install pciutils if needed
   if ! command -v lspci &>/dev/null; then
     $STD apt -y update || {
-      msg_warn "Failed to update package list"
+      msg_warn "无法 update package list"
       return 0
     }
     $STD apt -y install pciutils || {
-      msg_warn "Failed to install pciutils"
+      msg_warn "无法 install pciutils"
       return 0
     }
   fi
@@ -3512,7 +3512,7 @@ function setup_hwaccel() {
   if [[ $gpu_count -eq 1 ]]; then
     # Single GPU - auto-select
     SELECTED_INDICES=(0)
-    msg_ok "Detected GPU: ${GPU_NAMES[0]} (${GPU_TYPES[0]})"
+    msg_ok "已检测到 GPU: ${GPU_NAMES[0]} (${GPU_TYPES[0]})"
   else
     # Multiple GPUs - show selection menu
     echo ""
@@ -3605,13 +3605,13 @@ function setup_hwaccel() {
   local in_ct="${CTTYPE:-0}"
 
   # ═══════════════════════════════════════════════════════════════════════════
-  # Process Selected GPUs
+  # Process 已选择 GPUs
   # ═══════════════════════════════════════════════════════════════════════════
   for idx in "${SELECTED_INDICES[@]}"; do
     local gpu_type="${GPU_TYPES[$idx]}"
     local gpu_name="${GPU_NAMES[$idx]}"
 
-    msg_info "Configuring: ${gpu_name}"
+    msg_info "正在配置: ${gpu_name}"
 
     case "$gpu_type" in
     # ─────────────────────────────────────────────────────────────────────────
@@ -3656,7 +3656,7 @@ function setup_hwaccel() {
       if [[ "$install_nvidia_drivers" == "yes" ]]; then
         _setup_nvidia_gpu "$os_id" "$os_codename" "$os_version"
       else
-        msg_warn "Skipping NVIDIA driver installation (user opted to install manually)"
+        msg_warn "正在跳过 NVIDIA driver installation (user opted to install manually)"
       fi
       ;;
     esac
@@ -3668,7 +3668,7 @@ function setup_hwaccel() {
   _setup_gpu_permissions "$in_ct"
 
   cache_installed_version "hwaccel" "1.0"
-  msg_ok "Setup Hardware Acceleration"
+  msg_ok "设置 Hardware Acceleration"
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -3677,7 +3677,7 @@ function setup_hwaccel() {
 _setup_intel_arc() {
   local os_id="$1" os_codename="$2"
 
-  msg_info "Installing Intel Arc GPU drivers"
+  msg_info "正在安装 Intel Arc GPU drivers"
 
   if [[ "$os_id" == "ubuntu" ]]; then
     # Ubuntu 22.04+ has Arc support in HWE kernel
@@ -3695,7 +3695,7 @@ _setup_intel_arc() {
     # For Trixie/Sid: Fetch latest drivers from GitHub (Debian repo packages may be too old or missing)
     # For Bookworm: Use repo packages (GitHub latest requires libstdc++6 >= 13.1, unavailable on Bookworm)
     if [[ "$os_codename" == "trixie" || "$os_codename" == "sid" ]]; then
-      msg_info "Fetching Intel compute-runtime from GitHub for Arc support"
+      msg_info "正在获取 Intel compute-runtime from GitHub for Arc support"
 
       # libigdgmm - bundled in compute-runtime releases
       fetch_and_deploy_gh_release "libigdgmm12" "intel/compute-runtime" "binary" "latest" "" "libigdgmm12_*_amd64.deb" || true
@@ -3725,12 +3725,12 @@ _setup_intel_arc() {
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Intel Modern GPU Setup (Gen 9+)
+# Intel Modern GPU 设置 (Gen 9+)
 # ══════════════════════════════════════════════════════════════════════════════
 _setup_intel_modern() {
   local os_id="$1" os_codename="$2"
 
-  msg_info "Installing Intel Gen 9+ GPU drivers"
+  msg_info "正在安装 Intel Gen 9+ GPU drivers"
 
   if [[ "$os_id" == "ubuntu" ]]; then
     $STD apt -y install \
@@ -3750,7 +3750,7 @@ _setup_intel_modern() {
 
     # For Trixie/Sid: Fetch from GitHub (Debian packages too old or missing)
     if [[ "$os_codename" == "trixie" || "$os_codename" == "sid" ]]; then
-      msg_info "Fetching Intel compute-runtime from GitHub"
+      msg_info "正在获取 Intel compute-runtime from GitHub"
 
       # libigdgmm first (bundled in compute-runtime releases)
       fetch_and_deploy_gh_release "libigdgmm12" "intel/compute-runtime" "binary" "latest" "" "libigdgmm12_*_amd64.deb" || true
@@ -3778,12 +3778,12 @@ _setup_intel_modern() {
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Intel Legacy GPU Setup (Gen 6-8)
+# Intel Legacy GPU 设置 (Gen 6-8)
 # ══════════════════════════════════════════════════════════════════════════════
 _setup_intel_legacy() {
   local os_id="$1" os_codename="$2"
 
-  msg_info "Installing Intel Legacy GPU drivers (Gen 6-8)"
+  msg_info "正在安装 Intel Legacy GPU drivers (Gen 6-8)"
 
   # Legacy GPUs use i965 driver - stable repo packages only
   $STD apt -y install \
@@ -3813,7 +3813,7 @@ _setup_intel_legacy() {
 _setup_amd_gpu() {
   local os_id="$1" os_codename="$2"
 
-  msg_info "Installing AMD GPU drivers"
+  msg_info "正在安装 AMD GPU drivers"
 
   # Core Mesa drivers
   $STD apt -y install \
@@ -3840,12 +3840,12 @@ _setup_amd_gpu() {
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# AMD APU Setup (Integrated Graphics)
+# AMD APU 设置 (Integrated Graphics)
 # ══════════════════════════════════════════════════════════════════════════════
 _setup_amd_apu() {
   local os_id="$1" os_codename="$2"
 
-  msg_info "Installing AMD APU drivers"
+  msg_info "正在安装 AMD APU drivers"
 
   $STD apt -y install \
     mesa-va-drivers \
@@ -3868,7 +3868,7 @@ _setup_amd_apu() {
 _setup_nvidia_gpu() {
   local os_id="$1" os_codename="$2" os_version="$3"
 
-  msg_info "Installing NVIDIA GPU drivers"
+  msg_info "正在安装 NVIDIA GPU drivers"
 
   # Prevent interactive dialogs (e.g., "Mismatching nvidia kernel module" whiptail)
   export DEBIAN_FRONTEND=noninteractive
@@ -3885,7 +3885,7 @@ _setup_nvidia_gpu() {
   fi
 
   if [[ -z "$nvidia_host_version" ]]; then
-    msg_warn "NVIDIA host driver version not found in /proc/driver/nvidia/version"
+    msg_warn "NVIDIA host driver version 未找到 in /proc/driver/nvidia/version"
     msg_warn "Ensure NVIDIA drivers are installed on host and GPU passthrough is enabled"
     $STD apt-get -y install va-driver-all vainfo 2>/dev/null || true
     return 0
@@ -3918,9 +3918,9 @@ _setup_nvidia_gpu() {
         msg_info "Found available NVIDIA version: ${available_version}"
         local nvidia_pkgs="libcuda1=${available_version} libnvcuvid1=${available_version} libnvidia-encode1=${available_version} libnvidia-ml1=${available_version}"
         if $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends $nvidia_pkgs 2>/dev/null; then
-          msg_ok "Installed NVIDIA libraries (${available_version})"
+          msg_ok "已安装 NVIDIA libraries (${available_version})"
         else
-          msg_warn "Failed to install NVIDIA ${available_version} - trying unversioned"
+          msg_warn "无法 install NVIDIA ${available_version} - trying unversioned"
           $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends libcuda1 libnvcuvid1 libnvidia-encode1 libnvidia-ml1 2>/dev/null || true
         fi
       else
@@ -3951,13 +3951,13 @@ _setup_nvidia_gpu() {
 
       # Add NVIDIA CUDA repository
       if [[ ! -f /usr/share/keyrings/cuda-archive-keyring.gpg ]]; then
-        msg_info "Adding NVIDIA CUDA repository (${cuda_repo})"
+        msg_info "正在添加 NVIDIA CUDA repository (${cuda_repo})"
         local cuda_keyring
         cuda_keyring="$(mktemp)"
         if curl -fsSL -o "$cuda_keyring" "https://developer.download.nvidia.com/compute/cuda/repos/${cuda_repo}/x86_64/cuda-keyring_1.1-1_all.deb" 2>/dev/null; then
           $STD dpkg -i "$cuda_keyring" 2>/dev/null || true
         else
-          msg_warn "Failed to download NVIDIA CUDA keyring"
+          msg_warn "无法 download NVIDIA CUDA keyring"
         fi
         rm -f "$cuda_keyring"
       fi
@@ -3979,10 +3979,10 @@ NVIDIA_PIN
       available_version=$(apt-cache madison libcuda1 2>/dev/null | awk '{print $3}' | grep -E "^${nvidia_major_version}\." | head -1 || true)
 
       if [[ -n "$available_version" ]]; then
-        msg_info "Installing NVIDIA libraries (version ${available_version})"
+        msg_info "正在安装 NVIDIA libraries (version ${available_version})"
         local nvidia_pkgs="libcuda1=${available_version} libnvcuvid1=${available_version} libnvidia-encode1=${available_version} libnvidia-ml1=${available_version}"
         if $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends $nvidia_pkgs 2>/dev/null; then
-          msg_ok "Installed version-matched NVIDIA libraries"
+          msg_ok "已安装 version-matched NVIDIA libraries"
         else
           msg_warn "Version-pinned install failed - trying unpinned"
           $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends libcuda1 libnvcuvid1 libnvidia-encode1 libnvidia-ml1 2>/dev/null ||
@@ -3997,7 +3997,7 @@ NVIDIA_PIN
           if $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends \
             libcuda1="${available_version}" libnvcuvid1="${available_version}" \
             libnvidia-encode1="${available_version}" libnvidia-ml1="${available_version}" 2>/dev/null; then
-            msg_ok "Installed NVIDIA libraries (${available_version}) - version differs from host"
+            msg_ok "已安装 NVIDIA libraries (${available_version}) - version differs from host"
           else
             $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends libcuda1 libnvcuvid1 libnvidia-encode1 libnvidia-ml1 2>/dev/null ||
               msg_warn "NVIDIA library installation failed"
@@ -4021,13 +4021,13 @@ NVIDIA_PIN
 
     # Add NVIDIA CUDA repository for Ubuntu
     if [[ ! -f /usr/share/keyrings/cuda-archive-keyring.gpg ]]; then
-      msg_info "Adding NVIDIA CUDA repository (${ubuntu_cuda_repo})"
+      msg_info "正在添加 NVIDIA CUDA repository (${ubuntu_cuda_repo})"
       local cuda_keyring
       cuda_keyring="$(mktemp)"
       if curl -fsSL -o "$cuda_keyring" "https://developer.download.nvidia.com/compute/cuda/repos/${ubuntu_cuda_repo}/x86_64/cuda-keyring_1.1-1_all.deb" 2>/dev/null; then
         $STD dpkg -i "$cuda_keyring" 2>/dev/null || true
       else
-        msg_warn "Failed to download NVIDIA CUDA keyring"
+        msg_warn "无法 download NVIDIA CUDA keyring"
       fi
       rm -f "$cuda_keyring"
     fi
@@ -4042,16 +4042,16 @@ NVIDIA_PIN
     available_version=$(apt-cache madison libcuda1 2>/dev/null | awk '{print $3}' | grep -E "^${nvidia_major_version}\." | head -1 || true)
 
     if [[ -n "$available_version" ]]; then
-      msg_info "Installing NVIDIA libraries (version ${available_version})"
+      msg_info "正在安装 NVIDIA libraries (version ${available_version})"
       local nvidia_pkgs="libcuda1=${available_version} libnvcuvid1=${available_version} libnvidia-encode1=${available_version} libnvidia-ml1=${available_version}"
       if $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends $nvidia_pkgs 2>/dev/null; then
-        msg_ok "Installed version-matched NVIDIA libraries"
+        msg_ok "已安装 version-matched NVIDIA libraries"
       else
         # Fallback to Ubuntu repo packages with versioned nvidia-utils
         msg_warn "CUDA repo install failed - trying Ubuntu native packages (nvidia-utils-${nvidia_major_version})"
         if $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends \
           libnvidia-decode-${nvidia_major_version} libnvidia-encode-${nvidia_major_version} nvidia-utils-${nvidia_major_version} 2>/dev/null; then
-          msg_ok "Installed Ubuntu NVIDIA packages (${nvidia_major_version})"
+          msg_ok "已安装 Ubuntu NVIDIA packages (${nvidia_major_version})"
         else
           msg_warn "NVIDIA driver installation failed - please install manually: apt install nvidia-utils-${nvidia_major_version}"
         fi
@@ -4062,7 +4062,7 @@ NVIDIA_PIN
       msg_info "Trying Ubuntu native packages (nvidia-utils-${nvidia_major_version})"
       if $STD apt-get -y -o Dpkg::Options::="--force-confold" install --no-install-recommends \
         libnvidia-decode-${nvidia_major_version} libnvidia-encode-${nvidia_major_version} nvidia-utils-${nvidia_major_version} 2>/dev/null; then
-        msg_ok "Installed Ubuntu NVIDIA packages (${nvidia_major_version})"
+        msg_ok "已安装 Ubuntu NVIDIA packages (${nvidia_major_version})"
       else
         msg_warn "NVIDIA driver installation failed - please install manually: apt install nvidia-utils-${nvidia_major_version}"
       fi
@@ -4181,7 +4181,7 @@ EOF
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Helper: Setup GPU device permissions
+# Helper: 设置 GPU device permissions
 # ══════════════════════════════════════════════════════════════════════════════
 _setup_gpu_permissions() {
   local in_ct="$1"
@@ -4219,7 +4219,7 @@ _setup_gpu_permissions() {
 
   # /dev/nvidia* permissions (NVIDIA)
   if ls /dev/nvidia* &>/dev/null 2>&1; then
-    msg_info "Configuring NVIDIA device permissions"
+    msg_info "正在配置 NVIDIA device permissions"
     for nvidia_dev in /dev/nvidia*; do
       [[ -e "$nvidia_dev" ]] && {
         chgrp video "$nvidia_dev" 2>/dev/null || true
@@ -4274,7 +4274,7 @@ function setup_imagemagick() {
     INSTALLED_VERSION=$(magick -version | awk '/^Version/ {print $3}')
   fi
 
-  msg_info "Setup ImageMagick"
+  msg_info "设置 ImageMagick"
 
   ensure_dependencies \
     build-essential \
@@ -4297,13 +4297,13 @@ function setup_imagemagick() {
     ghostscript
 
   curl -fsSL https://imagemagick.org/archive/ImageMagick.tar.gz -o "$TMP_DIR/ImageMagick.tar.gz" || {
-    msg_error "Failed to download ImageMagick"
+    msg_error "无法 download ImageMagick"
     rm -rf "$TMP_DIR"
     return 1
   }
 
   tar -xzf "$TMP_DIR/ImageMagick.tar.gz" -C "$TMP_DIR" || {
-    msg_error "Failed to extract ImageMagick"
+    msg_error "无法 extract ImageMagick"
     rm -rf "$TMP_DIR"
     return 1
   }
@@ -4346,7 +4346,7 @@ function setup_imagemagick() {
   if [[ -n "$INSTALLED_VERSION" ]]; then
     msg_ok "Upgrade ImageMagick $INSTALLED_VERSION → $FINAL_VERSION"
   else
-    msg_ok "Setup ImageMagick $FINAL_VERSION"
+    msg_ok "设置 ImageMagick $FINAL_VERSION"
   fi
 }
 
@@ -4370,7 +4370,7 @@ function setup_java() {
 
   # Prepare repository (cleanup + validation)
   prepare_repository_setup "adoptium" || {
-    msg_error "Failed to prepare Adoptium repository"
+    msg_error "无法 prepare Adoptium repository"
     return 1
   }
 
@@ -4401,7 +4401,7 @@ function setup_java() {
     local OLD_PACKAGE
     OLD_PACKAGE=$(dpkg -l 2>/dev/null | awk '/temurin-.*-jdk/{print $2}' | head -n1 || echo "")
     if [[ -n "$OLD_PACKAGE" ]]; then
-      msg_info "Removing existing package: $OLD_PACKAGE"
+      msg_info "正在移除 existing package: $OLD_PACKAGE"
       $STD apt purge -y "$OLD_PACKAGE" || true
     fi
     INSTALLED_VERSION="" # Reset to trigger fresh install
@@ -4412,7 +4412,7 @@ function setup_java() {
     msg_info "Update Temurin JDK $JAVA_VERSION"
     ensure_apt_working || return 1
     upgrade_packages_with_retry "$DESIRED_PACKAGE" || {
-      msg_error "Failed to update Temurin JDK"
+      msg_error "无法 update Temurin JDK"
       return 1
     }
     cache_installed_version "temurin-jdk" "$JAVA_VERSION"
@@ -4425,19 +4425,19 @@ function setup_java() {
     msg_info "Upgrade Temurin JDK from $INSTALLED_VERSION to $JAVA_VERSION"
     $STD apt purge -y "temurin-${INSTALLED_VERSION}-jdk" || true
   else
-    msg_info "Setup Temurin JDK $JAVA_VERSION"
+    msg_info "设置 Temurin JDK $JAVA_VERSION"
   fi
 
   ensure_apt_working || return 1
 
   # Install with retry logic
   install_packages_with_retry "$DESIRED_PACKAGE" || {
-    msg_error "Failed to install Temurin JDK $JAVA_VERSION"
+    msg_error "无法 install Temurin JDK $JAVA_VERSION"
     return 1
   }
 
   cache_installed_version "temurin-jdk" "$JAVA_VERSION"
-  msg_ok "Setup Temurin JDK $JAVA_VERSION"
+  msg_ok "设置 Temurin JDK $JAVA_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -4460,7 +4460,7 @@ function setup_local_ip_helper() {
     cache_installed_version "local-ip-helper" "1.0"
     msg_ok "Update Local IP Helper"
   else
-    msg_info "Setup Local IP Helper"
+    msg_info "设置 Local IP Helper"
   fi
 
   mkdir -p "$BASE_DIR"
@@ -4468,7 +4468,7 @@ function setup_local_ip_helper() {
   # Install networkd-dispatcher if not present
   if ! dpkg -s networkd-dispatcher >/dev/null 2>&1; then
     ensure_dependencies networkd-dispatcher || {
-      msg_error "Failed to install networkd-dispatcher"
+      msg_error "无法 install networkd-dispatcher"
       return 1
     }
   fi
@@ -4545,11 +4545,11 @@ EOF
 
   chmod +x "$DISPATCHER_SCRIPT"
   systemctl enable -q --now networkd-dispatcher.service || {
-    msg_warn "Failed to enable networkd-dispatcher service"
+    msg_warn "无法 enable networkd-dispatcher service"
   }
 
   cache_installed_version "local-ip-helper" "1.0"
-  msg_ok "Setup Local IP Helper"
+  msg_ok "设置 Local IP Helper"
 }
 
 # ------------------------------------------------------------------------------
@@ -4581,9 +4581,9 @@ setup_mariadb() {
   # - Specific version: Use MariaDB official repository
   if [[ "$MARIADB_VERSION" == "latest" || -z "$MARIADB_VERSION" ]]; then
     USE_DISTRO_PACKAGES=true
-    msg_info "Setup MariaDB (distribution packages)"
+    msg_info "设置 MariaDB (distribution packages)"
   else
-    msg_info "Setup MariaDB $MARIADB_VERSION (official repository)"
+    msg_info "设置 MariaDB $MARIADB_VERSION (official repository)"
   fi
 
   # Get currently installed version
@@ -4618,7 +4618,7 @@ EOF
     local HAD_MARIADB_REPO=false
     if [[ -f /etc/apt/sources.list.d/mariadb.sources ]] || [[ -f /etc/apt/sources.list.d/mariadb.list ]]; then
       HAD_MARIADB_REPO=true
-      msg_info "Removing MariaDB official repository (switching to distribution packages)"
+      msg_info "正在移除 MariaDB official repository (switching to distribution packages)"
     fi
 
     # Clean up any existing MariaDB repository files to avoid conflicts
@@ -4651,7 +4651,7 @@ EOF
           msg_warn "To use distribution packages, manually remove MariaDB first"
           _setup_mariadb_runtime_dir
           cache_installed_version "mariadb" "$CURRENT_VERSION"
-          msg_ok "Setup MariaDB $CURRENT_VERSION (existing installation kept)"
+          msg_ok "设置 MariaDB $CURRENT_VERSION (existing installation kept)"
           return 0
         fi
       fi
@@ -4659,7 +4659,7 @@ EOF
 
     # Install or upgrade MariaDB from distribution packages
     if ! install_packages_with_retry "mariadb-server" "mariadb-client"; then
-      msg_error "Failed to install MariaDB packages from distribution"
+      msg_error "无法 install MariaDB packages from distribution"
       return 1
     fi
 
@@ -4670,7 +4670,7 @@ EOF
     # Configure runtime directory and finish
     _setup_mariadb_runtime_dir
     cache_installed_version "mariadb" "$INSTALLED_VERSION"
-    msg_ok "Setup MariaDB $INSTALLED_VERSION (distribution packages)"
+    msg_ok "设置 MariaDB $INSTALLED_VERSION (distribution packages)"
     return 0
   fi
 
@@ -4686,7 +4686,7 @@ EOF
 
     # Check if old repo points to a different version
     if [[ -n "$OLD_REPO_VERSION" ]] && [[ "${OLD_REPO_VERSION%.*}" != "${MARIADB_VERSION%.*}" ]]; then
-      msg_info "Cleaning up old MariaDB repository (was: $OLD_REPO_VERSION, requested: $MARIADB_VERSION)"
+      msg_info "正在清理 old MariaDB repository (was: $OLD_REPO_VERSION, requested: $MARIADB_VERSION)"
       cleanup_old_repo_files "mariadb"
       $STD apt update || msg_warn "APT update had issues, continuing..."
     fi
@@ -4707,7 +4707,7 @@ EOF
         msg_warn "Repository version mismatch, updating..."
         manage_tool_repository "mariadb" "$MARIADB_VERSION" "http://mirror.mariadb.org/repo/$MARIADB_VERSION" \
           "https://mariadb.org/mariadb_release_signing_key.asc" || {
-          msg_error "Failed to update MariaDB repository"
+          msg_error "无法 update MariaDB repository"
           return 1
         }
       fi
@@ -4716,7 +4716,7 @@ EOF
     # Perform upgrade with retry logic
     ensure_apt_working || return 1
     upgrade_packages_with_retry "mariadb-server" "mariadb-client" || {
-      msg_error "Failed to upgrade MariaDB packages"
+      msg_error "无法 upgrade MariaDB packages"
       return 1
     }
     cache_installed_version "mariadb" "$MARIADB_VERSION"
@@ -4733,7 +4733,7 @@ EOF
   # Scenario 3: Fresh install or version change with specific version
   # Prepare repository (cleanup + validation)
   prepare_repository_setup "mariadb" || {
-    msg_error "Failed to prepare MariaDB repository"
+    msg_error "无法 prepare MariaDB repository"
     return 1
   }
 
@@ -4749,17 +4749,17 @@ EOF
     $STD apt install -y "${mariadb_deps[@]}" 2>/dev/null || true
   fi
 
-  # Setup repository
+  # 设置 repository
   manage_tool_repository "mariadb" "$MARIADB_VERSION" "http://mirror.mariadb.org/repo/$MARIADB_VERSION" \
     "https://mariadb.org/mariadb_release_signing_key.asc" || {
-    msg_error "Failed to setup MariaDB repository"
+    msg_error "无法 setup MariaDB repository"
     return 1
   }
 
   # Install packages with retry logic
   if ! install_packages_with_retry "mariadb-server" "mariadb-client"; then
     # Fallback: try distribution packages
-    msg_warn "Failed to install MariaDB $MARIADB_VERSION from official repo, falling back to distribution packages..."
+    msg_warn "无法 install MariaDB $MARIADB_VERSION from official repo, falling back to distribution packages..."
     cleanup_old_repo_files "mariadb"
     $STD apt update || {
       msg_warn "APT update also failed, continuing with cache"
@@ -4767,20 +4767,20 @@ EOF
     if install_packages_with_retry "mariadb-server" "mariadb-client"; then
       local FALLBACK_VERSION=""
       FALLBACK_VERSION=$(mariadb --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+' | head -n1 || echo "distro")
-      msg_warn "Installed MariaDB $FALLBACK_VERSION from distribution instead of requested $MARIADB_VERSION"
+      msg_warn "已安装 MariaDB $FALLBACK_VERSION from distribution instead of requested $MARIADB_VERSION"
       _setup_mariadb_runtime_dir
       cache_installed_version "mariadb" "$FALLBACK_VERSION"
-      msg_ok "Setup MariaDB $FALLBACK_VERSION (fallback to distribution packages)"
+      msg_ok "设置 MariaDB $FALLBACK_VERSION (fallback to distribution packages)"
       return 0
     else
-      msg_error "Failed to install MariaDB packages (both official repo and distribution)"
+      msg_error "无法 install MariaDB packages (both official repo and distribution)"
       return 1
     fi
   fi
 
   _setup_mariadb_runtime_dir
   cache_installed_version "mariadb" "$MARIADB_VERSION"
-  msg_ok "Setup MariaDB $MARIADB_VERSION"
+  msg_ok "设置 MariaDB $MARIADB_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -4792,7 +4792,7 @@ _setup_mariadb_runtime_dir() {
 
   # Create tmpfiles.d configuration with error handling
   if ! printf '# Ensure /run/mysqld directory exists with correct permissions for MariaDB\nd /run/mysqld 0755 mysql mysql -\n' >/etc/tmpfiles.d/mariadb.conf; then
-    msg_warn "Failed to create /etc/tmpfiles.d/mariadb.conf - runtime directory may not persist on reboot"
+    msg_warn "无法 create /etc/tmpfiles.d/mariadb.conf - runtime directory may not persist on reboot"
   fi
 
   # Create the directory now if it doesn't exist
@@ -4805,7 +4805,7 @@ _setup_mariadb_runtime_dir() {
     if getent passwd mysql >/dev/null 2>&1; then
       chown mysql:mysql /run/mysqld
     else
-      msg_warn "mysql user not found - directory created with correct permissions but ownership not set"
+      msg_warn "mysql user 未找到 - directory created with correct permissions but ownership not set"
     fi
   fi
 }
@@ -4852,7 +4852,7 @@ function setup_mariadb_db() {
     MARIADB_DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
   fi
 
-  msg_info "Setting up MariaDB Database"
+  msg_info "正在设置 MariaDB Database"
 
   $STD mariadb -u root -e "CREATE DATABASE \`$MARIADB_DB_NAME\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
   $STD mariadb -u root -e "CREATE USER '$MARIADB_DB_USER'@'localhost' IDENTIFIED BY '$MARIADB_DB_PASS';"
@@ -4946,7 +4946,7 @@ function setup_mongodb() {
 
     # Perform upgrade with retry logic
     upgrade_packages_with_retry "mongodb-org" || {
-      msg_error "Failed to upgrade MongoDB"
+      msg_error "无法 upgrade MongoDB"
       return 1
     }
     cache_installed_version "mongodb" "$MONGO_VERSION"
@@ -4959,21 +4959,21 @@ function setup_mongodb() {
     msg_info "Upgrade MongoDB from $INSTALLED_VERSION to $MONGO_VERSION"
     remove_old_tool_version "mongodb"
   else
-    msg_info "Setup MongoDB $MONGO_VERSION"
+    msg_info "设置 MongoDB $MONGO_VERSION"
   fi
 
   cleanup_orphaned_sources
 
   # Prepare repository (cleanup + validation)
   prepare_repository_setup "mongodb" || {
-    msg_error "Failed to prepare MongoDB repository"
+    msg_error "无法 prepare MongoDB repository"
     return 1
   }
 
-  # Setup repository
+  # 设置 repository
   manage_tool_repository "mongodb" "$MONGO_VERSION" "$MONGO_BASE_URL" \
     "https://www.mongodb.org/static/pgp/server-${MONGO_VERSION}.asc" || {
-    msg_error "Failed to setup MongoDB repository"
+    msg_error "无法 setup MongoDB repository"
     return 1
   }
 
@@ -4985,12 +4985,12 @@ function setup_mongodb() {
 
   # Install MongoDB with retry logic
   install_packages_with_retry "mongodb-org" || {
-    msg_error "Failed to install MongoDB packages"
+    msg_error "无法 install MongoDB packages"
     return 1
   }
 
   if ! command -v mongod >/dev/null 2>&1; then
-    msg_error "MongoDB binary not found after installation"
+    msg_error "MongoDB binary 未找到 after installation"
     return 1
   fi
 
@@ -4998,7 +4998,7 @@ function setup_mongodb() {
   chown -R mongodb:mongodb /var/lib/mongodb
 
   $STD systemctl enable mongod || {
-    msg_warn "Failed to enable mongod service"
+    msg_warn "无法 enable mongod service"
   }
   safe_service_restart mongod
 
@@ -5008,7 +5008,7 @@ function setup_mongodb() {
   verify_tool_version "MongoDB" "$MONGO_VERSION" "$INSTALLED_VERSION" || true
 
   cache_installed_version "mongodb" "$MONGO_VERSION"
-  msg_ok "Setup MongoDB $MONGO_VERSION"
+  msg_ok "设置 MongoDB $MONGO_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -5058,12 +5058,12 @@ function setup_mysql() {
     msg_info "Upgrade MySQL from $CURRENT_VERSION to $MYSQL_VERSION"
     remove_old_tool_version "mysql"
   else
-    msg_info "Setup MySQL $MYSQL_VERSION"
+    msg_info "设置 MySQL $MYSQL_VERSION"
   fi
 
   # Prepare repository (cleanup + validation)
   prepare_repository_setup "mysql" || {
-    msg_error "Failed to prepare MySQL repository"
+    msg_error "无法 prepare MySQL repository"
     return 1
   }
 
@@ -5072,7 +5072,7 @@ function setup_mysql() {
     msg_info "Debian ${DISTRO_CODENAME} detected → using MySQL 8.4 LTS (libaio1t64 compatible)"
 
     if ! curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --dearmor -o /etc/apt/keyrings/mysql.gpg 2>/dev/null; then
-      msg_error "Failed to import MySQL GPG key"
+      msg_error "无法 import MySQL GPG key"
       return 1
     fi
 
@@ -5086,7 +5086,7 @@ Signed-By: /etc/apt/keyrings/mysql.gpg
 EOF
 
     $STD apt update || {
-      msg_error "Failed to update APT for MySQL 8.4 LTS"
+      msg_error "无法 update APT for MySQL 8.4 LTS"
       return 1
     }
 
@@ -5096,15 +5096,15 @@ EOF
       cleanup_old_repo_files "mysql"
       $STD apt update
       install_packages_with_retry "mariadb-server" "mariadb-client" || {
-        msg_error "Failed to install database engine (MySQL/MariaDB fallback)"
+        msg_error "无法 install database engine (MySQL/MariaDB fallback)"
         return 1
       }
-      msg_ok "Setup Database Engine (MariaDB fallback on Debian ${DISTRO_CODENAME})"
+      msg_ok "设置 Database Engine (MariaDB fallback on Debian ${DISTRO_CODENAME})"
       return 0
     fi
 
     cache_installed_version "mysql" "8.4"
-    msg_ok "Setup MySQL 8.4 LTS (Debian ${DISTRO_CODENAME})"
+    msg_ok "设置 MySQL 8.4 LTS (Debian ${DISTRO_CODENAME})"
     return 0
   fi
 
@@ -5119,10 +5119,10 @@ EOF
     SUITE=$(get_fallback_suite "$DISTRO_ID" "$DISTRO_CODENAME" "https://repo.mysql.com/apt/${DISTRO_ID}")
   fi
 
-  # Setup repository
+  # 设置 repository
   manage_tool_repository "mysql" "$MYSQL_VERSION" "https://repo.mysql.com/apt/${DISTRO_ID}" \
     "https://repo.mysql.com/RPM-GPG-KEY-mysql-2023" || {
-    msg_error "Failed to setup MySQL repository"
+    msg_error "无法 setup MySQL repository"
     return 1
   }
 
@@ -5151,13 +5151,13 @@ EOF
   if ! command -v mysql >/dev/null 2>&1; then
     hash -r
     if ! command -v mysql >/dev/null 2>&1; then
-      msg_error "MySQL installed but mysql command still not found"
+      msg_error "MySQL installed but mysql command still 未找到"
       return 1
     fi
   fi
 
   cache_installed_version "mysql" "$MYSQL_VERSION"
-  msg_ok "Setup MySQL $MYSQL_VERSION"
+  msg_ok "设置 MySQL $MYSQL_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -5187,7 +5187,7 @@ function setup_nodejs() {
   if ! command -v jq &>/dev/null; then
     $STD apt update
     $STD apt install -y jq || {
-      msg_error "Failed to install jq"
+      msg_error "无法 install jq"
       return 1
     }
   fi
@@ -5209,12 +5209,12 @@ function setup_nodejs() {
       msg_info "Upgrade Node.js from $CURRENT_NODE_VERSION to $NODE_VERSION"
       remove_old_tool_version "nodejs"
     else
-      msg_info "Setup Node.js $NODE_VERSION"
+      msg_info "设置 Node.js $NODE_VERSION"
     fi
 
     # Remove ALL Debian nodejs packages BEFORE adding NodeSource repo
     if dpkg -l 2>/dev/null | grep -qE "^ii.*(nodejs|libnode|node-cjs|node-acorn|node-balanced|node-brace|node-minimatch|node-undici|node-xtend|node-corepack)"; then
-      msg_info "Removing Debian-packaged Node.js and dependencies"
+      msg_info "正在移除 Debian-packaged Node.js and dependencies"
       $STD apt purge -y nodejs nodejs-doc libnode* node-* 2>/dev/null || true
       $STD apt autoremove -y 2>/dev/null || true
       $STD apt clean 2>/dev/null || true
@@ -5225,13 +5225,13 @@ function setup_nodejs() {
 
     # Prepare repository (cleanup + validation)
     prepare_repository_setup "nodesource" || {
-      msg_error "Failed to prepare Node.js repository"
+      msg_error "无法 prepare Node.js repository"
       return 1
     }
 
-    # Setup NodeSource repository
+    # 设置 NodeSource repository
     manage_tool_repository "nodejs" "$NODE_VERSION" "https://deb.nodesource.com/node_${NODE_VERSION}.x" "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key" || {
-      msg_error "Failed to setup Node.js repository"
+      msg_error "无法 setup Node.js repository"
       return 1
     }
 
@@ -5241,13 +5241,13 @@ function setup_nodejs() {
     ensure_dependencies curl ca-certificates gnupg
 
     install_packages_with_retry "nodejs" || {
-      msg_error "Failed to install Node.js ${NODE_VERSION} from NodeSource"
+      msg_error "无法 install Node.js ${NODE_VERSION} from NodeSource"
       return 1
     }
 
     # Verify Node.js was installed correctly
     if ! command -v node >/dev/null 2>&1; then
-      msg_error "Node.js binary not found after installation"
+      msg_error "Node.js binary 未找到 after installation"
       return 1
     fi
 
@@ -5257,7 +5257,7 @@ function setup_nodejs() {
 
     # Verify npm is available (should come with NodeSource nodejs)
     if ! command -v npm >/dev/null 2>&1; then
-      msg_error "npm not found after Node.js installation - repository issue?"
+      msg_error "npm 未找到 after Node.js installation - repository issue?"
       return 1
     fi
 
@@ -5266,12 +5266,12 @@ function setup_nodejs() {
     NPM_VERSION=$(npm -v 2>/dev/null || echo "0")
     if [[ "$NPM_VERSION" != "0" ]]; then
       $STD npm install -g npm@latest 2>/dev/null || {
-        msg_warn "Failed to update npm to latest version (continuing with bundled npm $NPM_VERSION)"
+        msg_warn "无法 update npm to latest version (continuing with bundled npm $NPM_VERSION)"
       }
     fi
 
     cache_installed_version "nodejs" "$NODE_VERSION"
-    msg_ok "Setup Node.js $NODE_VERSION"
+    msg_ok "设置 Node.js $NODE_VERSION"
   fi
 
   export NODE_OPTIONS="--max-old-space-size=4096"
@@ -5281,7 +5281,7 @@ function setup_nodejs() {
     mkdir -p /opt
   fi
   cd /opt || {
-    msg_error "Failed to set safe working directory before npm install"
+    msg_error "无法 set safe working directory before npm install"
     return 1
   }
 
@@ -5309,33 +5309,33 @@ function setup_nodejs() {
       if $STD npm list -g --depth=0 "$MODULE_NAME" 2>&1 | grep -q "$MODULE_NAME@"; then
         MODULE_INSTALLED_VERSION="$(npm list -g --depth=0 "$MODULE_NAME" 2>&1 | grep "$MODULE_NAME@" | awk -F@ '{print $2}' 2>/dev/null | tr -d '[:space:]' || echo '')"
         if [[ "$MODULE_REQ_VERSION" != "latest" && "$MODULE_REQ_VERSION" != "$MODULE_INSTALLED_VERSION" ]]; then
-          msg_info "Updating $MODULE_NAME from v$MODULE_INSTALLED_VERSION to v$MODULE_REQ_VERSION"
+          msg_info "正在更新 $MODULE_NAME from v$MODULE_INSTALLED_VERSION to v$MODULE_REQ_VERSION"
           if ! $STD npm install -g "${MODULE_NAME}@${MODULE_REQ_VERSION}" 2>/dev/null; then
-            msg_warn "Failed to update $MODULE_NAME to version $MODULE_REQ_VERSION"
+            msg_warn "无法 update $MODULE_NAME to version $MODULE_REQ_VERSION"
             ((failed_modules++)) || true
             continue
           fi
         elif [[ "$MODULE_REQ_VERSION" == "latest" ]]; then
-          msg_info "Updating $MODULE_NAME to latest version"
+          msg_info "正在更新 $MODULE_NAME to latest version"
           if ! $STD npm install -g "${MODULE_NAME}@latest" 2>/dev/null; then
-            msg_warn "Failed to update $MODULE_NAME to latest version"
+            msg_warn "无法 update $MODULE_NAME to latest version"
             ((failed_modules++)) || true
             continue
           fi
         fi
       else
-        msg_info "Installing $MODULE_NAME@$MODULE_REQ_VERSION"
+        msg_info "正在安装 $MODULE_NAME@$MODULE_REQ_VERSION"
         if ! $STD npm install -g "${MODULE_NAME}@${MODULE_REQ_VERSION}" 2>/dev/null; then
-          msg_warn "Failed to install $MODULE_NAME@$MODULE_REQ_VERSION"
+          msg_warn "无法 install $MODULE_NAME@$MODULE_REQ_VERSION"
           ((failed_modules++)) || true
           continue
         fi
       fi
     done
     if [[ $failed_modules -eq 0 ]]; then
-      msg_ok "Installed Node.js modules: $NODE_MODULE"
+      msg_ok "已安装 Node.js modules: $NODE_MODULE"
     else
-      msg_warn "Installed Node.js modules with $failed_modules failure(s): $NODE_MODULE"
+      msg_warn "已安装 Node.js modules with $failed_modules failure(s): $NODE_MODULE"
     fi
   fi
 }
@@ -5451,7 +5451,7 @@ function setup_php() {
 
   # Remove conflicting PHP version before pinning
   if [[ -n "$CURRENT_PHP" && "$CURRENT_PHP" != "$PHP_VERSION" ]]; then
-    msg_info "Removing conflicting PHP ${CURRENT_PHP} (need ${PHP_VERSION})"
+    msg_info "正在移除 conflicting PHP ${CURRENT_PHP} (need ${PHP_VERSION})"
     stop_all_services "php.*-fpm"
     $STD apt purge -y "php*" 2>/dev/null || true
     $STD apt autoremove -y 2>/dev/null || true
@@ -5469,23 +5469,23 @@ Pin: release o=packages.sury.org-php
 Pin-Priority: -1
 EOF
 
-  # Setup repository
+  # 设置 repository
   prepare_repository_setup "php" "deb.sury.org-php" || {
-    msg_error "Failed to prepare PHP repository"
+    msg_error "无法 prepare PHP repository"
     return 1
   }
 
   # Use different repository based on OS
   if [[ "$DISTRO_ID" == "ubuntu" ]]; then
     # Ubuntu: Use ondrej/php PPA
-    msg_info "Adding ondrej/php PPA for Ubuntu"
+    msg_info "正在添加 ondrej/php PPA for Ubuntu"
     $STD apt install -y software-properties-common
     # Don't use $STD for add-apt-repository as it uses background processes
     add-apt-repository -y ppa:ondrej/php >>"$(get_active_logfile)" 2>&1
   else
     # Debian: Use Sury repository
     manage_tool_repository "php" "$PHP_VERSION" "" "https://packages.sury.org/debsuryorg-archive-keyring.deb" || {
-      msg_error "Failed to setup PHP repository"
+      msg_error "无法 setup PHP repository"
       return 1
     }
   fi
@@ -5497,7 +5497,7 @@ EOF
   AVAILABLE_PHP_VERSION=$(apt-cache show "php${PHP_VERSION}" 2>/dev/null | grep -m1 "^Version:" | awk '{print $2}' 2>/dev/null | cut -d- -f1 || true)
 
   if [[ -z "$AVAILABLE_PHP_VERSION" ]]; then
-    msg_error "PHP ${PHP_VERSION} not found in configured repositories"
+    msg_error "PHP ${PHP_VERSION} 未找到 in configured repositories"
     return 1
   fi
 
@@ -5527,7 +5527,7 @@ EOF
 
   # Log skipped modules (informational, not an error)
   if [[ -n "$SKIPPED_MODULES" ]]; then
-    msg_info "Skipping unavailable/built-in modules: $SKIPPED_MODULES"
+    msg_info "正在跳过 unavailable/built-in modules: $SKIPPED_MODULES"
   fi
 
   if [[ "$PHP_FPM" == "YES" ]]; then
@@ -5549,19 +5549,19 @@ EOF
   # install apache2 with PHP support if requested
   if [[ "$PHP_APACHE" == "YES" ]]; then
     if ! dpkg -l 2>/dev/null | grep -q "libapache2-mod-php${PHP_VERSION}"; then
-      msg_info "Installing Apache with PHP ${PHP_VERSION} module"
+      msg_info "正在安装 Apache with PHP ${PHP_VERSION} module"
       install_packages_with_retry "apache2" || {
-        msg_error "Failed to install Apache"
+        msg_error "无法 install Apache"
         return 1
       }
       install_packages_with_retry "libapache2-mod-php${PHP_VERSION}" || {
-        msg_warn "Failed to install libapache2-mod-php${PHP_VERSION}, continuing without Apache module"
+        msg_warn "无法 install libapache2-mod-php${PHP_VERSION}, continuing without Apache module"
       }
     fi
   fi
 
   # Install PHP packages (pinning via preferences.d ensures correct version)
-  msg_info "Installing PHP ${PHP_VERSION} packages"
+  msg_info "正在安装 PHP ${PHP_VERSION} packages"
 
   # First attempt: Install all verified packages at once
   if ! $STD apt install -y $MODULE_LIST 2>/dev/null; then
@@ -5569,7 +5569,7 @@ EOF
 
     # Install main package first (critical)
     if ! $STD apt install -y "php${PHP_VERSION}" 2>/dev/null; then
-      msg_error "Failed to install php${PHP_VERSION}"
+      msg_error "无法 install php${PHP_VERSION}"
       return 1
     fi
 
@@ -5625,7 +5625,7 @@ EOF
 
   # Verify PHP installation - critical check
   if ! command -v php >/dev/null 2>&1; then
-    msg_error "PHP installation verification failed - php command not found"
+    msg_error "PHP installation verification failed - php command 未找到"
     return 1
   fi
 
@@ -5639,7 +5639,7 @@ EOF
   fi
 
   cache_installed_version "php" "$INSTALLED_VERSION"
-  msg_ok "Setup PHP ${INSTALLED_VERSION}"
+  msg_ok "设置 PHP ${INSTALLED_VERSION}"
 }
 
 # ------------------------------------------------------------------------------
@@ -5695,20 +5695,20 @@ function setup_postgresql() {
   # Scenario 2: Different version - backup, remove old, install new
   if [[ -n "$CURRENT_PG_VERSION" ]]; then
     msg_info "Upgrade PostgreSQL from $CURRENT_PG_VERSION to $PG_VERSION"
-    msg_info "Creating backup of PostgreSQL $CURRENT_PG_VERSION databases..."
+    msg_info "正在创建 backup of PostgreSQL $CURRENT_PG_VERSION databases..."
     $STD runuser -u postgres -- pg_dumpall >/var/lib/postgresql/backup_$(date +%F)_v${CURRENT_PG_VERSION}.sql || {
-      msg_error "Failed to backup PostgreSQL databases"
+      msg_error "无法 backup PostgreSQL databases"
       return 1
     }
     $STD systemctl stop postgresql || true
     $STD apt purge -y "postgresql-${CURRENT_PG_VERSION}" "postgresql-client-${CURRENT_PG_VERSION}" 2>/dev/null || true
   else
-    msg_info "Setup PostgreSQL $PG_VERSION"
+    msg_info "设置 PostgreSQL $PG_VERSION"
   fi
 
   # Scenario 3: Fresh install or after removal - setup repo and install
   prepare_repository_setup "pgdg" "postgresql" || {
-    msg_error "Failed to prepare PostgreSQL repository"
+    msg_error "无法 prepare PostgreSQL repository"
     return 1
   }
 
@@ -5773,15 +5773,15 @@ function setup_postgresql() {
   fi
 
   if ! command -v psql >/dev/null 2>&1; then
-    msg_error "PostgreSQL installed but psql command not found"
+    msg_error "PostgreSQL installed but psql command 未找到"
     return 1
   fi
 
   # Restore database backup if we upgraded from previous version
   if [[ -n "$CURRENT_PG_VERSION" ]]; then
-    msg_info "Restoring PostgreSQL databases from backup..."
+    msg_info "正在恢复 PostgreSQL databases from backup..."
     $STD runuser -u postgres -- psql </var/lib/postgresql/backup_$(date +%F)_v${CURRENT_PG_VERSION}.sql 2>/dev/null || {
-      msg_warn "Failed to restore database backup - this may be expected for major version upgrades"
+      msg_warn "无法 restore database backup - this may be expected for major version upgrades"
     }
   fi
 
@@ -5793,7 +5793,7 @@ function setup_postgresql() {
   fi
 
   cache_installed_version "postgresql" "$PG_VERSION"
-  msg_ok "Setup PostgreSQL $PG_VERSION"
+  msg_ok "设置 PostgreSQL $PG_VERSION"
 
   # Install optional modules
   if [[ -n "$PG_MODULES" ]]; then
@@ -5847,7 +5847,7 @@ function setup_postgresql_db() {
     PG_DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
   fi
 
-  msg_info "Setting up PostgreSQL Database"
+  msg_info "正在设置 PostgreSQL Database"
   $STD sudo -u postgres psql -c "CREATE ROLE $PG_DB_USER WITH LOGIN PASSWORD '$PG_DB_PASS';"
   $STD sudo -u postgres psql -c "CREATE DATABASE $PG_DB_NAME WITH OWNER $PG_DB_USER ENCODING 'UTF8' TEMPLATE template0;"
 
@@ -5941,7 +5941,7 @@ function setup_ruby() {
   if [[ -n "$CURRENT_RUBY_VERSION" ]]; then
     msg_info "Upgrade Ruby from $CURRENT_RUBY_VERSION to $RUBY_VERSION"
   else
-    msg_info "Setup Ruby $RUBY_VERSION"
+    msg_info "设置 Ruby $RUBY_VERSION"
   fi
 
   ensure_apt_working || return 1
@@ -5996,7 +5996,7 @@ function setup_ruby() {
     rbenv_json=$(curl -fsSL --max-time 15 https://api.github.com/repos/rbenv/rbenv/releases/latest 2>/dev/null || echo "")
 
     if [[ -z "$rbenv_json" ]]; then
-      msg_error "Failed to fetch latest rbenv version from GitHub"
+      msg_error "无法 fetch latest rbenv version from GitHub"
       rm -rf "$TMP_DIR"
       return 1
     fi
@@ -6010,13 +6010,13 @@ function setup_ruby() {
     fi
 
     curl -fsSL "https://github.com/rbenv/rbenv/archive/refs/tags/v${RBENV_RELEASE}.tar.gz" -o "$TMP_DIR/rbenv.tar.gz" || {
-      msg_error "Failed to download rbenv"
+      msg_error "无法 download rbenv"
       rm -rf "$TMP_DIR"
       return 1
     }
 
     tar -xzf "$TMP_DIR/rbenv.tar.gz" -C "$TMP_DIR" || {
-      msg_error "Failed to extract rbenv"
+      msg_error "无法 extract rbenv"
       rm -rf "$TMP_DIR"
       return 1
     }
@@ -6024,12 +6024,12 @@ function setup_ruby() {
     mkdir -p "$RBENV_DIR"
     cp -r "$TMP_DIR/rbenv-${RBENV_RELEASE}/." "$RBENV_DIR/"
     (cd "$RBENV_DIR" && src/configure && $STD make -C src) || {
-      msg_error "Failed to build rbenv"
+      msg_error "无法 build rbenv"
       rm -rf "$TMP_DIR"
       return 1
     }
 
-    # Setup profile
+    # 设置 profile
     if ! grep -q 'rbenv init' "$PROFILE_FILE" 2>/dev/null; then
       echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >>"$PROFILE_FILE"
       echo 'eval "$(rbenv init -)"' >>"$PROFILE_FILE"
@@ -6043,7 +6043,7 @@ function setup_ruby() {
     ruby_build_json=$(curl -fsSL --max-time 15 https://api.github.com/repos/rbenv/ruby-build/releases/latest 2>/dev/null || echo "")
 
     if [[ -z "$ruby_build_json" ]]; then
-      msg_error "Failed to fetch latest ruby-build version from GitHub"
+      msg_error "无法 fetch latest ruby-build version from GitHub"
       rm -rf "$TMP_DIR"
       return 1
     fi
@@ -6057,13 +6057,13 @@ function setup_ruby() {
     fi
 
     curl -fsSL "https://github.com/rbenv/ruby-build/archive/refs/tags/v${RUBY_BUILD_RELEASE}.tar.gz" -o "$TMP_DIR/ruby-build.tar.gz" || {
-      msg_error "Failed to download ruby-build"
+      msg_error "无法 download ruby-build"
       rm -rf "$TMP_DIR"
       return 1
     }
 
     tar -xzf "$TMP_DIR/ruby-build.tar.gz" -C "$TMP_DIR" || {
-      msg_error "Failed to extract ruby-build"
+      msg_error "无法 extract ruby-build"
       rm -rf "$TMP_DIR"
       return 1
     }
@@ -6072,20 +6072,20 @@ function setup_ruby() {
     cp -r "$TMP_DIR/ruby-build-${RUBY_BUILD_RELEASE}/." "$RBENV_DIR/plugins/ruby-build/"
   fi
 
-  # Setup PATH and install Ruby version
+  # 设置 PATH and install Ruby version
   export PATH="$RBENV_DIR/bin:$PATH"
   eval "$("$RBENV_BIN" init - bash)" 2>/dev/null || true
 
   if ! "$RBENV_BIN" versions --bare 2>/dev/null | grep -qx "$RUBY_VERSION"; then
     $STD "$RBENV_BIN" install "$RUBY_VERSION" || {
-      msg_error "Failed to install Ruby $RUBY_VERSION"
+      msg_error "无法 install Ruby $RUBY_VERSION"
       rm -rf "$TMP_DIR"
       return 1
     }
   fi
 
   "$RBENV_BIN" global "$RUBY_VERSION" || {
-    msg_error "Failed to set Ruby $RUBY_VERSION as global version"
+    msg_error "无法 set Ruby $RUBY_VERSION as global version"
     rm -rf "$TMP_DIR"
     return 1
   }
@@ -6095,13 +6095,13 @@ function setup_ruby() {
   # Install Rails if requested
   if [[ "$RUBY_INSTALL_RAILS" == "true" ]]; then
     $STD gem install rails || {
-      msg_warn "Failed to install Rails - Ruby installation successful"
+      msg_warn "无法 install Rails - Ruby installation successful"
     }
   fi
 
   rm -rf "$TMP_DIR"
   cache_installed_version "ruby" "$RUBY_VERSION"
-  msg_ok "Setup Ruby $RUBY_VERSION"
+  msg_ok "设置 Ruby $RUBY_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -6145,7 +6145,7 @@ function setup_meilisearch() {
   # Update mode: MeiliSearch already installed
   if [[ -f /usr/bin/meilisearch ]]; then
     if check_for_gh_release "meilisearch" "meilisearch/meilisearch"; then
-      msg_info "Updating MeiliSearch"
+      msg_info "正在更新 MeiliSearch"
 
       # Get current and new version for compatibility check
       local CURRENT_VERSION NEW_VERSION
@@ -6174,7 +6174,7 @@ function setup_meilisearch() {
       # Create dump before update if migration is needed
       local DUMP_UID=""
       if [[ "$NEEDS_MIGRATION" == "true" ]] && [[ -n "$MEILI_MASTER_KEY" ]]; then
-        msg_info "Creating MeiliSearch data dump before upgrade"
+        msg_info "正在创建 MeiliSearch data dump before upgrade"
 
         # Trigger dump creation
         local DUMP_RESPONSE
@@ -6240,7 +6240,7 @@ function setup_meilisearch() {
 
         if [[ -d "$MEILI_DB_PATH" ]] && [[ -n "$(ls -A "$MEILI_DB_PATH" 2>/dev/null)" ]]; then
           local BACKUP_PATH="${MEILI_DB_PATH}.backup.$(date +%Y%m%d%H%M%S)"
-          msg_warn "Backing up MeiliSearch data to ${BACKUP_PATH}"
+          msg_warn "正在备份 MeiliSearch data to ${BACKUP_PATH}"
           mv "$MEILI_DB_PATH" "$BACKUP_PATH"
           mkdir -p "$MEILI_DB_PATH"
           msg_info "Data backed up. After update, you may need to reindex your data."
@@ -6258,13 +6258,13 @@ function setup_meilisearch() {
         MEILI_DB_PATH=$(grep -E "^db_path\s*=" /etc/meilisearch.toml 2>/dev/null | sed 's/.*=\s*"\(.*\)"/\1/' | tr -d ' ')
         MEILI_DB_PATH="${MEILI_DB_PATH:-/var/lib/meilisearch/data}"
 
-        msg_info "Removing old MeiliSearch database for migration"
+        msg_info "正在移除 old MeiliSearch database for migration"
         rm -rf "${MEILI_DB_PATH:?}"/*
 
         # Import dump using CLI flag (this is the supported method)
         local DUMP_FILE="${MEILI_DUMP_DIR}/${DUMP_UID}.dump"
         if [[ -f "$DUMP_FILE" ]]; then
-          msg_info "Importing dump: ${DUMP_FILE}"
+          msg_info "正在导入 dump: ${DUMP_FILE}"
 
           # Start meilisearch with --import-dump flag
           # This is a one-time import that happens during startup
@@ -6302,7 +6302,7 @@ function setup_meilisearch() {
             msg_warn "MeiliSearch failed to start after migration - check logs with: journalctl -u meilisearch"
           fi
         else
-          msg_warn "Dump file not found: ${DUMP_FILE}"
+          msg_warn "Dump file 未找到: ${DUMP_FILE}"
           systemctl start meilisearch
         fi
       else
@@ -6315,17 +6315,17 @@ function setup_meilisearch() {
   fi
 
   # Fresh install
-  msg_info "Setup MeiliSearch"
+  msg_info "设置 MeiliSearch"
 
   # Install binary
   fetch_and_deploy_gh_release "meilisearch" "meilisearch/meilisearch" "binary" || {
-    msg_error "Failed to install MeiliSearch binary"
+    msg_error "无法 install MeiliSearch binary"
     return 1
   }
 
   # Download default config
   curl -fsSL https://raw.githubusercontent.com/meilisearch/meilisearch/latest/config.toml -o /etc/meilisearch.toml || {
-    msg_error "Failed to download MeiliSearch config"
+    msg_error "无法 download MeiliSearch config"
     return 1
   }
 
@@ -6401,7 +6401,7 @@ EOF
   MEILISEARCH_VERSION=$(/usr/bin/meilisearch --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1) || true
   cache_installed_version "meilisearch" "${MEILISEARCH_VERSION:-unknown}"
 
-  msg_ok "Setup MeiliSearch ${MEILISEARCH_VERSION:-}"
+  msg_ok "设置 MeiliSearch ${MEILISEARCH_VERSION:-}"
 }
 
 # ------------------------------------------------------------------------------
@@ -6470,18 +6470,18 @@ function setup_clickhouse() {
     stop_all_services "clickhouse-server"
     remove_old_tool_version "clickhouse"
   else
-    msg_info "Setup ClickHouse $CLICKHOUSE_VERSION"
+    msg_info "设置 ClickHouse $CLICKHOUSE_VERSION"
   fi
 
   ensure_dependencies apt-transport-https ca-certificates dirmngr gnupg
 
   # Prepare repository (cleanup + validation)
   prepare_repository_setup "clickhouse" || {
-    msg_error "Failed to prepare ClickHouse repository"
+    msg_error "无法 prepare ClickHouse repository"
     return 1
   }
 
-  # Setup repository (ClickHouse uses 'stable' suite)
+  # 设置 repository (ClickHouse uses 'stable' suite)
   setup_deb822_repo \
     "clickhouse" \
     "https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key" \
@@ -6496,17 +6496,17 @@ function setup_clickhouse() {
   }
 
   install_packages_with_retry "clickhouse-server" "clickhouse-client" || {
-    msg_error "Failed to install ClickHouse packages"
+    msg_error "无法 install ClickHouse packages"
     return 1
   }
 
   # Verify installation
   if ! command -v clickhouse-server >/dev/null 2>&1; then
-    msg_error "ClickHouse installation completed but clickhouse-server command not found"
+    msg_error "ClickHouse installation completed but clickhouse-server command 未找到"
     return 1
   fi
 
-  # Setup data directory
+  # 设置 data directory
   mkdir -p /var/lib/clickhouse
   if id clickhouse >/dev/null 2>&1; then
     chown -R clickhouse:clickhouse /var/lib/clickhouse
@@ -6514,12 +6514,12 @@ function setup_clickhouse() {
 
   # Enable and start service
   $STD systemctl enable clickhouse-server || {
-    msg_warn "Failed to enable clickhouse-server service"
+    msg_warn "无法 enable clickhouse-server service"
   }
   safe_service_restart clickhouse-server || true
 
   cache_installed_version "clickhouse" "$CLICKHOUSE_VERSION"
-  msg_ok "Setup ClickHouse $CLICKHOUSE_VERSION"
+  msg_ok "设置 ClickHouse $CLICKHOUSE_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -6552,9 +6552,9 @@ function setup_rust() {
 
   # Scenario 1: Rustup not installed - fresh install
   if ! command -v rustup &>/dev/null; then
-    msg_info "Setup Rust ($RUST_TOOLCHAIN)"
+    msg_info "设置 Rust ($RUST_TOOLCHAIN)"
     curl -fsSL https://sh.rustup.rs | $STD sh -s -- -y --default-toolchain "$RUST_TOOLCHAIN" || {
-      msg_error "Failed to install Rust"
+      msg_error "无法 install Rust"
       return 1
     }
     export PATH="$CARGO_BIN:$PATH"
@@ -6562,19 +6562,19 @@ function setup_rust() {
 
     # Verify installation
     if ! command -v rustc >/dev/null 2>&1; then
-      msg_error "Rust binary not found after installation"
+      msg_error "Rust binary 未找到 after installation"
       return 1
     fi
 
     local RUST_VERSION
     RUST_VERSION=$(rustc --version 2>/dev/null | awk '{print $2}' 2>/dev/null) || true
     if [[ -z "$RUST_VERSION" ]]; then
-      msg_error "Failed to determine Rust version"
+      msg_error "无法 determine Rust version"
       return 1
     fi
 
     cache_installed_version "rust" "$RUST_VERSION"
-    msg_ok "Setup Rust $RUST_VERSION"
+    msg_ok "设置 Rust $RUST_VERSION"
   else
     # Scenario 2: Rustup already installed - update/maintain
     msg_info "Update Rust ($RUST_TOOLCHAIN)"
@@ -6583,11 +6583,11 @@ function setup_rust() {
     $STD rustup default "$RUST_TOOLCHAIN" 2>/dev/null || {
       # If default fails, install the toolchain first
       $STD rustup install "$RUST_TOOLCHAIN" || {
-        msg_error "Failed to install Rust toolchain $RUST_TOOLCHAIN"
+        msg_error "无法 install Rust toolchain $RUST_TOOLCHAIN"
         return 1
       }
       $STD rustup default "$RUST_TOOLCHAIN" || {
-        msg_error "Failed to set default Rust toolchain"
+        msg_error "无法 set default Rust toolchain"
         return 1
       }
     }
@@ -6601,7 +6601,7 @@ function setup_rust() {
     local RUST_VERSION
     RUST_VERSION=$(rustc --version 2>/dev/null | awk '{print $2}' 2>/dev/null) || true
     if [[ -z "$RUST_VERSION" ]]; then
-      msg_error "Failed to determine Rust version after update"
+      msg_error "无法 determine Rust version after update"
       return 1
     fi
 
@@ -6611,7 +6611,7 @@ function setup_rust() {
 
   # Install global crates
   if [[ -n "$RUST_CRATES" ]]; then
-    msg_info "Processing Rust crates: $RUST_CRATES"
+    msg_info "正在处理 Rust crates: $RUST_CRATES"
     IFS=',' read -ra CRATES <<<"$RUST_CRATES"
     for crate in "${CRATES[@]}"; do
       crate=$(echo "$crate" | xargs) # trim whitespace
@@ -6634,42 +6634,42 @@ function setup_rust() {
         INSTALLED_VER=$(echo "$CRATE_LIST" | grep "^${NAME} " | head -1 | awk '{print $2}' 2>/dev/null | tr -d 'v:' || echo '')
 
         if [[ -n "$VER" && "$VER" != "$INSTALLED_VER" ]]; then
-          msg_info "Upgrading $NAME from v$INSTALLED_VER to v$VER"
+          msg_info "正在升级 $NAME from v$INSTALLED_VER to v$VER"
           $STD cargo install "$NAME" --version "$VER" --force || {
-            msg_error "Failed to install $NAME@$VER"
+            msg_error "无法 install $NAME@$VER"
             return 1
           }
-          msg_ok "Upgraded $NAME to v$VER"
+          msg_ok "已升级 $NAME to v$VER"
         elif [[ -z "$VER" ]]; then
-          msg_info "Upgrading $NAME to latest"
+          msg_info "正在升级 $NAME to latest"
           $STD cargo install "$NAME" --force || {
-            msg_error "Failed to upgrade $NAME"
+            msg_error "无法 upgrade $NAME"
             return 1
           }
           local NEW_VER=$(cargo install --list 2>/dev/null | grep "^${NAME} " | head -1 | awk '{print $2}' 2>/dev/null | tr -d 'v:' || echo 'unknown')
-          msg_ok "Upgraded $NAME to v$NEW_VER"
+          msg_ok "已升级 $NAME to v$NEW_VER"
         else
           msg_ok "$NAME v$INSTALLED_VER already installed"
         fi
       else
-        msg_info "Installing $NAME${VER:+@$VER}"
+        msg_info "正在安装 $NAME${VER:+@$VER}"
         if [[ -n "$VER" ]]; then
           $STD cargo install "$NAME" --version "$VER" || {
-            msg_error "Failed to install $NAME@$VER"
+            msg_error "无法 install $NAME@$VER"
             return 1
           }
-          msg_ok "Installed $NAME v$VER"
+          msg_ok "已安装 $NAME v$VER"
         else
           $STD cargo install "$NAME" || {
-            msg_error "Failed to install $NAME"
+            msg_error "无法 install $NAME"
             return 1
           }
           local NEW_VER=$(cargo install --list 2>/dev/null | grep "^${NAME} " | head -1 | awk '{print $2}' 2>/dev/null | tr -d 'v:' || echo 'unknown')
-          msg_ok "Installed $NAME v$NEW_VER"
+          msg_ok "已安装 $NAME v$NEW_VER"
         fi
       fi
     done
-    msg_ok "Processed Rust crates"
+    msg_ok "已处理 Rust crates"
   fi
 }
 
@@ -6751,7 +6751,7 @@ function setup_uv() {
 
     # Check if uvx is needed and missing
     if [[ "${USE_UVX:-NO}" == "YES" ]] && [[ ! -x "$UVX_BIN" ]]; then
-      msg_info "Installing uvx wrapper"
+      msg_info "正在安装 uvx wrapper"
       _install_uvx_wrapper || return 1
       msg_ok "uvx wrapper installed"
     fi
@@ -6763,19 +6763,19 @@ function setup_uv() {
   if [[ -n "$INSTALLED_VERSION" && "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
     msg_info "Upgrade uv from $INSTALLED_VERSION to $LATEST_VERSION"
   else
-    msg_info "Setup uv $LATEST_VERSION"
+    msg_info "设置 uv $LATEST_VERSION"
   fi
 
   local UV_URL="https://github.com/astral-sh/uv/releases/download/${LATEST_VERSION}/${UV_TAR}"
 
   $STD curl -fsSL "$UV_URL" -o "$TMP_DIR/uv.tar.gz" || {
-    msg_error "Failed to download uv from $UV_URL"
+    msg_error "无法 download uv from $UV_URL"
     return 1
   }
 
   # Extract
   $STD tar -xzf "$TMP_DIR/uv.tar.gz" -C "$TMP_DIR" || {
-    msg_error "Failed to extract uv"
+    msg_error "无法 extract uv"
     return 1
   }
 
@@ -6787,7 +6787,7 @@ function setup_uv() {
   fi
 
   $STD install -m 755 "$UV_BINARY" "$UV_BIN" || {
-    msg_error "Failed to install uv binary"
+    msg_error "无法 install uv binary"
     return 1
   }
 
@@ -6796,9 +6796,9 @@ function setup_uv() {
 
   # Optional: Install uvx wrapper
   if [[ "${USE_UVX:-NO}" == "YES" ]]; then
-    msg_info "Installing uvx wrapper"
+    msg_info "正在安装 uvx wrapper"
     _install_uvx_wrapper || {
-      msg_error "Failed to install uvx wrapper"
+      msg_error "无法 install uvx wrapper"
       return 1
     }
     msg_ok "uvx wrapper installed"
@@ -6812,16 +6812,16 @@ function setup_uv() {
 
   # Optional: Install specific Python version if requested
   if [[ -n "${PYTHON_VERSION:-}" ]]; then
-    msg_info "Installing Python $PYTHON_VERSION via uv"
+    msg_info "正在安装 Python $PYTHON_VERSION via uv"
     $STD uv python install "$PYTHON_VERSION" || {
-      msg_error "Failed to install Python $PYTHON_VERSION"
+      msg_error "无法 install Python $PYTHON_VERSION"
       return 1
     }
     msg_ok "Python $PYTHON_VERSION installed"
   fi
 
   cache_installed_version "uv" "$LATEST_VERSION"
-  msg_ok "Setup uv $LATEST_VERSION"
+  msg_ok "设置 uv $LATEST_VERSION"
 }
 
 # Helper function to install uvx wrapper
@@ -6898,18 +6898,18 @@ function setup_yq() {
   if [[ -n "$INSTALLED_VERSION" && "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
     msg_info "Upgrade yq from $INSTALLED_VERSION to $LATEST_VERSION"
   else
-    msg_info "Setup yq $LATEST_VERSION"
+    msg_info "设置 yq $LATEST_VERSION"
   fi
 
   curl -fsSL "https://github.com/${GITHUB_REPO}/releases/download/v${LATEST_VERSION}/yq_linux_amd64" -o "$TMP_DIR/yq" || {
-    msg_error "Failed to download yq"
+    msg_error "无法 download yq"
     rm -rf "$TMP_DIR"
     return 1
   }
 
   chmod +x "$TMP_DIR/yq"
   mv "$TMP_DIR/yq" "$BINARY_PATH" || {
-    msg_error "Failed to install yq"
+    msg_error "无法 install yq"
     rm -rf "$TMP_DIR"
     return 1
   }
@@ -6920,7 +6920,7 @@ function setup_yq() {
   local FINAL_VERSION
   FINAL_VERSION=$("$BINARY_PATH" --version 2>/dev/null | awk '{print $NF}' | sed 's/^v//')
   cache_installed_version "yq" "$FINAL_VERSION"
-  msg_ok "Setup yq $FINAL_VERSION"
+  msg_ok "设置 yq $FINAL_VERSION"
 }
 
 # ------------------------------------------------------------------------------
@@ -6968,13 +6968,13 @@ function setup_docker() {
 
   # Cleanup old repository configurations
   if [ -f /etc/apt/sources.list.d/docker.list ]; then
-    msg_info "Migrating from old Docker repository format"
+    msg_info "正在迁移 from old Docker repository format"
     rm -f /etc/apt/sources.list.d/docker.list
     rm -f /etc/apt/keyrings/docker.asc
   fi
 
   # Setup/Update Docker repository
-  msg_info "Setting up Docker Repository"
+  msg_info "正在设置 Docker Repository"
   setup_deb822_repo \
     "docker" \
     "https://download.docker.com/linux/$(get_os_info id)/gpg" \
@@ -6985,11 +6985,11 @@ function setup_docker() {
 
   # Install or upgrade Docker
   if [ "$docker_installed" = true ]; then
-    msg_info "Checking for Docker updates"
+    msg_info "正在检查 for Docker updates"
     DOCKER_LATEST_VERSION=$(apt-cache policy docker-ce | grep Candidate | awk '{print $2}' 2>/dev/null | cut -d':' -f2 | cut -d'-' -f1 || echo '')
 
     if [ "$DOCKER_CURRENT_VERSION" != "$DOCKER_LATEST_VERSION" ]; then
-      msg_info "Updating Docker $DOCKER_CURRENT_VERSION → $DOCKER_LATEST_VERSION"
+      msg_info "正在更新 Docker $DOCKER_CURRENT_VERSION → $DOCKER_LATEST_VERSION"
       $STD apt install -y --only-upgrade \
         docker-ce \
         docker-ce-cli \
@@ -7001,7 +7001,7 @@ function setup_docker() {
       msg_ok "Docker is up-to-date ($DOCKER_CURRENT_VERSION)"
     fi
   else
-    msg_info "Installing Docker"
+    msg_info "正在安装 Docker"
     $STD apt install -y \
       docker-ce \
       docker-ce-cli \
@@ -7010,7 +7010,7 @@ function setup_docker() {
       docker-compose-plugin
 
     DOCKER_CURRENT_VERSION=$(docker --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-    msg_ok "Installed Docker $DOCKER_CURRENT_VERSION"
+    msg_ok "已安装 Docker $DOCKER_CURRENT_VERSION"
   fi
 
   # Configure daemon.json
@@ -7030,14 +7030,14 @@ EOF
   # Portainer Management
   if [[ "${DOCKER_PORTAINER:-}" == "true" ]]; then
     if [ "$portainer_installed" = true ]; then
-      msg_info "Checking for Portainer updates"
+      msg_info "正在检查 for Portainer updates"
       PORTAINER_CURRENT=$(docker inspect portainer --format='{{.Config.Image}}' 2>/dev/null | cut -d':' -f2)
       PORTAINER_LATEST=$(curl -fsSL https://registry.hub.docker.com/v2/repositories/portainer/portainer-ce/tags?page_size=100 | grep -oP '"name":"\K[0-9]+\.[0-9]+\.[0-9]+"' | head -1 | tr -d '"')
 
       if [ "$PORTAINER_CURRENT" != "$PORTAINER_LATEST" ]; then
         read -r -p "${TAB3}Update Portainer $PORTAINER_CURRENT → $PORTAINER_LATEST? <y/N> " prompt
         if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-          msg_info "Updating Portainer"
+          msg_info "正在更新 Portainer"
           docker stop portainer
           docker rm portainer
           docker pull portainer/portainer-ce:latest
@@ -7055,7 +7055,7 @@ EOF
         msg_ok "Portainer is up-to-date ($PORTAINER_CURRENT)"
       fi
     else
-      msg_info "Installing Portainer"
+      msg_info "正在安装 Portainer"
       docker volume create portainer_data
       docker run -d \
         -p 9000:9000 \
@@ -7067,13 +7067,13 @@ EOF
         portainer/portainer-ce:latest
 
       LOCAL_IP=$(hostname -I | awk '{print $1}')
-      msg_ok "Installed Portainer (http://${LOCAL_IP}:9000)"
+      msg_ok "已安装 Portainer (http://${LOCAL_IP}:9000)"
     fi
   fi
 
   # Interactive Container Update Check
   if [[ "${DOCKER_SKIP_UPDATES:-}" != "true" ]] && [ "$docker_installed" = true ]; then
-    msg_info "Checking for container updates"
+    msg_info "正在检查 for container updates"
 
     # Get list of running containers with update status
     local containers_with_updates=()
@@ -7107,11 +7107,11 @@ EOF
 
       if [[ ${selection,,} == "all" ]]; then
         for container in "${containers_with_updates[@]}"; do
-          msg_info "Updating container: $container"
+          msg_info "正在更新 container: $container"
           docker stop "$container"
           docker rm "$container"
           # Note: This requires the original docker run command - best to recreate via compose
-          msg_ok "Stopped and removed $container (please recreate with updated image)"
+          msg_ok "已停止 and removed $container (please recreate with updated image)"
         done
       elif [[ ${selection,,} != "none" ]]; then
         IFS=',' read -ra SELECTED <<<"$selection"
@@ -7119,10 +7119,10 @@ EOF
           num=$(echo "$num" | xargs) # trim whitespace
           if [[ "$num" =~ ^[0-9]+$ ]] && [ "$num" -ge 1 ] && [ "$num" -le "${#containers_with_updates[@]}" ]; then
             container="${containers_with_updates[$((num - 1))]}"
-            msg_info "Updating container: $container"
+            msg_info "正在更新 container: $container"
             docker stop "$container"
             docker rm "$container"
-            msg_ok "Stopped and removed $container (please recreate with updated image)"
+            msg_ok "已停止 and removed $container (please recreate with updated image)"
           fi
         done
       fi
@@ -7159,11 +7159,11 @@ function fetch_and_deploy_from_url() {
 
   local filename="${url##*/}"
 
-  msg_info "Downloading from $url"
+  msg_info "正在下载 from $url"
 
   local tmpdir
   tmpdir=$(mktemp -d) || {
-    msg_error "Failed to create temporary directory"
+    msg_error "无法 create temporary directory"
     return 1
   }
 
@@ -7193,10 +7193,10 @@ function fetch_and_deploy_from_url() {
     return 1
   fi
 
-  msg_info "Detected archive type: $archive_type (file type: $file_desc)"
+  msg_info "已检测到 archive type: $archive_type (file type: $file_desc)"
 
   if [[ "$archive_type" == "deb" ]]; then
-    msg_info "Installing .deb package"
+    msg_info "正在安装 .deb package"
 
     chmod 644 "$tmpdir/$filename"
     $STD apt install -y "$tmpdir/$filename" || {
@@ -7218,7 +7218,7 @@ function fetch_and_deploy_from_url() {
     return 1
   fi
 
-  msg_info "Extracting archive to $directory"
+  msg_info "正在解压 archive to $directory"
 
   mkdir -p "$directory"
 
@@ -7232,13 +7232,13 @@ function fetch_and_deploy_from_url() {
   if [[ "$archive_type" == "zip" ]]; then
     ensure_dependencies unzip
     unzip -q "$tmpdir/$filename" -d "$unpack_tmp" || {
-      msg_error "Failed to extract ZIP archive"
+      msg_error "无法 extract ZIP archive"
       rm -rf "$tmpdir" "$unpack_tmp"
       return 1
     }
   elif [[ "$archive_type" == "tar" ]]; then
     tar --no-same-owner -xf "$tmpdir/$filename" -C "$unpack_tmp" || {
-      msg_error "Failed to extract TAR archive"
+      msg_error "无法 extract TAR archive"
       rm -rf "$tmpdir" "$unpack_tmp"
       return 1
     }
@@ -7252,7 +7252,7 @@ function fetch_and_deploy_from_url() {
     shopt -s dotglob nullglob
     if compgen -G "$inner_dir/*" >/dev/null; then
       cp -r "$inner_dir"/* "$directory/" || {
-        msg_error "Failed to copy contents from $inner_dir to $directory"
+        msg_error "无法 copy contents from $inner_dir to $directory"
         rm -rf "$tmpdir" "$unpack_tmp"
         return 1
       }
@@ -7266,7 +7266,7 @@ function fetch_and_deploy_from_url() {
     shopt -s dotglob nullglob
     if compgen -G "$unpack_tmp/*" >/dev/null; then
       cp -r "$unpack_tmp"/* "$directory/" || {
-        msg_error "Failed to copy contents to $directory"
+        msg_error "无法 copy contents to $directory"
         rm -rf "$tmpdir" "$unpack_tmp"
         return 1
       }

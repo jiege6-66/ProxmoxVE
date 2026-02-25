@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   rsync
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="joplin" PG_DB_USER="joplin" setup_postgresql_db
@@ -31,7 +31,7 @@ $STD pm2 set pm2-logrotate:compress tr
 
 fetch_and_deploy_gh_release "joplin-server" "laurent22/joplin" "tarball"
 
-msg_info "Setting up Joplin Server (Patience)"
+msg_info "正在设置 Joplin Server (Patience)"
 cd /opt/joplin-server
 sed -i "/onenote-converter/d" packages/lib/package.json
 $STD yarn config set --home enableTelemetry 0
@@ -51,9 +51,9 @@ POSTGRES_USER=$PG_DB_USER
 POSTGRES_PORT=5432
 POSTGRES_HOST=localhost
 EOF
-msg_ok "Setup Joplin Server"
+msg_ok "设置 Joplin Server"
 
-msg_info "Setting up Service"
+msg_info "正在设置 Service"
 cat <<EOF >/etc/systemd/system/joplin-server.service
 [Unit]
 Description=Joplin Server Service

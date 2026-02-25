@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "vikunja" "go-vikunja/vikunja" "binary" 
 
-msg_info "Setting up Vikunja"
+msg_info "正在设置 Vikunja"
 sed -i 's|^# \(service:\)|\1|' /etc/vikunja/config.yml
 sed -i "s|^  # \(publicurl: \).*|  \1\"http://$LOCAL_IP\"|" /etc/vikunja/config.yml
 sed -i "0,/^  # \(timezone: \).*/s||  \1${tz}|" /etc/vikunja/config.yml

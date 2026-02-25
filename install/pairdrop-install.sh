@@ -16,12 +16,12 @@ update_os
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "pairdrop" "schlagmichdoch/PairDrop" "tarball"
 
-msg_info "Configuring PairDrop"
+msg_info "正在配置 PairDrop"
 cd /opt/pairdrop
 $STD npm install
-msg_ok "Installed PairDrop"
+msg_ok "已安装 PairDrop"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/pairdrop.service
 [Unit]
 Description=PairDrop Service
@@ -36,7 +36,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now pairdrop
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

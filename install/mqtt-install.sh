@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Mosquitto MQTT Broker"
+msg_info "正在安装 Mosquitto MQTT Broker"
 source /etc/os-release
 $STD apt update
 $STD apt -y install mosquitto mosquitto-clients
@@ -24,7 +24,7 @@ persistence true
 password_file /etc/mosquitto/passwd
 listener 1883
 EOF
-msg_ok "Installed Mosquitto MQTT Broker"
+msg_ok "已安装 Mosquitto MQTT Broker"
 
 motd_ssh
 customize

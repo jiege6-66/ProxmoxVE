@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   git \
@@ -29,18 +29,18 @@ $STD apt install -y \
   cmake \
   redis-server \
   nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" PG_MODULES="postgis-3" setup_postgresql
 PG_DB_NAME="dawarich_db" PG_DB_USER="dawarich" PG_DB_EXTENSIONS="postgis" setup_postgresql_db
 
 fetch_and_deploy_gh_release "dawarich" "Freika/dawarich" "tarball" "latest" "/opt/dawarich/app"
 
-msg_info "Setting up Directories"
+msg_info "正在设置 Directories"
 mkdir -p /opt/dawarich/app/{storage,log,tmp/pids,tmp/cache,tmp/sockets}
 msg_ok "Set up Directories"
 
-msg_info "Configuring Environment"
+msg_info "正在配置 Environment"
 SECRET_KEY_BASE=$(openssl rand -hex 64)
 RELEASE=$(get_latest_github_release "Freika/dawarich")
 cat <<EOF >/opt/dawarich/.env
@@ -58,13 +58,13 @@ TIME_ZONE=UTC
 DISABLE_TELEMETRY=true
 APP_VERSION=${RELEASE}
 EOF
-msg_ok "Configured Environment"
+msg_ok "已配置 Environment"
 
 NODE_VERSION="22" setup_nodejs
 RUBY_VERSION=$(cat /opt/dawarich/app/.ruby-version 2>/dev/null || echo "3.4.6")
 RUBY_VERSION=${RUBY_VERSION} RUBY_INSTALL_RAILS="false" setup_ruby
 
-msg_info "Installing Dawarich"
+msg_info "正在安装 Dawarich"
 cd /opt/dawarich/app
 source /root/.profile
 export PATH="/root/.rbenv/shims:/root/.rbenv/bin:$PATH"
@@ -84,9 +84,9 @@ fi
 $STD bundle exec rake assets:precompile
 $STD bundle exec rails db:prepare
 $STD bundle exec rake data:migrate
-msg_ok "Installed Dawarich"
+msg_ok "已安装 Dawarich"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/dawarich-web.service
 [Unit]
 Description=Dawarich Web Server
@@ -124,9 +124,9 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now redis-server dawarich-web dawarich-worker
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<EOF >/etc/nginx/sites-available/dawarich.conf
 upstream dawarich {
     server 127.0.0.1:3000;
@@ -166,7 +166,7 @@ EOF
 ln -sf /etc/nginx/sites-available/dawarich.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 systemctl enable -q --now nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
 motd_ssh
 customize

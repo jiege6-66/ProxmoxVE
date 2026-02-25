@@ -29,3 +29,5 @@ const PopoverContent = React.forwardRef<
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
 export { Popover, PopoverContent, PopoverTrigger };
+
+这段代码中没有用户可见的 UI 文本需要翻译，都是组件定义和样式类名。

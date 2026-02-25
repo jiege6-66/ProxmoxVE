@@ -14,14 +14,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing NUT"
+msg_info "正在安装 NUT"
 $STD apt install -y nut-client
-msg_ok "Installed NUT"
+msg_ok "已安装 NUT"
 
 NODE_VERSION="24" NODE_MODULE="pnpm" setup_nodejs
 fetch_and_deploy_gh_release "peanut" "Brandawg93/PeaNUT" "tarball" "latest" "/opt/peanut"
 
-msg_info "Setup Peanut"
+msg_info "设置 Peanut"
 cd /opt/peanut
 $STD pnpm i
 $STD pnpm run build:local
@@ -36,9 +36,9 @@ NUT_HOST: 0.0.0.0
 NUT_PORT: 3493
 EOF
 ln -sf /etc/peanut/settings.yml /opt/peanut/.next/standalone/config/settings.yml
-msg_ok "Setup Peanut"
+msg_ok "设置 Peanut"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/peanut.service
 [Unit]
 Description=Peanut
@@ -60,7 +60,7 @@ TimeoutStopSec=30
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now peanut
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

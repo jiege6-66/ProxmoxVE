@@ -13,7 +13,7 @@
   "website": "https://typesense.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/typesense.webp",
   "config_path": "/etc/typesense/typesense-server.ini",
-  "description": "Typesense is an open-source, fast, and lightweight search engine optimized for delivering instant, relevant, and typo-tolerant search results. Designed for ease of use and high performance, it offers features like real-time indexing, fuzzy matching, customizable relevance ranking, and a simple API for integration. Typesense is particularly well-suited for applications requiring instant search capabilities, such as e-commerce, documentation, or any content-rich websites. It is often compared to tools like Elasticsearch but is more developer-friendly and less resource-intensive.",
+  "description": "Typesense 是一个开源、快速且轻量级的搜索引擎，专为提供即时、相关且容错的搜索结果而优化。它设计简单易用且性能卓越，提供实时索引、模糊匹配、可自定义的相关性排名以及简单的 API 集成等功能。Typesense 特别适合需要即时搜索功能的应用程序，如电子商务、文档或任何内容丰富的网站。它经常被拿来与 Elasticsearch 等工具比较，但更加开发者友好且资源占用更少。",
   "install_methods": [
     {
       "type": "default",

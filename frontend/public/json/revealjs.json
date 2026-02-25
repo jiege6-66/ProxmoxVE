@@ -13,7 +13,7 @@
   "website": "https://github.com/hakimel/reveal.js",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/reveal-js.webp",
   "config_path": "/opt/revealjs/gulpfile.js",
-  "description": "reveal.js is an open source HTML presentation framework. It's a tool that enables anyone with a web browser to create fully-featured and beautiful presentations for free.",
+  "description": "reveal.js 是一个开源的 HTML 演示框架。它是一个工具,使任何拥有网页浏览器的人都能免费创建功能齐全且美观的演示文稿。",
   "install_methods": [
     {
       "type": "default",

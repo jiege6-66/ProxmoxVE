@@ -13,7 +13,7 @@
   "website": "https://github.com/rcourtman/Pulse",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/pulse.webp",
   "config_path": "/etc/pulse",
-  "description": "A lightweight monitoring application for Proxmox VE that displays real-time status for VMs and containers via a simple web interface.",
+  "description": "一个轻量级的 Proxmox VE 监控应用程序,通过简单的网页界面实时显示虚拟机和容器的状态。",
   "install_methods": [
     {
       "type": "default",

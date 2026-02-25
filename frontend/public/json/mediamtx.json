@@ -13,7 +13,7 @@
   "website": "https://github.com/bluenviron/mediamtx",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mediamtx.webp",
   "config_path": "/opt/mediamtx/mediamtx.yml",
-  "description": "MediaMTX is a ready-to-use SRT / WebRTC / RTSP / RTMP / LL-HLS media server and media proxy that allows you to read, publish, proxy, record and playback video and audio streams.",
+  "description": "MediaMTX 是一个即用型 SRT / WebRTC / RTSP / RTMP / LL-HLS 媒体服务器和媒体代理，允许您读取、发布、代理、录制和回放视频和音频流。",
   "install_methods": [
     {
       "type": "default",

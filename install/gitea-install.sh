@@ -14,15 +14,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     git \
     sqlite3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "gitea" "go-gitea/gitea" "singlefile" "latest" "/usr/local/bin" "gitea-*-linux-amd64"
 
-msg_info "Configuring Gitea"
+msg_info "正在配置 Gitea"
 chmod +x /usr/local/bin/gitea
 $STD adduser --system --group --disabled-password --shell /bin/bash --home /etc/gitea gitea
 mkdir -p /var/lib/gitea/{custom,data,log}
@@ -31,9 +31,9 @@ chmod -R 750 /var/lib/gitea/
 chown root:gitea /etc/gitea
 chmod 770 /etc/gitea
 sudo -u gitea ln -s /var/lib/gitea/data/.ssh/ /etc/gitea/.ssh
-msg_ok "Configured Gitea"
+msg_ok "已配置 Gitea"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/gitea.service
 [Unit]
 Description=Gitea (Git with a cup of tea)
@@ -65,7 +65,7 @@ Environment=USER=gitea HOME=/var/lib/gitea/data GITEA_WORK_DIR=/var/lib/gitea
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now gitea
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

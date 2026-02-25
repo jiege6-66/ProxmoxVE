@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Proxmox Mail Gateway"
+msg_info "正在安装 Proxmox Mail Gateway"
 setup_deb822_repo \
   "pmg" \
   "https://enterprise.proxmox.com/debian/proxmox-release-trixie.gpg" \
@@ -21,7 +21,7 @@ setup_deb822_repo \
   "trixie" \
   "pmg-no-subscription"
 $STD apt install -y proxmox-mailgateway-container
-msg_ok "Installed Proxmox Mail Gateway"
+msg_ok "已安装 Proxmox Mail Gateway"
 
 motd_ssh
 customize

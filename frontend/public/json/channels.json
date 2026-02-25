@@ -13,7 +13,7 @@
   "website": "https://getchannels.com/dvr-server/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/channels-dvr.webp",
   "config_path": "",
-  "description": "Channels DVR Server runs on your computer or NAS device at home. There's no cloud to worry about. Your tv shows and movies will always be available.",
+  "description": "Channels DVR Server 在您家中的计算机或 NAS 设备上运行。无需担心云。您的电视节目和电影将始终可用。",
   "install_methods": [
     {
       "type": "default",

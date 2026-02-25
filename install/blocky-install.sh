@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "blocky" "0xERR0R/blocky" "prebuild" "latest" "/opt/blocky" "blocky_*_Linux_x86_64.tar.gz"
 
-msg_info "Configuring Blocky"
+msg_info "正在配置 Blocky"
 if systemctl is-active systemd-resolved >/dev/null 2>&1; then
   systemctl disable -q --now systemd-resolved
 fi
@@ -61,9 +61,9 @@ log:
   # optional: Log level (one from trace, debug, info, warn, error). Default: info
   level: info
 EOF
-msg_ok "Configured Blocky"
+msg_ok "已配置 Blocky"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/blocky.service
 [Unit]
 Description=Blocky
@@ -76,7 +76,7 @@ ExecStart=/opt/blocky/./blocky --config config.yml
 WantedBy=multi-user.target
 EOF
 $STD systemctl enable -q --now blocky
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

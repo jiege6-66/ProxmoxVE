@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   libssl-dev \
   pkg-config
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION=17 setup_postgresql
 NODE_VERSION="24" setup_nodejs
@@ -27,21 +27,21 @@ fetch_and_deploy_gh_release "Scanopy" "scanopy/scanopy" "tarball" "latest" "/opt
 TOOLCHAIN="$(grep "channel" /opt/scanopy/backend/rust-toolchain.toml | awk -F\" '{print $2}')"
 RUST_TOOLCHAIN=$TOOLCHAIN setup_rust
 
-msg_info "Creating frontend UI"
+msg_info "正在创建 frontend UI"
 export PUBLIC_SERVER_HOSTNAME=default
 export PUBLIC_SERVER_PORT=""
 cd /opt/scanopy/ui
 $STD npm ci --no-fund --no-audit
 $STD npm run build
-msg_ok "Created frontend UI"
+msg_ok "已创建 frontend UI"
 
-msg_info "Building Scanopy Server (patience)"
+msg_info "正在构建 Scanopy Server (patience)"
 cd /opt/scanopy/backend
 $STD cargo build --release --bin server
 mv ./target/release/server /usr/bin/scanopy-server
-msg_ok "Built Scanopy Server"
+msg_ok "已构建 Scanopy Server"
 
-msg_info "Configuring server for first-run"
+msg_info "正在配置 server for first-run"
 cat <<EOF >/opt/scanopy/.env
 ### - SERVER
 SCANOPY_DATABASE_URL=postgresql://$PG_DB_USER:$PG_DB_PASS@localhost:5432/$PG_DB_NAME
@@ -94,7 +94,7 @@ EOF
 
 systemctl enable -q --now scanopy-server
 
-# Creating short script to configure scanopy-daemon
+# 正在创建 short script to configure scanopy-daemon
 # cat <<EOF >~/configure_daemon.sh
 # #!/usr/bin/env bash
 #

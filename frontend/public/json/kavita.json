@@ -13,7 +13,7 @@
   "website": "https://www.kavitareader.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/kavita.webp",
   "config_path": "",
-  "description": "Kavita is a fast, feature rich, cross platform reading server. Built with a focus for manga, and the goal of being a full solution for all your reading needs.",
+  "description": "Kavita 是一个快速、功能丰富的跨平台阅读服务器。专注于漫画，目标是成为满足你所有阅读需求的完整解决方案。",
   "install_methods": [
     {
       "type": "default",

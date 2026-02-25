@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Cloudflared"
+msg_info "正在安装 Cloudflared"
 setup_deb822_repo \
   "cloudflared" \
   "https://pkg.cloudflare.com/cloudflare-main.gpg" \
@@ -21,7 +21,7 @@ setup_deb822_repo \
   "any" \
   "main"
 $STD apt install -y cloudflared
-msg_ok "Installed Cloudflared"
+msg_ok "已安装 Cloudflared"
 
 motd_ssh
 customize

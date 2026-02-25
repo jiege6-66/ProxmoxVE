@@ -20,18 +20,18 @@ setup_yq
 MARIADB_DB_NAME="booklore_db" MARIADB_DB_USER="booklore_user" MARIADB_DB_EXTRA_GRANTS="GRANT SELECT ON \`mysql\`.\`time_zone_name\`" setup_mariadb_db
 fetch_and_deploy_gh_release "booklore" "booklore-app/BookLore" "tarball"
 
-msg_info "Building Frontend"
+msg_info "正在构建 Frontend"
 cd /opt/booklore/booklore-ui
 $STD npm install --force
 $STD npm run build --configuration=production
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
 msg_info "Embedding Frontend into Backend"
 mkdir -p /opt/booklore/booklore-api/src/main/resources/static
 cp -r /opt/booklore/booklore-ui/dist/booklore/browser/* /opt/booklore/booklore-api/src/main/resources/static/
 msg_ok "Embedded Frontend into Backend"
 
-msg_info "Creating Environment"
+msg_info "正在创建 Environment"
 mkdir -p /opt/booklore_storage/{data,books,bookdrop}
 cat <<EOF >/opt/booklore_storage/.env
 # Database Configuration
@@ -44,9 +44,9 @@ APP_PATH_CONFIG=/opt/booklore_storage/data
 APP_BOOKDROP_FOLDER=/opt/booklore_storage/bookdrop
 SERVER_PORT=6060
 EOF
-msg_ok "Created Environment"
+msg_ok "已创建 Environment"
 
-msg_info "Building Backend"
+msg_info "正在构建 Backend"
 cd /opt/booklore/booklore-api
 APP_VERSION=$(get_latest_github_release "booklore-app/BookLore")
 yq eval ".app.version = \"${APP_VERSION}\"" -i src/main/resources/application.yaml
@@ -54,13 +54,13 @@ $STD ./gradlew clean build -x test --no-daemon
 mkdir -p /opt/booklore/dist
 JAR_PATH=$(find /opt/booklore/booklore-api/build/libs -maxdepth 1 -type f -name "booklore-api-*.jar" ! -name "*plain*" | head -n1)
 if [[ -z "$JAR_PATH" ]]; then
-  msg_error "Backend JAR not found"
+  msg_error "Backend JAR 未找到"
   exit 1
 fi
 cp "$JAR_PATH" /opt/booklore/dist/app.jar
-msg_ok "Built Backend"
+msg_ok "已构建 Backend"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/booklore.service
 [Unit]
 Description=BookLore Java Service
@@ -81,7 +81,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now booklore
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

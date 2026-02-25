@@ -13,19 +13,19 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y xdg-utils
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
 fetch_and_deploy_gh_release "excalidraw" "excalidraw/excalidraw" "tarball"
 
-msg_info "Configuring Excalidraw"
+msg_info "正在配置 Excalidraw"
 cd /opt/excalidraw
 $STD yarn
-msg_ok "Setup Excalidraw"
+msg_ok "设置 Excalidraw"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/excalidraw.service
 [Unit]
 Description=Excalidraw Service
@@ -41,7 +41,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now excalidraw
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

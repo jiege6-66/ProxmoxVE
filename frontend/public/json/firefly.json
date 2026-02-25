@@ -13,7 +13,7 @@
   "website": "https://firefly-iii.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/firefly-iii.webp",
   "config_path": "/opt/firefly/.env",
-  "description": "Firefly III is a free, self-hosted tool for managing your finances. Track expenses, plan budgets, and get detailed reports.",
+  "description": "Firefly III 是一个免费的自托管财务管理工具。跟踪支出、规划预算并获取详细报告。",
   "install_methods": [
     {
       "type": "default",

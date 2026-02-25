@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   appstream \
   build-essential \
@@ -35,7 +35,7 @@ $STD apt install -y \
   poppler-utils \
   python3-dev \
   tesseract-ocr
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.12" setup_uv
 NODE_VERSION="22" setup_nodejs
@@ -43,7 +43,7 @@ NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "gramps-web-api" "gramps-project/gramps-web-api" "tarball" "latest" "/opt/gramps-web-api"
 fetch_and_deploy_gh_release "gramps-web" "gramps-project/gramps-web" "tarball" "latest" "/opt/gramps-web/frontend"
 
-msg_info "Setting up Gramps Web"
+msg_info "正在设置 Gramps Web"
 mkdir -p \
   /opt/gramps-web/config \
   /opt/gramps-web/data/cache/export \
@@ -89,7 +89,7 @@ GRAMPS_API_CONFIG=/opt/gramps-web/config/config.cfg \
   $STD /opt/gramps-web/venv/bin/python3 -m gramps_webapi user migrate
 msg_ok "Set up Gramps Web"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/gramps-web.service
 [Unit]
 Description=Gramps Web Service
@@ -111,7 +111,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now gramps-web
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y \
   software-properties-common \
   gdal-bin \
@@ -31,23 +31,23 @@ $STD apt-get install -y \
   fonts-liberation \
   ttf-mscorefonts-installer \
   cabextract
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setup OpenJDK"
+msg_info "设置 OpenJDK"
 $STD apt-get install -y \
   openjdk-17-jre-headless
-msg_ok "Setup OpenJDK"
+msg_ok "设置 OpenJDK"
 
-msg_info "Installing Apache Tika"
+msg_info "正在安装 Apache Tika"
 mkdir -p /opt/apache-tika
 cd /opt/apache-tika
 RELEASE="$(curl -fsSL https://dlcdn.apache.org/tika/ | grep -oP '(?<=href=")[0-9]+\.[0-9]+\.[0-9]+(?=/")' | sort -V | tail -n1)"
 curl -fsSL "https://dlcdn.apache.org/tika/${RELEASE}/tika-server-standard-${RELEASE}.jar" -o tika-server-standard-${RELEASE}.jar
 mv tika-server-standard-${RELEASE}.jar tika-server-standard.jar
 echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
-msg_ok "Installed Apache Tika"
+msg_ok "已安装 Apache Tika"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/apache-tika.service
 [Unit]
 Description=Apache Tika
@@ -65,7 +65,7 @@ ExecReload=/bin/kill -HUP \$MAINPID
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now apache-tika
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

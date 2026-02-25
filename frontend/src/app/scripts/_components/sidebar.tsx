@@ -37,11 +37,11 @@ function Sidebar({
   return (
     <div className={cn("flex w-full flex-col sm:min-w-[350px] sm:max-w-[350px]", className)}>
       <div className="flex items-end justify-between pb-4">
-        <h1 className="text-xl font-bold">Categories</h1>
+        <h1 className="text-xl font-bold">分类</h1>
         <p className="text-xs italic text-muted-foreground">
           {uniqueScripts.length}
           {" "}
-          Total scripts
+          个脚本
         </p>
       </div>
       <div className="rounded-lg">

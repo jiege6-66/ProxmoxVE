@@ -13,7 +13,7 @@
   "config_path": "/etc/infisical/infisical.rb",
   "website": "https://infisical.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/infisical.webp",
-  "description": "Secrets, certificates, and access management on autopilot. All-in-one platform to securely manage application secrets, certificates, SSH keys, and configurations across your team and infrastructure.",
+  "description": "自动驾驶的密钥、证书和访问管理。一体化平台，安全管理团队和基础设施中的应用程序密钥、证书、SSH 密钥和配置。",
   "install_methods": [
     {
       "type": "default",

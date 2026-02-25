@@ -13,7 +13,7 @@
   "website": "https://www.wireguard.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wireguard.webp",
   "config_path": "/etc/wireguard/wg0.conf",
-  "description": "WireGuard is a free and open-source virtual private network (VPN) software that uses modern cryptography to secure the data transmitted over a network. It is designed to be fast, secure, and easy to use. WireGuard supports various operating systems, including Linux, Windows, macOS, Android, and iOS. It operates at the network layer and is capable of being used with a wide range of protocols and configurations. Unlike other VPN protocols, WireGuard is designed to be simple and fast, with a focus on security and speed. It is known for its ease of setup and configuration, making it a popular choice for personal and commercial use.",
+  "description": "WireGuard 是一个免费开源的虚拟专用网络软件,使用现代加密技术保护网络传输数据的安全。它设计快速、安全且易于使用。WireGuard 支持多种操作系统,包括 Linux、Windows、macOS、Android 和 iOS。它在网络层运行,可与多种协议和配置配合使用。与其他 VPN 协议不同,WireGuard 设计简单快速,专注于安全性和速度。它以易于设置和配置而闻名,是个人和商业用途的热门选择。",
   "install_methods": [
     {
       "type": "default",

@@ -16,29 +16,29 @@ update_os
 read -r -p "${TAB3}Enter PostgreSQL version (15/16/17): " ver
 [[ $ver =~ ^(15|16|17)$ ]] || { echo "Invalid version"; exit 1; }
 
-msg_info "Installing PostgreSQL ${ver}"
+msg_info "正在安装 PostgreSQL ${ver}"
 $STD apk add --no-cache postgresql${ver} postgresql${ver}-contrib postgresql${ver}-openrc sudo
-msg_ok "Installed PostgreSQL ${ver}"
+msg_ok "已安装 PostgreSQL ${ver}"
 
-msg_info "Enabling PostgreSQL Service"
+msg_info "正在启用 PostgreSQL Service"
 $STD rc-update add postgresql default
-msg_ok "Enabled PostgreSQL Service"
+msg_ok "已启用 PostgreSQL Service"
 
-msg_info "Starting PostgreSQL"
+msg_info "正在启动 PostgreSQL"
 $STD rc-service postgresql start
-msg_ok "Started PostgreSQL"
+msg_ok "已启动 PostgreSQL"
 
-msg_info "Configuring PostgreSQL for External Access"
+msg_info "正在配置 PostgreSQL for External Access"
 conf_file="/etc/postgresql${ver}/postgresql.conf"
 hba_file="/etc/postgresql${ver}/pg_hba.conf"
 sed -i 's/^#listen_addresses =.*/listen_addresses = '\''*'\''/' "$conf_file"
 sed -i '/^host\s\+all\s\+all\s\+127.0.0.1\/32\s\+md5/ s/.*/host all all 0.0.0.0\/0 md5/' "$hba_file"
 $STD rc-service postgresql restart
-msg_ok "Configured and Restarted PostgreSQL"
+msg_ok "已配置 and 已重启 PostgreSQL"
 
 read -r -p "${TAB3}Would you like to install Adminer with lighttpd? <y/N>: " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Adminer and dependencies"
+  msg_info "正在安装 Adminer and dependencies"
   $STD apk add --no-cache \
     lighttpd \
     lighttpd-openrc \
@@ -62,12 +62,12 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   curl -fsSL "https://github.com/vrana/adminer/releases/download/v${ADMINER_VERSION}/adminer-${ADMINER_VERSION}.php" -o /var/www/localhost/htdocs/adminer.php
   chown lighttpd:lighttpd /var/www/localhost/htdocs/adminer.php
   chmod 755 /var/www/localhost/htdocs/adminer.php
-  msg_ok "Adminer Installed"
+  msg_ok "Adminer 已安装"
 
-  msg_info "Starting Lighttpd"
+  msg_info "正在启动 Lighttpd"
   $STD rc-update add lighttpd default
   $STD rc-service lighttpd restart
-  msg_ok "Lighttpd Started"
+  msg_ok "Lighttpd 已启动"
 fi
 
 motd_ssh

@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "The CPU scaling governor determines how the CPU frequency is adjusted based on the workload, with the goal of either conserving power or improving performance. By scaling the frequency up or down, the operating system can optimize the CPU usage and conserve energy when possible. Generic Scaling Governors",
+  "description": "CPU 调频策略决定了 CPU 频率如何根据工作负载进行调整，目标是节省电力或提高性能。通过提高或降低频率，操作系统可以优化 CPU 使用并在可能的情况下节约能源。通用调频策略",
   "install_methods": [
     {
       "type": "default",

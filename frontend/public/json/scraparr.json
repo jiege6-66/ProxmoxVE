@@ -13,7 +13,7 @@
   "website": "https://github.com/thecfu/scraparr",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/scraparr-dark.webp",
   "config_path": "/scraparr/config/config.yaml",
-  "description": "Scraparr is a Prometheus exporter for the *arr suite (Sonarr, Radarr, Lidarr, etc.). It provides metrics that can be scraped by Prometheus to monitor and visualize the health and performance of your *arr applications.",
+  "description": "Scraparr 是一个用于 *arr 套件（Sonarr、Radarr、Lidarr 等）的 Prometheus 导出器。它提供可被 Prometheus 抓取的指标，用于监控和可视化您的 *arr 应用程序的健康状况和性能。",
   "install_methods": [
     {
       "type": "default",

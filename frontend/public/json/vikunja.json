@@ -13,7 +13,7 @@
   "website": "https://vikunja.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/vikunja.webp",
   "config_path": "/etc/vikunja/config.yml",
-  "description": "Vikunja is a powerful self-hosted todo app. It allows you to create and manage to-do lists. You can plan tasks, set priorities and collaborate with others. The best part is that your data is safe with you and you can customize the app to your liking. It's like a personal assistant that helps you stay organized.",
+  "description": "Vikunja 是一个强大的自托管待办事项应用。它允许您创建和管理待办事项列表。您可以规划任务、设置优先级并与他人协作。最棒的是您的数据安全地保存在您这里，您可以根据自己的喜好自定义应用。它就像一个帮助您保持井然有序的个人助理。",
   "install_methods": [
     {
       "type": "default",

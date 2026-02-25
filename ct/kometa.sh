@@ -25,32 +25,32 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d "/opt/kometa" ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "kometa" "Kometa-Team/Kometa"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop kometa
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     cp /opt/kometa/config/config.yml /opt
     msg_ok "Backup completed"
 
     PYTHON_VERSION="3.13" setup_uv
     fetch_and_deploy_gh_release "kometa" "Kometa-Team/Kometa" "tarball"
 
-    msg_info "Updating Kometa"
+    msg_info "正在更新 Kometa"
     cd /opt/kometa 
     $STD uv pip install -r requirements.txt --system
     mkdir -p config/assets
     cp /opt/config.yml config/config.yml
     msg_ok "Updated Kometa"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start kometa
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -59,7 +59,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access the LXC at following IP address:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}${IP}${CL}"

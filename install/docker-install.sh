@@ -17,16 +17,16 @@ DOCKER_LATEST_VERSION=$(get_latest_github_release "moby/moby")
 PORTAINER_LATEST_VERSION=$(get_latest_github_release "portainer/portainer")
 PORTAINER_AGENT_LATEST_VERSION=$(get_latest_github_release "portainer/agent")
 
-msg_info "Installing Docker $DOCKER_LATEST_VERSION (with Compose, Buildx)"
+msg_info "正在安装 Docker $DOCKER_LATEST_VERSION (with Compose, Buildx)"
 DOCKER_CONFIG_PATH='/etc/docker/daemon.json'
 mkdir -p $(dirname $DOCKER_CONFIG_PATH)
 echo -e '{\n  "log-driver": "journald"\n}' >/etc/docker/daemon.json
 $STD sh <(curl -fsSL https://get.docker.com)
-msg_ok "Installed Docker $DOCKER_LATEST_VERSION"
+msg_ok "已安装 Docker $DOCKER_LATEST_VERSION"
 
 read -r -p "${TAB3}Would you like to add Portainer (UI)? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Portainer $PORTAINER_LATEST_VERSION"
+  msg_info "正在安装 Portainer $PORTAINER_LATEST_VERSION"
   docker volume create portainer_data >/dev/null
   $STD docker run -d \
     -p 8000:8000 \
@@ -36,11 +36,11 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v portainer_data:/data \
     portainer/portainer-ce:latest
-  msg_ok "Installed Portainer $PORTAINER_LATEST_VERSION"
+  msg_ok "已安装 Portainer $PORTAINER_LATEST_VERSION"
 else
   read -r -p "${TAB3}Would you like to install the Portainer Agent (for remote management)? <y/N> " prompt_agent
   if [[ ${prompt_agent,,} =~ ^(y|yes)$ ]]; then
-    msg_info "Installing Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
+    msg_info "正在安装 Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
     $STD docker run -d \
       -p 9001:9001 \
       --name portainer_agent \
@@ -48,7 +48,7 @@ else
       -v /var/run/docker.sock:/var/run/docker.sock \
       -v /var/lib/docker/volumes:/var/lib/docker/volumes \
       portainer/agent
-    msg_ok "Installed Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
+    msg_ok "已安装 Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
   fi
 fi
 
@@ -66,7 +66,7 @@ a)
 esac
 
 if [[ -n "$socket" ]]; then
-  msg_info "Enabling Docker TCP socket on $socket"
+  msg_info "正在启用 Docker TCP socket on $socket"
   $STD apt-get install -y jq
 
   tmpfile=$(mktemp)

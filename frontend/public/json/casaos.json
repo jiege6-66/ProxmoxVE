@@ -13,7 +13,7 @@
   "website": "https://www.casaos.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/casaos.webp",
   "config_path": "",
-  "description": "CasaOS is a software that aims to make it easy for users to create a personal cloud system at home. It uses the Docker ecosystem to provide a simple, user-friendly experience for managing various applications and services.",
+  "description": "CasaOS 是一款旨在让用户轻松在家中创建个人云系统的软件。它使用 Docker 生态系统为管理各种应用程序和服务提供简单、用户友好的体验。",
   "install_methods": [
     {
       "type": "default",

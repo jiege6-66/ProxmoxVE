@@ -13,7 +13,7 @@
   "website": "https://github.com/calibrain/shelfmark",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/shelfmark.webp",
   "config_path": "/etc/shelfmark",
-  "description": "Shelfmark is a unified web interface for searching and aggregating books and audiobook downloads from multiple sources - all in one place.",
+  "description": "Shelfmark 是一个统一的 Web 界面，用于从多个来源搜索和聚合图书和有声读物下载 - 全部集中在一个地方。",
   "install_methods": [
     {
       "type": "default",

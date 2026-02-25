@@ -18,7 +18,7 @@ function header_info {
 EOF
 }
 header_info
-echo -e "Loading..."
+echo -e "正在加载..."
 #API VARIABLES
 RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)"
 METHOD=""
@@ -320,7 +320,7 @@ function default_settings() {
   fi
   echo -e "${DGN}Using Interface MTU Size: ${BGN}Default${CL}"
   echo -e "${DGN}Start VM when completed: ${BGN}yes${CL}"
-  echo -e "${BL}Creating a OPNsense VM using the above default settings${CL}"
+  echo -e "${BL}正在创建 a OPNsense VM using the above default settings${CL}"
 }
 
 function advanced_settings() {
@@ -544,7 +544,7 @@ function advanced_settings() {
   fi
 
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create OPNsense VM?" --no-button Do-Over 10 58); then
-    echo -e "${RD}Creating a OPNsense VM using the above advanced settings${CL}"
+    echo -e "${RD}正在创建 a OPNsense VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${RD}Using Advanced Settings${CL}"
@@ -629,10 +629,10 @@ if ! check_disk_space "$TEMP_DIR" 20; then
   exit 1
 fi
 
-msg_info "Downloading FreeBSD Image"
+msg_info "正在下载 FreeBSD Image"
 curl -f#SL -o "$(basename "$URL")" "$URL"
 echo -en "\e[1A\e[0K"
-msg_ok "Downloaded ${CL}${BL}$(basename "$URL")${CL}"
+msg_ok "已下载 ${CL}${BL}$(basename "$URL")${CL}"
 
 # Check disk space again before decompression
 if ! check_disk_space "$TEMP_DIR" 15; then
@@ -645,7 +645,7 @@ fi
 msg_info "Decompressing FreeBSD Image (this may take a few minutes)"
 FILE=FreeBSD.qcow2
 if ! unxz -cv $(basename $URL) >${FILE}; then
-  msg_error "Failed to decompress FreeBSD image."
+  msg_error "无法 decompress FreeBSD image."
   msg_error "This is usually caused by insufficient disk space."
   df -h "$TEMP_DIR"
   exit 1
@@ -682,7 +682,7 @@ for i in {0,1}; do
   eval DISK${i}_REF=${STORAGE}:${DISK_REF:-}${!disk}
 done
 
-msg_info "Creating a OPNsense VM"
+msg_info "正在创建 a OPNsense VM"
 qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
   -name $HN -tags proxmox-helper-scripts -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
 pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
@@ -731,14 +731,14 @@ qm set $VMID \
   -net0 virtio,bridge=${BRG},macaddr=${MAC}${VLAN}${MTU} 2>/dev/null
 msg_ok "Bridge interfaces have been successfully added."
 
-msg_ok "Created a OPNsense VM ${CL}${BL}(${HN})"
-msg_ok "Starting OPNsense VM (Patience this takes 20-30 minutes)"
+msg_ok "已创建 a OPNsense VM ${CL}${BL}(${HN})"
+msg_ok "正在启动 OPNsense VM (Patience this takes 20-30 minutes)"
 qm start $VMID
 sleep 90
 send_line_to_vm "root"
 send_line_to_vm "fetch https://raw.githubusercontent.com/opnsense/update/master/src/bootstrap/opnsense-bootstrap.sh.in"
 if [ -n "$WAN_BRG" ]; then
-  msg_info "Adding WAN interface"
+  msg_info "正在添加 WAN interface"
   qm set $VMID \
     -net1 virtio,bridge=${WAN_BRG},macaddr=${WAN_MAC} &>/dev/null
   msg_ok "WAN interface added"
@@ -797,11 +797,11 @@ if [ -n "$WAN_BRG" ] && [ "$WAN_IP_ADDR" != "" ]; then
 fi
 sleep 10
 send_line_to_vm "0"
-msg_ok "Started OPNsense VM"
+msg_ok "已启动 OPNsense VM"
 
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"
 if [ "$IP_ADDR" != "" ]; then
-  echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+  echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
   echo -e "${TAB}${GATEWAY}${BGN}http://${IP_ADDR}${CL}"
 else
   echo -e "${INFO}${YW} LAN IP was DHCP.${CL}"

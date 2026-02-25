@@ -16,13 +16,13 @@ update_os
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "revealjs" "hakimel/reveal.js" "tarball"
 
-msg_info "Configuring ${APPLICATION}"
+msg_info "正在配置 ${APPLICATION}"
 cd /opt/revealjs
 $STD npm install
 sed -i '25s/localhost/0.0.0.0/g' /opt/revealjs/gulpfile.js
-msg_ok "Setup ${APPLICATION}"
+msg_ok "设置 ${APPLICATION}"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/revealjs.service
 [Unit]
 Description=Reveal.js Service
@@ -39,7 +39,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now revealjs
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

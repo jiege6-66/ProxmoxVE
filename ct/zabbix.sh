@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /etc/zabbix/zabbix_server.conf ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -44,10 +44,10 @@ function update_script() {
     msg_warn "No Zabbix Agent service found, skipping agent actions"
   fi
 
-  msg_info "Stopping Services"
+  msg_info "正在停止 Services"
   systemctl stop zabbix-server
   [[ -n "$AGENT_SERVICE" ]] && systemctl stop "$AGENT_SERVICE"
-  msg_ok "Stopped Services"
+  msg_ok "已停止 Services"
 
   read -rp "Choose Zabbix version [1] 7.0 LTS  [2] 7.4 (Latest Stable)  [3] Latest available (default: 2): " ZABBIX_CHOICE
   ZABBIX_CHOICE=${ZABBIX_CHOICE:-2}
@@ -62,7 +62,7 @@ function update_script() {
     ;;
   esac
 
-  msg_info "Updating Zabbix to $ZABBIX_VERSION"
+  msg_info "正在更新 Zabbix to $ZABBIX_VERSION"
   mkdir -p /opt/zabbix-backup/
   cp /etc/zabbix/zabbix_server.conf /opt/zabbix-backup/
   cp /etc/apache2/conf-enabled/zabbix.conf /opt/zabbix-backup/
@@ -106,12 +106,12 @@ function update_script() {
   fi
   msg_ok "Updated Zabbix"
 
-  msg_info "Starting Services"
+  msg_info "正在启动 Services"
   systemctl start zabbix-server
   [[ -n "$AGENT_SERVICE" ]] && systemctl start "$AGENT_SERVICE"
   systemctl restart apache2
-  msg_ok "Started Services"
-  msg_ok "Updated successfully!"
+  msg_ok "已启动 Services"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -119,7 +119,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}/zabbix${CL}"

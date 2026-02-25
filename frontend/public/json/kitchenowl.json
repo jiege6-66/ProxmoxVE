@@ -13,7 +13,7 @@
   "website": "https://kitchenowl.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/kitchenowl.webp",
   "config_path": "/opt/kitchenowl/kitchenowl.env",
-  "description": "KitchenOwl is a smart self-hosted grocery list and recipe manager with real-time synchronization, recipe management, meal planning, and expense tracking.",
+  "description": "KitchenOwl 是一个智能的自托管购物清单和食谱管理器,具有实时同步、食谱管理、膳食计划和费用跟踪功能。",
   "install_methods": [
     {
       "type": "default",

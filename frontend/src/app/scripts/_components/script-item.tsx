@@ -61,7 +61,7 @@ function ScriptHeader({ item }: { item: Script }) {
                 </h1>
                 <div className="mt-1 flex items-center gap-3 text-sm text-muted-foreground">
                   <span>
-                    Added
+                    添加于
                     {" "}
                     {extractDate(item.date_created)}
                   </span>
@@ -78,7 +78,7 @@ function ScriptHeader({ item }: { item: Script }) {
             <div className="flex flex-col gap-2 text-sm text-muted-foreground">
               {defaultInstallMethod?.resources && (
                 <ResourceDisplay
-                  title="Default"
+                  title="默认"
                   cpu={defaultInstallMethod.resources.cpu}
                   ram={defaultInstallMethod.resources.ram}
                   hdd={defaultInstallMethod.resources.hdd}
@@ -126,7 +126,7 @@ function VersionInfo({ item }: { item: Script }) {
               <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
             </TooltipTrigger>
             <TooltipContent className="max-w-xs">
-              <p>This version is pinned. We test each update for breaking changes before releasing new versions.</p>
+              <p>此版本已锁定。我们会在发布新版本之前测试每次更新是否存在破坏性更改。</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -157,9 +157,9 @@ export function ScriptItem({ item }: ScriptItemProps) {
                 <div className="mt-4 rounded-lg border shadow-sm">
                   <div className="flex gap-3 px-4 py-2 bg-accent/25">
                     <h2 className="text-lg font-semibold">
-                      How to
+                      如何
                       {" "}
-                      {item.type === "pve" ? "use" : item.type === "addon" ? "apply" : "install"}
+                      {item.type === "pve" ? "使用" : item.type === "addon" ? "应用" : "安装"}
                     </h2>
                     <Tooltips item={item} />
                   </div>
@@ -171,7 +171,7 @@ export function ScriptItem({ item }: ScriptItemProps) {
                     <>
                       <Separator />
                       <div className="flex gap-3 px-4 py-2 bg-accent/25">
-                        <h2 className="text-lg font-semibold">Location of config file</h2>
+                        <h2 className="text-lg font-semibold">配置文件位置</h2>
                       </div>
                       <Separator />
                       <div className="">

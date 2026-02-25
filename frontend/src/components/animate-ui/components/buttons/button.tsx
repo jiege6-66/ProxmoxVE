@@ -59,3 +59,5 @@ function Button({ className, variant, size, ...props }: ButtonProps) {
 }
 
 export { Button, type ButtonProps, buttonVariants };
+
+这段代码中没有用户可见的 UI 文本字符串需要翻译。所有的文本都是代码标识符（如 variant 名称、size 名称）和 CSS 类名，这些不应该被翻译，因为它们是程序逻辑的一部分。

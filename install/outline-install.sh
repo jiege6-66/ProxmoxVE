@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   mkcert \
   git \
   redis
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 PG_VERSION="16" setup_postgresql
@@ -26,7 +26,7 @@ PG_DB_NAME="outline" PG_DB_USER="outline" setup_postgresql_db
 
 fetch_and_deploy_gh_release "outline" "outline/outline" "tarball"
 
-msg_info "Configuring Outline (Patience)"
+msg_info "正在配置 Outline (Patience)"
 SECRET_KEY="$(openssl rand -hex 32)"
 cd /opt/outline
 cp .env.sample .env
@@ -44,9 +44,9 @@ $STD yarn install --immutable
 export NODE_ENV=production
 sed -i 's/NODE_ENV=development/NODE_ENV=production/g' /opt/outline/.env
 $STD yarn build
-msg_ok "Configured Outline"
+msg_ok "已配置 Outline"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/outline.service
 [Unit]
 Description=Outline Service
@@ -64,7 +64,7 @@ EnvironmentFile=/opt/outline/.env
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now outline
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

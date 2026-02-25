@@ -24,14 +24,14 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/init.d/cassandra ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
-  msg_info "Updating Apache Cassandra"
+  msg_info "正在更新 Apache Cassandra"
   $STD apt update
   $STD apt install -y --only-upgrade cassandra cassandra-tools
   msg_ok "Updated Apache Cassandra"
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -39,5 +39,5 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"

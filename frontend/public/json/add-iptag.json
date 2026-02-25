@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "/opt/iptag/iptag.conf",
-  "description": "This script automatically adds IP address as tags to LXC containers or VM's using a systemd service. The service also updates the tags if a LXC/VM IP address is changed.",
+  "description": "此脚本使用 systemd 服务自动将 IP 地址作为标签添加到 LXC 容器或虚拟机。如果 LXC/VM IP 地址发生变化，该服务还会更新标签。",
   "install_methods": [
     {
       "type": "default",

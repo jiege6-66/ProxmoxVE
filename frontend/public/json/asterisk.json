@@ -13,7 +13,7 @@
   "config_path": "/etc/asterisk",
   "website": "https://asterisk.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/asterisk.webp",
-  "description": "Asterisk is an open-source framework for building communications applications, most commonly used as a phone system (PBX). Developed by Digium (now part of Sangoma), it turns a standard computer into a powerful telephony server.",
+  "description": "Asterisk 是一个用于构建通信应用程序的开源框架,最常用作电话系统 (PBX)。由 Digium(现为 Sangoma 的一部分)开发,它将标准计算机转变为强大的电话服务器。",
   "install_methods": [
     {
       "type": "default",

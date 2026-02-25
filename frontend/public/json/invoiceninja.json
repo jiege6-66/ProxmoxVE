@@ -13,7 +13,7 @@
   "config_path": "/opt/invoiceninja/.env",
   "website": "https://invoiceninja.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/invoice-ninja.webp",
-  "description": "Invoice Ninja is a free, open-source invoicing, quotes, expenses and time-tracking application for freelancers and businesses. Features include recurring invoices, online payments, client portal, and multi-company support.",
+  "description": "Invoice Ninja 是一个免费的开源发票、报价、费用和时间追踪应用，适用于自由职业者和企业。功能包括定期发票、在线支付、客户门户和多公司支持。",
   "install_methods": [
     {
       "type": "default",

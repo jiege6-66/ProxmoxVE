@@ -17,13 +17,13 @@ setup_hwaccel
 
 fetch_and_deploy_gh_release "emby" "MediaBrowser/Emby.Releases" "binary"
 
-msg_info "Configuring Emby"
+msg_info "正在配置 Emby"
 if [[ "$CTTYPE" == "0" ]]; then
   sed -i -e 's/^ssl-cert:x:104:$/render:x:104:root,emby/' -e 's/^render:x:108:root,emby$/ssl-cert:x:108:/' /etc/group
 else
   sed -i -e 's/^ssl-cert:x:104:$/render:x:104:emby/' -e 's/^render:x:108:emby$/ssl-cert:x:108:/' /etc/group
 fi
-msg_ok "Configured Emby"
+msg_ok "已配置 Emby"
 
 motd_ssh
 customize

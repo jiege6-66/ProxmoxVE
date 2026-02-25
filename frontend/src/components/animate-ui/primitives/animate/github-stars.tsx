@@ -204,3 +204,5 @@ export {
   type GithubStarsProps,
   useGithubStars,
 };
+
+这段代码中没有用户可见的 UI 文本字符串需要翻译。代码主要包含类型定义、组件逻辑和 SVG 路径数据,没有显示给用户的文本内容。

@@ -13,7 +13,7 @@
   "website": "https://www.inspircd.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/inspircd.webp",
   "config_path": "/etc/inspircd/inspircd.conf",
-  "description": "InspIRCd is a modular C++ Internet Relay Chat (IRC) server for UNIX-like and Windows systems.",
+  "description": "InspIRCd 是一个模块化的 C++ 互联网中继聊天（IRC）服务器，适用于类 UNIX 和 Windows 系统。",
   "install_methods": [
     {
       "type": "default",

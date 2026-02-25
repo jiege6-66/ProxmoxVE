@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 setup_deb822_repo \
   "microsoft" \
   "https://packages.microsoft.com/keys/microsoft-2025.asc" \
@@ -21,18 +21,18 @@ setup_deb822_repo \
   "trixie" \
   "main"
 $STD apt install -y aspnetcore-runtime-9.0
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 RELEASE=$(curl -fsSL https://technitium.com/dns/ | grep -oP 'Version \K[\d.]+')
-msg_info "Installing Technitium DNS"
+msg_info "正在安装 Technitium DNS"
 mkdir -p /opt/technitium/dns
 curl -fsSL "https://download.technitium.com/dns/DnsServerPortable.tar.gz" -o /opt/DnsServerPortable.tar.gz
 $STD tar zxvf /opt/DnsServerPortable.tar.gz -C /opt/technitium/dns/
 rm -f /opt/DnsServerPortable.tar.gz
 echo "${RELEASE}" >~/.technitium
-msg_ok "Installed Technitium DNS"
+msg_ok "已安装 Technitium DNS"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cp /opt/technitium/dns/systemd.service /etc/systemd/system/technitium.service
 systemctl enable -q --now technitium 
 msg_ok "Service created"

@@ -13,7 +13,7 @@
   "website": "https://github.com/schlagmichdoch/PairDrop",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/pairdrop.webp",
   "config_path": "",
-  "description": "PairDrop: Local file sharing in your browser.",
+  "description": "PairDrop:在浏览器中进行本地文件共享。",
   "install_methods": [
     {
       "type": "default",

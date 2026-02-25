@@ -13,7 +13,7 @@
   "website": "https://homebox.software/en/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/homebox.webp",
   "config_path": "/opt/homebox/.env",
-  "description": "HomeBox is a simple, home-focused inventory management software. It allows users to organize and track household items by adding, updating, or deleting them. Features include optional details like warranty info, CSV import/export, custom labels, locations, and multi-tenant support for sharing with others. It\u2019s designed to be fast, easy to use, and portable.",
+  "description": "HomeBox 是一个简单的、以家庭为中心的库存管理软件。它允许用户通过添加、更新或删除来组织和跟踪家居用品。功能包括可选的详细信息（如保修信息）、CSV 导入/导出、自定义标签、位置以及用于与他人共享的多租户支持。它设计为快速、易用且便携。",
   "install_methods": [
     {
       "type": "default",

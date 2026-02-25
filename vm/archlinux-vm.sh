@@ -18,7 +18,7 @@ function header_info {
 EOF
 }
 header_info
-echo -e "\n Loading..."
+echo -e "\n 正在加载..."
 GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
 RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)"
 METHOD=""
@@ -237,7 +237,7 @@ function default_settings() {
   echo -e "${VLANTAG}${BOLD}${DGN}VLAN: ${BGN}Default${CL}"
   echo -e "${DEFAULT}${BOLD}${DGN}Interface MTU Size: ${BGN}Default${CL}"
   echo -e "${GATEWAY}${BOLD}${DGN}Start VM when completed: ${BGN}yes${CL}"
-  echo -e "${CREATING}${BOLD}${DGN}Creating a Arch Linux VM using the above default settings${CL}"
+  echo -e "${CREATING}${BOLD}${DGN}正在创建 a Arch Linux VM using the above default settings${CL}"
 }
 
 function advanced_settings() {
@@ -412,7 +412,7 @@ function advanced_settings() {
   fi
 
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create a Arch Linux VM?" --no-button Do-Over 10 58); then
-    echo -e "${CREATING}${BOLD}${DGN}Creating a Arch Linux VM using the above advanced settings${CL}"
+    echo -e "${CREATING}${BOLD}${DGN}正在创建 a Arch Linux VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${ADVANCED}${BOLD}${RD}Using Advanced Settings${CL}"
@@ -474,7 +474,7 @@ msg_ok "${CL}${BL}${URL}${CL}"
 curl -f#SL -o "$(basename "$URL")" "$URL"
 echo -en "\e[1A\e[0K"
 FILE=$(basename $URL)
-msg_ok "Downloaded ${CL}${BL}${FILE}${CL}"
+msg_ok "已下载 ${CL}${BL}${FILE}${CL}"
 
 STORAGE_TYPE=$(pvesm status -storage "$STORAGE" | awk 'NR>1 {print $2}')
 case $STORAGE_TYPE in
@@ -497,7 +497,7 @@ btrfs)
   ;;
 esac
 
-msg_info "Creating a Arch Linux VM"
+msg_info "正在创建 a Arch Linux VM"
 qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
   -name $HN -tags community-script -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
 
@@ -515,7 +515,7 @@ DISK_REF_IMPORTED="$(printf '%s\n' "$IMPORT_OUT" | sed -n "s/.*successfully impo
   echo "$IMPORT_OUT"
   exit 1
 }
-msg_ok "Imported disk (${CL}${BL}${DISK_REF_IMPORTED}${CL})"
+msg_ok "已导入 disk (${CL}${BL}${DISK_REF_IMPORTED}${CL})"
 
 qm set $VMID \
   -efidisk0 ${STORAGE}:0,efitype=4m \
@@ -562,12 +562,12 @@ else
   qm resize $VMID scsi0 ${DEFAULT_DISK_SIZE} >/dev/null
 fi
 
-msg_ok "Created a Arch Linux VM ${CL}${BL}(${HN})"
+msg_ok "已创建 a Arch Linux VM ${CL}${BL}(${HN})"
 if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Arch Linux VM"
+  msg_info "正在启动 Arch Linux VM"
   qm start $VMID
-  msg_ok "Started Arch Linux VM"
+  msg_ok "已启动 Arch Linux VM"
 fi
 post_update_to_api "done" "none"
 
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"

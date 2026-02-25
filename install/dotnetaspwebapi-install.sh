@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get update
 $STD apt-get install -y \
   ssh \
@@ -24,12 +24,12 @@ $STD apt-get install -y \
   dotnet-sdk-9.0 \
   vsftpd \
   nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 var_project_name="default"
 read -r -p "${TAB3}Type the assembly name of the project: " var_project_name
 
-msg_info "Setting up FTP Server"
+msg_info "正在设置 FTP Server"
 useradd ftpuser
 FTP_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 usermod --password $(echo ${FTP_PASS} | openssl passwd -1 -stdin) ftpuser
@@ -51,7 +51,7 @@ systemctl restart -q vsftpd.service
 
 msg_ok "FTP server setup completed"
 
-msg_info "Setting up Nginx Server"
+msg_info "正在设置 Nginx Server"
 rm -f /var/www/html/index.nginx-debian.html
 
 sed "s/\$var_project_name/$var_project_name/g" >myfile <<'EOF' >/etc/nginx/sites-available/default
@@ -75,9 +75,9 @@ server {
 }
 EOF
 systemctl reload nginx
-msg_ok "Nginx Server Created"
+msg_ok "Nginx Server 已创建"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/kestrel-aspnetapi.service
 [Unit]
 Description=.NET Web API App running on Linux
@@ -98,7 +98,7 @@ Environment=DOTNET_NOLOGO=true
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now kestrel-aspnetapi
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

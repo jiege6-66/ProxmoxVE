@@ -24,33 +24,33 @@ function update_script() {
     check_container_storage
     check_container_resources
     if [[ ! -d /opt/metabase ]]; then
-        msg_error "No ${APP} Installation Found!"
+        msg_error "未找到 ${APP} 安装！"
         exit
     fi
 
     if check_for_gh_release "metabase" "metabase/metabase"; then
-        msg_info "Stopping Service"
+        msg_info "正在停止 Service"
         systemctl stop metabase
-        msg_info "Stopped Service"
+        msg_info "已停止 Service"
 
-        msg_info "Creating backup"
+        msg_info "正在创建 backup"
         mv /opt/metabase/.env /opt
-        msg_ok "Created backup"
+        msg_ok "已创建 backup"
 
-        msg_info "Updating Metabase"
+        msg_info "正在更新 Metabase"
         RELEASE=$(get_latest_github_release "metabase/metabase")
         curl -fsSL "https://downloads.metabase.com/v${RELEASE}.x/metabase.jar" -o /opt/metabase/metabase.jar
         echo $RELEASE >~/.metabase
         msg_ok "Updated Metabase"
 
-        msg_info "Restoring backup"
+        msg_info "正在恢复 backup"
         mv /opt/.env /opt/metabase
-        msg_ok "Restored backup"
+        msg_ok "已恢复 backup"
 
-        msg_info "Starting Service"
+        msg_info "正在启动 Service"
         systemctl start metabase
-        msg_ok "Started Service"
-        msg_ok "Updated successfully!"
+        msg_ok "已启动 Service"
+        msg_ok "已成功更新!"
     fi
     exit
 }
@@ -59,7 +59,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

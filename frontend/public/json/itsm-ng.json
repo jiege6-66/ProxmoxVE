@@ -13,7 +13,7 @@
   "website": "https://itsm-ng.com",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/itsm-ng.webp",
   "config_path": "/etc/itsm-ng",
-  "description": "ITSM-NG is a powerful, open-source IT Service Management (ITSM) solution designed for managing IT assets, software, licenses, and support processes in accordance with ITIL best practices. It offers integrated features for asset inventory, incident tracking, problem management, change requests, and service desk workflows.",
+  "description": "ITSM-NG 是一个强大的开源 IT 服务管理（ITSM）解决方案，旨在根据 ITIL 最佳实践管理 IT 资产、软件、许可证和支持流程。它提供资产清单、事件追踪、问题管理、变更请求和服务台工作流的集成功能。",
   "install_methods": [
     {
       "type": "default",

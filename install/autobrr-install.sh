@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "autobrr" "autobrr/autobrr" "prebuild" "latest" "/usr/local/bin" "autobrr_*_linux_x86_64.tar.gz"
 
-msg_info "Configuring Autobrr"
+msg_info "正在配置 Autobrr"
 mkdir -p /root/.config/autobrr
 cat <<EOF >>/root/.config/autobrr/config.toml
 # https://autobrr.com/configuration/autobrr
@@ -24,9 +24,9 @@ port = 7474
 logLevel = "DEBUG"
 sessionSecret = "$(openssl rand -base64 24)"
 EOF
-msg_ok "Configured Autobrr"
+msg_ok "已配置 Autobrr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/autobrr.service
 [Unit]
 Description=autobrr service
@@ -42,7 +42,7 @@ ExecStart=/usr/local/bin/autobrr --config=/root/.config/autobrr/
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q autobrr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

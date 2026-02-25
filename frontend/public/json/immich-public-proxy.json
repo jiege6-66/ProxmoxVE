@@ -13,7 +13,7 @@
   "website": "https://github.com/alangrainger/immich-public-proxy",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/immich-public-proxy.webp",
   "config_path": "/opt/immich-proxy/app/.env",
-  "description": "Share your Immich photos and albums in a safe way without exposing your Immich instance to the public.",
+  "description": "以安全的方式分享你的 Immich 照片和相册，无需将 Immich 实例暴露给公众。",
   "install_methods": [
     {
       "type": "default",

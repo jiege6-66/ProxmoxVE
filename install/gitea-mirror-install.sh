@@ -13,30 +13,30 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y \
   build-essential \
   openssl \
   sqlite3 \
   unzip
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Bun"
+msg_info "正在安装 Bun"
 export BUN_INSTALL=/opt/bun
 curl -fsSL https://bun.sh/install | $STD bash
 ln -sf /opt/bun/bin/bun /usr/local/bin/bun
 ln -sf /opt/bun/bin/bun /usr/local/bin/bunx
-msg_ok "Installed Bun"
+msg_ok "已安装 Bun"
 
 fetch_and_deploy_gh_release "gitea-mirror" "RayLabsHQ/gitea-mirror" "tarball"
 
-msg_info "Installing gitea-mirror"
+msg_info "正在安装 gitea-mirror"
 cd /opt/gitea-mirror
 $STD bun run setup
 $STD bun run build
-msg_ok "Installed gitea-mirror"
+msg_ok "已安装 gitea-mirror"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 APP_SECRET=$(openssl rand -base64 32)
 APP_VERSION=$(grep -o '"version": *"[^"]*"' package.json | cut -d'"' -f4)
 cat <<EOF >/opt/gitea-mirror.env
@@ -65,7 +65,7 @@ EnvironmentFile=/opt/gitea-mirror.env
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now gitea-mirror
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

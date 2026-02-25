@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add \
   tzdata \
   gawk \
   yq
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Docker & Compose"
+msg_info "正在安装 Docker & Compose"
 $STD apk add docker
 $STD rc-service docker start
 $STD rc-update add docker default
@@ -33,12 +33,12 @@ DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
 mkdir -p $DOCKER_CONFIG/cli-plugins
 curl -fsSL https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_LATEST_VERSION/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
 chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
-msg_ok "Installed Docker & Compose"
+msg_ok "已安装 Docker & Compose"
 
-msg_info "Fetching NPMplus"
+msg_info "正在获取 NPMplus"
 cd /opt
 curl -fsSL "https://raw.githubusercontent.com/ZoeyVid/NPMplus/refs/heads/develop/compose.yaml" -o compose.yaml
-msg_ok "Fetched NPMplus"
+msg_ok "已获取 NPMplus"
 
 attempts=0
 while true; do
@@ -63,7 +63,7 @@ yq -i "
     [\"TZ=$TZ_INPUT\", \"ACME_EMAIL=$ACME_EMAIL_INPUT\", \"INITIAL_ADMIN_EMAIL=admin@local.com\", \"INITIAL_ADMIN_PASSWORD=helper-scripts.com\"])
 " /opt/compose.yaml
 
-msg_info "Building and Starting NPMplus (Patience)"
+msg_info "正在构建 and 正在启动 NPMplus (Patience)"
 $STD docker compose up -d
 CONTAINER_ID=""
 for i in {1..60}; do

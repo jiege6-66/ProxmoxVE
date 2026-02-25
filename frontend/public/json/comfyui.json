@@ -13,7 +13,7 @@
   "documentation": "https://github.com/comfyanonymous/ComfyUI",
   "website": "https://www.comfy.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/comfyui.webp",
-  "description": "ComfyUI is a node-based interface and inference engine for generative AI. Users can combine various AI models and operations through nodes to achieve highly customizable and controllable content generation.",
+  "description": "ComfyUI 是一个用于生成式 AI 的基于节点的界面和推理引擎。用户可以通过节点组合各种 AI 模型和操作,以实现高度可定制和可控的内容生成。",
   "install_methods": [
     {
       "type": "default",

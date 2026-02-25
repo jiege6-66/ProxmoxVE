@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "inspircd" "inspircd/inspircd" "binary" "latest" "/opt/inspircd" "inspircd_*.deb13u1_amd64.deb"
 
-msg_info "Configuring InspIRCd"
+msg_info "正在配置 InspIRCd"
 cat <<EOF >/etc/inspircd/inspircd.conf
 <define name="networkDomain" value="helper-scripts.com">
 <define name="networkName" value="Proxmox VE Helper-Scripts">
@@ -30,7 +30,7 @@ cat <<EOF >/etc/inspircd/inspircd.conf
        email="irc@&networkDomain;">
 <bind address="" port="6667" type="clients">
 EOF
-msg_ok "Installed InspIRCd"
+msg_ok "已安装 InspIRCd"
 
 motd_ssh
 customize

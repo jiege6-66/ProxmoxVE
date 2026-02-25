@@ -20,7 +20,7 @@ setup_deb822_repo \
   "stable" \
   "main"
 
-msg_info "Installing Loki"
+msg_info "正在安装 Loki"
 $STD apt install -y loki
 mkdir -p /var/lib/loki/{chunks,boltdb-shipper-active,boltdb-shipper-cache}
 chown -R loki /var/lib/loki
@@ -68,14 +68,14 @@ ruler:
 EOF
 chown loki /etc/loki/config.yml
 systemctl enable -q --now loki
-msg_ok "Installed Loki"
+msg_ok "已安装 Loki"
 
 read -rp "Would you like to install Promtail? (y/N): " INSTALL_PROMTAIL
 if [[ "${INSTALL_PROMTAIL,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Promtail"
+  msg_info "正在安装 Promtail"
   $STD apt install -y promtail
   systemctl enable -q --now promtail
-  msg_ok "Installed Promtail"
+  msg_ok "已安装 Promtail"
 fi
 
 motd_ssh

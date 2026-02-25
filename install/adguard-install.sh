@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "AdGuardHome" "AdguardTeam/AdGuardHome" "prebuild" "latest" "/opt/AdGuardHome" "AdGuardHome_linux_amd64.tar.gz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/AdGuardHome.service
 [Unit]
 Description=AdGuard Home: Network-level blocker
@@ -37,7 +37,7 @@ EnvironmentFile=-/etc/sysconfig/AdGuardHome
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now AdGuardHome
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

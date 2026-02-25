@@ -13,7 +13,7 @@
   "documentation": "https://tunarr.com/",
   "website": "https://tunarr.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tunarr.webp",
-  "description": "Create a classic TV experience using your own media - IPTV backed by Plex/Jellyfin/Emby.",
+  "description": "使用您自己的媒体创建经典电视体验 - 由 Plex/Jellyfin/Emby 支持的 IPTV。",
   "install_methods": [
     {
       "type": "default",

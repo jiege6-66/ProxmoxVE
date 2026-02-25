@@ -13,7 +13,7 @@
   "website": "https://fumadocs.vercel.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/fumadocs.webp",
   "config_path": "",
-  "description": "Fumadocs is a flexible and high-performance framework for creating well-structured documentation websites using Next.js. It allows developers to write content and transform it into structured data. Fumadocs supports various content sources, including MDX and Content Collections, and integrates search solutions like Orama and Algolia. It also provides interactive components to enhance the user experience.",
+  "description": "Fumadocs 是一个灵活且高性能的框架，用于使用 Next.js 创建结构良好的文档网站。它允许开发者编写内容并将其转换为结构化数据。Fumadocs 支持多种内容源，包括 MDX 和 Content Collections，并集成了 Orama 和 Algolia 等搜索解决方案。它还提供交互式组件以增强用户体验。",
   "install_methods": [
     {
       "type": "default",

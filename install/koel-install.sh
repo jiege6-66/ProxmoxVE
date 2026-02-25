@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nginx \
   ffmpeg \
   cron \
   locales
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="16" setup_postgresql
 PG_DB_NAME="koel" PG_DB_USER="koel" setup_postgresql_db
@@ -29,7 +29,7 @@ setup_composer
 
 fetch_and_deploy_gh_release "koel" "koel/koel" "prebuild" "latest" "/opt/koel" "koel-*.tar.gz"
 
-msg_info "Configuring Koel"
+msg_info "正在配置 Koel"
 mkdir -p /opt/koel_media /opt/koel_sync
 cd /opt/koel
 cat <<EOF >/opt/koel/.env
@@ -106,9 +106,9 @@ EOF
 mkdir -p /opt/koel/storage/{app/public,framework/{cache/data,sessions,views},logs}
 chown -R www-data:www-data /opt/koel /opt/koel_media /opt/koel_sync
 chmod -R 775 /opt/koel/storage /opt/koel/bootstrap/cache
-msg_ok "Configured Koel"
+msg_ok "已配置 Koel"
 
-msg_info "Installing Koel (Patience)"
+msg_info "正在安装 Koel (Patience)"
 export COMPOSER_ALLOW_SUPERUSER=1
 cd /opt/koel
 $STD composer install --no-interaction --no-dev --optimize-autoloader
@@ -117,7 +117,7 @@ $STD php artisan config:clear
 $STD php artisan cache:clear
 $STD php artisan koel:init --no-assets --no-interaction
 chown -R www-data:www-data /opt/koel
-msg_ok "Installed Koel"
+msg_ok "已安装 Koel"
 
 msg_info "Tuning PHP-FPM"
 PHP_FPM_CONF="/etc/php/8.4/fpm/pool.d/www.conf"
@@ -128,7 +128,7 @@ sed -i 's/^pm.max_spare_servers = .*/pm.max_spare_servers = 8/' "$PHP_FPM_CONF"
 $STD systemctl restart php8.4-fpm
 msg_ok "Tuned PHP-FPM"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<'EOF' >/etc/nginx/sites-available/koel
 server {
     listen 80;
@@ -174,9 +174,9 @@ EOF
 rm -f /etc/nginx/sites-enabled/default
 ln -sf /etc/nginx/sites-available/koel /etc/nginx/sites-enabled/koel
 $STD systemctl reload nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
-msg_info "Setting up Cron Job"
+msg_info "正在设置 Cron Job"
 cat <<'EOF' >/etc/cron.d/koel
 0 * * * * www-data cd /opt/koel && /usr/bin/php artisan koel:scan >/dev/null 2>&1
 EOF

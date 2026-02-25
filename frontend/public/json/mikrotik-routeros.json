@@ -14,7 +14,7 @@
   "website": "https://mikrotik.com",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mikrotik.webp",
   "config_path": "",
-  "description": "Mikrotik RouterOS CHR is a Linux-based operating system that transforms a computer into a router. It provides a wide range of features for network routing, firewall, bandwidth management, wireless access point, backhaul link, hotspot gateway, VPN server, and many others. RouterOS is a versatile solution that supports various network configurations, including those with multiple WAN links, hotspots, and VPNs. It is highly customizable, allowing administrators to configure and manage their networks according to their specific requirements. With RouterOS, network administrators can monitor and control the performance and security of their networks, ensuring reliable and secure communication for their users. The software is designed to be easy to use and provides a wide range of tools for network management, making it a valuable solution for small and large networks alike.",
+  "description": "Mikrotik RouterOS CHR 是一个基于 Linux 的操作系统，可将计算机转变为路由器。它提供广泛的网络路由、防火墙、带宽管理、无线接入点、回程链路、热点网关、VPN 服务器等功能。RouterOS 是一个多功能解决方案，支持各种网络配置，包括具有多个 WAN 链路、热点和 VPN 的配置。它高度可定制，允许管理员根据其特定需求配置和管理网络。使用 RouterOS，网络管理员可以监控和控制网络的性能和安全性，确保用户的可靠和安全通信。该软件设计易于使用，并提供广泛的网络管理工具，使其成为小型和大型网络的宝贵解决方案。",
   "install_methods": [
     {
       "type": "default",

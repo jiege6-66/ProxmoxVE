@@ -30,7 +30,7 @@ function update_script() {
   case $CHOICE in
   1)
     $STD apk -U upgrade
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
     exit
     ;;
   2)
@@ -53,6 +53,6 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"
 echo -e "${APP} should be reachable by going to the following URL.
          ${BL}http://${IP}:3000${CL} \n"

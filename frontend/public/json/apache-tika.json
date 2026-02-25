@@ -13,7 +13,7 @@
   "website": "https://tika.apache.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/apache-tika.webp",
   "config_path": "/opt/apache-tika/tika-config.xml",
-  "description": "The Apache Tika™ toolkit detects and extracts metadata and text from over a thousand different file types (such as PPT, XLS, and PDF). All of these file types can be parsed through a single interface, making Tika useful for search engine indexing, content analysis, translation, and much more.",
+  "description": "Apache Tika™ 工具包可以检测和提取一千多种不同文件类型(如 PPT、XLS 和 PDF)的元数据和文本。所有这些文件类型都可以通过单一接口进行解析,使 Tika 对搜索引擎索引、内容分析、翻译等非常有用。",
   "install_methods": [
     {
       "type": "default",

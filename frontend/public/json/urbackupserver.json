@@ -13,7 +13,7 @@
   "website": "https://www.urbackup.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/urbackup.webp",
   "config_path": "",
-  "description": "URBackup is an open-source backup software designed for creating reliable and efficient backups of both files and system images. It supports client-server architecture, allowing you to back up multiple computers to a central server. It offers features such as incremental backups, real-time file backup, and scheduling, ensuring minimal data loss and quick recovery",
+  "description": "URBackup 是一款开源备份软件，专为创建可靠高效的文件和系统镜像备份而设计。它支持客户端-服务器架构，允许您将多台计算机备份到中央服务器。它提供增量备份、实时文件备份和计划等功能，确保最小的数据丢失和快速恢复。",
   "install_methods": [
     {
       "type": "default",

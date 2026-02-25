@@ -13,7 +13,7 @@
   "website": "https://watcharr.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/watcharr.webp",
   "config_path": "",
-  "description": "Open source, self-hostable watched list for all your content with user authentication, modern and clean UI and a very simple setup.",
+  "description": "开源、可自托管的内容观看列表，支持用户认证，拥有现代简洁的界面和非常简单的设置。",
   "install_methods": [
     {
       "type": "default",

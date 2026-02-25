@@ -13,7 +13,7 @@
   "website": "https://komga.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/komga.webp",
   "config_path": "~/.komga/application.yml",
-  "description": "A media server for your comics, mangas, BDs, magazines and eBooks. Organize your CBZ, CBR, PDF and EPUB files in different libraries, collections or reading lists. Use the integrated Webreader, the Mihon extension, any OPDS reader, or other integrations. Edit metadata for your series and books.",
+  "description": "一个用于漫画、漫画、BD、杂志和电子书的媒体服务器。在不同的库、收藏或阅读列表中组织您的 CBZ、CBR、PDF 和 EPUB 文件。使用集成的 Web 阅读器、Mihon 扩展、任何 OPDS 阅读器或其他集成。编辑您的系列和书籍的元数据。",
   "install_methods": [
     {
       "type": "default",

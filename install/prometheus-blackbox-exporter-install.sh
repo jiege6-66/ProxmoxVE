@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "blackbox-exporter" "prometheus/blackbox_exporter" "prebuild" "latest" "/opt/blackbox-exporter" "blackbox_exporter-*.linux-amd64.tar.gz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/blackbox-exporter.service
 [Unit]
 Description=Blackbox Exporter Service
@@ -31,7 +31,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now blackbox-exporter
-msg_ok "Service Created"
+msg_ok "Service 已创建"
 
 motd_ssh
 customize

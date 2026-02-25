@@ -37,3 +37,5 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 }
 
 export { Badge, badgeVariants };
+
+这个代码文件中没有用户可见的 UI 文本字符串需要翻译。所有内容都是代码结构、类型定义和 CSS 类名，不包含需要本地化的文本内容。

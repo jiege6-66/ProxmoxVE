@@ -15,16 +15,16 @@ update_os
 
 RELEASE=$(curl -fsSL https://teamspeak.com/en/downloads/#server | grep -oP 'teamspeak3-server_linux_amd64-\K[0-9]+\.[0-9]+\.[0-9]+' | head -1)
 
-msg_info "Setting up Teamspeak Server"
+msg_info "正在设置 Teamspeak Server"
 curl -fsSL "https://files.teamspeak-services.com/releases/server/${RELEASE}/teamspeak3-server_linux_amd64-${RELEASE}.tar.bz2" -o ts3server.tar.bz2
 tar -xf ./ts3server.tar.bz2
 mv teamspeak3-server_linux_amd64/ /opt/teamspeak-server/
 touch /opt/teamspeak-server/.ts3server_license_accepted
 rm -f ~/ts3server.tar.bz*
 echo "${RELEASE}" >~/.teamspeak-server
-msg_ok "Setup Teamspeak Server"
+msg_ok "设置 Teamspeak Server"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/teamspeak-server.service
 [Unit]
 Description=TeamSpeak3 Server
@@ -45,7 +45,7 @@ RestartSec=15
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now teamspeak-server
-msg_ok "Created service"
+msg_ok "已创建 service"
 
 motd_ssh
 customize

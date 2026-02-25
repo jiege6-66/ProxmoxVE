@@ -25,53 +25,53 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/wealthfolio ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "wealthfolio" "afadil/wealthfolio"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop wealthfolio
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up Data"
+    msg_info "正在备份 Data"
     cp -r /opt/wealthfolio_data /opt/wealthfolio_data_backup
     cp /opt/wealthfolio/.env /opt/wealthfolio_env_backup
-    msg_ok "Backed up Data"
+    msg_ok "已备份 Data"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "wealthfolio" "afadil/wealthfolio" "tarball"
 
-    msg_info "Building Frontend (patience)"
+    msg_info "正在构建 Frontend (patience)"
     cd /opt/wealthfolio
     $STD pnpm install --frozen-lockfile
     $STD pnpm tsc
     $STD pnpm vite build
-    msg_ok "Built Frontend"
+    msg_ok "已构建 Frontend"
 
-    msg_info "Building Backend (patience)"
+    msg_info "正在构建 Backend (patience)"
     cd /opt/wealthfolio/src-server
     source ~/.cargo/env
     $STD cargo build --release --manifest-path Cargo.toml
     cp /opt/wealthfolio/src-server/target/release/wealthfolio-server /usr/local/bin/wealthfolio-server
     chmod +x /usr/local/bin/wealthfolio-server
-    msg_ok "Built Backend"
+    msg_ok "已构建 Backend"
 
-    msg_info "Restoring Data"
+    msg_info "正在恢复 Data"
     cp -r /opt/wealthfolio_data_backup/. /opt/wealthfolio_data
     cp /opt/wealthfolio_env_backup /opt/wealthfolio/.env
     rm -rf /opt/wealthfolio_data_backup /opt/wealthfolio_env_backup
-    msg_ok "Restored Data"
+    msg_ok "已恢复 Data"
 
-    msg_info "Cleaning Up"
+    msg_info "正在清理 Up"
     rm -rf /opt/wealthfolio/src-server/target
     rm -rf /root/.cargo/registry
     rm -rf /opt/wealthfolio/node_modules
-    msg_ok "Cleaned Up"
+    msg_ok "已清理 Up"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start wealthfolio
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -80,7 +80,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

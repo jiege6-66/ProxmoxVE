@@ -26,11 +26,11 @@ function update_script() {
 
   RELEASE=$(curl -fsSL https://www.emqx.com/en/downloads/enterprise | grep -oP '/en/downloads/enterprise/v\K[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n1)
   if [[ "$RELEASE" != "$(cat ~/.emqx 2>/dev/null)" ]] || [[ ! -f ~/.emqx ]]; then
-    msg_info "Stopping EMQX"
+    msg_info "正在停止 EMQX"
     systemctl stop emqx
-    msg_ok "Stopped EMQX"
+    msg_ok "已停止 EMQX"
 
-    msg_info "Removing old EMQX"
+    msg_info "正在移除 old EMQX"
     if dpkg -l | grep -q "^ii\s\+emqx\s"; then
       $STD apt remove --purge -y emqx
     elif dpkg -l | grep -q "^ii\s\+emqx-enterprise\s"; then
@@ -38,25 +38,25 @@ function update_script() {
     else
       msg_ok "No old EMQX package found"
     fi
-    msg_ok "Removed old EMQX"
+    msg_ok "已移除 old EMQX"
 
-    msg_info "Downloading EMQX v${RELEASE}"
+    msg_info "正在下载 EMQX v${RELEASE}"
     DEB_FILE="/tmp/emqx-enterprise-${RELEASE}-debian12-amd64.deb"
     curl -fsSL -o "$DEB_FILE" "https://www.emqx.com/en/downloads/enterprise/v${RELEASE}/emqx-enterprise-${RELEASE}-debian12-amd64.deb"
-    msg_ok "Downloaded EMQX"
+    msg_ok "已下载 EMQX"
 
-    msg_info "Installing EMQX"
+    msg_info "正在安装 EMQX"
     $STD apt install -y "$DEB_FILE"
     rm -f "$DEB_FILE"
     echo "$RELEASE" >~/.emqx
-    msg_ok "Installed EMQX v${RELEASE}"
+    msg_ok "已安装 EMQX v${RELEASE}"
 
-    msg_info "Starting EMQX"
+    msg_info "正在启动 EMQX"
     systemctl start emqx
-    msg_ok "Started EMQX"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 EMQX"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. EMQX is already at v${RELEASE}"
+    msg_ok "无需更新。 EMQX is already at v${RELEASE}"
   fi
 
   exit
@@ -66,7 +66,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:18083${CL}"

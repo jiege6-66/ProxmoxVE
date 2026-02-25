@@ -38,11 +38,11 @@ for server in "${servers[@]}"; do
   fi
 done
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y inotify-tools
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
-msg_info "Installing Collabora Online"
+msg_info "正在安装 Collabora Online"
 curl -fsSL https://collaboraoffice.com/downloads/gpg/collaboraonline-release-keyring.gpg -o /etc/apt/keyrings/collaboraonline-release-keyring.gpg
 cat <<EOF >/etc/apt/sources.list.d/colloboraonline.sources
 Types: deb
@@ -62,11 +62,11 @@ systemctl daemon-reload
 COOLPASS="$(openssl rand -base64 36)"
 $STD sudo -u cool coolconfig set-admin-password --user=admin --password="$COOLPASS"
 echo "$COOLPASS" >~/.coolpass
-msg_ok "Installed Collabora Online"
+msg_ok "已安装 Collabora Online"
 
 fetch_and_deploy_gh_release "opencloud" "opencloud-eu/opencloud" "singlefile" "v5.1.0" "/usr/bin" "opencloud-*-linux-amd64"
 
-msg_info "Configuring OpenCloud"
+msg_info "正在配置 OpenCloud"
 DATA_DIR="/var/lib/opencloud"
 CONFIG_DIR="/etc/opencloud"
 ENV_FILE="${CONFIG_DIR}/opencloud.env"
@@ -212,13 +212,13 @@ chown -R opencloud:opencloud "$CONFIG_DIR" "$DATA_DIR"
 sudo -u opencloud opencloud init --config-path "$CONFIG_DIR" --insecure no
 OPENCLOUD_SECRET="$(sed -n '/jwt/p' "$CONFIG_DIR"/opencloud.yaml | awk '{print $2}')"
 sed -i "s/JWT_SECRET=/&${OPENCLOUD_SECRET//&/\\&}/" "$ENV_FILE"
-msg_ok "Configured OpenCloud"
+msg_ok "已配置 OpenCloud"
 
-msg_info "Starting services"
+msg_info "正在启动 services"
 systemctl enable -q --now coolwsd opencloud
 sleep 5
 systemctl enable -q --now opencloud-wopi
-msg_ok "Started services"
+msg_ok "已启动 services"
 
 motd_ssh
 customize

@@ -16,14 +16,14 @@ update_os
 NODE_VERSION="24" setup_nodejs
 fetch_and_deploy_gh_release "bentopdf" "alam00000/bentopdf" "tarball" "latest" "/opt/bentopdf"
 
-msg_info "Setup BentoPDF"
+msg_info "设置 BentoPDF"
 cd /opt/bentopdf
 $STD npm ci --no-audit --no-fund
 export SIMPLE_MODE=true
 $STD npm run build -- --mode production
-msg_ok "Setup BentoPDF"
+msg_ok "设置 BentoPDF"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/bentopdf.service
 [Unit]
 Description=BentoPDF Service
@@ -41,7 +41,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now bentopdf
-msg_ok "Created & started service"
+msg_ok "已创建 & started service"
 
 motd_ssh
 customize

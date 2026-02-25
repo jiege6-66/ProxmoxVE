@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y sqlite3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="24" setup_nodejs
 fetch_and_deploy_gh_release "guardian" "HydroshieldMKII/Guardian" "tarball" "latest" "/opt/guardian"
 
-msg_info "Configuring ${APPLICATION}"
+msg_info "正在配置 ${APPLICATION}"
 cd /opt/guardian/backend
 $STD npm ci
 $STD npm run build
@@ -28,9 +28,9 @@ cd /opt/guardian/frontend
 $STD npm ci
 export DEPLOYMENT_MODE=standalone
 $STD npm run build
-msg_ok "Configured ${APPLICATION}"
+msg_ok "已配置 ${APPLICATION}"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/guardian-backend.service
 [Unit]
 Description=Guardian Backend
@@ -63,7 +63,7 @@ EOF
 
 systemctl enable -q --now guardian-backend
 systemctl enable -q --now guardian-frontend
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

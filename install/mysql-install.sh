@@ -14,10 +14,10 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   lsb-release
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 RELEASE_REPO="mysql-8.0"
 RELEASE_AUTH="mysql_native_password"
@@ -27,7 +27,7 @@ if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
   RELEASE_AUTH="caching_sha2_password"
 fi
 
-msg_info "Installing MySQL"
+msg_info "正在安装 MySQL"
 curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --dearmor -o /usr/share/keyrings/mysql.gpg
 if [ "$(lsb_release -si)" = "Debian" ]; then
   cat <<EOF >/etc/apt/sources.list.d/mysql.sources
@@ -51,7 +51,7 @@ export DEBIAN_FRONTEND=noninteractive
 $STD apt install -y \
   mysql-community-client \
   mysql-community-server
-msg_ok "Installed MySQL"
+msg_ok "已安装 MySQL"
 
 msg_info "Configure MySQL Server"
 ADMIN_PASS="$(openssl rand -base64 18 | cut -c1-13)"

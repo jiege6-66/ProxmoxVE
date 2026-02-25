@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   openssl \
   redis
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 msg_warn "WARNING: This script will run an external installer from a third-party source (https://dokploy.com/)."
 msg_warn "The following code is NOT maintained or audited by our repository."
@@ -31,9 +31,9 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   exit 10
 fi
 
-msg_info "Installing Dokploy (Patience - this installs Docker and pulls containers)"
+msg_info "正在安装 Dokploy (Patience - this installs Docker and pulls containers)"
 $STD bash <(curl -sSL https://dokploy.com/install.sh)
-msg_ok "Installed Dokploy"
+msg_ok "已安装 Dokploy"
 
 motd_ssh
 customize

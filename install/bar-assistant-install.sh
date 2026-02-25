@@ -15,13 +15,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   redis-server \
   nginx \
   lsb-release \
   libvips
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.4" PHP_FPM="YES" PHP_MODULE="pdo-sqlite" setup_php
 setup_composer
@@ -30,13 +30,13 @@ setup_meilisearch
 fetch_and_deploy_gh_release "bar-assistant" "karlomikus/bar-assistant" "tarball" "latest" "/opt/bar-assistant"
 fetch_and_deploy_gh_release "vue-salt-rim" "karlomikus/vue-salt-rim" "tarball" "latest" "/opt/vue-salt-rim"
 
-msg_info "Configuring PHP"
+msg_info "正在配置 PHP"
 PHPVER=$(php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "\n";')
 sed -i.bak -E 's/^\s*;?\s*ffi\.enable\s*=.*/ffi.enable=true/' /etc/php/${PHPVER}/fpm/php.ini
 $STD systemctl reload php${PHPVER}-fpm
 msg_info "configured PHP"
 
-msg_info "Installing Bar Assistant"
+msg_info "正在安装 Bar Assistant"
 cd /opt/bar-assistant
 cp /opt/bar-assistant/.env.dist /opt/bar-assistant/.env
 mkdir -p /opt/bar-assistant/resources/data
@@ -59,9 +59,9 @@ $STD php artisan route:cache
 $STD php artisan event:cache
 mkdir /opt/bar-assistant/storage/bar-assistant/uploads/temp
 chown -R www-data:www-data /opt/bar-assistant
-msg_ok "Installed Bar Assistant"
+msg_ok "已安装 Bar Assistant"
 
-msg_info "Installing Salt Rim"
+msg_info "正在安装 Salt Rim"
 cd /opt/vue-salt-rim
 cat <<EOF >/opt/vue-salt-rim/public/config.js
 window.srConfig = {}
@@ -70,9 +70,9 @@ window.srConfig.MEILISEARCH_URL = "http://${LOCAL_IP}/search"
 EOF
 $STD npm install
 $STD npm run build
-msg_ok "Installed Salt Rim"
+msg_ok "已安装 Salt Rim"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/nginx/sites-available/barassistant.conf
 server {
     listen 80 default_server;
@@ -151,7 +151,7 @@ EOF
 ln -s /etc/nginx/sites-available/barassistant.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

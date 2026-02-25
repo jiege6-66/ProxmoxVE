@@ -24,26 +24,26 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/radicale ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "Radicale" "Kozea/Radicale"; then
-    msg_info "Stopping service"
+    msg_info "正在停止 service"
     systemctl stop radicale
-    msg_ok "Stopped service"
+    msg_ok "已停止 service"
 
-    msg_info "Backing up users file"
+    msg_info "正在备份 users file"
     cp /opt/radicale/users /opt/radicale_users_backup
-    msg_ok "Backed up users file"
+    msg_ok "已备份 users file"
 
     PYTHON_VERSION="3.13" setup_uv
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "Radicale" "Kozea/Radicale" "tarball" "latest" "/opt/radicale"
 
-    msg_info "Restoring users file"
+    msg_info "正在恢复 users file"
     rm -f /opt/radicale/users
     mv /opt/radicale_users_backup /opt/radicale/users
-    msg_ok "Restored users file"
+    msg_ok "已恢复 users file"
 
     if grep -q 'start.sh' /etc/systemd/system/radicale.service; then
       sed -i -e '/^Description/i[Unit]' \
@@ -52,7 +52,7 @@ function update_script() {
       systemctl daemon-reload
     fi
     if [[ ! -f /etc/radicale/config ]]; then
-      msg_info "Migrating to config file (/etc/radicale/config)"
+      msg_info "正在迁移 to config file (/etc/radicale/config)"
       mkdir -p /etc/radicale
       cat <<EOF >/etc/radicale/config
 [server]
@@ -70,12 +70,12 @@ filesystem_folder = /var/lib/radicale/collections
 [web]
 type = internal
 EOF
-      msg_ok "Migrated to config (/etc/radicale/config)"
+      msg_ok "已迁移 to config (/etc/radicale/config)"
     fi
-    msg_info "Starting service"
+    msg_info "正在启动 service"
     systemctl start radicale
-    msg_ok "Started service"
-    msg_ok "Updated Successfully!"
+    msg_ok "已启动 service"
+    msg_ok "更新成功!"
   fi
   exit
 }
@@ -84,7 +84,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5232${CL}"

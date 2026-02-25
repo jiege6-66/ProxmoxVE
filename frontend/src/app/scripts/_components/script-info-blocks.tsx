@@ -81,16 +81,16 @@ export function LatestScripts({
     <div className="">
       {latestScripts.length > 0 && (
         <div className="flex w-full items-center justify-between">
-          <h2 className="text-lg font-semibold">Newest Scripts</h2>
+          <h2 className="text-lg font-semibold">最新脚本</h2>
           <div className="flex items-center justify-end gap-1">
             {page > 1 && (
               <div className="cursor-pointer select-none p-2 text-sm font-semibold" onClick={goToPreviousPage}>
-                Previous
+                上一页
               </div>
             )}
             {endIndex < latestScripts.length && (
               <div onClick={goToNextPage} className="cursor-pointer select-none p-2 text-sm font-semibold">
-                {page === 1 ? "More.." : "Next"}
+                {page === 1 ? "更多.." : "下一页"}
               </div>
             )}
           </div>
@@ -136,7 +136,7 @@ export function LatestScripts({
                     query: { id: script.slug },
                   }}
                 >
-                  View Script
+                  查看脚本
                 </Link>
               </Button>
             </CardFooter>
@@ -157,7 +157,7 @@ export function MostViewedScripts({ items }: { items: Category[] }) {
     <div className="">
       {mostViewedScripts.length > 0 && (
         <>
-          <h2 className="text-lg font-semibold mb-1">Most Viewed Scripts</h2>
+          <h2 className="text-lg font-semibold mb-1">最受欢迎脚本</h2>
         </>
       )}
       <div className="min-w flex w-full flex-row flex-wrap gap-4">
@@ -203,7 +203,7 @@ export function MostViewedScripts({ items }: { items: Category[] }) {
                   }}
                   prefetch={false}
                 >
-                  View Script
+                  查看脚本
                 </Link>
               </Button>
             </CardFooter>

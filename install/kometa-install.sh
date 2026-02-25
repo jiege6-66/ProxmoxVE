@@ -16,12 +16,12 @@ update_os
 PYTHON_VERSION="3.13" setup_uv
 fetch_and_deploy_gh_release "kometa" "Kometa-Team/Kometa" "tarball"
 
-msg_info "Setup Kometa"
+msg_info "设置 Kometa"
 cd /opt/kometa
 $STD uv pip install -r requirements.txt --system
 mkdir -p config/assets
 cp config/config.yml.template config/config.yml
-msg_ok "Setup Kometa"
+msg_ok "设置 Kometa"
 
 read -p "${TAB3}Enter your TMDb API key: " TMDBKEY
 read -p "${TAB3}Enter your Plex URL: " PLEXURL
@@ -30,7 +30,7 @@ sed -i -e "s#url: http://192.168.1.12:32400#url: $PLEXURL #g" /opt/kometa/config
 sed -i -e "s/token: ####################/token: $PLEXTOKEN/g" /opt/kometa/config/config.yml
 sed -i -e "s/apikey: ################################/apikey: $TMDBKEY/g" /opt/kometa/config/config.yml
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/kometa.service
 [Unit]
 Description=Kometa Service
@@ -47,7 +47,7 @@ RestartSec=30
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now kometa
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

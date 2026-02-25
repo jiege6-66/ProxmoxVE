@@ -13,7 +13,7 @@
   "website": "https://patchmon.net",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/patchmon.webp",
   "config_path": "/opt/patchmon/backend/.env, /opt/patchmon/frontend/.env",
-  "description": "Monitor Linux patches across all your hosts with real-time visibility, security update tracking, and comprehensive package management.",
+  "description": "实时监控所有主机的 Linux 补丁,具有实时可见性、安全更新跟踪和全面的软件包管理。",
   "install_methods": [
     {
       "type": "default",

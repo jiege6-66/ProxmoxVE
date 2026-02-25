@@ -18,7 +18,7 @@ chmod +x /usr/local/bin/qui
 ln -sf /usr/local/bin/qui /usr/bin/qui
 ln -sf /usr/local/bin/qui /opt/qui
 
-msg_info "Creating Qui Service"
+msg_info "正在创建 Qui Service"
 cat <<EOF >/etc/systemd/system/qui.service
 [Unit]
 Description=Qui - qBittorrent Web UI
@@ -35,7 +35,7 @@ RestartSec=5s
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now qui
-msg_ok "Created Qui Service"
+msg_ok "已创建 Qui Service"
 
 motd_ssh
 customize

@@ -25,7 +25,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/networkoptix-mediaserver.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   BASE_URL="https://updates.networkoptix.com/default/index.html"
@@ -33,11 +33,11 @@ function update_script() {
   DETAIL_PAGE=$(curl -fsSL "$BASE_URL#note_$RELEASE")
   DOWNLOAD_URL=$(echo "$DETAIL_PAGE" | grep -oP "https://updates.networkoptix.com/default/$RELEASE/linux/nxwitness-server-[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+-linux_x64\.deb" | head -n 1)
   if [[ ! -f /opt/${APP}_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop networkoptix-root-tool networkoptix-mediaserver
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating ${APP} to ${RELEASE}"
+    msg_info "正在更新 ${APP} to ${RELEASE}"
     cd /tmp
     curl -fsSL "$DOWNLOAD_URL" -o ""nxwitness-server-$RELEASE-linux_x64.deb""
     export DEBIAN_FRONTEND=noninteractive
@@ -47,12 +47,12 @@ function update_script() {
     echo "${RELEASE}" >/opt/${APP}_version.txt
     msg_ok "Updated ${APP}"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start networkoptix-root-tool networkoptix-mediaserver
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at ${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at ${RELEASE}"
   fi
   exit
 }
@@ -61,7 +61,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:7001/${CL}"

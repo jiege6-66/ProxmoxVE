@@ -13,23 +13,23 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   ffmpeg \
   zstd
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_hwaccel
 
 PYTHON_VERSION="3.12" setup_uv
 
-msg_info "Installing Open WebUI"
+msg_info "正在安装 Open WebUI"
 $STD uv tool install --python 3.12 --constraint <(echo "numba>=0.60") open-webui[all]
-msg_ok "Installed Open WebUI"
+msg_ok "已安装 Open WebUI"
 
 read -r -p "${TAB3}Would you like to add Ollama? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Setting up Intel® Repositories"
+  msg_info "正在设置 Intel® Repositories"
   mkdir -p /usr/share/keyrings
   curl -fsSL https://repositories.intel.com/gpu/intel-graphics.key | gpg --dearmor -o /usr/share/keyrings/intel-graphics.gpg 2>/dev/null || true
   cat <<EOF >/etc/apt/sources.list.d/intel-gpu.sources
@@ -51,26 +51,26 @@ EOF
   $STD apt update
   msg_ok "Set up Intel® Repositories"
 
-  msg_info "Installing Intel® Level Zero"
+  msg_info "正在安装 Intel® Level Zero"
   # Debian 13+ has newer Level Zero packages in system repos that conflict with Intel repo packages
   if is_debian && [[ "$(get_os_version_major)" -ge 13 ]]; then
     # Use system packages on Debian 13+ (avoid conflicts with libze1)
     $STD apt -y install libze1 libze-dev intel-level-zero-gpu 2>/dev/null || {
-      msg_warn "Failed to install some Level Zero packages, continuing anyway"
+      msg_warn "无法 install some Level Zero packages, continuing anyway"
     }
   else
     # Use Intel repository packages for older systems
     $STD apt -y install intel-level-zero-gpu level-zero level-zero-dev 2>/dev/null || {
-      msg_warn "Failed to install Intel Level Zero packages, continuing anyway"
+      msg_warn "无法 install Intel Level Zero packages, continuing anyway"
     }
   fi
-  msg_ok "Installed Intel® Level Zero"
+  msg_ok "已安装 Intel® Level Zero"
 
-  msg_info "Installing Intel® oneAPI Base Toolkit (Patience)"
+  msg_info "正在安装 Intel® oneAPI Base Toolkit (Patience)"
   $STD apt install -y --no-install-recommends intel-basekit-2024.1 2>/dev/null || true
-  msg_ok "Installed Intel® oneAPI Base Toolkit"
+  msg_ok "已安装 Intel® oneAPI Base Toolkit"
 
-  msg_info "Installing Ollama"
+  msg_info "正在安装 Ollama"
   OLLAMA_RELEASE=$(curl -fsSL https://api.github.com/repos/ollama/ollama/releases/latest | grep "tag_name" | awk -F '"' '{print $4}')
   curl -fsSLO -C - https://github.com/ollama/ollama/releases/download/${OLLAMA_RELEASE}/ollama-linux-amd64.tar.zst
   tar --zstd -C /usr -xf ollama-linux-amd64.tar.zst
@@ -93,10 +93,10 @@ WantedBy=multi-user.target
 EOF
   systemctl enable -q --now ollama
   echo "ENABLE_OLLAMA_API=true" >/root/.env
-  msg_ok "Installed Ollama"
+  msg_ok "已安装 Ollama"
 fi
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/open-webui.service
 [Unit]
 Description=Open WebUI Service
@@ -116,7 +116,7 @@ User=root
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now open-webui
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

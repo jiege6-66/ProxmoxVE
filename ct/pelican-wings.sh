@@ -24,21 +24,21 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /usr/local/bin/wings ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "wings" "pelican-dev/wings"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop wings
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     fetch_and_deploy_gh_release "wings" "pelican-dev/wings" "singlefile" "latest" "/usr/local/bin" "wings_linux_amd64"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start wings
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -47,5 +47,5 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"

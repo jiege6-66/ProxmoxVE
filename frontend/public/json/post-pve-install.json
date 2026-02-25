@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script provides options for managing Proxmox VE repositories, including disabling the Enterprise Repo, adding or correcting PVE sources, enabling the No-Subscription Repo, adding the test Repo, disabling the subscription nag, updating Proxmox VE, and rebooting the system.",
+  "description": "该脚本提供管理 Proxmox VE 仓库的选项，包括禁用企业仓库、添加或修正 PVE 源、启用无订阅仓库、添加测试仓库、禁用订阅提示、更新 Proxmox VE 和重启系统。",
   "install_methods": [
     {
       "type": "default",

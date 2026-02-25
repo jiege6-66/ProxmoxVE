@@ -25,33 +25,33 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/bytestash ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "bytestash" "jordan-dalby/ByteStash"; then
     read -rp "${TAB3}Did you make a backup via application WebUI? (y/n): " backuped
     if [[ "$backuped" =~ ^[Yy]$ ]]; then
-      msg_info "Stopping Services"
+      msg_info "正在停止 Services"
       systemctl stop bytestash-backend bytestash-frontend
-      msg_ok "Services Stopped"
+      msg_ok "Services 已停止"
 
       CLEAN_INSTALL=1 fetch_and_deploy_gh_release "bytestash" "jordan-dalby/ByteStash" "tarball"
 
-      msg_info "Configuring ByteStash"
+      msg_info "正在配置 ByteStash"
       cd /opt/bytestash/server
       $STD npm install
       cd /opt/bytestash/client
       $STD npm install
       msg_ok "Updated ByteStash"
 
-      msg_info "Starting Services"
+      msg_info "正在启动 Services"
       systemctl start bytestash-backend bytestash-frontend
-      msg_ok "Started Services"
+      msg_ok "已启动 Services"
     else
       msg_error "PLEASE MAKE A BACKUP FIRST!"
       exit
     fi
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -60,7 +60,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

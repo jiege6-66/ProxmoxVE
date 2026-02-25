@@ -72,3 +72,5 @@ export type GitHubVersionsResponse = {
   generated: string;
   versions: AppVersion[];
 };
+
+这个文件只包含 TypeScript 类型定义，没有用户可见的 UI 文本字符串需要翻译。所有的属性名都是代码标识符，应该保持英文不变。

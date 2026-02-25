@@ -13,7 +13,7 @@
   "website": "https://docs.unmanic.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/unmanic.webp",
   "config_path": "",
-  "description": "Unmanic is a simple tool for optimising your file library. You can use it to convert your files into a single, uniform format, manage file movements based on timestamps, or execute custom commands against a file based on its file size.",
+  "description": "Unmanic 是一个用于优化文件库的简单工具。您可以使用它将文件转换为单一统一的格式，根据时间戳管理文件移动，或根据文件大小对文件执行自定义命令。",
   "install_methods": [
     {
       "type": "default",

@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/booklore ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -35,37 +35,37 @@ function update_script() {
     setup_mariadb
     setup_yq
 
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop booklore
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     if grep -qE "^BOOKLORE_(DATA_PATH|BOOKDROP_PATH|BOOKS_PATH|PORT)=" /opt/booklore_storage/.env 2>/dev/null; then
-      msg_info "Migrating old environment variables"
+      msg_info "正在迁移 old environment variables"
       sed -i 's/^BOOKLORE_DATA_PATH=/APP_PATH_CONFIG=/g' /opt/booklore_storage/.env
       sed -i 's/^BOOKLORE_BOOKDROP_PATH=/APP_BOOKDROP_FOLDER=/g' /opt/booklore_storage/.env
       sed -i '/^BOOKLORE_BOOKS_PATH=/d' /opt/booklore_storage/.env
       sed -i '/^BOOKLORE_PORT=/d' /opt/booklore_storage/.env
-      msg_ok "Migrated old environment variables"
+      msg_ok "已迁移 old environment variables"
     fi
 
-    msg_info "Backing up old installation"
+    msg_info "正在备份 old installation"
     mv /opt/booklore /opt/booklore_bak
-    msg_ok "Backed up old installation"
+    msg_ok "已备份 old installation"
 
     fetch_and_deploy_gh_release "booklore" "booklore-app/BookLore" "tarball"
 
-    msg_info "Building Frontend"
+    msg_info "正在构建 Frontend"
     cd /opt/booklore/booklore-ui
     $STD npm install --force
     $STD npm run build --configuration=production
-    msg_ok "Built Frontend"
+    msg_ok "已构建 Frontend"
 
     msg_info "Embedding Frontend into Backend"
     mkdir -p /opt/booklore/booklore-api/src/main/resources/static
     cp -r /opt/booklore/booklore-ui/dist/booklore/browser/* /opt/booklore/booklore-api/src/main/resources/static/
     msg_ok "Embedded Frontend into Backend"
 
-    msg_info "Building Backend"
+    msg_info "正在构建 Backend"
     cd /opt/booklore/booklore-api
     APP_VERSION=$(get_latest_github_release "booklore-app/BookLore")
     yq eval ".app.version = \"${APP_VERSION}\"" -i src/main/resources/application.yaml
@@ -73,17 +73,17 @@ function update_script() {
     mkdir -p /opt/booklore/dist
     JAR_PATH=$(find /opt/booklore/booklore-api/build/libs -maxdepth 1 -type f -name "booklore-api-*.jar" ! -name "*plain*" | head -n1)
     if [[ -z "$JAR_PATH" ]]; then
-      msg_error "Backend JAR not found"
+      msg_error "Backend JAR 未找到"
       exit
     fi
     cp "$JAR_PATH" /opt/booklore/dist/app.jar
-    msg_ok "Built Backend"
+    msg_ok "已构建 Backend"
 
     if systemctl is-active --quiet nginx 2>/dev/null; then
-      msg_info "Removing Nginx (no longer needed)"
+      msg_info "正在移除 Nginx (no longer needed)"
       systemctl disable --now nginx
       $STD apt-get purge -y nginx nginx-common
-      msg_ok "Removed Nginx"
+      msg_ok "已移除 Nginx"
     fi
 
     if ! grep -q "^SERVER_PORT=" /opt/booklore_storage/.env 2>/dev/null; then
@@ -93,11 +93,11 @@ function update_script() {
     sed -i 's|ExecStart=/usr/bin/java -jar|ExecStart=/usr/bin/java -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseCompactObjectHeaders -jar|' /etc/systemd/system/booklore.service
     systemctl daemon-reload
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start booklore
     rm -rf /opt/booklore_bak
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -106,7 +106,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:6060${CL}"

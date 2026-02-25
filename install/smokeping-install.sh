@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing SmokePing"
+msg_info "正在安装 SmokePing"
 $STD apt install -y smokeping
 cat <<EOF >/etc/smokeping/config.d/Targets
 *** Targets ***
@@ -60,7 +60,7 @@ host = amazon.com
 host = netflix.com
 EOF
 systemctl restart smokeping
-msg_ok "Installed SmokePing"
+msg_ok "已安装 SmokePing"
 
 motd_ssh
 customize

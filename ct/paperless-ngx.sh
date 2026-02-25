@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/paperless ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -49,13 +49,13 @@ function update_script() {
   fi
 
   if check_for_gh_release "paperless" "paperless-ngx/paperless-ngx"; then
-    msg_info "Stopping all Paperless-ngx Services"
+    msg_info "正在停止 all Paperless-ngx Services"
     systemctl stop paperless-consumer paperless-webserver paperless-scheduler paperless-task-queue
-    msg_ok "Stopped all Paperless-ngx Services"
+    msg_ok "已停止 all Paperless-ngx Services"
 
     if grep -q "uv run" /etc/systemd/system/paperless-webserver.service; then
 
-      msg_info "Backing up configuration"
+      msg_info "正在备份 configuration"
       local BACKUP_DIR="/opt/paperless_backup_$$"
       mkdir -p "$BACKUP_DIR"
       [[ -f /opt/paperless/paperless.conf ]] && cp /opt/paperless/paperless.conf "$BACKUP_DIR/"
@@ -72,7 +72,7 @@ function update_script() {
         ensure_dependencies ghostscript
       fi
 
-      msg_info "Updating Paperless-ngx"
+      msg_info "正在更新 Paperless-ngx"
       cp -r "$BACKUP_DIR"/* /opt/paperless/
       cd /opt/paperless
       $STD uv sync --all-extras
@@ -94,11 +94,11 @@ function update_script() {
         msg_error "Migration aborted. Please create a snapshot first."
         exit
       fi
-      msg_info "Migrating old Paperless-ngx installation to uv"
+      msg_info "正在迁移 old Paperless-ngx installation to uv"
       rm -rf /opt/paperless/venv
       find /opt/paperless -name "__pycache__" -type d -exec rm -rf {} +
 
-      msg_info "Backing up configuration"
+      msg_info "正在备份 configuration"
       local BACKUP_DIR="/opt/paperless_backup_$$"
       mkdir -p "$BACKUP_DIR"
       [[ -f /opt/paperless/paperless.conf ]] && cp /opt/paperless/paperless.conf "$BACKUP_DIR/"
@@ -125,12 +125,12 @@ function update_script() {
           fi
           msg_ok "Patched $svc"
         else
-          msg_error "Service file for $svc not found!"
+          msg_error "Service file for $svc 未找到!"
         fi
       done
 
       $STD systemctl daemon-reload
-      msg_info "Backing up configuration"
+      msg_info "正在备份 configuration"
       BACKUP_DIR="/opt/paperless_backup_$$"
       mkdir -p "$BACKUP_DIR"
       [[ -f /opt/paperless/paperless.conf ]] && cp /opt/paperless/paperless.conf "$BACKUP_DIR/"
@@ -144,12 +144,12 @@ function update_script() {
       if [ "$VERSION_CODENAME" = "bookworm" ]; then
         setup_gs
       else
-        msg_info "Installing Ghostscript"
+        msg_info "正在安装 Ghostscript"
         ensure_dependencies ghostscript
-        msg_ok "Installed Ghostscript"
+        msg_ok "已安装 Ghostscript"
       fi
 
-      msg_info "Updating Paperless-ngx"
+      msg_info "正在更新 Paperless-ngx"
       cp -r "$BACKUP_DIR"/* /opt/paperless/
       cd /opt/paperless
       $STD uv sync --all-extras
@@ -160,15 +160,15 @@ function update_script() {
       rm -rf "$BACKUP_DIR"
       if [[ -d /opt/paperless/backup ]]; then
         rm -rf /opt/paperless/backup
-        msg_ok "Removed old backup directory"
+        msg_ok "已移除 old backup directory"
       fi
     fi
 
-    msg_info "Starting all Paperless-ngx Services"
+    msg_info "正在启动 all Paperless-ngx Services"
     systemctl start paperless-consumer paperless-webserver paperless-scheduler paperless-task-queue
     sleep 1
-    msg_ok "Started all Paperless-ngx Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 all Paperless-ngx Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -177,7 +177,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8000${CL}"

@@ -15,15 +15,15 @@ update_os
 
 fetch_and_deploy_gh_release "zwave-js-ui" "zwave-js/zwave-js-ui" "prebuild" "latest" "/opt/zwave-js-ui" "zwave-js-ui*-linux.zip"
 
-msg_info "Configuring Z-Wave JS UI"
+msg_info "正在配置 Z-Wave JS UI"
 mkdir -p /opt/zwave_store
 cat <<EOF >/opt/.env
 ZWAVEJS_EXTERNAL_CONFIG=/opt/zwave_store/.config-db
 STORE_DIR=/opt/zwave_store
 EOF
-msg_ok "Configured Z-Wave JS UI"
+msg_ok "已配置 Z-Wave JS UI"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/zwave-js-ui.service
 [Unit]
 Description=zwave-js-ui
@@ -40,7 +40,7 @@ EnvironmentFile=/opt/.env
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now zwave-js-ui
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

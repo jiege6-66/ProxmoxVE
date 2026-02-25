@@ -13,7 +13,7 @@
   "website": "https://docs.magicmirror.builders/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/magicmirror2.webp",
   "config_path": "/opt/magicmirror/config/config.js",
-  "description": "MagicMirror\u00b2 is a smart mirror software that allows you to build your own personal smart mirror. It uses modular components that you can customize to display information such as the weather, news, calendar, to-do list, and more. The platform is open source, allowing for community contributions and customization.",
+  "description": "MagicMirror² 是一款智能镜子软件，允许您构建自己的个人智能镜子。它使用模块化组件，您可以自定义显示天气、新闻、日历、待办事项列表等信息。该平台是开源的，允许社区贡献和自定义。",
   "install_methods": [
     {
       "type": "default",

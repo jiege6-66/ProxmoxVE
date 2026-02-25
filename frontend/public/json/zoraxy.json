@@ -13,7 +13,7 @@
   "website": "https://zoraxy.aroz.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/zoraxy.webp",
   "config_path": "",
-  "description": "Zoraxy is an all in one homelab network routing solution.",
+  "description": "Zoraxy 是一个一体化的家庭实验室网络路由解决方案。",
   "install_methods": [
     {
       "type": "default",

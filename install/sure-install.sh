@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   redis-server \
   pkg-config \
   libpq-dev \
   libvips
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "Sure" "we-promise/sure" "tarball" "latest" "/opt/sure"
 
@@ -28,7 +28,7 @@ PG_VERSION="$(sed -n '/postgres:/s/[^[:digit:]]*//p' /opt/sure/compose.example.y
 PG_DB_NAME=sure_production PG_DB_USER=sure_user setup_postgresql_db
 RUBY_VERSION="$(cat /opt/sure/.ruby-version)" RUBY_INSTALL_RAILS=false setup_ruby
 
-msg_info "Building Sure"
+msg_info "正在构建 Sure"
 cd /opt/sure
 export RAILS_ENV=production
 export BUNDLE_DEPLOYMENT=1
@@ -38,9 +38,9 @@ $STD ./bin/bundle exec bootsnap precompile --gemfile -j 0
 $STD ./bin/bundle exec bootsnap precompile -j 0 app/ lib/
 export SECRET_KEY_BASE_DUMMY=1 && $STD ./bin/rails assets:precompile
 unset SECRET_KEY_BASE_DUMMY
-msg_ok "Built Sure"
+msg_ok "已构建 Sure"
 
-msg_info "Configuring Sure"
+msg_info "正在配置 Sure"
 KEY="$(openssl rand -hex 64)"
 mkdir -p /etc/sure
 mv /opt/sure/.env.example /etc/sure/.env
@@ -53,9 +53,9 @@ RAILS_ASSUME_SSL=false/' \
   -e "/POSTGRES_USER=/s/postgres/${PG_DB_USER}\\
 POSTGRES_DB=${PG_DB_NAME}/" \
   -e "s|^APP_DOMAIN=|&${LOCAL_IP}|" /etc/sure/.env
-msg_ok "Configured Sure"
+msg_ok "已配置 Sure"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/sure.service
 [Unit]
 Description=Sure Service
@@ -103,7 +103,7 @@ StandardError=journal
 WantedBy=multi-user.target
 EOF
 $STD systemctl enable -q --now sure sure-worker
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y gcc
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_go
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "watcharr" "sbondCo/Watcharr" "tarball"
 
-msg_info "Setup Watcharr"
+msg_info "设置 Watcharr"
 cd /opt/watcharr
 $STD npm i
 $STD npm run build
@@ -30,9 +30,9 @@ cd server
 export CGO_ENABLED=1 GOOS=linux
 $STD go mod download
 $STD go build -o ./watcharr
-msg_ok "Setup Watcharr"
+msg_ok "设置 Watcharr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/watcharr.service
 [Unit]
 Description=Watcharr Service
@@ -48,7 +48,7 @@ User=root
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now watcharr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

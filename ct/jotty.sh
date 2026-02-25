@@ -25,34 +25,34 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/jotty ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "jotty" "fccview/jotty"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop jotty
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up configuration & data"
+    msg_info "正在备份 configuration & data"
     cp /opt/jotty/.env /opt/app.env
     [[ -d /opt/jotty/data ]] && mv /opt/jotty/data /opt/data
     [[ -d /opt/jotty/config ]] && mv /opt/jotty/config /opt/config
-    msg_ok "Backed up configuration & data"
+    msg_ok "已备份 configuration & data"
 
     NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "jotty" "fccview/jotty" "prebuild" "latest" "/opt/jotty" "jotty_*_prebuild.tar.gz"
 
-    msg_info "Restoring configuration & data"
+    msg_info "正在恢复 configuration & data"
     mv /opt/app.env /opt/jotty/.env
     [[ -d /opt/data ]] && mv /opt/data /opt/jotty/data
     [[ -d /opt/jotty/config ]] && cp -a /opt/config/* /opt/jotty/config && rm -rf /opt/config
-    msg_ok "Restored configuration & data"
+    msg_ok "已恢复 configuration & data"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start jotty
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -61,7 +61,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

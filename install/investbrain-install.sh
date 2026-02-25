@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nginx \
   supervisor \
@@ -25,7 +25,7 @@ $STD apt install -y \
   libzip-dev \
   libicu-dev \
   libpq-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 export PHP_VERSION="8.4"
 PHP_FPM="YES" PHP_MODULE="pdo-pgsql" setup_php
@@ -36,7 +36,7 @@ PG_DB_NAME="investbrain" PG_DB_USER="investbrain" setup_postgresql_db
 
 fetch_and_deploy_gh_release "Investbrain" "investbrainapp/investbrain" "tarball" "latest" "/opt/investbrain"
 
-msg_info "Installing Investbrain"
+msg_info "正在安装 Investbrain"
 APP_KEY=$(openssl rand -base64 32)
 cd /opt/investbrain
 cat <<EOF >/opt/investbrain/.env
@@ -106,9 +106,9 @@ $STD php artisan route:cache
 $STD php artisan event:cache
 chown -R www-data:www-data /opt/investbrain
 chmod -R 775 /opt/investbrain/bootstrap/cache
-msg_ok "Installed Investbrain"
+msg_ok "已安装 Investbrain"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<EOF >/etc/nginx/sites-available/investbrain.conf
 server {
     listen 8000 default_server;
@@ -147,9 +147,9 @@ EOF
 ln -sf /etc/nginx/sites-available/investbrain.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
-msg_info "Setting up Supervisor"
+msg_info "正在设置 Supervisor"
 cat <<EOF >/etc/supervisor/conf.d/investbrain.conf
 [program:investbrain-queue]
 process_name=%%(program_name)s_%%(process_num)02d
@@ -166,15 +166,15 @@ EOF
 $STD supervisorctl reread
 $STD supervisorctl update
 $STD supervisorctl start all
-msg_ok "Setup Supervisor"
+msg_ok "设置 Supervisor"
 
-msg_info "Setting up Cron for Scheduler"
+msg_info "正在设置 Cron for Scheduler"
 cat <<EOF >/etc/cron.d/investbrain-scheduler
 * * * * * www-data php /opt/investbrain/artisan schedule:run >> /dev/null 2>&1
 EOF
 chmod 644 /etc/cron.d/investbrain-scheduler
 $STD systemctl restart cron
-msg_ok "Setup Cron for Scheduler"
+msg_ok "设置 Cron for Scheduler"
 
 motd_ssh
 customize

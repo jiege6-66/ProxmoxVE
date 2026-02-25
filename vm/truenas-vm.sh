@@ -19,7 +19,7 @@ function header_info() {
 EOF
 }
 header_info
-echo -e "\n Loading..."
+echo -e "\n 正在加载..."
 GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
 RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)"
 METHOD=""
@@ -270,7 +270,7 @@ function default_settings() {
   echo -e "${VLANTAG}${BOLD}${DGN}VLAN: ${BGN}Default${CL}"
   echo -e "${DEFAULT}${BOLD}${DGN}Interface MTU Size: ${BGN}Default${CL}"
   echo -e "${GATEWAY}${BOLD}${DGN}Start VM when completed: ${BGN}yes${CL}"
-  echo -e "${CREATING}${BOLD}${DGN}Creating a TrueNAS VM using the above default settings${CL}"
+  echo -e "${CREATING}${BOLD}${DGN}正在创建 a TrueNAS VM using the above default settings${CL}"
 }
 
 function advanced_settings() {
@@ -467,7 +467,7 @@ function advanced_settings() {
   fi
 
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create a TrueNAS VM?" --no-button Do-Over 10 58); then
-    echo -e "${CREATING}${BOLD}${DGN}Creating a TrueNAS VM using the above advanced settings${CL}"
+    echo -e "${CREATING}${BOLD}${DGN}正在创建 a TrueNAS VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${ADVANCED}${BOLD}${RD}Using Advanced Settings${CL}"
@@ -541,22 +541,22 @@ CACHE_FILE="$CACHE_DIR/$ISO_NAME"
 if [[ ! -s "$CACHE_FILE" ]]; then
   msg_info "Retrieving the ISO for the TrueNAS Disk Image"
   curl -f#SL -o "$CACHE_FILE" "$FULL_URL"
-  msg_ok "Downloaded ${CL}${BL}$(basename "$CACHE_FILE")${CL}"
+  msg_ok "已下载 ${CL}${BL}$(basename "$CACHE_FILE")${CL}"
 else
   msg_ok "Using cached image ${CL}${BL}$(basename "$CACHE_FILE")${CL}"
 fi
 
 set -o pipefail
-msg_info "Creating TrueNAS VM shell"
+msg_info "正在创建 TrueNAS VM shell"
 qm create "$VMID" -machine q35 -bios ovmf -agent enabled=1 -tablet 0 -localtime 1 -cpu "$CPU_TYPE" \
   -cores "$CORE_COUNT" -memory "$RAM_SIZE" -balloon 0 -name "$HN" -tags community-script \
   -net0 "virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU" -onboot 1 -ostype l26 \
   -efidisk0 $STORAGE:1,efitype=4m,pre-enrolled-keys=0 -sata0 $STORAGE:$DISK_SIZE,ssd=1 \
   -scsihw virtio-scsi-single -cdrom local:iso/$ISO_NAME -vga virtio >/dev/null
-msg_ok "Created VM shell"
+msg_ok "已创建 VM shell"
 
 if [ "$IMPORT_DISKS" == "yes" ]; then
-  msg_info "Importing onboard disks"
+  msg_info "正在导入 onboard disks"
   DISKARRAY=()
   SCSI_NR=0
 
@@ -615,11 +615,11 @@ qm set "$VMID" -description "$DESCRIPTION" >/dev/null
 
 sleep 3
 
-msg_ok "Created a TrueNAS VM ${CL}${BL}(${HN})"
+msg_ok "已创建 a TrueNAS VM ${CL}${BL}(${HN})"
 if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting TrueNAS VM"
+  msg_info "正在启动 TrueNAS VM"
   qm start $VMID
-  msg_ok "Started TrueNAS VM"
+  msg_ok "已启动 TrueNAS VM"
 fi
 
-msg_ok "Completed Successfully!\n"
+msg_ok "已成功完成！\n"

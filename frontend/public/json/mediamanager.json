@@ -14,7 +14,7 @@
   "config_path": "/opt/mm/config/config.toml",
   "website": "https://github.com/maxdorninger/MediaManager",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mediamanager.webp",
-  "description": "A modern selfhosted media management system for your media library",
+  "description": "一个现代化的自托管媒体管理系统，用于您的媒体库",
   "install_methods": [
     {
       "type": "default",

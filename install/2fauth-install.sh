@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 export PHP_VERSION="8.4"
 PHP_FPM="YES" setup_php
@@ -25,7 +25,7 @@ MARIADB_DB_NAME="2fauth_db" MARIADB_DB_USER="2fauth" setup_mariadb_db
 
 fetch_and_deploy_gh_release "2fauth" "Bubka/2FAuth" "tarball"
 
-msg_info "Setup 2FAuth"
+msg_info "设置 2FAuth"
 cd /opt/2fauth
 cp .env.example .env
 sed -i -e "s|^APP_URL=.*|APP_URL=http://$LOCAL_IP|" \
@@ -45,7 +45,7 @@ $STD php artisan storage:link
 $STD php artisan config:cache
 chown -R www-data: /opt/2fauth
 chmod -R 755 /opt/2fauth
-msg_ok "Setup 2fauth"
+msg_ok "设置 2fauth"
 
 msg_info "Configure Service"
 cat <<EOF >/etc/nginx/conf.d/2fauth.conf
@@ -77,7 +77,7 @@ server {
 }
 EOF
 systemctl reload nginx
-msg_ok "Configured Service"
+msg_ok "已配置 Service"
 
 motd_ssh
 customize

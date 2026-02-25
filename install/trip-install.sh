@@ -13,28 +13,28 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 PYTHON_VERSION="3.12" setup_uv
 fetch_and_deploy_gh_release "trip" "itskovacs/TRIP" "tarball"
 
-msg_info "Building Frontend"
+msg_info "正在构建 Frontend"
 cd /opt/trip/src
 $STD npm install
 $STD npm run build
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
-msg_info "Setting up Backend"
+msg_info "正在设置 Backend"
 cd /opt/trip/backend
 $STD uv venv --clear /opt/trip/.venv
 $STD uv pip install --python /opt/trip/.venv/bin/python -r trip/requirements.txt
 msg_ok "Set up Backend"
 
-msg_info "Configuring Application"
+msg_info "正在配置 Application"
 mkdir -p /opt/trip/frontend
 cp -r /opt/trip/src/dist/trip/browser/* /opt/trip/frontend/
 mkdir -p /opt/trip_storage/{attachments,backups,assets}
@@ -48,9 +48,9 @@ ASSETS_FOLDER=/opt/trip_storage/assets
 FRONTEND_FOLDER=/opt/trip/frontend
 SQLITE_FILE=/opt/trip_storage/trip.sqlite
 EOF
-msg_ok "Configured Application"
+msg_ok "已配置 Application"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/trip.service
 [Unit]
 Description=TRIP - Minimalist POI Map Tracker and Trip Planner
@@ -68,7 +68,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now trip
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

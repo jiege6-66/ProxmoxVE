@@ -13,7 +13,7 @@
   "website": "https://github.com/grafana/loki",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/loki.webp",
   "config_path": "Debian: /etc/loki/config.yml | Alpine: /etc/loki/loki-local-config.yaml",
-  "description": "Grafana Loki is a set of open source components that can be composed into a fully featured logging stack. A small index and highly compressed chunks simplifies the operation and significantly lowers the cost of Loki.",
+  "description": "Grafana Loki 是一组开源组件,可以组合成功能齐全的日志堆栈。小型索引和高度压缩的块简化了操作,并显著降低了 Loki 的成本。",
   "install_methods": [
     {
       "type": "default",

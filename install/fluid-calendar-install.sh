@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y zip
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="fluiddb" PG_DB_USER="fluiduser" setup_postgresql_db
 NODE_VERSION="20" setup_nodejs
 fetch_and_deploy_gh_release "fluid-calendar" "dotnetfactory/fluid-calendar" "tarball"
 
-msg_info "Configuring fluid-calendar"
+msg_info "正在配置 fluid-calendar"
 NEXTAUTH_SECRET="$(openssl rand -base64 44 | tr -dc 'a-zA-Z0-9' | cut -c1-32)"
 echo "NextAuth Secret: $NEXTAUTH_SECRET" >>~/$APPLICATION.creds
 cat <<EOF >/opt/fluid-calendar/.env
@@ -45,9 +45,9 @@ $STD npm install --legacy-peer-deps
 $STD npm run prisma:generate
 $STD npx prisma migrate deploy
 $STD npm run build:os
-msg_ok "Configured fluid-calendar"
+msg_ok "已配置 fluid-calendar"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/fluid-calendar.service
 [Unit]
 Description=Fluid Calendar Application
@@ -63,7 +63,7 @@ ExecStart=/usr/bin/npm run start
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now fluid-calendar
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

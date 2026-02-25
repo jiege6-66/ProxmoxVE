@@ -13,28 +13,28 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add --no-cache \
   git \
   nodejs \
   npm
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Creating Node-RED User"
+msg_info "正在创建 Node-RED User"
 adduser -D -H -s /sbin/nologin -G users nodered
-msg_ok "Created Node-RED User"
+msg_ok "已创建 Node-RED User"
 
-msg_info "Installing Node-RED"
+msg_info "正在安装 Node-RED"
 $STD npm install -g --unsafe-perm node-red
-msg_ok "Installed Node-RED"
+msg_ok "已安装 Node-RED"
 
-msg_info "Creating /home/nodered"
+msg_info "正在创建 /home/nodered"
 mkdir -p /home/nodered
 chown -R nodered:users /home/nodered
 chmod 750 /home/nodered
-msg_ok "Created /home/nodered"
+msg_ok "已创建 /home/nodered"
 
-msg_info "Creating Node-RED Service"
+msg_info "正在创建 Node-RED Service"
 service_path="/etc/init.d/nodered"
 
 echo '#!/sbin/openrc-run
@@ -51,12 +51,12 @@ depend() {
 }' >$service_path
 
 chmod +x $service_path
-msg_ok "Created Node-RED Service"
+msg_ok "已创建 Node-RED Service"
 
-msg_info "Starting Node-RED"
+msg_info "正在启动 Node-RED"
 $STD rc-update add nodered
 $STD rc-service nodered start
-msg_ok "Started Node-RED"
+msg_ok "已启动 Node-RED"
 
 motd_ssh
 customize

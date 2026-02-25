@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Loki"
+msg_info "正在安装 Loki"
 $STD apk add loki
 $STD sed -i '/http_addr/s/127.0.0.1/0.0.0.0/g' /etc/conf.d/loki
 mkdir -p /var/lib/loki/{chunks,boltdb-shipper-active,boltdb-shipper-cache}
@@ -69,16 +69,16 @@ echo "error_log=\"\${error_log:-/var/log/loki/error.log}\"" >> /etc/init.d/loki
 echo "start_stop_daemon_args=\"\${SSD_OPTS} -1 \${output_log} -2 \${error_log}\"" >> /etc/init.d/loki
 $STD rc-update add loki default
 $STD rc-service loki start
-msg_ok "Installed Loki"
+msg_ok "已安装 Loki"
 
 read -rp "Would you like to install Promtail? (y/N): " INSTALL_PROMTAIL
 if [[ "${INSTALL_PROMTAIL,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Promtail"
+  msg_info "正在安装 Promtail"
   $STD apk add loki-promtail
   $STD sed -i '/http_addr/s/127.0.0.1/0.0.0.0/g' /etc/conf.d/loki-promtail
   $STD rc-update add loki-promtail default
   $STD rc-service loki-promtail start
-  msg_ok "Installed Promtail"
+  msg_ok "已安装 Promtail"
 fi
 
 motd_ssh

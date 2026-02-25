@@ -25,15 +25,15 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /etc/systemd/system/planka.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "planka" "plankanban/planka"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop planka
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     BK="/opt/planka-backup"
     mkdir -p "$BK"/{favicons,user-avatars,background-images,attachments}
     [ -f /opt/planka/.env ] && mv /opt/planka/.env "$BK"/
@@ -50,7 +50,7 @@ function update_script() {
       [ -d /opt/planka/private/attachments ] && cp -a /opt/planka/private/attachments/. "$BK/attachments/"
     fi
     rm -rf /opt/planka
-    msg_ok "Backed up data"
+    msg_ok "已备份 data"
 
     fetch_and_deploy_gh_release "planka" "plankanban/planka" "prebuild" "latest" "/opt/planka" "planka-prebuild.zip"
 
@@ -59,7 +59,7 @@ function update_script() {
     $STD npm install
     msg_ok "Updated Frontend"
 
-    msg_info "Restoring data"
+    msg_info "正在恢复 data"
     [ -f "$BK/.env" ] && mv "$BK/.env" /opt/planka/.env
     # Planka v2 uses unified data directory structure
     mkdir -p /opt/planka/data/protected/{favicons,user-avatars,background-images} /opt/planka/data/private/attachments
@@ -68,18 +68,18 @@ function update_script() {
     [ -d "$BK/background-images" ] && cp -a "$BK/background-images/." /opt/planka/data/protected/background-images/
     [ -d "$BK/attachments" ] && cp -a "$BK/attachments/." /opt/planka/data/private/attachments/
     rm -rf "$BK"
-    msg_ok "Restored data"
+    msg_ok "已恢复 data"
 
     msg_info "Migrate Database"
     cd /opt/planka
     $STD npm run db:upgrade
     $STD npm run db:migrate
-    msg_ok "Migrated Database"
+    msg_ok "已迁移 Database"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start planka
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -88,7 +88,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:1337${CL}"

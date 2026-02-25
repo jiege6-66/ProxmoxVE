@@ -38,12 +38,12 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   fetch_and_deploy_gh_release "vlutils" "VictoriaMetrics/VictoriaLogs" "prebuild" "latest" "/opt/victoriametrics" "$vlutils_filename"
 fi
 
-msg_info "Setup VictoriaMetrics"
+msg_info "设置 VictoriaMetrics"
 mkdir -p /opt/victoriametrics/data
 chmod +x /opt/victoriametrics/*
-msg_ok "Setup VictoriaMetrics"
+msg_ok "设置 VictoriaMetrics"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/victoriametrics.service
 [Unit]
 Description=VictoriaMetrics Service
@@ -77,7 +77,7 @@ WantedBy=multi-user.target
 EOF
   systemctl enable -q --now victoriametrics-logs
 fi
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

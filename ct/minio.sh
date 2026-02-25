@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /usr/local/bin/minio ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   FEATURE_RICH_VERSION="2025-04-22T22-12-26Z"
@@ -36,7 +36,7 @@ function update_script() {
   if [[ "${CURRENT_VERSION}" == "${FEATURE_RICH_VERSION}" && "${RELEASE}" != "${FEATURE_RICH_VERSION}" ]]; then
     echo
     echo "You are currently running the last feature-rich community version: ${FEATURE_RICH_VERSION}"
-    echo "WARNING: Updating to the latest version will REMOVE most management features from the Console UI."
+    echo "WARNING: 正在更新 to the latest version will REMOVE most management features from the Console UI."
     echo "Do you still want to upgrade to the latest version? [y/N]: "
     read -n 1 -r
     echo
@@ -47,11 +47,11 @@ function update_script() {
   fi
 
   if [[ "${CURRENT_VERSION}" != "${RELEASE}" ]]; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop minio
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating ${APP} to ${RELEASE}"
+    msg_info "正在更新 ${APP} to ${RELEASE}"
     mv /usr/local/bin/minio /usr/local/bin/minio_bak
     curl -fsSL "https://dl.min.io/server/minio/release/linux-amd64/minio" -o /usr/local/bin/minio
     chmod +x /usr/local/bin/minio
@@ -59,12 +59,12 @@ function update_script() {
     echo "${RELEASE}" >/opt/${APP}_version.txt
     msg_ok "Updated ${APP}"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start minio
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at ${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at ${RELEASE}"
   fi
   exit
 }
@@ -73,7 +73,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:9000${CL}"

@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apk add --no-cache \
   gcc \
   musl-dev \
@@ -21,20 +21,20 @@ $STD apk add --no-cache \
   iproute2-ss \
   sudo
 $STD apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community go
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
-msg_info "Installing PostgreSQL"
+msg_info "正在安装 PostgreSQL"
 $STD apk add --no-cache \
   postgresql16 \
   postgresql16-contrib \
   postgresql16-openrc
 $STD rc-update add postgresql
 $STD rc-service postgresql start
-msg_ok "Installed PostreSQL"
+msg_ok "已安装 PostreSQL"
 
 RELEASE=$(curl -fsSL https://api.github.com/repos/bitmagnet-io/bitmagnet/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
 
-msg_info "Installing bitmagnet v${RELEASE}"
+msg_info "正在安装 bitmagnet v${RELEASE}"
 mkdir -p /opt/bitmagnet
 temp_file=$(mktemp)
 curl -fsSL "https://github.com/bitmagnet-io/bitmagnet/archive/refs/tags/v${RELEASE}.tar.gz" -o "$temp_file"
@@ -45,11 +45,11 @@ $STD go build -ldflags "-s -w -X github.com/bitmagnet-io/bitmagnet/internal/vers
 chmod +x bitmagnet
 $STD su - postgres -c "psql -c 'CREATE DATABASE bitmagnet;'"
 echo "${RELEASE}" >/opt/bitmagnet_version.txt
-msg_ok "Installed bitmagnet v${RELEASE}"
+msg_ok "已安装 bitmagnet v${RELEASE}"
 
 read -rp "${TAB3}Enter your TMDB API key if you have one: " tmdbapikey
 
-msg_info "Enabling bitmagnet Service"
+msg_info "正在启用 bitmagnet Service"
 cat <<EOF >/etc/init.d/bitmagnet
 #!/sbin/openrc-run
 description="bitmagnet Service"
@@ -70,16 +70,16 @@ start_pre() {
 EOF
 chmod +x /etc/init.d/bitmagnet
 $STD rc-update add bitmagnet default
-msg_ok "Enabled bitmagnet Service"
+msg_ok "已启用 bitmagnet Service"
 
-msg_info "Starting bitmagnet"
+msg_info "正在启动 bitmagnet"
 $STD service bitmagnet start
-msg_ok "Started bitmagnet"
+msg_ok "已启动 bitmagnet"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 rm -f "$temp_file"
 $STD apk cache clean
-msg_ok "Cleaned"
+msg_ok "已清理"

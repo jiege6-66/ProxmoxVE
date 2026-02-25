@@ -13,7 +13,7 @@
   "website": "https://karakeep.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/karakeep.webp",
   "config_path": "/etc/karakeep/karakeep.env",
-  "description": "karakeep (formerly: hoarder) is an AI-powered bookmarking tool that helps you save and organize your digital content. It automatically tags your links, notes, and images, making them easy to find later. With features like auto-fetching, lists, and full-text search, karakeep is the perfect tool for anyone who wants to keep track of their digital life.",
+  "description": "karakeep（原名：hoarder）是一个 AI 驱动的书签工具，帮助你保存和组织数字内容。它会自动标记你的链接、笔记和图片，使它们以后易于查找。凭借自动获取、列表和全文搜索等功能，karakeep 是任何想要追踪数字生活的人的完美工具。",
   "install_methods": [
     {
       "type": "default",

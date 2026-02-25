@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apt-transport-https
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setting up Grafana Repository"
+msg_info "正在设置 Grafana Repository"
 setup_deb822_repo \
   "grafana" \
   "https://apt.grafana.com/gpg.key" \
@@ -26,10 +26,10 @@ setup_deb822_repo \
   "main"
 msg_ok "Grafana Repository setup sucessfully"
 
-msg_info "Installing Grafana"
+msg_info "正在安装 Grafana"
 $STD apt install -y grafana
 systemctl enable -q --now grafana-server
-msg_ok "Installed Grafana"
+msg_ok "已安装 Grafana"
 
 motd_ssh
 customize

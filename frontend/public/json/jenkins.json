@@ -13,7 +13,7 @@
   "website": "https://www.jenkins.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/jenkins.webp",
   "config_path": "",
-  "description": "Jenkins provides hundreds of plugins to support building, deploying and automating any project. ",
+  "description": "Jenkins 提供数百个插件来支持构建、部署和自动化任何项目。",
   "install_methods": [
     {
       "type": "default",

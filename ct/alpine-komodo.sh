@@ -21,11 +21,11 @@ catch_errors
 
 function update_script() {
   [[ -d /opt/komodo ]] || {
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   }
 
-  msg_info "Updating ${APP}"
+  msg_info "正在更新 ${APP}"
   COMPOSE_FILE=$(find /opt/komodo -maxdepth 1 -type f -name '*.compose.yaml' ! -name 'compose.env' | head -n1)
   if [[ -z "$COMPOSE_FILE" ]]; then
     msg_error "No valid compose file found in /opt/komodo!"
@@ -34,7 +34,7 @@ function update_script() {
   COMPOSE_BASENAME=$(basename "$COMPOSE_FILE")
 
   if [[ "$COMPOSE_BASENAME" == "sqlite.compose.yaml" || "$COMPOSE_BASENAME" == "postgres.compose.yaml" ]]; then
-    msg_error "❌ Detected outdated Komodo setup using SQLite or PostgreSQL (FerretDB v1)."
+    msg_error "❌ 已检测到 outdated Komodo setup using SQLite or PostgreSQL (FerretDB v1)."
     echo -e "${YW}This configuration is no longer supported since Komodo v1.18.0.${CL}"
     echo -e "${YW}Please follow the migration guide:${CL}"
     echo -e "${BGN}https://github.com/community-scripts/ProxmoxVE/discussions/5689${CL}\n"
@@ -43,19 +43,19 @@ function update_script() {
 
   BACKUP_FILE="/opt/komodo/${COMPOSE_BASENAME}.bak_$(date +%Y%m%d_%H%M%S)"
   cp "$COMPOSE_FILE" "$BACKUP_FILE" || {
-    msg_error "Failed to create backup of ${COMPOSE_BASENAME}!"
+    msg_error "无法 create backup of ${COMPOSE_BASENAME}!"
     exit
   }
   GITHUB_URL="https://raw.githubusercontent.com/moghtech/komodo/main/compose/${COMPOSE_BASENAME}"
   if ! curl -fsSL "$GITHUB_URL" -o "$COMPOSE_FILE"; then
-    msg_error "Failed to download ${COMPOSE_BASENAME} from GitHub!"
+    msg_error "无法 download ${COMPOSE_BASENAME} from GitHub!"
     mv "$BACKUP_FILE" "$COMPOSE_FILE"
     exit
   fi
   $STD docker compose -p komodo -f "$COMPOSE_FILE" --env-file /opt/komodo/compose.env pull
   $STD docker compose -p komodo -f "$COMPOSE_FILE" --env-file /opt/komodo/compose.env up -d
   msg_ok "Updated Alpine-Komodo"
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit 0
 }
 
@@ -63,7 +63,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:9120${CL}"

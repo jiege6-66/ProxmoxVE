@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   libsrtp2-dev \
   build-essential \
@@ -22,9 +22,9 @@ $STD apt install -y \
   libjansson-dev \
   libxml2-dev \
   libsqlite3-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Fetching Asterisk Versions"
+msg_info "正在获取 Asterisk Versions"
 ASTERISK_LIST=$(curl -fsSL https://downloads.asterisk.org/pub/telephony/asterisk/ \
   | grep -oE 'asterisk-[0-9]+\.[0-9]+\.[0-9]+\.tar\.gz' \
   | sed 's/asterisk-//' \
@@ -39,7 +39,7 @@ CERT_VERSION=$(curl -fsSL https://downloads.asterisk.org/pub/telephony/certified
   | sed -E 's/asterisk-certified-//' \
   | sed -E 's/\.tar\.gz//' \
   | sort -V | tail -n1 || true)
-msg_ok "Fetched Versions"
+msg_ok "已获取 Versions"
 
 cat <<EOF
 Choose Asterisk version to install:
@@ -71,16 +71,16 @@ else
   DOWNLOAD_URL="https://downloads.asterisk.org/pub/telephony/asterisk/$RELEASE"
 fi
 
-msg_info "Downloading Asterisk ($RELEASE)"
+msg_info "正在下载 Asterisk ($RELEASE)"
 temp_file=$(mktemp)
 curl -fsSL "$DOWNLOAD_URL" -o "$temp_file"
 mkdir -p /opt/asterisk
 tar zxf "$temp_file" --strip-components=1 -C /opt/asterisk
 cd /opt/asterisk
 rm -f "$temp_file"
-msg_ok "Downloaded Asterisk ($RELEASE)"
+msg_ok "已下载 Asterisk ($RELEASE)"
 
-msg_info "Installing Asterisk"
+msg_info "正在安装 Asterisk"
 $STD ./contrib/scripts/install_prereq install
 $STD ./configure
 $STD make -j$(nproc)
@@ -91,7 +91,7 @@ $STD make samples
 mkdir -p /etc/radiusclient-ng/
 ln /etc/radcli/radiusclient.conf /etc/radiusclient-ng/radiusclient.conf
 systemctl enable -q --now asterisk
-msg_ok "Installed Asterisk"
+msg_ok "已安装 Asterisk"
 
 motd_ssh
 customize

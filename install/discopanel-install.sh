@@ -12,16 +12,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 setup_go
 fetch_and_deploy_gh_release "discopanel" "nickheyer/discopanel" "tarball" "latest" "/opt/discopanel"
 setup_docker
 
-msg_info "Setting up DiscoPanel"
+msg_info "正在设置 DiscoPanel"
 cd /opt/discopanel
 $STD make gen
 cd /opt/discopanel/web/discopanel
@@ -29,9 +29,9 @@ $STD npm install
 $STD npm run build
 cd /opt/discopanel
 $STD go build -o discopanel cmd/discopanel/main.go
-msg_ok "Setup DiscoPanel"
+msg_ok "设置 DiscoPanel"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/discopanel.service
 [Unit]
 Description=DiscoPanel Service
@@ -46,7 +46,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now discopanel
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

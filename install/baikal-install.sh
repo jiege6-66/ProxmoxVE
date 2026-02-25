@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="16" setup_postgresql
 PHP_APACHE="YES" PHP_VERSION="8.3" setup_php
@@ -23,7 +23,7 @@ setup_composer
 fetch_and_deploy_gh_release "baikal" "sabre-io/Baikal" "tarball"
 PG_DB_NAME="baikal_db" PG_DB_USER="baikal_user" PG_DB_PASS="$(openssl rand -base64 12)" setup_postgresql_db
 
-msg_info "Configuring Baikal"
+msg_info "正在配置 Baikal"
 cd /opt/baikal
 $STD composer install
 cat <<EOF >/opt/baikal/config/baikal.yaml
@@ -36,9 +36,9 @@ database:
 EOF
 chown -R www-data:www-data /opt/baikal/
 chmod -R 755 /opt/baikal/
-msg_ok "Installed Baikal"
+msg_ok "已安装 Baikal"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/baikal.conf
 <VirtualHost *:80>
     ServerName baikal
@@ -68,7 +68,7 @@ $STD a2ensite baikal
 $STD a2enmod rewrite
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

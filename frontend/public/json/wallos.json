@@ -13,7 +13,7 @@
   "website": "https://wallosapp.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wallos.webp",
   "config_path": "",
-  "description": "Wallos is a personal finance and budgeting tool that provides an intuitive interface for tracking expenses, managing subscriptions, and monitoring financial health. It features APIs for categories, notifications, payments, and user settings, making it suitable for automation and custom integrations. Additionally, it supports multi-language functionality.",
+  "description": "Wallos 是一个个人财务和预算工具，提供直观的界面用于跟踪支出、管理订阅和监控财务健康状况。它为类别、通知、支付和用户设置提供 API，适合自动化和自定义集成。此外，它支持多语言功能。",
   "install_methods": [
     {
       "type": "default",

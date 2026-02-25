@@ -16,7 +16,7 @@ update_os
 fetch_and_deploy_gh_release "gotify" "gotify/server" "prebuild" "latest" "/opt/gotify" "gotify-linux-amd64.zip"
 chmod +x /opt/gotify/gotify-linux-amd64
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/gotify.service
 [Unit]
 Description=Gotify
@@ -35,7 +35,7 @@ RestartSec=3
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now gotify
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

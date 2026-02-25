@@ -24,23 +24,23 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/hortusfox ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
   if check_for_gh_release "hortusfox" "danielbrendel/hortusfox-web"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop apache2
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up current HortusFox installation"
+    msg_info "正在备份 current HortusFox installation"
     cd /opt
     mv /opt/hortusfox/ /opt/hortusfox-backup
-    msg_ok "Backed up current HortusFox installation"
+    msg_ok "已备份 current HortusFox installation"
 
     fetch_and_deploy_gh_release "hortusfox" "danielbrendel/hortusfox-web" "tarball"
 
-    msg_info "Updating HortusFox"
+    msg_info "正在更新 HortusFox"
     cd /opt/hortusfox
     mv /opt/hortusfox-backup/.env /opt/hortusfox/.env
     $STD composer install --no-dev --optimize-autoloader
@@ -51,10 +51,10 @@ function update_script() {
     rm -r /opt/hortusfox-backup
     msg_ok "Updated HortusFox"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start apache2
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -63,7 +63,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

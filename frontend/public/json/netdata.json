@@ -13,7 +13,7 @@
   "website": "https://www.netdata.cloud/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/netdata.webp",
   "config_path": "/etc/netdata/netdata.conf",
-  "description": "Netdata is an open-source, real-time performance monitoring tool designed to provide insights into the performance and health of systems and applications. It is often used by system administrators, DevOps professionals, and developers to monitor and troubleshoot issues on servers and other devices.",
+  "description": "Netdata 是一个开源的实时性能监控工具，旨在提供对系统和应用程序性能和健康状况的洞察。它通常被系统管理员、DevOps 专业人员和开发人员用于监控和排查服务器及其他设备上的问题。",
   "install_methods": [
     {
       "type": "default",

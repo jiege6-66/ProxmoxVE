@@ -23,12 +23,12 @@ function update_script() {
   header_info
 
   if [[ ! -d /opt/gatus ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   RELEASE=$(curl -s https://api.github.com/repos/TwiN/gatus/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
   if [ "${RELEASE}" != "$(cat /opt/gatus_version.txt)" ] || [ ! -f /opt/gatus_version.txt ]; then
-    msg_info "Updating ${APP} LXC"
+    msg_info "正在更新 ${APP} LXC"
     $STD apk -U upgrade
     $STD service gatus stop
     mv /opt/gatus/config/config.yaml /opt
@@ -44,9 +44,9 @@ function update_script() {
     rm -f "$temp_file"
     echo "${RELEASE}" >/opt/gatus_version.txt
     $STD service gatus start
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at ${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at ${RELEASE}"
   fi
   exit 0
 }
@@ -55,7 +55,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access it using the following IP:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

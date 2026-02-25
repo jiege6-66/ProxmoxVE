@@ -13,19 +13,19 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nginx \
   sqlite3
 setcap cap_net_raw+ep /bin/ping
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.4" PHP_FPM="YES" setup_php
 setup_composer
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "speedtest-tracker" "alexjustesen/speedtest-tracker" "tarball"
 
-msg_info "Installing Speedtest CLI"
+msg_info "正在安装 Speedtest CLI"
 setup_deb822_repo \
   "speedtest-cli" \
   "https://packagecloud.io/ookla/speedtest-cli/gpgkey" \
@@ -33,18 +33,18 @@ setup_deb822_repo \
   "$(get_os_info codename)" \
   "main"
 $STD apt install -y speedtest
-msg_ok "Installed Speedtest CLI"
+msg_ok "已安装 Speedtest CLI"
 
-msg_info "Configuring PHP-FPM runtime directory"
+msg_info "正在配置 PHP-FPM runtime directory"
 mkdir -p /etc/systemd/system/php8.4-fpm.service.d/
 cat <<EOF >/etc/systemd/system/php8.4-fpm.service.d/override.conf
 [Service]
 RuntimeDirectory=php
 RuntimeDirectoryMode=0755
 EOF
-msg_ok "Configured PHP-FPM runtime directory"
+msg_ok "已配置 PHP-FPM runtime directory"
 
-msg_info "Setting up Speedtest Tracker"
+msg_info "正在设置 Speedtest Tracker"
 cd /opt/speedtest-tracker
 APP_KEY=$(php -r "echo bin2hex(random_bytes(16));")
 TIMEZONE=$(timedatectl | grep "Time zone" | awk '{print $3}')
@@ -93,7 +93,7 @@ chmod -R 755 /opt/speedtest-tracker/storage
 chmod -R 755 /opt/speedtest-tracker/bootstrap/cache
 msg_ok "Set up Speedtest Tracker"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/speedtest-tracker.service
 [Unit]
 Description=Speedtest Tracker Queue Worker
@@ -111,15 +111,15 @@ WorkingDirectory=/opt/speedtest-tracker
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now speedtest-tracker
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
-msg_info "Setting up Scheduler"
+msg_info "正在设置 Scheduler"
 cat <<EOF >/etc/cron.d/speedtest-tracker
 * * * * * www-data cd /opt/speedtest-tracker && php artisan schedule:run >> /dev/null 2>&1
 EOF
 msg_ok "Set up Scheduler"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<EOF >/etc/nginx/sites-available/speedtest-tracker
 server {
     listen 80;
@@ -157,7 +157,7 @@ EOF
 ln -sf /etc/nginx/sites-available/speedtest-tracker /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 systemctl reload nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
 motd_ssh
 customize

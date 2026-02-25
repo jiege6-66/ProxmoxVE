@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 setup_deb822_repo \
   "microsoft" \
   "https://packages.microsoft.com/keys/microsoft.asc" \
@@ -23,11 +23,11 @@ setup_deb822_repo \
 $STD apt install -y \
   dotnet-sdk-8.0 \
   aspnetcore-runtime-8.0
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "UmlautAdaptarr" "PCJones/Umlautadaptarr" "prebuild" "latest" "/opt/UmlautAdaptarr" "linux-x64.zip"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/umlautadaptarr.service
 [Unit]
 Description=UmlautAdaptarr Service
@@ -45,7 +45,7 @@ Environment=ASPNETCORE_ENVIRONMENT=Production
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now umlautadaptarr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

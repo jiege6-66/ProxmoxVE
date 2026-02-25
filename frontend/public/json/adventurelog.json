@@ -13,7 +13,7 @@
   "website": "https://adventurelog.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/adventurelog.webp",
   "config_path": "/opt/adventurelog/backend/server/.env",
-  "description": "Adventure Log is an app designed to track outdoor activities and personal achievements, allowing users to log their adventures with photos, notes, and location data. It focuses on enhancing outdoor experiences by preserving memories and sharing them with others.",
+  "description": "Adventure Log 是一款旨在跟踪户外活动和个人成就的应用,允许用户通过照片、笔记和位置数据记录他们的冒险经历。它专注于通过保存回忆并与他人分享来增强户外体验。",
   "install_methods": [
     {
       "type": "default",

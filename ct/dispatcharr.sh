@@ -25,7 +25,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d "/opt/dispatcharr" ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -41,14 +41,14 @@ function update_script() {
   ensure_dependencies vlc-bin vlc-plugin-base
 
   if check_for_gh_release "Dispatcharr" "Dispatcharr/Dispatcharr"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop dispatcharr-celery
     systemctl stop dispatcharr-celerybeat
     systemctl stop dispatcharr-daphne
     systemctl stop dispatcharr
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     BACKUP_FILE="/opt/dispatcharr_backup_$(date +%F_%H-%M-%S).tar.gz"
     if [[ -f /opt/dispatcharr/.env ]]; then
       cp /opt/dispatcharr/.env /tmp/dispatcharr.env.backup
@@ -79,7 +79,7 @@ function update_script() {
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "dispatcharr" "Dispatcharr/Dispatcharr" "tarball"
 
-    msg_info "Updating Dispatcharr Backend"
+    msg_info "正在更新 Dispatcharr Backend"
     if [[ -f /tmp/dispatcharr.env.backup ]]; then
       mv /tmp/dispatcharr.env.backup /opt/dispatcharr/.env
     fi
@@ -108,13 +108,13 @@ function update_script() {
     $STD uv pip install gunicorn gevent celery redis daphne
     msg_ok "Updated Dispatcharr Backend"
 
-    msg_info "Building Frontend"
+    msg_info "正在构建 Frontend"
     cd /opt/dispatcharr/frontend
     $STD npm install --legacy-peer-deps
     $STD npm run build
-    msg_ok "Built Frontend"
+    msg_ok "已构建 Frontend"
 
-    msg_info "Running Django Migrations"
+    msg_info "正在运行 Django Migrations"
     cd /opt/dispatcharr
     if [[ -f .env ]]; then
       set -o allexport
@@ -126,13 +126,13 @@ function update_script() {
     rm -f /tmp/dispatcharr_db_*.sql
     msg_ok "Migrations Complete"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start dispatcharr
     systemctl start dispatcharr-celery
     systemctl start dispatcharr-celerybeat
     systemctl start dispatcharr-daphne
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -141,7 +141,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:9191${CL}"

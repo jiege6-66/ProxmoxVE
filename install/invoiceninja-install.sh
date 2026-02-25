@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     nginx \
     supervisor \
@@ -31,7 +31,7 @@ $STD apt install -y \
     libasound2 \
     libpango-1.0-0 \
     libcairo2
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mariadb
 MARIADB_DB_NAME="invoiceninja" MARIADB_DB_USER="invoiceninja" setup_mariadb_db
@@ -39,7 +39,7 @@ PHP_VERSION="8.4" PHP_FPM="YES" PHP_MODULE="soap" setup_php
 
 fetch_and_deploy_gh_release "invoiceninja" "invoiceninja/invoiceninja" "prebuild" "latest" "/opt/invoiceninja" "invoiceninja.tar.gz"
 
-msg_info "Configuring InvoiceNinja"
+msg_info "正在配置 InvoiceNinja"
 cd /opt/invoiceninja
 APP_KEY=$(php artisan key:generate --show)
 cat <<EOF >/opt/invoiceninja/.env
@@ -88,15 +88,15 @@ mkdir -p /opt/invoiceninja/storage/{app/public,framework/{cache/data,sessions,vi
 chown -R www-data:www-data /opt/invoiceninja
 chown -R www-data:www-data /opt/invoiceninja/storage
 chown -R www-data:www-data /opt/invoiceninja/bootstrap/cache
-msg_ok "Configured InvoiceNinja"
+msg_ok "已配置 InvoiceNinja"
 
-msg_info "Downloading Chromium for PDF Generation"
+msg_info "正在下载 Chromium for PDF Generation"
 cd /opt/invoiceninja
 $STD ./vendor/bin/snappdf download
 chown -R www-data:www-data /opt/invoiceninja/vendor/beganovich/snappdf/versions
-msg_ok "Downloaded Chromium for PDF Generation"
+msg_ok "已下载 Chromium for PDF Generation"
 
-msg_info "Setting up Database"
+msg_info "正在设置 Database"
 cd /opt/invoiceninja
 $STD php artisan config:clear
 $STD php artisan cache:clear
@@ -109,7 +109,7 @@ $STD php artisan optimize
 chown -R www-data:www-data /opt/invoiceninja
 msg_ok "Set up Database"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<'EOF' >/etc/nginx/sites-available/invoiceninja
 server {
     listen 8080;
@@ -152,9 +152,9 @@ EOF
 ln -sf /etc/nginx/sites-available/invoiceninja /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
-msg_info "Setting up Queue Worker"
+msg_info "正在设置 Queue Worker"
 cat <<'EOF' >/etc/supervisor/conf.d/invoiceninja-worker.conf
 [program:invoiceninja-worker]
 process_name=%(program_name)s_%(process_num)02d
@@ -176,15 +176,15 @@ $STD supervisorctl reread
 $STD supervisorctl update
 msg_ok "Set up Queue Worker"
 
-msg_info "Setting up Cron"
+msg_info "正在设置 Cron"
 cat <<'EOF' >/etc/cron.d/invoiceninja
 * * * * * www-data cd /opt/invoiceninja && php artisan schedule:run >> /dev/null 2>&1
 EOF
 msg_ok "Set up Cron"
 
-msg_info "Enabling Services"
+msg_info "正在启用 Services"
 systemctl enable -q --now php8.4-fpm nginx supervisor
-msg_ok "Enabled Services"
+msg_ok "已启用 Services"
 
 motd_ssh
 customize

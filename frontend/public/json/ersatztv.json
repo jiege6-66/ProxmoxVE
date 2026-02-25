@@ -13,7 +13,7 @@
   "website": "https://ersatztv.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/ersatztv.webp",
   "config_path": "",
-  "description": "ErsatzTV is software for configuring and streaming custom live channels using your media library.",
+  "description": "ErsatzTV 是一款用于配置和流式传输自定义直播频道的软件，使用您的媒体库。",
   "install_methods": [
     {
       "type": "default",

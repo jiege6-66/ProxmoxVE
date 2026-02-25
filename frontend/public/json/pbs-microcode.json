@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "Processor Microcode is a layer of low-level software that runs on the processor and provides patches or updates to its firmware. Microcode updates can fix hardware bugs, improve performance, and enhance security features of the processor. This script is adapted for the Proxmox Backup Server environment and will only run on bare metal systems. If running in a virtualized environment, the script will exit. Note that firmware update mechanisms, such as Intel's Management Engine (ME) or AMD's Platform Security Processor (PSP), may vary depending on your processor and its implementation. Please consult your processor's documentation to verify if firmware updates can be applied through the operating system.",
+  "description": "处理器微码是在处理器上运行的底层软件层,为其固件提供补丁或更新。微码更新可以修复硬件错误、提高性能并增强处理器的安全功能。此脚本适用于 Proxmox Backup Server 环境,仅在裸机系统上运行。如果在虚拟化环境中运行,脚本将退出。请注意,固件更新机制(如 Intel 的 Management Engine (ME) 或 AMD 的 Platform Security Processor (PSP))可能因您的处理器及其实现而异。请查阅处理器文档以验证是否可以通过操作系统应用固件更新。",
   "install_methods": [
     {
       "type": "default",

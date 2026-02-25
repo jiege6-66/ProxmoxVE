@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "jackett" "Jackett/Jackett" "prebuild" "latest" "/opt/Jackett" "Jackett.Binaries.LinuxAMDx64.tar.gz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/jackett.service
 [Unit]
 Description=Jackett Daemon
@@ -35,7 +35,7 @@ EnvironmentFile="/opt/.env"
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now jackett
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

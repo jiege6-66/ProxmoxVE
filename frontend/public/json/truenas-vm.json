@@ -13,7 +13,7 @@
   "website": "https://www.truenas.com/truenas-community-edition/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/truenas-core.webp",
   "config_path": "",
-  "description": "TrueNAS Community Edition is the world's most deployed storage software. Free, flexible and build on OpenZFS with Docker.",
+  "description": "TrueNAS Community Edition 是全球部署最广泛的存储软件。免费、灵活,基于 OpenZFS 构建,支持 Docker。",
   "install_methods": [
     {
       "type": "default",

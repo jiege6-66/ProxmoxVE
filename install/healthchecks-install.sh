@@ -12,7 +12,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   gcc \
   python3 \
@@ -28,12 +28,12 @@ cat > ~/.config/pip/pip.conf << EOF
 [global]
 break-system-packages = true
 EOF
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION=16 setup_postgresql
 PG_DB_NAME="healthchecks_db" PG_DB_USER="hc_user" PG_DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13) setup_postgresql_db
 
-msg_info "Setup Keys (Admin / Secret)"
+msg_info "设置 Keys (Admin / Secret)"
 SECRET_KEY="$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | cut -c1-32)"
 ADMIN_EMAIL="admin@helper-scripts.local"
 ADMIN_PASSWORD="$PG_DB_PASS"
@@ -45,14 +45,14 @@ msg_ok "Set up Keys"
 
 fetch_and_deploy_gh_release "healthchecks" "healthchecks/healthchecks" "tarball"
 
-msg_info "Installing Healthchecks (venv)"
+msg_info "正在安装 Healthchecks (venv)"
 cd /opt/healthchecks
 python3 -m venv venv
 source venv/bin/activate
 
 $STD pip install --upgrade pip wheel
 $STD pip install gunicorn -r requirements.txt
-msg_ok "Installed Python packages"
+msg_ok "已安装 Python packages"
 
 cat <<EOF >/opt/healthchecks/hc/local_settings.py
 DEBUG = False
@@ -82,7 +82,7 @@ DATABASES = {
 }
 EOF
 
-msg_info "Running Django setup"
+msg_info "正在运行 Django setup"
 $STD python manage.py makemigrations
 $STD python manage.py migrate --noinput
 $STD python manage.py collectstatic --noinput
@@ -94,9 +94,9 @@ User = get_user_model()
 if not User.objects.filter(email="${ADMIN_EMAIL}").exists():
     User.objects.create_superuser("${ADMIN_EMAIL}", "${ADMIN_EMAIL}", "${ADMIN_PASSWORD}")
 EOF
-msg_ok "Configured Django"
+msg_ok "已配置 Django"
 
-msg_info "Configuring Caddy"
+msg_info "正在配置 Caddy"
 cat <<EOF >/etc/caddy/Caddyfile
 {
     email admin@example.com
@@ -106,9 +106,9 @@ ${LOCAL_IP} {
     reverse_proxy 127.0.0.1:8000
 }
 EOF
-msg_ok "Configured Caddy"
+msg_ok "已配置 Caddy"
 
-msg_info "Creating systemd services"
+msg_info "正在创建 systemd services"
 cat <<EOF >/etc/systemd/system/healthchecks.service
 [Unit]
 Description=Healthchecks Service
@@ -139,7 +139,7 @@ EOF
 
 systemctl enable -q --now healthchecks healthchecks-sendalerts caddy
 systemctl reload caddy
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

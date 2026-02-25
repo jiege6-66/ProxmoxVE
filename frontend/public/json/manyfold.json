@@ -13,7 +13,7 @@
   "website": "https://manyfold.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/manyfold.webp",
   "config_path": "/opt/manyfold/.env",
-  "description": "Manyfold is an open source, self-hosted web application for managing a collection of 3d models, particularly focused on 3d printing.",
+  "description": "Manyfold 是一个开源的自托管 Web 应用程序，用于管理 3D 模型集合，特别专注于 3D 打印。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "website": "https://www.postgresql.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/postgresql.webp",
   "config_path": "",
-  "description": "PostgreSQL (often referred to as Postgres) is an open-source relational database management system that is known for its extensibility and strict adherence to SQL standards. It is a free and powerful database solution, suitable for a wide range of applications, from small projects to large enterprise systems. PostgreSQL is widely used for its reliability, feature-richness, and robustness.",
+  "description": "PostgreSQL（通常简称为 Postgres）是一个开源关系型数据库管理系统，以其可扩展性和严格遵循 SQL 标准而闻名。它是一个免费且强大的数据库解决方案，适用于从小型项目到大型企业系统的各种应用。PostgreSQL 因其可靠性、功能丰富性和稳健性而被广泛使用。",
   "install_methods": [
     {
       "type": "default",

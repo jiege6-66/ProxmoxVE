@@ -16,9 +16,9 @@ update_os
 msg_info "Install Matterbridge"
 mkdir -p /root/Matterbridge
 NODE_VERSION="22" NODE_MODULE="matterbridge" setup_nodejs
-msg_ok "Installed Matterbridge"
+msg_ok "已安装 Matterbridge"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/matterbridge.service
 [Unit]
 Description=matterbridge
@@ -38,7 +38,7 @@ TimeoutStopSec=30s
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now matterbridge
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://flowiseai.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/flowise.webp",
   "config_path": "/opt/flowiseai/.env",
-  "description": "FlowiseAI is an open source low-code tool for developers to build customized LLM orchestration flow & AI agents",
+  "description": "FlowiseAI 是一个开源低代码工具，供开发者构建定制的 LLM 编排流程和 AI 代理",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "website": "https://docmost.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/docmost.webp",
   "config_path": "/opt/docmost/.env",
-  "description": "Open-source collaborative wiki and documentation software. Create, collaborate, and share knowledge seamlessly with Docmost. Ideal for managing your wiki, knowledge-base, documentation and a lot more.",
+  "description": "开源协作 wiki 和文档软件。使用 Docmost 无缝创建、协作和共享知识。非常适合管理你的 wiki、知识库、文档等。",
   "install_methods": [
     {
       "type": "default",

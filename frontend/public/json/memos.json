@@ -13,7 +13,7 @@
   "website": "https://www.usememos.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/memos.webp",
   "config_path": "",
-  "description": "Memos is an open-source, self-hosted platform designed for fast, privacy-focused note-taking. Users can create, organize, and format notes with Markdown, which are securely stored in a local database. It\u2019s lightweight and customizable, built for quick access and adaptability to individual or team needs.",
+  "description": "Memos 是一个开源的自托管平台，专为快速、注重隐私的笔记而设计。用户可以使用 Markdown 创建、组织和格式化笔记，这些笔记安全地存储在本地数据库中。它轻量且可自定义，专为快速访问和适应个人或团队需求而构建。",
   "install_methods": [
     {
       "type": "default",

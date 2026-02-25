@@ -15,7 +15,7 @@
   "website": "https://coder.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/coder.webp",
   "config_path": "",
-  "description": "Coder Code Server is an open-source project that enables you to run Visual Studio Code (VS Code) on a remote machine, such as a desktop PC or virtual server. It serves a web-based version of VS Code that you can access from any browser via a URL, allowing remote development without needing an SSH connection. Unlike the official VS Code Server used by vscode.dev for Remote Tunnels, code-server is developed by Coder and operates independently, providing similar capabilities through a self-hosted solution.",
+  "description": "Coder Code Server 是一个开源项目,使您能够在远程机器(如台式 PC 或虚拟服务器)上运行 Visual Studio Code (VS Code)。它提供基于 Web 的 VS Code 版本,您可以通过 URL 从任何浏览器访问,允许远程开发而无需 SSH 连接。与 vscode.dev 用于 Remote Tunnels 的官方 VS Code Server 不同,code-server 由 Coder 开发并独立运行,通过自托管解决方案提供类似的功能。",
   "install_methods": [
     {
       "type": "default",

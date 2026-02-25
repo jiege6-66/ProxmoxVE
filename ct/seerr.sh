@@ -25,23 +25,23 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/seerr && ! -d /opt/jellyseerr && ! -d /opt/overseerr ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   # Start Migration from Jellyseerr
   if [[ -f /etc/systemd/system/jellyseerr.service ]]; then
-    msg_info "Stopping Jellyseerr"
+    msg_info "正在停止 Jellyseerr"
     $STD systemctl stop jellyseerr || true
     $STD systemctl disable jellyseerr || true
     [ -f /etc/systemd/system/jellyseerr.service ] && rm -f /etc/systemd/system/jellyseerr.service
-    msg_ok "Stopped Jellyseerr"
+    msg_ok "已停止 Jellyseerr"
 
-    msg_info "Creating Backup (Patience)"
+    msg_info "正在创建 Backup (Patience)"
     tar -czf /opt/jellyseerr_backup_$(date +%Y%m%d_%H%M%S).tar.gz -C /opt jellyseerr
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
-    msg_info "Migrating Jellyseerr to seerr"
+    msg_info "正在迁移 Jellyseerr to seerr"
     [ -d /opt/jellyseerr ] && mv /opt/jellyseerr /opt/seerr
     [ -d /etc/jellyseerr ] && mv /etc/jellyseerr /etc/seerr
     [ -f /etc/seerr/jellyseerr.conf ] && mv /etc/seerr/jellyseerr.conf /etc/seerr/seerr.conf
@@ -64,23 +64,23 @@ WantedBy=multi-user.target
 EOF
     systemctl daemon-reload
     systemctl enable -q --now seerr
-    msg_ok "Migrated Jellyserr to Seerr"
+    msg_ok "已迁移 Jellyserr to Seerr"
   fi
   # END Jellyseerr Migration
 
   # Start Migration from Overseerr
   if [[ -f /etc/systemd/system/overseerr.service ]]; then
-    msg_info "Stopping Overseerr"
+    msg_info "正在停止 Overseerr"
     $STD systemctl stop overseerr || true
     $STD systemctl disable overseerr || true
     [ -f /etc/systemd/system/overseerr.service ] && rm -f /etc/systemd/system/overseerr.service
-    msg_ok "Stopped Overseerr"
+    msg_ok "已停止 Overseerr"
 
-    msg_info "Creating Backup (Patience)"
+    msg_info "正在创建 Backup (Patience)"
     tar -czf /opt/overseerr_backup_$(date +%Y%m%d_%H%M%S).tar.gz -C /opt overseerr
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
-    msg_info "Migrating Overseerr to seerr"
+    msg_info "正在迁移 Overseerr to seerr"
     [ -d /opt/overseerr ] && mv /opt/overseerr /opt/seerr
     mkdir -p /etc/seerr
     cat <<EOF >/etc/seerr/seerr.conf
@@ -113,27 +113,27 @@ WantedBy=multi-user.target
 EOF
     systemctl daemon-reload
     systemctl enable -q --now seerr
-    msg_ok "Migrated Overseerr to Seerr"
+    msg_ok "已迁移 Overseerr to Seerr"
   fi
   # END Overseerr Migration
 
   if check_for_gh_release "seerr" "seerr-team/seerr"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop seerr
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     cp -a /opt/seerr/config /opt/seerr_backup
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "seerr" "seerr-team/seerr" "tarball"
 
-    msg_info "Updating PNPM Version"
+    msg_info "正在更新 PNPM Version"
     pnpm_desired=$(grep -Po '"pnpm":\s*"\K[^"]+' /opt/seerr/package.json)
     NODE_VERSION="22" NODE_MODULE="pnpm@$pnpm_desired" setup_nodejs
     msg_ok "Updated PNPM Version"
 
-    msg_info "Updating Seerr"
+    msg_info "正在更新 Seerr"
     cd /opt/seerr
     rm -rf dist .next node_modules
     export CYPRESS_INSTALL_BINARY=0
@@ -142,15 +142,15 @@ EOF
     $STD pnpm build
     msg_ok "Updated Seerr"
 
-    msg_info "Restoring Backup"
+    msg_info "正在恢复 Backup"
     rm -rf /opt/seerr/config
     mv /opt/seerr_backup /opt/seerr/config
-    msg_ok "Restored Backup"
+    msg_ok "已恢复 Backup"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start seerr
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -159,7 +159,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5055${CL}"

@@ -13,7 +13,7 @@
   "website": "https://github.com/benzino77/tasmocompiler",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tasmocompiler.webp",
   "config_path": "",
-  "description": "TasmoCompiler is a simple web GUI which allows you to compile fantastic Tasmota firmware with your own settings.",
+  "description": "TasmoCompiler 是一个简单的 Web GUI,允许您使用自己的设置编译出色的 Tasmota 固件。",
   "install_methods": [
     {
       "type": "default",

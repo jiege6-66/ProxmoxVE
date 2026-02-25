@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y git \
   libyaml-dev \
   build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setup Python3"
+msg_info "设置 Python3"
 $STD apt install -y \
   python3 \
   python3-dev \
@@ -27,16 +27,16 @@ $STD apt install -y \
   python3-venv \
   python3-setuptools
 rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED
-msg_ok "Setup Python3"
+msg_ok "设置 Python3"
 
-msg_info "Creating user octoprint"
+msg_info "正在创建 user octoprint"
 useradd -m -s /bin/bash -p $(openssl passwd -1 octoprint) octoprint
 usermod -aG sudo,tty,dialout octoprint
 chown -R octoprint:octoprint /opt
 echo "octoprint ALL=NOPASSWD: $(command -v systemctl) restart octoprint, $(command -v reboot), $(command -v poweroff)" >/etc/sudoers.d/octoprint
-msg_ok "Created user octoprint"
+msg_ok "已创建 user octoprint"
 
-msg_info "Installing OctoPrint"
+msg_info "正在安装 OctoPrint"
 $STD sudo -u octoprint bash <<EOF
 mkdir /opt/octoprint
 cd /opt/octoprint
@@ -46,9 +46,9 @@ pip install --upgrade pip
 pip install wheel
 pip install octoprint
 EOF
-msg_ok "Installed OctoPrint"
+msg_ok "已安装 OctoPrint"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/octoprint.service
 [Unit]
 Description=The snappy web interface for your 3D printer
@@ -66,7 +66,7 @@ ExecStart=/opt/octoprint/bin/octoprint serve
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now octoprint
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

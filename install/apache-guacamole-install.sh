@@ -12,7 +12,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   libcairo2-dev \
@@ -34,13 +34,13 @@ $STD apt install -y \
   libavcodec-dev \
   libavutil-dev \
   libavformat-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 JAVA_VERSION="17" setup_java
 setup_mariadb
 MARIADB_DB_NAME="guacamole_db" MARIADB_DB_USER="guacamole_user" setup_mariadb_db
 
-msg_info "Setup Apache Tomcat"
+msg_info "设置 Apache Tomcat"
 TOMCAT_VERSION=$(curl -fsSL https://dlcdn.apache.org/tomcat/tomcat-9/ | grep -oP '(?<=href=")v[^"/]+(?=/")' | sed 's/^v//' | sort -V | tail -n1)
 mkdir -p /opt/apache-guacamole/{tomcat9,server}
 curl -fsSL "https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" | tar -xz -C /opt/apache-guacamole/tomcat9 --strip-components=1
@@ -49,9 +49,9 @@ chown -R tomcat: /opt/apache-guacamole/tomcat9
 chmod -R g+r /opt/apache-guacamole/tomcat9/conf
 chmod g+x /opt/apache-guacamole/tomcat9/conf
 echo "${TOMCAT_VERSION}" >~/.guacamole_tomcat
-msg_ok "Setup Apache Tomcat ${TOMCAT_VERSION}"
+msg_ok "设置 Apache Tomcat ${TOMCAT_VERSION}"
 
-msg_info "Setup Apache Guacamole"
+msg_info "设置 Apache Guacamole"
 mkdir -p /etc/guacamole/{extensions,lib}
 GUAC_SERVER_VERSION=$(curl -fsSL https://api.github.com/repos/apache/guacamole-server/tags | jq -r '.[].name' | grep -v -- '-RC' | head -n 1)
 GUAC_CLIENT_VERSION=$(curl -fsSL https://api.github.com/repos/apache/guacamole-client/tags | jq -r '.[].name' | grep -v -- '-RC' | head -n 1)
@@ -74,9 +74,9 @@ curl -fsSL "https://downloads.apache.org/guacamole/${GUAC_SERVER_VERSION}/binary
 $STD tar -xf ~/guacamole-auth-jdbc-"$GUAC_SERVER_VERSION".tar.gz
 mv ~/guacamole-auth-jdbc-"$GUAC_SERVER_VERSION"/mysql/guacamole-auth-jdbc-mysql-"$GUAC_SERVER_VERSION".jar /etc/guacamole/extensions/
 echo "${GUAC_SERVER_VERSION}" >~/.guacamole_auth_jdbc
-msg_ok "Setup Apache Guacamole"
+msg_ok "设置 Apache Guacamole"
 
-msg_info "Importing Database Schema"
+msg_info "正在导入 Database Schema"
 cd ~/guacamole-auth-jdbc-"${GUAC_SERVER_VERSION}"/mysql/schema
 cat *.sql | mariadb -u root ${MARIADB_DB_NAME}
 {
@@ -87,9 +87,9 @@ cat *.sql | mariadb -u root ${MARIADB_DB_NAME}
   echo "mysql-password: $MARIADB_DB_PASS"
 } >>/etc/guacamole/guacamole.properties
 rm -rf ~/guacamole-auth-jdbc-"$GUAC_SERVER_VERSION"{,.tar.gz}
-msg_ok "Imported Database Schema"
+msg_ok "已导入 Database Schema"
 
-msg_info "Setup Service"
+msg_info "设置 Service"
 cat <<EOF >/etc/guacamole/guacd.conf
 [server]
 bind_host = 127.0.0.1
@@ -133,7 +133,7 @@ PIDFile=/var/run/guacd.pid
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now mysql tomcat guacd
-msg_ok "Setup Service"
+msg_ok "设置 Service"
 
 motd_ssh
 customize

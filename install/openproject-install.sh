@@ -13,26 +13,26 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apt-transport-https
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="openproject" PG_DB_USER="openproject" setup_postgresql_db
 API_KEY=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)
 echo "OpenProject API Key: $API_KEY" >>~/openproject.creds
 
-msg_info "Setting up OpenProject Repository"
+msg_info "正在设置 OpenProject Repository"
 curl -fsSL "https://dl.packager.io/srv/opf/openproject/key" | gpg --dearmor >/etc/apt/trusted.gpg.d/packager-io.gpg
 curl -fsSL "https://dl.packager.io/srv/opf/openproject/stable/15/installer/debian/12.repo" -o "/etc/apt/sources.list.d/openproject.list"
 $STD apt update
-msg_ok "Setup OpenProject Repository"
+msg_ok "设置 OpenProject Repository"
 
-msg_info "Installing OpenProject"
+msg_info "正在安装 OpenProject"
 $STD apt install -y openproject
-msg_ok "Installed OpenProject"
+msg_ok "已安装 OpenProject"
 
-msg_info "Configuring OpenProject"
+msg_info "正在配置 OpenProject"
 cat <<EOF >/etc/openproject/installer.dat
 openproject/edition default
 
@@ -60,7 +60,7 @@ openproject/admin_email admin@example.net
 openproject/default_language en
 EOF
 $STD sudo openproject configure
-msg_ok "Configured OpenProject"
+msg_ok "已配置 OpenProject"
 
 motd_ssh
 customize

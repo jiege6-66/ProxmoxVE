@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add --no-cache openssl
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 GITEA_RELEASE=$(curl -s https://api.github.com/repos/deuxfleurs-org/garage/tags | jq -r '.[0].name')
 curl -fsSL "https://garagehq.deuxfleurs.fr/_releases/${GITEA_RELEASE}/x86_64-unknown-linux-musl/garage" -o /usr/local/bin/garage
@@ -60,9 +60,9 @@ api_bind_addr = "0.0.0.0:3903"
 admin_token = "${ADMIN_TOKEN}"
 metrics_token = "${METRICS_TOKEN}"
 EOF
-msg_ok "Configured Garage"
+msg_ok "已配置 Garage"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/etc/init.d/garage
 #!/sbin/openrc-run
 name="Garage Object Storage"

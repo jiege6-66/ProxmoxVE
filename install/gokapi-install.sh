@@ -15,12 +15,12 @@ update_os
 
 fetch_and_deploy_gh_release "gokapi" "Forceu/Gokapi" "prebuild" "latest" "/opt/gokapi" "gokapi-linux_amd64.zip"
 
-msg_info "Configuring Gokapi"
+msg_info "正在配置 Gokapi"
 mkdir -p /opt/gokapi/{data,config}
 chmod +x /opt/gokapi/gokapi-linux_amd64
-msg_ok "Configured Gokapi"
+msg_ok "已配置 Gokapi"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/gokapi.service
 [Unit]
 Description=gokapi
@@ -35,7 +35,7 @@ ExecStart=/opt/gokapi/gokapi-linux_amd64
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now gokapi
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

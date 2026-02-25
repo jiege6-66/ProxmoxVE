@@ -23,7 +23,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/docmost ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if ! command -v node >/dev/null || [[ "$(/usr/bin/env node -v | grep -oP '^v\K[0-9]+')" != "22" ]]; then
@@ -32,11 +32,11 @@ function update_script() {
   export NODE_OPTIONS="--max_old_space_size=4096"
 
   if check_for_gh_release "docmost" "docmost/docmost"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop docmost
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     cp /opt/docmost/.env /opt/
     cp -r /opt/docmost/data /opt/
     rm -rf /opt/docmost
@@ -44,7 +44,7 @@ function update_script() {
 
     fetch_and_deploy_gh_release "docmost" "docmost/docmost" "tarball"
 
-    msg_info "Updating ${APP}"
+    msg_info "正在更新 ${APP}"
     cd /opt/docmost
     mv /opt/.env /opt/docmost/.env
     mv /opt/data /opt/docmost/data
@@ -52,10 +52,10 @@ function update_script() {
     $STD pnpm build
     msg_ok "Updated ${APP}"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start docmost
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -64,7 +64,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

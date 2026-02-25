@@ -18,7 +18,7 @@ function header_info {
 EOF
 }
 header_info
-echo -e "\n Loading..."
+echo -e "\n 正在加载..."
 GEN_MAC=02:$(openssl rand -hex 5 | awk '{print toupper($0)}' | sed 's/\(..\)/\1:/g; s/.$//')
 RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)"
 METHOD=""
@@ -211,13 +211,13 @@ function exit-script() {
 # Ensure pv is installed or abort with instructions
 function ensure_pv() {
   if ! command -v pv &>/dev/null; then
-    msg_info "Installing required package: pv"
+    msg_info "正在安装 required package: pv"
     if ! apt-get update -qq &>/dev/null || ! apt-get install -y pv &>/dev/null; then
-      msg_error "Failed to install pv automatically."
+      msg_error "无法 install pv automatically."
       echo -e "\nPlease run manually on the Proxmox host:\n  apt install pv\n"
       exit 1
     fi
-    msg_ok "Installed pv"
+    msg_ok "已安装 pv"
   fi
 }
 
@@ -239,7 +239,7 @@ function download_and_validate_xz() {
   fi
 
   # Download fresh file
-  msg_info "Downloading image: $(basename "$file")"
+  msg_info "正在下载 image: $(basename "$file")"
   if ! curl -fSL -o "$file" "$url"; then
     msg_error "Download failed: $url"
     rm -f "$file"
@@ -248,11 +248,11 @@ function download_and_validate_xz() {
 
   # Validate again
   if ! xz -t "$file" &>/dev/null; then
-    msg_error "Downloaded file $(basename "$file") is corrupted. Please try again later."
+    msg_error "已下载 file $(basename "$file") is corrupted. Please try again later."
     rm -f "$file"
     exit 1
   fi
-  msg_ok "Downloaded and validated $(basename "$file")"
+  msg_ok "已下载 and validated $(basename "$file")"
 }
 
 # Extract .xz with pv
@@ -263,8 +263,8 @@ function extract_xz_with_pv() {
   local target="$2"
 
   msg_info "Decompressing $(basename "$file") to $target"
-  if ! xz -dc "$file" | pv -N "Extracting" >"$target"; then
-    msg_error "Failed to extract $file"
+  if ! xz -dc "$file" | pv -N "正在解压" >"$target"; then
+    msg_error "无法 extract $file"
     rm -f "$target"
     exit 1
   fi
@@ -298,7 +298,7 @@ function default_settings() {
   echo -e "${VLANTAG}${BOLD}${DGN}VLAN: ${BGN}Default${CL}"
   echo -e "${DEFAULT}${BOLD}${DGN}Interface MTU Size: ${BGN}Default${CL}"
   echo -e "${GATEWAY}${BOLD}${DGN}Start VM when completed: ${BGN}yes${CL}"
-  echo -e "${CREATING}${BOLD}${DGN}Creating a Umbrel OS VM using the above default settings${CL}"
+  echo -e "${CREATING}${BOLD}${DGN}正在创建 a Umbrel OS VM using the above default settings${CL}"
 }
 
 function advanced_settings() {
@@ -478,7 +478,7 @@ function advanced_settings() {
   fi
 
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create a Umbrel OS VM?" --no-button Do-Over 10 58); then
-    echo -e "${CREATING}${BOLD}${DGN}Creating a Umbrel OS VM using the above advanced settings${CL}"
+    echo -e "${CREATING}${BOLD}${DGN}正在创建 a Umbrel OS VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${ADVANCED}${BOLD}${RD}Using Advanced Settings${CL}"
@@ -602,11 +602,11 @@ else
 fi
 rm -f "$FILE_IMG"
 
-msg_ok "Created a Umbrel OS VM ${CL}${BL}(${HN})"
+msg_ok "已创建 a Umbrel OS VM ${CL}${BL}(${HN})"
 if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Umbrel OS VM"
+  msg_info "正在启动 Umbrel OS VM"
   qm start $VMID
-  msg_ok "Started Umbrel OS VM"
+  msg_ok "已启动 Umbrel OS VM"
 fi
 post_update_to_api "done" "none"
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"

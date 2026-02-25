@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   python3-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" setup_postgresql
 PYTHON_VERSION="3.13" setup_uv
 
-msg_info "Setting up PostgreSQL"
+msg_info "正在设置 PostgreSQL"
 DB_NAME="litellm_db"
 DB_USER="litellm"
 DB_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)"
@@ -39,16 +39,16 @@ $STD sudo -u postgres psql -c "ALTER ROLE $DB_USER SET timezone TO 'UTC';"
 } >>~/litellm.creds
 msg_ok "Set up PostgreSQL"
 
-msg_info "Setting up Virtual Environment"
+msg_info "正在设置 Virtual Environment"
 mkdir -p /opt/litellm
 cd /opt/litellm
 $STD uv venv --clear /opt/litellm/.venv
 $STD /opt/litellm/.venv/bin/python -m ensurepip --upgrade
 $STD /opt/litellm/.venv/bin/python -m pip install --upgrade pip
 $STD /opt/litellm/.venv/bin/python -m pip install litellm[proxy] prisma
-msg_ok "Installed LiteLLM"
+msg_ok "已安装 LiteLLM"
 
-msg_info "Configuring LiteLLM"
+msg_info "正在配置 LiteLLM"
 mkdir -p /opt
 cat <<EOF >/opt/litellm/litellm.yaml
 general_settings:
@@ -58,9 +58,9 @@ general_settings:
 EOF
 
 uv --directory=/opt/litellm run litellm --config /opt/litellm/litellm.yaml --use_prisma_db_push --skip_server_startup
-msg_ok "Configured LiteLLM"
+msg_ok "已配置 LiteLLM"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/litellm.service
 [Unit]
 Description=LiteLLM
@@ -75,7 +75,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now litellm
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

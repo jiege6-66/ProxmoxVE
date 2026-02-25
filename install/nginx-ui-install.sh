@@ -13,21 +13,21 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nginx \
   logrotate
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "nginx-ui" "0xJacky/nginx-ui" "prebuild" "latest" "/opt/nginx-ui" "nginx-ui-linux-64.tar.gz"
 
-msg_info "Installing Nginx UI"
+msg_info "正在安装 Nginx UI"
 cp /opt/nginx-ui/nginx-ui /usr/local/bin/nginx-ui
 chmod +x /usr/local/bin/nginx-ui
 rm -rf /opt/nginx-ui
-msg_ok "Installed Nginx UI"
+msg_ok "已安装 Nginx UI"
 
-msg_info "Configuring Nginx UI"
+msg_info "正在配置 Nginx UI"
 mkdir -p /usr/local/etc/nginx-ui
 cat <<EOF >/usr/local/etc/nginx-ui/app.ini
 [app]
@@ -44,9 +44,9 @@ HTTPChallengePort = 9180
 [terminal]
 StartCmd = login
 EOF
-msg_ok "Configured Nginx UI"
+msg_ok "已配置 Nginx UI"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/nginx-ui.service
 [Unit]
 Description=Another WebUI for Nginx
@@ -66,12 +66,12 @@ KillMode=mixed
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
-msg_info "Starting Service"
+msg_info "正在启动 Service"
 systemctl enable -q --now nginx-ui
 rm -rf /etc/nginx/sites-enabled/default
-msg_ok "Started Service"
+msg_ok "已启动 Service"
 
 motd_ssh
 customize

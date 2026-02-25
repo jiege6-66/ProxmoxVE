@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/domain-monitor ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
@@ -38,30 +38,30 @@ function update_script() {
   fi
 
   if check_for_gh_release "domain-monitor" "Hosteroid/domain-monitor"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop apache2
     msg_info "Service stopped"
 
-    msg_info "Creating backup"
+    msg_info "正在创建 backup"
     mv /opt/domain-monitor/.env /opt
-    msg_ok "Created backup"
+    msg_ok "已创建 backup"
 
     setup_composer
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "domain-monitor" "Hosteroid/domain-monitor" "prebuild" "latest" "/opt/domain-monitor" "domain-monitor-v*.zip"
 
-    msg_info "Updating Domain Monitor"
+    msg_info "正在更新 Domain Monitor"
     cd /opt/domain-monitor
     $STD composer install
     msg_ok "Updated Domain Monitor"
 
-    msg_info "Restoring backup"
+    msg_info "正在恢复 backup"
     mv /opt/.env /opt/domain-monitor
-    msg_ok "Restored backup"
+    msg_ok "已恢复 backup"
 
-    msg_info "Restarting Services"
+    msg_info "正在重启 Services"
     systemctl reload apache2
-    msg_ok "Restarted Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已重启 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -70,7 +70,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

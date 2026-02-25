@@ -13,7 +13,7 @@
   "config_path": "/etc/autocaliweb",
   "website": "https://codeberg.org/gelbphoenix/autocaliweb",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/autocaliweb.webp",
-  "description": "A modern web management system for eBooks, eComics and PDFs",
+  "description": "一个现代化的电子书、电子漫画和 PDF 的 Web 管理系统",
   "install_methods": [
     {
       "type": "default",

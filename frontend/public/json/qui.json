@@ -13,7 +13,7 @@
   "website": "https://getqui.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/qui.webp",
   "config_path": "/root/.config/qui/config.toml",
-  "description": "Qui is a modern, self-hosted web interface for managing multiple qBittorrent instances with support for 10k+ torrents. It provides a clean and responsive interface for monitoring and controlling your qBittorrent downloads across multiple servers.",
+  "description": "Qui 是一个现代化的自托管网页界面,用于管理多个 qBittorrent 实例,支持 10k+ 种子。它为监控和控制跨多个服务器的 qBittorrent 下载提供简洁且响应式的界面。",
   "install_methods": [
     {
       "type": "default",

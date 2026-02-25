@@ -43,7 +43,7 @@ const NoteItem = memo(
     return (
       <div className="space-y-2 border p-4 rounded">
         <Input
-          placeholder="Note Text"
+          placeholder="备注文本"
           value={note.text}
           onChange={handleTextChange}
           ref={inputRef}
@@ -53,7 +53,7 @@ const NoteItem = memo(
           onValueChange={value => updateNote(index, "type", value)}
         >
           <SelectTrigger className="flex-1">
-            <SelectValue placeholder="Type" />
+            <SelectValue placeholder="类型" />
           </SelectTrigger>
           <SelectContent>
             {Object.keys(AlertColors).map(type => (
@@ -80,7 +80,7 @@ const NoteItem = memo(
         >
           <Trash2 className="mr-2 h-4 w-4" />
           {" "}
-          Remove Note
+          删除备注
         </Button>
       </div>
     );
@@ -141,14 +141,14 @@ function Note({
 
   return (
     <>
-      <h3 className="text-xl font-semibold">Notes</h3>
+      <h3 className="text-xl font-semibold">备注</h3>
       {script.notes.map((note, index) => (
         <NoteItem key={index} note={note} index={index} updateNote={updateNote} removeNote={removeNote} />
       ))}
       <Button type="button" size="sm" onClick={addNote}>
         <PlusCircle className="mr-2 h-4 w-4" />
         {" "}
-        Add Note
+        添加备注
       </Button>
     </>
   );

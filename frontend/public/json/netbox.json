@@ -13,7 +13,7 @@
   "website": "https://netboxlabs.com/products/netbox/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/netbox.webp",
   "config_path": "/opt/netbox/netbox/netbox/configuration.py",
-  "description": "NetBox is the source of truth for everything on your network, from physical components like power systems and cabling to virtual assets like IP addresses and VLANs. Network automation and observability tools depend on NetBox’s authoritative data to roll out configurations, monitor changes, and accelerate operations across the enterprise",
+  "description": "NetBox 是网络上所有内容的真实来源，从电源系统和布线等物理组件到 IP 地址和 VLAN 等虚拟资产。网络自动化和可观测性工具依赖 NetBox 的权威数据来推出配置、监控变更并加速整个企业的运营",
   "install_methods": [
     {
       "type": "default",

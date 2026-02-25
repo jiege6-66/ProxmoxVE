@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d "/opt/2fauth" ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
@@ -33,12 +33,12 @@ function update_script() {
     $STD apt update
     $STD apt -y upgrade
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     mv "/opt/2fauth" "/opt/2fauth-backup"
     if ! dpkg -l | grep -q 'php8.4'; then
       cp /etc/nginx/conf.d/2fauth.conf /etc/nginx/conf.d/2fauth.conf.bak
     fi
-    msg_ok "Backup Created"
+    msg_ok "Backup 已创建"
 
     if ! dpkg -l | grep -q 'php8.4'; then
       PHP_VERSION="8.4" PHP_FPM="YES" setup_php
@@ -55,7 +55,7 @@ function update_script() {
     $STD composer install --no-dev --prefer-dist
     php artisan 2fauth:install
     $STD systemctl restart nginx
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -64,7 +64,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:80${CL}"

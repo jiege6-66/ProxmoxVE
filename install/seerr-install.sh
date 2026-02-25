@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "seerr" "seerr-team/seerr" "tarball"
 pnpm_desired=$(grep -Po '"pnpm":\s*"\K[^"]+' /opt/seerr/package.json)
 NODE_VERSION="22" NODE_MODULE="pnpm@$pnpm_desired" setup_nodejs
 
-msg_info "Installing Seerr (Patience)"
+msg_info "正在安装 Seerr (Patience)"
 export CYPRESS_INSTALL_BINARY=0
 cd /opt/seerr
 $STD pnpm install --frozen-lockfile
@@ -39,9 +39,9 @@ HOST=0.0.0.0
 ## Uncomment if you want to force Node.js to resolve IPv4 before IPv6 (advanced users only)
 # FORCE_IPV4_FIRST=true
 EOF
-msg_ok "Installed Seerr"
+msg_ok "已安装 Seerr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/seerr.service
 [Unit]
 Description=Seerr Service
@@ -60,7 +60,7 @@ ExecStart=/usr/bin/node dist/index.js
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now seerr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

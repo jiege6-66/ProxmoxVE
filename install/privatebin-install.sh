@@ -13,30 +13,30 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     nginx \
     openssl
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.2" PHP_FPM="YES" setup_php
 create_self_signed_cert
 fetch_and_deploy_gh_release "privatebin" "PrivateBin/PrivateBin" "tarball"
 
-msg_info "Configuring Environment"
+msg_info "正在配置 Environment"
 mkdir -p /opt/privatebin/data
 cp /opt/privatebin/cfg/conf.sample.php /opt/privatebin/cfg/conf.php
 sed -i "s|// 'traffic'|'traffic'|g" /opt/privatebin/cfg/conf.php
 chown -R www-data:www-data /opt/privatebin
 chmod -R 0755 /opt/privatebin/data
-msg_ok "Configured Environment"
+msg_ok "已配置 Environment"
 
-msg_info "Configuring PHP"
+msg_info "正在配置 PHP"
 sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/8.2/fpm/php.ini
 systemctl restart php8.2-fpm
-msg_ok "Configured PHP"
+msg_ok "已配置 PHP"
 
-msg_info "Configuring Universal Nginx"
+msg_info "正在配置 Universal Nginx"
 cat <<EOF >/etc/nginx/sites-available/privatebin.conf
 server {
     listen 80 default_server;
@@ -78,7 +78,7 @@ EOF
 ln -s /etc/nginx/sites-available/privatebin.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 systemctl reload nginx
-msg_ok "Nginx Configured"
+msg_ok "Nginx 已配置"
 
 motd_ssh
 customize

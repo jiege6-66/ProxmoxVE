@@ -13,7 +13,7 @@
   "config_path": "/opt/joplin-server/.env",
   "website": "https://joplinapp.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/joplin.webp",
-  "description": "Joplin - the privacy-focused note taking app with sync capabilities for Windows, macOS, Linux, Android and iOS.",
+  "description": "Joplin - 注重隐私的笔记应用，支持 Windows、macOS、Linux、Android 和 iOS 的同步功能。",
   "install_methods": [
     {
       "type": "default",

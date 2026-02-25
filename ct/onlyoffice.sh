@@ -29,17 +29,17 @@ function update_script() {
     exit
   fi
 
-  msg_info "Updating OnlyOffice Document Server"
+  msg_info "正在更新 OnlyOffice Document Server"
   $STD apt update
   $STD apt -y --only-upgrade install onlyoffice-documentserver
   msg_ok "Updated OnlyOffice Document Server"
 
   if systemctl is-enabled --quiet onlyoffice-documentserver; then
-    msg_info "Restarting OnlyOffice Document Server"
+    msg_info "正在重启 OnlyOffice Document Server"
     $STD systemctl restart onlyoffice-documentserver
     msg_ok "OnlyOffice Document Server restarted"
   fi
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -47,7 +47,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

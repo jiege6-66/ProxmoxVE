@@ -25,23 +25,23 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /usr/sbin/zerotier-one ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Stopping Service"
+  msg_info "正在停止 Service"
   systemctl stop zerotier-one
-  msg_ok "Stopping Service"
+  msg_ok "正在停止 Service"
 
-  msg_info "Updating Zerotier-One"
+  msg_info "正在更新 Zerotier-One"
   $STD apt update
   $STD apt upgrade -y
   msg_ok "Updated Zerotier-One"
 
-  msg_info "Starting Service"
+  msg_info "正在启动 Service"
   systemctl start zerotier-one
-  msg_ok "Started Service"
-  msg_ok "Updated successfully!"
+  msg_ok "已启动 Service"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -49,7 +49,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access it using the following IP:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}:3443${CL}"

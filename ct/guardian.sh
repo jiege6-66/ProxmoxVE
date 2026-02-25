@@ -25,19 +25,19 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d "/opt/guardian" ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "guardian" "HydroshieldMKII/Guardian"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop guardian-backend guardian-frontend
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
     if [[ -f "/opt/guardian/backend/plex-guard.db" ]]; then
-      msg_info "Backing up Database"
+      msg_info "正在备份 Database"
       cp "/opt/guardian/backend/plex-guard.db" "/tmp/plex-guard.db.backup"
-      msg_ok "Backed up Database"
+      msg_ok "已备份 Database"
     fi
 
     [[ -f "/opt/guardian/.env" ]] && cp "/opt/guardian/.env" "/opt"
@@ -45,13 +45,13 @@ function update_script() {
     [[ -f "/opt/.env" ]] && mv "/opt/.env" "/opt/guardian"
 
     if [[ -f "/tmp/plex-guard.db.backup" ]]; then
-      msg_info "Restoring Database"
+      msg_info "正在恢复 Database"
       cp "/tmp/plex-guard.db.backup" "/opt/guardian/backend/plex-guard.db"
       rm "/tmp/plex-guard.db.backup"
-      msg_ok "Restored Database"
+      msg_ok "已恢复 Database"
     fi
 
-    msg_info "Updating Guardian"
+    msg_info "正在更新 Guardian"
     cd /opt/guardian/backend
     $STD npm ci
     $STD npm run build
@@ -62,10 +62,10 @@ function update_script() {
     $STD npm run build
     msg_ok "Updated Guardian"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start guardian-backend guardian-frontend
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -74,7 +74,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

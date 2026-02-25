@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/vaultwarden.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -37,13 +37,13 @@ function update_script() {
 
   if [ "$UPD" == "1" ]; then
     if check_for_gh_release "vaultwarden" "dani-garcia/vaultwarden"; then
-      msg_info "Stopping Service"
+      msg_info "正在停止 Service"
       systemctl stop vaultwarden
-      msg_ok "Stopped Service"
+      msg_ok "已停止 Service"
 
       fetch_and_deploy_gh_release "vaultwarden" "dani-garcia/vaultwarden" "tarball" "latest" "/tmp/vaultwarden-src"
 
-      msg_info "Updating VaultWarden to $VAULT (Patience)"
+      msg_info "正在更新 VaultWarden to $VAULT (Patience)"
       cd /tmp/vaultwarden-src
       VW_VERSION="$VAULT"
       export VW_VERSION
@@ -56,19 +56,19 @@ function update_script() {
       cd ~ && rm -rf /tmp/vaultwarden-src
       msg_ok "Updated VaultWarden to ${VAULT}"
 
-      msg_info "Starting Service"
+      msg_info "正在启动 Service"
       systemctl start vaultwarden
-      msg_ok "Started Service"
+      msg_ok "已启动 Service"
     else
       msg_ok "VaultWarden is already up-to-date"
     fi
 
     if check_for_gh_release "vaultwarden_webvault" "dani-garcia/bw_web_builds"; then
-      msg_info "Stopping Service"
+      msg_info "正在停止 Service"
       systemctl stop vaultwarden
-      msg_ok "Stopped Service"
+      msg_ok "已停止 Service"
 
-      msg_info "Updating Web-Vault to $WVRELEASE"
+      msg_info "正在更新 Web-Vault to $WVRELEASE"
       rm -rf /opt/vaultwarden/web-vault
       mkdir -p /opt/vaultwarden/web-vault
 
@@ -77,14 +77,14 @@ function update_script() {
       chown -R root:root /opt/vaultwarden/web-vault/
       msg_ok "Updated Web-Vault to ${WVRELEASE}"
 
-      msg_info "Starting Service"
+      msg_info "正在启动 Service"
       systemctl start vaultwarden
-      msg_ok "Started Service"
+      msg_ok "已启动 Service"
     else
       msg_ok "Web-Vault is already up-to-date"
     fi
 
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
     exit
   fi
 
@@ -113,7 +113,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}:8000${CL}"

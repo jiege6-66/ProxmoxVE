@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apache2-utils
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "zot" "project-zot/zot" "singlefile" "latest" "/usr/bin" "zot-linux-amd64"
 
-msg_info "Configuring Zot Registry"
+msg_info "正在配置 Zot Registry"
 mkdir -p /etc/zot
 curl -fsSL https://raw.githubusercontent.com/project-zot/zot/refs/heads/main/examples/config-ui.json -o /etc/zot/config.json
 ZOTPASSWORD=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -29,9 +29,9 @@ $STD htpasswd -b -B -c /etc/zot/htpasswd admin "$ZOTPASSWORD"
   echo "Zot User: admin"
   echo "Zot Password: $ZOTPASSWORD"
 } >>~/zot.creds
-msg_ok "Configured Zot Registry"
+msg_ok "已配置 Zot Registry"
 
-msg_info "Setup Service"
+msg_info "设置 Service"
 cat <<EOF >/etc/systemd/system/zot.service
 [Unit]
 Description=OCI Distribution Registry
@@ -51,7 +51,7 @@ MemoryMax=4G
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now zot
-msg_ok "Setup Service"
+msg_ok "设置 Service"
 
 motd_ssh
 customize

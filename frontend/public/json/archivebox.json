@@ -13,7 +13,7 @@
   "website": "https://archivebox.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/archivebox.webp",
   "config_path": "/opt/archivebox/data/ArchiveBox.conf",
-  "description": "ArchiveBox is an open source tool that lets organizations & individuals archive both public & private web content while retaining control over their data. It can be used to save copies of bookmarks, preserve evidence for legal cases, backup photos from FB/Insta/Flickr or media from YT/Soundcloud/etc., save research papers, and more...",
+  "description": "ArchiveBox 是一个开源工具,让组织和个人可以归档公共和私有 Web 内容,同时保留对其数据的控制。它可用于保存书签副本、为法律案件保留证据、备份 FB/Insta/Flickr 的照片或 YT/Soundcloud 等的媒体、保存研究论文等。",
   "install_methods": [
     {
       "type": "default",

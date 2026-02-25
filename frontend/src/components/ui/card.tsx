@@ -15,7 +15,7 @@ const Card = React.forwardRef<
     {...props}
   />
 ));
-Card.displayName = "Card";
+Card.displayName = "卡片";
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
@@ -27,7 +27,7 @@ const CardHeader = React.forwardRef<
     {...props}
   />
 ));
-CardHeader.displayName = "CardHeader";
+CardHeader.displayName = "卡片头部";
 
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -42,7 +42,7 @@ const CardTitle = React.forwardRef<
     {...props}
   />
 ));
-CardTitle.displayName = "CardTitle";
+CardTitle.displayName = "卡片标题";
 
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -57,7 +57,7 @@ const CardDescription = React.forwardRef<
     {...props}
   />
 ));
-CardDescription.displayName = "CardDescription";
+CardDescription.displayName = "卡片描述";
 
 const CardContent = React.forwardRef<
   HTMLDivElement,
@@ -65,7 +65,7 @@ const CardContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div ref={ref} className={cn("p-4 pt-0", className)} {...props} />
 ));
-CardContent.displayName = "CardContent";
+CardContent.displayName = "卡片内容";
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
@@ -77,7 +77,7 @@ const CardFooter = React.forwardRef<
     {...props}
   />
 ));
-CardFooter.displayName = "CardFooter";
+CardFooter.displayName = "卡片底部";
 
 export {
   Card,

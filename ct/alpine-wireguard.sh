@@ -21,7 +21,7 @@ color
 catch_errors
 
 function update_script() {
-  msg_info "Updating Alpine Packages"
+  msg_info "正在更新 Alpine Packages"
   $STD apk -U upgrade
   msg_ok "Updated Alpine Packages"
 
@@ -36,7 +36,7 @@ function update_script() {
     $STD ./wgd.sh start
     msg_ok "WGDashboard updated"
   fi
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit 0
 }
 
@@ -44,7 +44,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} WGDashboard Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} WGDashboard 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:10086${CL}"

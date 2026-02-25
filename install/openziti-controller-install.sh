@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing openziti"
+msg_info "正在安装 openziti"
 mkdir -p --mode=0755 /usr/share/keyrings
 curl -fsSL https://get.openziti.io/tun/package-repos.gpg | gpg --dearmor -o /usr/share/keyrings/openziti.gpg
 cat <<EOF >/etc/apt/sources.list.d/openziti.sources
@@ -25,7 +25,7 @@ Signed-By: /usr/share/keyrings/openziti.gpg
 EOF
 $STD apt update
 $STD apt install -y openziti-controller openziti-console
-msg_ok "Installed openziti"
+msg_ok "已安装 openziti"
 
 read -r -p "${TAB3}Would you like to go through the auto configuration now? <y/N>" prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then

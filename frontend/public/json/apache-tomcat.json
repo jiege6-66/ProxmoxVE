@@ -13,7 +13,7 @@
   "website": "https://tomcat.apache.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/apache-tomcat.webp",
   "config_path": "",
-  "description": "Apache Tomcat is an open-source application server that runs Java Servlets and JavaServer Pages (JSP). It allows developers to deploy and manage Java web applications by handling HTTP requests and serving dynamic content. Tomcat is widely used for lightweight web applications and supports various Java EE features like WebSockets and JNDI.",
+  "description": "Apache Tomcat 是一个开源应用服务器,运行 Java Servlets 和 JavaServer Pages (JSP)。它允许开发人员通过处理 HTTP 请求和提供动态内容来部署和管理 Java Web 应用程序。Tomcat 广泛用于轻量级 Web 应用程序,并支持各种 Java EE 功能,如 WebSockets 和 JNDI。",
   "install_methods": [
     {
       "type": "default",

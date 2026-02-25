@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add --no-cache ca-certificates openssl
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setup Docker Repository"
+msg_info "设置 Docker Repository"
 $STD apk add --no-cache docker docker-cli docker-compose openrc
-msg_ok "Setup Docker Repository"
+msg_ok "设置 Docker Repository"
 
-msg_info "Enabling Docker Service"
+msg_info "正在启用 Docker Service"
 $STD rc-update add docker boot
 $STD service docker start
-msg_ok "Enabled Docker Service"
+msg_ok "已启用 Docker Service"
 
 echo "${TAB3}Choose the database for Komodo installation:"
 echo "${TAB3}1) MongoDB (recommended)"
@@ -49,7 +49,7 @@ mkdir -p /opt/komodo
 cd /opt/komodo
 curl -fsSL "https://raw.githubusercontent.com/moghtech/komodo/main/compose/$DB_COMPOSE_FILE" -o "$(basename "$DB_COMPOSE_FILE")"
 
-msg_info "Setup Komodo Environment"
+msg_info "设置 Komodo Environment"
 curl -fsSL "https://raw.githubusercontent.com/moghtech/komodo/main/compose/compose.env" -o "/opt/komodo/compose.env"
 DB_PASSWORD=$(openssl rand -base64 16 | tr -d '/+=')
 PASSKEY=$(openssl rand -base64 24 | tr -d '/+=')
@@ -61,15 +61,15 @@ sed -i "s/^KOMODO_DB_PASSWORD=.*/KOMODO_DB_PASSWORD=${DB_PASSWORD}/" /opt/komodo
 sed -i "s/^KOMODO_PASSKEY=.*/KOMODO_PASSKEY=${PASSKEY}/" /opt/komodo/compose.env
 sed -i "s/^KOMODO_WEBHOOK_SECRET=.*/KOMODO_WEBHOOK_SECRET=${WEBHOOK_SECRET}/" /opt/komodo/compose.env
 sed -i "s/^KOMODO_JWT_SECRET=.*/KOMODO_JWT_SECRET=${JWT_SECRET}/" /opt/komodo/compose.env
-msg_ok "Setup Komodo Environment"
+msg_ok "设置 Komodo Environment"
 
 msg_info "Initialize Komodo"
 $STD docker compose -p komodo -f "/opt/komodo/$DB_COMPOSE_FILE" --env-file /opt/komodo/compose.env up -d
-msg_ok "Initialized Komodo"
+msg_ok "已初始化 Komodo"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 $STD apk cache clean
-msg_ok "Cleaned"
+msg_ok "已清理"

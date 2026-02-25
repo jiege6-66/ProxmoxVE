@@ -13,7 +13,7 @@
   "website": "https://0xerr0r.github.io/blocky/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/blocky.webp",
   "config_path": "/opt/blocky/config.yml",
-  "description": "Blocky is a software tool designed for blocking unwanted ads and trackers on local networks. It functions as a DNS proxy and runs on the Go programming language. Blocky intercepts requests to advertisements and other unwanted content and blocks them before they reach the end user. This results in a cleaner, faster, and more secure online experience for users connected to the local network. Blocky is open-source, easy to configure and can be run on a variety of devices, making it a versatile solution for small to medium-sized local networks.",
+  "description": "Blocky 是一个旨在阻止本地网络上不需要的广告和跟踪器的软件工具。它作为 DNS 代理运行，使用 Go 编程语言编写。Blocky 拦截对广告和其他不需要内容的请求，并在它们到达最终用户之前将其阻止。这为连接到本地网络的用户带来了更清洁、更快速、更安全的在线体验。Blocky 是开源的，易于配置，可以在各种设备上运行，使其成为中小型本地网络的多功能解决方案。",
   "install_methods": [
     {
       "type": "default",

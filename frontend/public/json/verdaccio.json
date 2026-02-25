@@ -13,7 +13,7 @@
   "website": "https://verdaccio.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/verdaccio.webp",
   "config_path": "/opt/verdaccio/config/config.yaml",
-  "description": "Verdaccio is a lightweight private npm proxy registry built with Node.js. It allows you to host your own npm registry with minimal configuration, providing a private npm repository for your projects. Verdaccio supports npm, yarn, and pnpm, and can cache packages from the public npm registry, allowing for faster installs and protection against npm registry outages. It includes a web interface for browsing packages, authentication and authorization features, and can be easily integrated into your development workflow.",
+  "description": "Verdaccio 是一个使用 Node.js 构建的轻量级私有 npm 代理注册表。它允许您以最少的配置托管自己的 npm 注册表，为您的项目提供私有 npm 仓库。Verdaccio 支持 npm、yarn 和 pnpm，可以缓存来自公共 npm 注册表的包，实现更快的安装并防止 npm 注册表中断。它包含用于浏览包的网页界面、身份验证和授权功能，并可轻松集成到您的开发工作流程中。",
   "install_methods": [
     {
       "type": "default",

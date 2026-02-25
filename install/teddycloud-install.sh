@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   libubsan1 \
   ffmpeg \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "teddycloud" "toniebox-reverse-engineering/teddycloud" "prebuild" "latest" "/opt/teddycloud" "teddycloud.amd64.release*.zip"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/teddycloud.service
 [Unit]
 Description=TeddyCloud Server
@@ -39,7 +39,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q teddycloud
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

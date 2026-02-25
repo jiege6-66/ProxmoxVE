@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Caddy"
+msg_info "正在安装 Caddy"
 $STD apk add --no-cache caddy caddy-openrc
 cat <<EOF >/etc/caddy/Caddyfile
 :80 {
@@ -43,28 +43,28 @@ cat <<EOF >/var/www/html/index.html
   </body>
 </html>
 EOF
-msg_ok "Installed Caddy"
+msg_ok "已安装 Caddy"
 
 read -r -p "${TAB3}Would you like to install xCaddy Addon? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
   GO_VERSION="$(curl -fsSL https://go.dev/VERSION?m=text | head -1 | cut -c3-)" setup_go
-  msg_info "Setup xCaddy"
+  msg_info "设置 xCaddy"
   cd /opt
   RELEASE=$(curl -fsSL https://api.github.com/repos/caddyserver/xcaddy/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
   curl -fsSL "https://github.com/caddyserver/xcaddy/releases/download/${RELEASE}/xcaddy_${RELEASE:1}_linux_amd64.tar.gz" -o "xcaddy_${RELEASE:1}_linux_amd64.tar.gz"
   $STD tar xzf xcaddy_"${RELEASE:1}"_linux_amd64.tar.gz -C /usr/local/bin xcaddy
   rm -rf /opt/xcaddy*
   $STD xcaddy build
-  msg_ok "Setup xCaddy"
+  msg_ok "设置 xCaddy"
 fi
 
-msg_info "Enabling Caddy Service"
+msg_info "正在启用 Caddy Service"
 $STD rc-update add caddy default
-msg_ok "Enabled Caddy Service"
+msg_ok "已启用 Caddy Service"
 
-msg_info "Starting Caddy"
+msg_info "正在启动 Caddy"
 $STD service caddy start
-msg_ok "Started Caddy"
+msg_ok "已启动 Caddy"
 
 motd_ssh
 customize

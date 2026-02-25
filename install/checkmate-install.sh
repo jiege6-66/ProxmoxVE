@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   openssl \
   nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 MONGO_VERSION="8.0" setup_mongodb
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "checkmate" "bluewave-labs/Checkmate"
 
-msg_info "Configuring Checkmate"
+msg_info "正在配置 Checkmate"
 JWT_SECRET="$(openssl rand -hex 32)"
 cat <<EOF >/opt/checkmate/server/.env
 CLIENT_HOST="http://${LOCAL_IP}"
@@ -41,21 +41,21 @@ VITE_APP_API_BASE_URL="/api/v1"
 UPTIME_APP_API_BASE_URL="/api/v1"
 VITE_APP_LOG_LEVEL="warn"
 EOF
-msg_ok "Configured Checkmate"
+msg_ok "已配置 Checkmate"
 
-msg_info "Installing Checkmate Server"
+msg_info "正在安装 Checkmate Server"
 cd /opt/checkmate/server
 $STD npm install
 $STD npm run build
-msg_ok "Installed Checkmate Server"
+msg_ok "已安装 Checkmate Server"
 
-msg_info "Installing Checkmate Client"
+msg_info "正在安装 Checkmate Client"
 cd /opt/checkmate/client
 $STD npm install
 VITE_APP_API_BASE_URL="/api/v1" UPTIME_APP_API_BASE_URL="/api/v1" VITE_APP_LOG_LEVEL="warn" $STD npm run build
-msg_ok "Installed Checkmate Client"
+msg_ok "已安装 Checkmate Client"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/checkmate-server.service
 [Unit]
 Description=Checkmate Server
@@ -91,9 +91,9 @@ WantedBy=multi-user.target
 EOF
 $STD systemctl enable -q --now checkmate-server
 $STD systemctl enable -q --now checkmate-client
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
-msg_info "Configuring Nginx Reverse Proxy"
+msg_info "正在配置 Nginx Reverse Proxy"
 cat <<EOF >/etc/nginx/sites-available/checkmate
 server {
   listen 80 default_server;
@@ -125,7 +125,7 @@ EOF
 ln -sf /etc/nginx/sites-available/checkmate /etc/nginx/sites-enabled/checkmate
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Configured Nginx Reverse Proxy"
+msg_ok "已配置 Nginx Reverse Proxy"
 
 motd_ssh
 customize

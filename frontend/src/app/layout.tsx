@@ -16,10 +16,10 @@ import "@/styles/globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Proxmox VE Helper-Scripts",
+  title: "Proxmox VE 辅助脚本",
   description:
-    "The official website for the Proxmox VE Helper-Scripts (Community) repository. Featuring over 400+ scripts to help you manage your Proxmox Virtual Environment.",
-  applicationName: "Proxmox VE Helper-Scripts",
+    "Proxmox VE 辅助脚本（社区版）仓库的官方网站。提供超过 400 多个脚本来帮助您管理 Proxmox 虚拟环境。",
+  applicationName: "Proxmox VE 辅助脚本",
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
   keywords: [
@@ -56,17 +56,17 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Proxmox VE Helper-Scripts",
+    title: "Proxmox VE 辅助脚本",
     description:
-      "The official website for the Proxmox VE Helper-Scripts (Community) repository. Featuring over 400+ scripts to help you manage your Proxmox Virtual Environment.",
+      "Proxmox VE 辅助脚本（社区版）仓库的官方网站。提供超过 400 多个脚本来帮助您管理 Proxmox 虚拟环境。",
     url: `https://community-scripts.github.io/${basePath}/`,
-    siteName: "Proxmox VE Helper-Scripts",
+    siteName: "Proxmox VE 辅助脚本",
     images: [
       {
         url: `https://community-scripts.github.io/${basePath}/defaultimg.png`,
         width: 1200,
         height: 630,
-        alt: "Proxmox VE Helper-Scripts",
+        alt: "Proxmox VE 辅助脚本",
       },
     ],
     locale: "en_US",
@@ -74,17 +74,17 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Proxmox VE Helper-Scripts",
+    title: "Proxmox VE 辅助脚本",
     creator: "@BramSuurdje",
     description:
-      "The official website for the Proxmox VE Helper-Scripts (Community) repository. Featuring over 400+ scripts to help you manage your Proxmox Virtual Environment.",
+      "Proxmox VE 辅助脚本（社区版）仓库的官方网站。提供超过 400 多个脚本来帮助您管理 Proxmox 虚拟环境。",
     images: [`https://community-scripts.github.io/${basePath}/defaultimg.png`],
   },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Proxmox VE Helper-Scripts",
+    title: "Proxmox VE 辅助脚本",
   },
 };
 

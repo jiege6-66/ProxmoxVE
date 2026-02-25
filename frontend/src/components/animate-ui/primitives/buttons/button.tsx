@@ -34,3 +34,5 @@ function Button({
 }
 
 export { Button, type ButtonProps };
+
+这段代码中没有用户可见的 UI 文本字符串需要翻译。代码只包含类型定义、函数参数和组件逻辑，没有显示给用户的文本内容。

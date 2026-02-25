@@ -28,7 +28,7 @@ function update_script() {
   1)
     $STD apk -U upgrade
     rc-service vaultwarden restart -q
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
     exit
     ;;
   2)
@@ -36,7 +36,7 @@ function update_script() {
       msg_warn "Reset ADMIN_TOKEN requires interactive mode, skipping."
       exit
     fi
-    read -r -s -p "Setup your ADMIN_TOKEN (make it strong): " NEWTOKEN
+    read -r -s -p "设置 your ADMIN_TOKEN (make it strong): " NEWTOKEN
     echo ""
     if [[ -n "$NEWTOKEN" ]]; then
       if ! command -v argon2 >/dev/null 2>&1; then apk add argon2 &>/dev/null; fi
@@ -58,6 +58,6 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"
 echo -e "${APP} should be reachable by going to the following URL.
          ${BL}https://${IP}:8000${CL} \n"

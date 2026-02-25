@@ -13,7 +13,7 @@
   "website": "https://www.zabbix.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/zabbix.webp",
   "config_path": "/etc/zabbix/zabbix_server.conf",
-  "description": "Zabbix is an all-in-one monitoring solution with a variety of enterprise-grade features available right out of the box.",
+  "description": "Zabbix 是一个一体化监控解决方案,开箱即用地提供各种企业级功能。",
   "install_methods": [
     {
       "type": "default",

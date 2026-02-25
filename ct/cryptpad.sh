@@ -25,25 +25,25 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d "/opt/cryptpad" ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "cryptpad" "cryptpad/cryptpad"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop cryptpad
-    msg_info "Stopped Service"
+    msg_info "已停止 Service"
 
-    msg_info "Backing up configuration"
+    msg_info "正在备份 configuration"
     [ -f /opt/cryptpad/config/config.js ] && mv /opt/cryptpad/config/config.js /opt/
-    msg_ok "Backed up configuration"
+    msg_ok "已备份 configuration"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "cryptpad" "cryptpad/cryptpad" "tarball"
 
-    msg_info "Restoring configuration"
+    msg_info "正在恢复 configuration"
     mv /opt/config.js /opt/cryptpad/config/
     msg_ok "Configuration restored"
 
-    msg_info "Updating CryptaPad"
+    msg_info "正在更新 CryptaPad"
     cd /opt/cryptpad
     $STD npm ci
     $STD npm run install:components
@@ -53,10 +53,10 @@ function update_script() {
     $STD npm run build
     msg_ok "Updated CryptaPad"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start cryptpad
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -65,7 +65,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

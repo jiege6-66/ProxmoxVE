@@ -18,14 +18,14 @@ PG_VERSION="17" setup_postgresql
 PG_DB_NAME="umamidb" PG_DB_USER="umami" setup_postgresql_db
 fetch_and_deploy_gh_release "umami" "umami-software/umami" "tarball"
 
-msg_info "Configuring Umami"
+msg_info "正在配置 Umami"
 cd /opt/umami
 $STD pnpm install
 echo -e "DATABASE_URL=postgresql://$PG_DB_USER:$PG_DB_PASS@localhost:5432/$PG_DB_NAME" >>/opt/umami/.env
 $STD pnpm run build
-msg_ok "Configured Umami"
+msg_ok "已配置 Umami"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/umami.service
 [Unit]
 Description=umami
@@ -41,7 +41,7 @@ ExecStart=/usr/bin/pnpm run start
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now umami
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

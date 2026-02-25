@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
   ensure_dependencies lsb-release
   if [[ ! -d /opt/kimai ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
@@ -36,11 +36,11 @@ function update_script() {
   if check_for_gh_release "kimai" "kimai/kimai"; then
     BACKUP_DIR="/opt/kimai_backup"
 
-    msg_info "Stopping Apache2"
+    msg_info "正在停止 Apache2"
     systemctl stop apache2
-    msg_ok "Stopped Apache2"
+    msg_ok "已停止 Apache2"
 
-    msg_info "Backing up Kimai configuration and var directory"
+    msg_info "正在备份 Kimai configuration and var directory"
     mkdir -p "$BACKUP_DIR"
     [ -d /opt/kimai/var ] && cp -r /opt/kimai/var "$BACKUP_DIR/"
     [ -f /opt/kimai/.env ] && cp /opt/kimai/.env "$BACKUP_DIR/"
@@ -49,7 +49,7 @@ function update_script() {
 
     fetch_and_deploy_gh_release "kimai" "kimai/kimai" "tarball"
 
-    msg_info "Updating Kimai"
+    msg_info "正在更新 Kimai"
     [ -d "$BACKUP_DIR/var" ] && cp -r "$BACKUP_DIR/var" /opt/kimai/
     [ -f "$BACKUP_DIR/.env" ] && cp "$BACKUP_DIR/.env" /opt/kimai/
     [ -f "$BACKUP_DIR/local.yaml" ] && cp "$BACKUP_DIR/local.yaml" /opt/kimai/config/packages/
@@ -60,19 +60,19 @@ function update_script() {
     $STD bin/console kimai:update
     msg_ok "Updated Kimai"
 
-    msg_info "Starting Apache2"
+    msg_info "正在启动 Apache2"
     systemctl start apache2
-    msg_ok "Started Apache2"
+    msg_ok "已启动 Apache2"
 
-    msg_info "Setup Permissions"
+    msg_info "设置 Permissions"
     chown -R :www-data /opt/*
     chmod -R g+r /opt/*
     chmod -R g+rw /opt/*
     chown -R www-data:www-data /opt/*
     chmod -R 777 /opt/*
     rm -rf "$BACKUP_DIR"
-    msg_ok "Setup Permissions"
-    msg_ok "Updated successfully!"
+    msg_ok "设置 Permissions"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -81,7 +81,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

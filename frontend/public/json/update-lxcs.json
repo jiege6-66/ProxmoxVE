@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/linuxcontainers.webp",
   "config_path": "",
-  "description": "This script has been created to simplify and speed up the process of updating the operating system running inside LXC containers across various Linux distributions, such as Ubuntu, Debian, Devuan, Alpine Linux, CentOS-Rocky-Alma, Fedora, and ArchLinux. It's designed to automatically skip templates and specific containers during the update, enhancing its convenience and usability.",
+  "description": "此脚本旨在简化和加速更新运行在各种 Linux 发行版(如 Ubuntu、Debian、Devuan、Alpine Linux、CentOS-Rocky-Alma、Fedora 和 ArchLinux)的 LXC 容器内操作系统的过程。它设计为在更新期间自动跳过模板和特定容器，提高便利性和可用性。",
   "install_methods": [
     {
       "type": "default",

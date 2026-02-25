@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script updates community-scripts managed LXC containers on a Proxmox VE node. It detects the installed service, verifies available update scripts, and applies updates interactively or unattended. Optionally, containers can be backed up before the update process. If additional build resources (CPU/RAM) are required, the script adjusts container resources temporarily and restores them after the update. Containers requiring a reboot will be listed at the end of the process.",
+  "description": "此脚本更新 Proxmox VE 节点上由 community-scripts 管理的 LXC 容器。它检测已安装的服务，验证可用的更新脚本，并以交互或无人值守方式应用更新。可选地，容器可以在更新过程前进行备份。如果需要额外的构建资源(CPU/RAM)，脚本会临时调整容器资源并在更新后恢复。需要重启的容器将在流程结束时列出。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "website": "https://www.iobroker.net/#en/intro",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/iobroker.webp",
   "config_path": "",
-  "description": "ioBroker is an open-source platform for building and managing smart home automation systems. It provides a centralized control and management interface for connected devices, sensors, and other IoT devices. ioBroker integrates with a wide range of popular smart home systems, devices, and services, making it easy to automate tasks and processes, monitor and control devices, and collect and analyze data from a variety of sources. With its flexible architecture and easy-to-use interface, ioBroker is designed to make it simple for users to build and customize their own smart home automation systems, regardless of their technical background or experience.",
+  "description": "ioBroker 是一个用于构建和管理智能家居自动化系统的开源平台。它为连接的设备、传感器和其他物联网设备提供集中的控制和管理界面。ioBroker 与各种流行的智能家居系统、设备和服务集成，使自动化任务和流程、监控和控制设备以及从各种来源收集和分析数据变得容易。凭借其灵活的架构和易于使用的界面，ioBroker 旨在让用户轻松构建和定制自己的智能家居自动化系统，无论其技术背景或经验如何。",
   "install_methods": [
     {
       "type": "default",

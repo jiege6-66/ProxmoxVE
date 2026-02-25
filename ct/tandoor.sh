@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/tandoor ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -34,19 +34,19 @@ function update_script() {
   fi
 
   if check_for_gh_release "tandoor" "TandoorRecipes/recipes"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop tandoor
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     mv /opt/tandoor /opt/tandoor.bak
-    msg_ok "Backup Created"
+    msg_ok "Backup 已创建"
 
     NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
     PYTHON_VERSION="3.13" setup_uv
     fetch_and_deploy_gh_release "tandoor" "TandoorRecipes/recipes" "tarball" "latest" "/opt/tandoor"
 
-    msg_info "Updating Tandoor"
+    msg_info "正在更新 Tandoor"
     cp -r /opt/tandoor.bak/{config,api,mediafiles,staticfiles} /opt/tandoor/
     mv /opt/tandoor.bak/.env /opt/tandoor/.env
     cd /opt/tandoor
@@ -67,11 +67,11 @@ EOF
     rm -rf /opt/tandoor.bak
     msg_ok "Updated Tandoor"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start tandoor
     systemctl reload nginx
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -80,7 +80,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8002${CL}"

@@ -24,20 +24,20 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/prometheus-pve-exporter.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Stopping Service"
+  msg_info "正在停止 Service"
   systemctl stop prometheus-pve-exporter
-  msg_ok "Stopped Service"
+  msg_ok "已停止 Service"
 
   export PVE_VENV_PATH="/opt/prometheus-pve-exporter/.venv"
   export PVE_EXPORTER_BIN="${PVE_VENV_PATH}/bin/pve_exporter"
 
   if [[ ! -d "$PVE_VENV_PATH" || ! -x "$PVE_EXPORTER_BIN" ]]; then
     PYTHON_VERSION="3.12" setup_uv
-    msg_info "Migrating to uv/venv"
+    msg_info "正在迁移 to uv/venv"
     rm -rf "$PVE_VENV_PATH"
     mkdir -p /opt/prometheus-pve-exporter
     cd /opt/prometheus-pve-exporter
@@ -45,16 +45,16 @@ function update_script() {
     $STD "$PVE_VENV_PATH/bin/python" -m ensurepip --upgrade
     $STD "$PVE_VENV_PATH/bin/python" -m pip install --upgrade pip
     $STD "$PVE_VENV_PATH/bin/python" -m pip install prometheus-pve-exporter
-    msg_ok "Migrated to uv/venv"
+    msg_ok "已迁移 to uv/venv"
   else
-    msg_info "Updating Prometheus Proxmox VE Exporter"
+    msg_info "正在更新 Prometheus Proxmox VE Exporter"
     PYTHON_VERSION="3.12" setup_uv
     $STD "$PVE_VENV_PATH/bin/python" -m pip install --upgrade prometheus-pve-exporter
     msg_ok "Updated Prometheus Proxmox VE Exporter"
   fi
   local service_file="/etc/systemd/system/prometheus-pve-exporter.service"
   if ! grep -q "${PVE_VENV_PATH}/bin/pve_exporter" "$service_file"; then
-    msg_info "Updating systemd service"
+    msg_info "正在更新 systemd service"
     cat <<EOF >"$service_file"
 [Unit]
 Description=Prometheus Proxmox VE Exporter
@@ -77,11 +77,11 @@ EOF
     msg_ok "Updated systemd service"
   fi
 
-  msg_info "Starting Service"
+  msg_info "正在启动 Service"
   systemctl start prometheus-pve-exporter
-  msg_ok "Started Service"
+  msg_ok "已启动 Service"
 
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit 0
 }
 
@@ -89,7 +89,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:9221${CL}"

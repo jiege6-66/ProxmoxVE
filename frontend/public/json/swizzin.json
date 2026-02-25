@@ -13,7 +13,7 @@
   "config_path": "/etc/swizzin/",
   "website": "https://swizzin.ltd/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/swizzin.webp",
-  "description": "Swizzin is a light-weight, modular, and user-friendly seedbox solution for Debian-based servers. It allows for the easy installation and management of a wide variety of applications commonly used for torrenting and media management, such as rTorrent, Sonarr, Radarr, and Plex, all accessible through a command-line utility or a web-based dashboard.",
+  "description": "Swizzin 是一个轻量级、模块化且用户友好的 seedbox 解决方案,适用于基于 Debian 的服务器。它允许轻松安装和管理各种常用于种子下载和媒体管理的应用程序,如 rTorrent、Sonarr、Radarr 和 Plex,所有这些都可以通过命令行工具或基于 Web 的仪表板访问。",
   "install_methods": [
     {
       "type": "default",

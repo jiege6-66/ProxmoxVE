@@ -24,23 +24,23 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/mail-archiver ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "mail-archiver" "s1t5/mail-archiver"; then
-    msg_info "Stopping Mail-Archiver"
+    msg_info "正在停止 Mail-Archiver"
     systemctl stop mail-archiver
-    msg_ok "Stopped Mail-Archiver"
+    msg_ok "已停止 Mail-Archiver"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     cp /opt/mail-archiver/appsettings.json /opt/mail-archiver/.env /opt/
     [[ -d /opt/mail-archiver/DataProtection-Keys ]] && cp -r /opt/mail-archiver/DataProtection-Keys /opt
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "mail-archiver" "s1t5/mail-archiver" "tarball"
 
-    msg_info "Updating Mail-Archiver"
+    msg_info "正在更新 Mail-Archiver"
     mv /opt/mail-archiver /opt/mail-archiver-build
     cd /opt/mail-archiver-build
     $STD dotnet restore
@@ -48,15 +48,15 @@ function update_script() {
     rm -rf /opt/mail-archiver-build
     msg_ok "Updated Mail-Archiver"
 
-    msg_info "Restoring Backup"
+    msg_info "正在恢复 Backup"
     cp /opt/appsettings.json /opt/.env /opt/mail-archiver
     [[ -d /opt/DataProtection-Keys ]] && cp -r /opt/DataProtection-Keys /opt/mail-archiver/
-    msg_ok "Restored Backup"
+    msg_ok "已恢复 Backup"
 
-    msg_info "Starting Mail-Archiver"
+    msg_info "正在启动 Mail-Archiver"
     systemctl start mail-archiver
-    msg_ok "Started Mail-Archiver"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Mail-Archiver"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -65,7 +65,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5000${CL}"

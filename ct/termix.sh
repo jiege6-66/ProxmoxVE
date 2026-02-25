@@ -25,19 +25,19 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/termix ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "termix" "Termix-SSH/Termix"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop termix
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up Data"
+    msg_info "正在备份 Data"
     cp -r /opt/termix/data /opt/termix_data_backup
     cp -r /opt/termix/uploads /opt/termix_uploads_backup
-    msg_ok "Backed up Data"
+    msg_ok "已备份 Data"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "termix" "Termix-SSH/Termix"
 
@@ -49,32 +49,32 @@ function update_script() {
       /opt/termix/nginx/client_body
     msg_ok "Recreated Directories"
 
-    msg_info "Building Frontend"
+    msg_info "正在构建 Frontend"
     cd /opt/termix
     export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
     find public/fonts -name "*.ttf" ! -name "*Regular.ttf" ! -name "*Bold.ttf" ! -name "*Italic.ttf" -delete 2>/dev/null || true
     $STD npm install --ignore-scripts --force
     $STD npm run build
-    msg_ok "Built Frontend"
+    msg_ok "已构建 Frontend"
 
-    msg_info "Building Backend"
+    msg_info "正在构建 Backend"
     $STD npm rebuild better-sqlite3 --force
     $STD npm run build:backend
-    msg_ok "Built Backend"
+    msg_ok "已构建 Backend"
 
-    msg_info "Setting up Production Dependencies"
+    msg_info "正在设置 Production 依赖"
     $STD npm ci --only=production --ignore-scripts --force
     $STD npm rebuild better-sqlite3 bcryptjs --force
     $STD npm cache clean --force
-    msg_ok "Set up Production Dependencies"
+    msg_ok "Set up Production 依赖"
 
-    msg_info "Restoring Data"
+    msg_info "正在恢复 Data"
     cp -r /opt/termix_data_backup /opt/termix/data
     cp -r /opt/termix_uploads_backup /opt/termix/uploads
     rm -rf /opt/termix_data_backup /opt/termix_uploads_backup
-    msg_ok "Restored Data"
+    msg_ok "已恢复 Data"
 
-    msg_info "Updating Frontend Files"
+    msg_info "正在更新 Frontend Files"
     rm -rf /opt/termix/html/*
     cp -r /opt/termix/dist/* /opt/termix/html/ 2>/dev/null || true
     cp -r /opt/termix/src/locales /opt/termix/html/locales 2>/dev/null || true
@@ -87,7 +87,7 @@ function update_script() {
     echo ""
     read -rp "${TAB3}Update Nginx configuration? [Y/n]: " REPLY
     if [[ "${REPLY,,}" =~ ^(y|yes|)$ ]]; then
-      msg_info "Updating Nginx Configuration"
+      msg_info "正在更新 Nginx Configuration"
       cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
       curl -fsSL "https://raw.githubusercontent.com/Termix-SSH/Termix/main/docker/nginx.conf" -o /etc/nginx/nginx.conf
       sed -i '/^master_process/d' /etc/nginx/nginx.conf
@@ -102,10 +102,10 @@ function update_script() {
       msg_warn "Nginx configuration not updated. If Termix doesn't work, restore from backup or update manually."
     fi
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start termix
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -114,7 +114,7 @@ start
 build_container
 description
 
-msg_ok "Completed Successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

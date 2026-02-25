@@ -24,14 +24,14 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/pterodactyl-panel ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
   CURRENT_PHP=$(php -v 2>/dev/null | awk '/^PHP/{print $2}' | cut -d. -f1,2)
 
   if [[ "$CURRENT_PHP" != "8.4" ]]; then
-    msg_info "Migrating PHP $CURRENT_PHP to 8.4"
+    msg_info "正在迁移 PHP $CURRENT_PHP to 8.4"
     $STD curl -fsSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
     $STD dpkg -i /tmp/debsuryorg-archive-keyring.deb
     $STD sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
@@ -49,17 +49,17 @@ EOF
       php8.4-{gd,mysql,mbstring,bcmath,xml,curl,zip,intl,fpm} \
       libapache2-mod-php8.4
 
-    msg_ok "Migrated PHP $CURRENT_PHP to 8.4"
+    msg_ok "已迁移 PHP $CURRENT_PHP to 8.4"
   fi
 
   RELEASE=$(curl -fsSL https://api.github.com/repos/pterodactyl/panel/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
   if [[ ! -f /opt/${APP}_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     cd /opt/pterodactyl-panel
     $STD php artisan down
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating ${APP} to v${RELEASE}"
+    msg_info "正在更新 ${APP} to v${RELEASE}"
     cp -r /opt/pterodactyl-panel/.env /opt/
     rm -rf * .*
     curl -fsSL "https://github.com/pterodactyl/panel/releases/download/v${RELEASE}/panel.tar.gz" -o $(basename "https://github.com/pterodactyl/panel/releases/download/v${RELEASE}/panel.tar.gz")
@@ -76,13 +76,13 @@ EOF
     echo "${RELEASE}" >/opt/${APP}_version.txt
     msg_ok "Updated $APP to v${RELEASE}"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     $STD php artisan queue:restart
     $STD php artisan up
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at v${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at v${RELEASE}"
   fi
   exit
 }
@@ -91,7 +91,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

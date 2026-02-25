@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 export DEBIAN_FRONTEND=noninteractive
 $STD apt -y install --no-install-recommends \
   git \
@@ -33,16 +33,16 @@ $STD apt -y install --no-install-recommends \
   xfonts-scalable \
   imagemagick \
   x11-apps
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
 
-msg_info "Setup Python3"
+msg_info "设置 Python3"
 $STD apt install -y python3
 rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED
-msg_ok "Setup Python3"
+msg_ok "设置 Python3"
 
-msg_info "Installing Chromium"
+msg_info "正在安装 Chromium"
 curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome-keyring.gpg
 cat <<EOF | sudo tee /etc/apt/sources.list.d/google-chrome.sources >/dev/null
 Types: deb
@@ -57,16 +57,16 @@ $STD apt -y install \
   chromium \
   libxss1 \
   lsb-release
-msg_ok "Installed Chromium"
+msg_ok "已安装 Chromium"
 
-msg_info "Setting up Chromium"
+msg_info "正在设置 Chromium"
 /usr/bin/chromium --no-sandbox --version >/etc/chromium-version
 chmod 755 /usr/bin/chromium
-msg_ok "Setup Chromium"
+msg_ok "设置 Chromium"
 
 fetch_and_deploy_gh_release "web-check" "CrazyWolf13/web-check" "tarball"
 
-msg_info "Installing Web-Check (Patience)"
+msg_info "正在安装 Web-Check (Patience)"
 cd /opt/web-check
 cat <<'EOF' >/opt/web-check/.env
 CHROME_PATH=/usr/bin/chromium
@@ -91,13 +91,13 @@ REACT_APP_API_ENDPOINT='/api'
 ENABLE_ANALYTICS='false'
 EOF
 $STD yarn install --frozen-lockfile --network-timeout 100000
-msg_ok "Installed Web-Check"
+msg_ok "已安装 Web-Check"
 
-msg_info "Building Web-Check"
+msg_info "正在构建 Web-Check"
 $STD yarn build --production
-msg_ok "Built Web-Check"
+msg_ok "已构建 Web-Check"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/opt/run_web-check.sh
 #!/bin/bash
 SCREEN_RESOLUTION="1280x1024x24"
@@ -133,7 +133,7 @@ Environment=DISPLAY=:99
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now web-check
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

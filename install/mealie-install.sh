@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   libpq-dev \
@@ -25,7 +25,7 @@ $STD apt install -y \
   libldap2 \
   gosu \
   iproute2
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.12" setup_uv
 POSTGRES_VERSION="16" setup_postgresql
@@ -33,12 +33,12 @@ NODE_MODULE="yarn" NODE_VERSION="24" setup_nodejs
 fetch_and_deploy_gh_release "mealie" "mealie-recipes/mealie" "tarball" "latest" "/opt/mealie"
 PG_DB_NAME="mealie_db" PG_DB_USER="mealie_user" PG_DB_GRANT_SUPERUSER="true" setup_postgresql_db
 
-msg_info "Installing Python Dependencies with uv"
+msg_info "正在安装 Python 依赖 with uv"
 cd /opt/mealie
 $STD uv sync --frozen --extra pgsql
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Building Frontend"
+msg_info "正在构建 Frontend"
 MEALIE_VERSION=$(<$HOME/.mealie)
 export NUXT_TELEMETRY_DISABLED=1
 cd /opt/mealie/frontend
@@ -47,18 +47,18 @@ $STD sed -i "s|value: data.buildId,|value: \"v${MEALIE_VERSION}\",|g" /opt/meali
 $STD sed -i "s|value: data.production ? i18n.t(\"about.production\") : i18n.t(\"about.development\"),|value: \"bare-metal\",|g" /opt/mealie/frontend/pages/admin/site-settings.vue
 $STD yarn install --prefer-offline --frozen-lockfile --non-interactive --production=false --network-timeout 1000000
 $STD yarn generate
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
-msg_info "Copying Built Frontend"
+msg_info "正在复制 已构建 Frontend"
 mkdir -p /opt/mealie/mealie/frontend
 cp -r /opt/mealie/frontend/dist/* /opt/mealie/mealie/frontend/
-msg_ok "Copied Frontend"
+msg_ok "已复制 Frontend"
 
-msg_info "Downloading NLTK Data"
+msg_info "正在下载 NLTK Data"
 mkdir -p /nltk_data/
 cd /opt/mealie
 $STD uv run python -m nltk.downloader -d /nltk_data averaged_perceptron_tagger_eng
-msg_ok "Downloaded NLTK Data"
+msg_ok "已下载 NLTK Data"
 
 msg_info "Writing Environment File"
 SECRET=$(openssl rand -hex 32)
@@ -82,7 +82,7 @@ BASE_URL=http://${LOCAL_IP}:9000
 EOF
 msg_ok "Wrote Environment File"
 
-msg_info "Creating Start Script"
+msg_info "正在创建 Start Script"
 cat <<'EOF' >/opt/mealie/start.sh
 #!/bin/bash
 set -a
@@ -91,9 +91,9 @@ set +a
 exec uv run mealie
 EOF
 chmod +x /opt/mealie/start.sh
-msg_ok "Created Start Script"
+msg_ok "已创建 Start Script"
 
-msg_info "Creating Systemd Service"
+msg_info "正在创建 Systemd Service"
 cat <<'EOF' >/etc/systemd/system/mealie.service
 [Unit]
 Description=Mealie Recipe Manager
@@ -112,7 +112,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now mealie
-msg_ok "Created and Started Service"
+msg_ok "已创建 and 已启动 Service"
 
 motd_ssh
 customize

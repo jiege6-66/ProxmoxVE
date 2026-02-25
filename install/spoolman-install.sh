@@ -14,24 +14,24 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   libpq-dev \
   libffi-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "spoolman" "Donkie/Spoolman" "prebuild" "latest" "/opt/spoolman" "spoolman.zip"
 PYTHON_VERSION="3.14" setup_uv
 
-msg_info "Setting up Spoolman"
+msg_info "正在设置 Spoolman"
 cd /opt/spoolman
 $STD uv sync --locked --no-install-project
 $STD uv sync --locked
 cp .env.example .env
-msg_ok "Setup Spoolman"
+msg_ok "设置 Spoolman"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/spoolman.service
 [Unit]
 Description=Spoolman
@@ -49,7 +49,7 @@ User=root
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now spoolman
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

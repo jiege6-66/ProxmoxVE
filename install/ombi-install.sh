@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "ombi" "Ombi-app/Ombi" "prebuild" "latest" "/opt/ombi" "linux-x64.tar.gz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/ombi.service
 [Unit]
 Description=Ombi
@@ -30,7 +30,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now ombi
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

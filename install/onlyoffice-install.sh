@@ -12,16 +12,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nginx \
   rabbitmq-server \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="16" setup_postgresql
 
-msg_info "Setup Database"
+msg_info "设置 Database"
 DB_NAME=onlyoffice
 DB_USER=onlyoffice_user
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)
@@ -38,7 +38,7 @@ $STD sudo -u postgres psql -c "ALTER ROLE $DB_USER SET timezone TO 'UTC'"
 } >>~/onlyoffice.creds
 msg_ok "Set up Database"
 
-msg_info "Adding ONLYOFFICE GPG Key"
+msg_info "正在添加 ONLYOFFICE GPG Key"
 GPG_TMP="/tmp/onlyoffice.gpg"
 KEY_URL="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 TMP_KEY_CONTENT=$(mktemp)
@@ -55,9 +55,9 @@ Components: main
 Signed-By: /usr/share/keyrings/onlyoffice.gpg
 EOF
   $STD apt update
-  msg_ok "GPG Key Added"
+  msg_ok "GPG Key 已添加"
 else
-  msg_error "Failed to download or verify GPG key from $KEY_URL"
+  msg_error "无法 download or verify GPG key from $KEY_URL"
   [[ -f "$TMP_KEY_CONTENT" ]] && rm -f "$TMP_KEY_CONTENT"
   exit 1
 fi
@@ -93,14 +93,14 @@ echo "JWT Secret: $JWT_SECRET" >>~/onlyoffice.creds
 } >>~/onlyoffice.creds
 msg_ok "Debconf Preconfiguration Done"
 
-msg_info "Installing ttf-mscorefonts-installer"
+msg_info "正在安装 ttf-mscorefonts-installer"
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 $STD apt install -y ttf-mscorefonts-installer
-msg_ok "Installed Microsoft Core Fonts"
+msg_ok "已安装 Microsoft Core Fonts"
 
-msg_info "Installing ONLYOFFICE Docs"
+msg_info "正在安装 ONLYOFFICE Docs"
 $STD apt install -y onlyoffice-documentserver
-msg_ok "ONLYOFFICE Docs Installed"
+msg_ok "ONLYOFFICE Docs 已安装"
 
 motd_ssh
 customize

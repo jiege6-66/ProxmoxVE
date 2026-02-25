@@ -15,15 +15,15 @@ update_os
 
 fetch_and_deploy_gh_release "lubelogger" "hargata/lubelog" "prebuild" "latest" "/opt/lubelogger" "LubeLogger*linux_x64.zip"
 
-msg_info "Configuring LubeLogger"
+msg_info "正在配置 LubeLogger"
 cd /opt/lubelogger
 chmod 700 /opt/lubelogger/CarCareTracker
 cp /opt/lubelogger/appsettings.json /opt/lubelogger/appsettings_bak.json
 jq '.Kestrel = {"Endpoints": {"Http": {"Url": "http://0.0.0.0:5000"}}}' /opt/lubelogger/appsettings_bak.json >/opt/lubelogger/appsettings.json
 rm -rf /opt/lubelogger/appsettings_bak.json
-msg_ok "Configured LubeLogger"
+msg_ok "已配置 LubeLogger"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/lubelogger.service
 [Unit]
 Description=LubeLogger Daemon
@@ -44,7 +44,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now lubelogger
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,23 +13,23 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apache2 \
   ca-certificates \
   git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "pf2etools" "Pf2eToolsOrg/Pf2eTools" "tarball" "latest" "/opt/Pf2eTools"
 
-msg_info "Configuring Pf2eTools"
+msg_info "正在配置 Pf2eTools"
 cd /opt/Pf2eTools
 $STD npm install
 $STD npm run build
-msg_ok "Configured Pf2eTools"
+msg_ok "已配置 Pf2eTools"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >>/etc/apache2/apache2.conf
 <Location /server-status>
     SetHandler server-status
@@ -41,7 +41,7 @@ rm -rf /var/www/html
 ln -s "/opt/Pf2eTools" /var/www/html
 chown -R www-data: "/opt/Pf2eTools"
 chmod -R 755 "/opt/Pf2eTools"
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 cleanup_lxc
 motd_ssh
 customize

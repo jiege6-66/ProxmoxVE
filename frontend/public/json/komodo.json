@@ -13,7 +13,7 @@
   "website": "https://komo.do",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/komodo.webp",
   "config_path": "/opt/komodo/compose.env",
-  "description": "Komodo is a build and deployment system that automates the creation of versioned Docker images from Git repositories and facilitates the deployment of Docker containers and Docker Compose setups. It provides features such as build automation triggered by Git pushes, deployment management, and monitoring of uptime and logs across multiple servers. The core API and associated agent are developed in Rust.",
+  "description": "Komodo 是一个构建和部署系统,可自动从 Git 仓库创建版本化的 Docker 镜像,并促进 Docker 容器和 Docker Compose 设置的部署。它提供由 Git 推送触发的构建自动化、部署管理以及跨多个服务器的正常运行时间和日志监控等功能。核心 API 和相关代理使用 Rust 开发。",
   "install_methods": [
     {
       "type": "default",

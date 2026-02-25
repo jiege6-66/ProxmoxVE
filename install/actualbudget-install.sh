@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   make \
   g++
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 create_self_signed_cert
 
-msg_info "Installing Actual Budget"
+msg_info "正在安装 Actual Budget"
 cd /opt
 RELEASE=$(get_latest_github_release "actualbudget/actual")
 mkdir -p /opt/actualbudget-data/{server-files,upload,migrate,user-files,migrations,config}
@@ -53,9 +53,9 @@ mkdir -p /opt/actualbudget
 cd /opt/actualbudget
 $STD npm install --location=global @actual-app/sync-server
 echo "${RELEASE}" >~/.actualbudget
-msg_ok "Installed Actual Budget"
+msg_ok "已安装 Actual Budget"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/actualbudget.service
 [Unit]
 Description=Actual Budget Service
@@ -77,7 +77,7 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now actualbudget
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

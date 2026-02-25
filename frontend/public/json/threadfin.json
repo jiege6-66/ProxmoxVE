@@ -13,7 +13,7 @@
   "website": "https://github.com/Threadfin/Threadfin",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/threadfin.webp",
   "config_path": "",
-  "description": "Threadfin is a M3U proxy for Kernel, Plex, Jellyfin, or Emby, based on xTeVe.",
+  "description": "Threadfin 是一个用于 Kernel、Plex、Jellyfin 或 Emby 的 M3U 代理,基于 xTeVe。",
   "install_methods": [
     {
       "type": "default",

@@ -21,7 +21,7 @@ MARIADB_DB_NAME="firefly" MARIADB_DB_USER="firefly" setup_mariadb_db
 fetch_and_deploy_gh_release "firefly" "firefly-iii/firefly-iii" "prebuild" "latest" "/opt/firefly" "FireflyIII-*.zip"
 fetch_and_deploy_gh_release "dataimporter" "firefly-iii/data-importer" "prebuild" "latest" "/opt/firefly/dataimporter" "DataImporter-v*.tar.gz"
 
-msg_info "Configuring Firefly III (Patience)"
+msg_info "正在配置 Firefly III (Patience)"
 chown -R www-data:www-data /opt/firefly
 chmod -R 775 /opt/firefly/storage
 cd /opt/firefly
@@ -33,15 +33,15 @@ $STD php artisan firefly:upgrade-database
 $STD php artisan firefly:correct-database
 $STD php artisan firefly:report-integrity
 $STD php artisan firefly:laravel-passport-keys
-msg_ok "Configured Firefly III"
+msg_ok "已配置 Firefly III"
 
-msg_info "Configuring Data Importer"
+msg_info "正在配置 Data Importer"
 cp /opt/firefly/dataimporter/.env.example /opt/firefly/dataimporter/.env
 sed -i "s#FIREFLY_III_URL=#FIREFLY_III_URL=http://${LOCAL_IP}#g" /opt/firefly/dataimporter/.env
 chown -R www-data:www-data /opt/firefly
-msg_ok "Configured Data Importer"
+msg_ok "已配置 Data Importer"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/firefly.conf
 <VirtualHost *:80>
   ServerAdmin webmaster@localhost
@@ -77,7 +77,7 @@ $STD a2enmod rewrite
 $STD a2ensite firefly.conf
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

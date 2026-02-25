@@ -29,12 +29,12 @@ function update_script() {
 
   if [ "$UPD" == "1" ]; then
     if [[ ! -d /opt/cronicle ]]; then
-      msg_error "No ${APP} Installation Found!"
+      msg_error "未找到 ${APP} 安装！"
       exit
     fi
     NODE_VERSION="22" setup_nodejs
 
-    msg_info "Updating Cronicle"
+    msg_info "正在更新 Cronicle"
     $STD /opt/cronicle/bin/control.sh upgrade
     msg_ok "Updated Cronicle"
     exit
@@ -42,22 +42,22 @@ function update_script() {
   if [ "$UPD" == "2" ]; then
     NODE_VERSION="22" setup_nodejs
     if check_for_gh_release "cronicle" "jhuckaby/Cronicle"; then
-      msg_info "Installing Dependencies"
+      msg_info "正在安装依赖"
       ensure_dependencies git build-essential ca-certificates
-      msg_ok "Installed Dependencies"
+      msg_ok "已安装依赖"
 
       NODE_VERSION="22" setup_nodejs
       fetch_and_deploy_gh_release "cronicle" "jhuckaby/Cronicle" "tarball"
 
-      msg_info "Configuring Cronicle Worker"
+      msg_info "正在配置 Cronicle Worker"
       cd /opt/cronicle
       $STD npm install
       $STD node bin/build.js dist
       sed -i "s/localhost:3012/${LOCAL_IP}:3012/g" /opt/cronicle/conf/config.json
       $STD /opt/cronicle/bin/control.sh start
-      msg_ok "Installed Cronicle Worker"
+      msg_ok "已安装 Cronicle Worker"
       echo -e "\n Add Masters secret key to /opt/cronicle/conf/config.json \n"
-      msg_ok "Updated successfully!"
+      msg_ok "已成功更新!"
       exit
     fi
   fi
@@ -67,7 +67,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3012${CL}"

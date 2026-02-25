@@ -14,9 +14,9 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 msg_info "Setting Up UHF Server Environment"
 mkdir -p /etc/uhf-server
@@ -34,7 +34,7 @@ msg_ok "Set Up UHF Server Environment"
 fetch_and_deploy_gh_release "comskip" "swapplications/comskip" "prebuild" "latest" "/opt/comskip" "comskip-x64-*.zip"
 fetch_and_deploy_gh_release "uhf-server" "swapplications/uhf-server-dist" "prebuild" "latest" "/opt/uhf-server" "UHF.Server-linux-x64-*.zip"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/uhf-server.service
 [Unit]
 Description=UHF Server service
@@ -48,7 +48,7 @@ ExecStart=/opt/uhf-server/uhf-server
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now uhf-server
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

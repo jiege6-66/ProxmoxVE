@@ -13,7 +13,7 @@
   "website": "https://netbird.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/netbird.webp",
   "config_path": "",
-  "description": "NetBird combines a configuration-free peer-to-peer private network and a centralized access control system in a single platform, making it easy to create secure private networks for your organization or home.",
+  "description": "NetBird 将免配置的点对点私有网络和集中式访问控制系统结合在一个平台中，使为您的组织或家庭创建安全的私有网络变得简单。",
   "install_methods": [
     {
       "type": "default",

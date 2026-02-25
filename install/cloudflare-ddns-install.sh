@@ -51,9 +51,9 @@ while true; do
   *) echo "Please answer y or n." ;;
   esac
 done
-msg_ok "Configured Application"
+msg_ok "已配置 Application"
 
-msg_info "Setting up service"
+msg_info "正在设置 service"
 mkdir -p /root/go
 cat <<EOF >/etc/systemd/system/cloudflare-ddns.service
 [Unit]
@@ -75,7 +75,7 @@ RestartSec=300
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now cloudflare-ddns
-msg_ok "Setup Service"
+msg_ok "设置 Service"
 
 motd_ssh
 customize

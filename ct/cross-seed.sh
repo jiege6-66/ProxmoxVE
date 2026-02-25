@@ -28,15 +28,15 @@ function update_script() {
         current_version=$(cross-seed --version)
         latest_version=$(npm show cross-seed version)
         if [ "$current_version" != "$latest_version" ]; then
-            msg_info "Updating cross-seed from version v${current_version} to v${latest_version}"
+            msg_info "正在更新 cross-seed from version v${current_version} to v${latest_version}"
             $STD npm install -g cross-seed@latest
             systemctl restart cross-seed
-            msg_ok "Updated successfully!"
+            msg_ok "已成功更新!"
         else
             msg_ok "cross-seed is already at v${current_version}"
         fi
     else
-        msg_error "No cross-seed Installation Found!"
+        msg_error "No cross-seed 安装已找到！"
         exit
     fi
     exit
@@ -46,7 +46,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access cross-seed API using the following URL:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:2468${CL}"

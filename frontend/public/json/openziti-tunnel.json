@@ -13,7 +13,7 @@
   "website": "https://www.openziti.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/openziti.webp",
   "config_path": "",
-  "description": "OpenZiti is an open-source, zero trust networking platform that enables secure connectivity between applications, services, and devices. It provides secure, encrypted connections between clients and services, and can be used to create secure, zero trust networks.",
+  "description": "OpenZiti 是一个开源的零信任网络平台,可在应用程序、服务和设备之间实现安全连接。它在客户端和服务之间提供安全的加密连接,可用于创建安全的零信任网络。",
   "install_methods": [
     {
       "type": "default",

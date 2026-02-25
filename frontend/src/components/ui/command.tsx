@@ -146,7 +146,7 @@ function CommandShortcut({
     />
   );
 }
-CommandShortcut.displayName = "CommandShortcut";
+CommandShortcut.displayName = "命令快捷键";
 
 export {
   Command,

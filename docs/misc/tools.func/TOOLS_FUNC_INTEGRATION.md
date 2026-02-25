@@ -1,117 +1,117 @@
-# tools.func Integration Guide
+# tools.func 集成指南
 
-How tools.func integrates with other components and provides package/tool services to the ProxmoxVE ecosystem.
+tools.func 如何与其他组件集成，并为 ProxmoxVE 生态系统提供包/工具服务。
 
-## Component Relationships
+## 组件关系
 
-### tools.func in the Installation Pipeline
+### tools.func 在安装流程中的位置
 
 ```
-ct/AppName.sh (host)
+ct/AppName.sh (宿主机)
     │
-    ├─ Calls build.func
+    ├─ 调用 build.func
     │
-    └─ Creates Container
+    └─ 创建容器
             │
             ▼
-install/appname-install.sh (container)
+install/appname-install.sh (容器内)
             │
-            ├─ Sources: core.func (colors, messaging)
-            ├─ Sources: error_handler.func (error handling)
-            ├─ Sources: install.func (container setup)
+            ├─ 引入: core.func (颜色、消息)
+            ├─ 引入: error_handler.func (错误处理)
+            ├─ 引入: install.func (容器设置)
             │
-            └─ ★ Sources: tools.func ★
+            └─ ★ 引入: tools.func ★
                         │
                         ├─ pkg_update()
                         ├─ pkg_install()
                         ├─ setup_nodejs()
                         ├─ setup_php()
                         ├─ setup_mariadb()
-                        └─ ... 30+ functions
+                        └─ ... 30+ 个函数
 ```
 
-### Integration with core.func
+### 与 core.func 的集成
 
-**tools.func uses core.func for**:
-- `msg_info()` - Display progress messages
-- `msg_ok()` - Display success messages
-- `msg_error()` - Display error messages
-- `msg_warn()` - Display warnings
-- Color codes (GN, RD, YW, BL) for formatted output
-- `$STD` variable - Output suppression control
+**tools.func 使用 core.func 提供的**:
+- `msg_info()` - 显示进度消息
+- `msg_ok()` - 显示成功消息
+- `msg_error()` - 显示错误消息
+- `msg_warn()` - 显示警告
+- 颜色代码 (GN, RD, YW, BL) 用于格式化输出
+- `$STD` 变量 - 输出抑制控制
 
-**Example**:
+**示例**:
 ```bash
-# tools.func internally calls:
-msg_info "Installing Node.js"      # Uses core.func
-setup_nodejs "20"                  # Setup happens
-msg_ok "Node.js installed"         # Uses core.func
+# tools.func 内部调用:
+msg_info "安装 Node.js"      # 使用 core.func
+setup_nodejs "20"            # 执行设置
+msg_ok "Node.js 已安装"      # 使用 core.func
 ```
 
-### Integration with error_handler.func
+### 与 error_handler.func 的集成
 
-**tools.func uses error_handler.func for**:
-- Exit code mapping to error descriptions
-- Automatic error trapping (catch_errors)
-- Signal handlers (SIGINT, SIGTERM, EXIT)
-- Structured error reporting
+**tools.func 使用 error_handler.func 提供的**:
+- 退出码映射到错误描述
+- 自动错误捕获 (catch_errors)
+- 信号处理器 (SIGINT, SIGTERM, EXIT)
+- 结构化错误报告
 
-**Example**:
+**示例**:
 ```bash
-# If setup_nodejs fails, error_handler catches it:
-catch_errors    # Calls from error_handler.func
-setup_nodejs "20"  # If this exits non-zero
-                   # error_handler logs and traps it
+# 如果 setup_nodejs 失败，error_handler 会捕获它:
+catch_errors    # 从 error_handler.func 调用
+setup_nodejs "20"  # 如果这里返回非零值
+                   # error_handler 会记录并捕获它
 ```
 
-### Integration with install.func
+### 与 install.func 的集成
 
-**tools.func coordinates with install.func for**:
-- Initial OS updates (install.func) → then tools (tools.func)
-- Network verification before tool installation
-- Package manager state validation
-- Cleanup procedures after tool setup
+**tools.func 与 install.func 协调完成**:
+- 初始 OS 更新 (install.func) → 然后工具安装 (tools.func)
+- 工具安装前的网络验证
+- 包管理器状态验证
+- 工具设置后的清理程序
 
-**Sequence**:
+**执行序列**:
 ```bash
-setting_up_container()      # From install.func
-network_check()             # From install.func
-update_os()                 # From install.func
+setting_up_container()      # 来自 install.func
+network_check()             # 来自 install.func
+update_os()                 # 来自 install.func
 
-pkg_update                  # From tools.func
-setup_nodejs()              # From tools.func
+pkg_update                  # 来自 tools.func
+setup_nodejs()              # 来自 tools.func
 
-motd_ssh()                  # From install.func
-customize()                 # From install.func
-cleanup_lxc()               # From install.func
+motd_ssh()                  # 来自 install.func
+customize()                 # 来自 install.func
+cleanup_lxc()               # 来自 install.func
 ```
 
 ---
 
-## Integration with alpine-tools.func (Alpine Containers)
+## 与 alpine-tools.func 的集成 (Alpine 容器)
 
-### When to Use tools.func vs alpine-tools.func
+### 何时使用 tools.func vs alpine-tools.func
 
-| Feature | tools.func (Debian) | alpine-tools.func (Alpine) |
+| 功能 | tools.func (Debian) | alpine-tools.func (Alpine) |
 |---------|:---:|:---:|
-| Package Manager | apt-get | apk |
-| Installation Scripts | install/*.sh | install/*-alpine.sh |
-| Tool Setup | `setup_nodejs()` (apt) | `setup_nodejs()` (apk) |
-| Repository | `setup_deb822_repo()` | `add_community_repo()` |
-| Services | systemctl | rc-service |
+| 包管理器 | apt-get | apk |
+| 安装脚本 | install/*.sh | install/*-alpine.sh |
+| 工具设置 | `setup_nodejs()` (apt) | `setup_nodejs()` (apk) |
+| 仓库 | `setup_deb822_repo()` | `add_community_repo()` |
+| 服务 | systemctl | rc-service |
 
-### Automatic Selection
+### 自动选择
 
-Installation scripts detect OS and source appropriate functions:
+安装脚本会检测操作系统并引入相应的函数:
 
 ```bash
 # install/myapp-install.sh
 if grep -qi 'alpine' /etc/os-release; then
-  # Alpine detected - uses alpine-tools.func
+  # 检测到 Alpine - 使用 alpine-tools.func
   apk_update
   apk_add package
 else
-  # Debian detected - uses tools.func
+  # 检测到 Debian - 使用 tools.func
   pkg_update
   pkg_install package
 fi
@@ -119,47 +119,47 @@ fi
 
 ---
 
-## Dependencies Management
+## 依赖管理
 
-### External Dependencies
+### 外部依赖
 
 ```
-tools.func requires:
-├─ curl          (for HTTP requests, GPG keys)
-├─ wget          (for downloads)
-├─ apt-get       (package manager)
-├─ gpg           (GPG key management)
-├─ openssl       (for encryption)
-└─ systemctl     (service management on Debian)
+tools.func 需要:
+├─ curl          (用于 HTTP 请求、GPG 密钥)
+├─ wget          (用于下载)
+├─ apt-get       (包管理器)
+├─ gpg           (GPG 密钥管理)
+├─ openssl       (用于加密)
+└─ systemctl     (Debian 上的服务管理)
 ```
 
-### Internal Function Dependencies
+### 内部函数依赖
 
 ```
 setup_nodejs()
-    ├─ Calls: setup_deb822_repo()
-    ├─ Calls: pkg_update()
-    ├─ Calls: pkg_install()
-    └─ Uses: msg_info(), msg_ok() [from core.func]
+    ├─ 调用: setup_deb822_repo()
+    ├─ 调用: pkg_update()
+    ├─ 调用: pkg_install()
+    └─ 使用: msg_info(), msg_ok() [来自 core.func]
 
 setup_mariadb()
-    ├─ Calls: setup_deb822_repo()
-    ├─ Calls: pkg_update()
-    ├─ Calls: pkg_install()
-    └─ Uses: msg_info(), msg_ok()
+    ├─ 调用: setup_deb822_repo()
+    ├─ 调用: pkg_update()
+    ├─ 调用: pkg_install()
+    └─ 使用: msg_info(), msg_ok()
 
 setup_docker()
-    ├─ Calls: cleanup_repo_metadata()
-    ├─ Calls: setup_deb822_repo()
-    ├─ Calls: pkg_update()
-    └─ Uses: msg_info(), msg_ok()
+    ├─ 调用: cleanup_repo_metadata()
+    ├─ 调用: setup_deb822_repo()
+    ├─ 调用: pkg_update()
+    └─ 使用: msg_info(), msg_ok()
 ```
 
 ---
 
-## Function Call Graph
+## 函数调用图
 
-### Complete Installation Dependency Tree
+### 完整的安装依赖树
 
 ```
 install/app-install.sh
@@ -171,19 +171,19 @@ install/app-install.sh
     ├─ update_os()                    [install.func]
     │
     ├─ pkg_update()                   [tools.func]
-    │   └─ Calls: apt-get update (with retry)
+    │   └─ 调用: apt-get update (带重试)
     │
     ├─ setup_nodejs("20")             [tools.func]
     │   ├─ setup_deb822_repo()        [tools.func]
-    │   │   └─ Calls: apt-get update
+    │   │   └─ 调用: apt-get update
     │   ├─ pkg_update()               [tools.func]
     │   └─ pkg_install()              [tools.func]
     │
     ├─ setup_php("8.3")               [tools.func]
-    │   └─ Similar to setup_nodejs
+    │   └─ 类似 setup_nodejs
     │
     ├─ setup_mariadb("11")            [tools.func]
-    │   └─ Similar to setup_nodejs
+    │   └─ 类似 setup_nodejs
     │
     ├─ motd_ssh()                     [install.func]
     │
@@ -194,74 +194,74 @@ install/app-install.sh
 
 ---
 
-## Configuration Management
+## 配置管理
 
-### Environment Variables Used by tools.func
+### tools.func 使用的环境变量
 
 ```bash
-# Output control
-STD="silent"              # Suppress apt/apk output
-VERBOSE="yes"             # Show all output
+# 输出控制
+STD="silent"              # 抑制 apt/apk 输出
+VERBOSE="yes"             # 显示所有输出
 
-# Package management
+# 包管理
 DEBIAN_FRONTEND="noninteractive"
 
-# Tool versions (optional)
+# 工具版本 (可选)
 NODEJS_VERSION="20"
 PHP_VERSION="8.3"
 POSTGRES_VERSION="16"
 ```
 
-### Tools Configuration Files Created
+### 创建的工具配置文件
 
 ```
 /opt/
-├─ nodejs_version.txt       # Node.js version
-├─ php_version.txt          # PHP version
-├─ mariadb_version.txt      # MariaDB version
-├─ postgresql_version.txt   # PostgreSQL version
-├─ docker_version.txt       # Docker version
-└─ [TOOL]_version.txt       # For all installed tools
+├─ nodejs_version.txt       # Node.js 版本
+├─ php_version.txt          # PHP 版本
+├─ mariadb_version.txt      # MariaDB 版本
+├─ postgresql_version.txt   # PostgreSQL 版本
+├─ docker_version.txt       # Docker 版本
+└─ [TOOL]_version.txt       # 所有已安装工具的版本
 
 /etc/apt/sources.list.d/
-├─ nodejs.sources           # Node.js repo (deb822)
-├─ docker.sources           # Docker repo (deb822)
-└─ [name].sources           # Other repos (deb822)
+├─ nodejs.sources           # Node.js 仓库 (deb822)
+├─ docker.sources           # Docker 仓库 (deb822)
+└─ [name].sources           # 其他仓库 (deb822)
 ```
 
 ---
 
-## Error Handling Integration
+## 错误处理集成
 
-### Exit Codes from tools.func
+### tools.func 的退出码
 
-| Code | Meaning | Handled By |
+| 代码 | 含义 | 处理方 |
 |------|:---:|:---:|
-| 0 | Success | Normal flow |
-| 1 | Package installation failed | error_handler.func |
-| 100-101 | APT error | error_handler.func |
-| 127 | Command not found | error_handler.func |
+| 0 | 成功 | 正常流程 |
+| 1 | 包安装失败 | error_handler.func |
+| 100-101 | APT 错误 | error_handler.func |
+| 127 | 命令未找到 | error_handler.func |
 
-### Automatic Cleanup on Failure
+### 失败时的自动清理
 
 ```bash
-# If any step fails in install script:
+# 如果安装脚本中的任何步骤失败:
 catch_errors
-pkg_update        # Fail here?
-setup_nodejs      # Doesn't get here
+pkg_update        # 在这里失败?
+setup_nodejs      # 不会执行到这里
 
-# error_handler automatically:
-├─ Logs error
-├─ Captures exit code
-├─ Calls cleanup_lxc()
-└─ Exits with proper code
+# error_handler 自动:
+├─ 记录错误
+├─ 捕获退出码
+├─ 调用 cleanup_lxc()
+└─ 以适当的代码退出
 ```
 
 ---
 
-## Integration with build.func
+## 与 build.func 的集成
 
-### Variable Flow
+### 变量流
 
 ```
 ct/app.sh
@@ -270,53 +270,53 @@ ct/app.sh
     ├─ var_ram="2048"
     ├─ var_disk="10"
     │
-    └─ Calls: build_container()     [build.func]
+    └─ 调用: build_container()     [build.func]
               │
-              └─ Creates container
+              └─ 创建容器
                  │
-                 └─ Calls: install/app-install.sh
+                 └─ 调用: install/app-install.sh
                     │
-                    └─ Uses: tools.func for installation
+                    └─ 使用: tools.func 进行安装
 ```
 
-### Resource Considerations
+### 资源考虑
 
-tools.func respects container resource limits:
-- Large package installations respect allocated RAM
-- Database setups use allocated disk space
-- Build tools (gcc, make) stay within CPU allocation
+tools.func 遵守容器资源限制:
+- 大型包安装遵守分配的 RAM
+- 数据库设置使用分配的磁盘空间
+- 构建工具 (gcc, make) 保持在 CPU 分配范围内
 
 ---
 
-## Version Management
+## 版本管理
 
-### How tools.func Tracks Versions
+### tools.func 如何跟踪版本
 
-Each tool installation creates a version file:
+每个工具安装都会创建一个版本文件:
 
 ```bash
-# setup_nodejs() creates:
+# setup_nodejs() 创建:
 echo "20.10.5" > /opt/nodejs_version.txt
 
-# Used by update scripts:
+# 更新脚本使用:
 CURRENT=$(cat /opt/nodejs_version.txt)
-LATEST=$(curl ... # fetch latest)
+LATEST=$(curl ... # 获取最新版本)
 if [[ "$LATEST" != "$CURRENT" ]]; then
-  # Update needed
+  # 需要更新
 fi
 ```
 
-### Integration with Update Functions
+### 与更新函数的集成
 
 ```bash
-# In ct/app.sh:
+# 在 ct/app.sh 中:
 function update_script() {
-  # Check Node version
+  # 检查 Node 版本
   RELEASE=$(curl ... | jq '.version')
   CURRENT=$(cat /opt/nodejs_version.txt)
 
   if [[ "$RELEASE" != "$CURRENT" ]]; then
-    # Use tools.func to upgrade
+    # 使用 tools.func 升级
     setup_nodejs "$RELEASE"
   fi
 }
@@ -324,95 +324,95 @@ function update_script() {
 
 ---
 
-## Best Practices for Integration
+## 集成最佳实践
 
-### ✅ DO
+### ✅ 应该做的
 
-1. **Call functions in proper order**
+1. **按正确顺序调用函数**
    ```bash
    pkg_update
    setup_tool "version"
    ```
 
-2. **Use $STD for production**
+2. **在生产环境使用 $STD**
    ```bash
    export STD="silent"
    pkg_install curl wget
    ```
 
-3. **Check for existing installations**
+3. **检查现有安装**
    ```bash
    command -v nodejs >/dev/null || setup_nodejs "20"
    ```
 
-4. **Coordinate with install.func**
+4. **与 install.func 协调**
    ```bash
    setting_up_container
-   update_os                    # From install.func
-   setup_nodejs                 # From tools.func
-   motd_ssh                     # Back to install.func
+   update_os                    # 来自 install.func
+   setup_nodejs                 # 来自 tools.func
+   motd_ssh                     # 回到 install.func
    ```
 
-### ❌ DON'T
+### ❌ 不应该做的
 
-1. **Don't skip pkg_update**
+1. **不要跳过 pkg_update**
    ```bash
-   # Bad - may fail due to stale cache
+   # 错误 - 可能因缓存过期而失败
    pkg_install curl
    ```
 
-2. **Don't hardcode versions**
+2. **不要硬编码版本**
    ```bash
-   # Bad
+   # 错误
    apt-get install nodejs=20.x
 
-   # Good
+   # 正确
    setup_nodejs "20"
    ```
 
-3. **Don't mix package managers**
+3. **不要混用包管理器**
    ```bash
-   # Bad
+   # 错误
    apt-get install curl
    apk add wget
    ```
 
-4. **Don't ignore errors**
+4. **不要忽略错误**
    ```bash
-   # Bad
+   # 错误
    setup_docker || true
 
-   # Good
+   # 正确
    if ! setup_docker; then
-     msg_error "Docker failed"
+     msg_error "Docker 失败"
      exit 1
    fi
    ```
 
 ---
 
-## Troubleshooting Integration Issues
+## 集成问题排查
 
-### "Package installation fails"
-- Check: `pkg_update` was called first
-- Check: Package name is correct for OS
-- Solution: Manually verify in container
+### "包安装失败"
+- 检查: 是否先调用了 `pkg_update`
+- 检查: 包名对于操作系统是否正确
+- 解决方案: 在容器中手动验证
 
-### "Tool not accessible after installation"
-- Check: Tool added to PATH
-- Check: Version file created
-- Solution: `which toolname` to verify
+### "安装后无法访问工具"
+- 检查: 工具是否已添加到 PATH
+- 检查: 版本文件是否已创建
+- 解决方案: 使用 `which toolname` 验证
 
-### "Repository conflicts"
-- Check: No duplicate repositories
-- Solution: `cleanup_repo_metadata()` before adding
+### "仓库冲突"
+- 检查: 没有重复的仓库
+- 解决方案: 添加前先执行 `cleanup_repo_metadata()`
 
-### "Alpine-specific errors when using Debian tools"
-- Problem: Using tools.func functions on Alpine
-- Solution: Use alpine-tools.func instead
+### "在 Debian 工具上出现 Alpine 特定错误"
+- 问题: 在 Alpine 上使用 tools.func 函数
+- 解决方案: 改用 alpine-tools.func
 
 ---
 
-**Last Updated**: December 2025
-**Maintainers**: community-scripts team
-**Integration Status**: All components fully integrated
+**最后更新**: 2025年12月
+**维护者**: community-scripts 团队
+**集成状态**: 所有组件已完全集成

@@ -32,7 +32,7 @@ export function ThemeToggle() {
             type="button"
             size="icon"
             className="px-2"
-            aria-label="Toggle theme"
+            aria-label="切换主题"
             onClick={() =>
               handleChangeTheme(currentTheme === "dark" ? "light" : "dark")}
           >
@@ -41,7 +41,7 @@ export function ThemeToggle() {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" className="text-xs">
-          Theme Toggle
+          主题切换
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

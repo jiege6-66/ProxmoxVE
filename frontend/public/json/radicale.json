@@ -13,7 +13,7 @@
   "website": "https://radicale.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/radicale.webp",
   "config_path": "/etc/radicale/config",
-  "description": "Radicale is a small but powerful CalDAV (calendars, to-do lists) and CardDAV (contacts)",
+  "description": "Radicale 是一个小巧但功能强大的 CalDAV(日历、待办事项列表)和 CardDAV(联系人)服务器",
   "install_methods": [
     {
       "type": "default",

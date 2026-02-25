@@ -13,7 +13,7 @@
   "config_path": "/etc/opencloud/opencloud.env, /etc/opencloud/opencloud.yaml, /etc/opencloud/csp.yaml",
   "website": "https://opencloud.eu",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/opencloud.webp",
-  "description": "OpenCloud is the file sharing and collaboration solution of the Heinlein Group. Through intelligent file management and a strong open source community, files become valuable resources, effectively structured and usable in the long term. With flexible data rooms and intelligent access rights, teams can access and work together on data anytime, anywhere without barriers, but with a lot of productivity.",
+  "description": "OpenCloud 是 Heinlein 集团的文件共享和协作解决方案。通过智能文件管理和强大的开源社区，文件成为有价值的资源，有效结构化并可长期使用。借助灵活的数据空间和智能访问权限，团队可以随时随地无障碍地访问和协作处理数据，同时保持高生产力。",
   "install_methods": [
     {
       "type": "default",

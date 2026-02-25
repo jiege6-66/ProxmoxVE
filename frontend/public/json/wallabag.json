@@ -13,7 +13,7 @@
   "documentation": "https://doc.wallabag.org/",
   "website": "https://wallabag.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wallabag.webp",
-  "description": "Wallabag is a self-hosted read-it-later application. Save web articles to read them later, offline, in a clean and distraction-free interface. Features tagging, full-text search, and browser/mobile app integrations.",
+  "description": "Wallabag 是一个自托管的稍后阅读应用。保存网页文章以便稍后离线阅读，界面简洁无干扰。功能包括标签、全文搜索以及浏览器/移动应用集成。",
   "install_methods": [
     {
       "type": "default",

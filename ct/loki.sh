@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if ! dpkg -s loki >/dev/null 2>&1; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit 1
   fi
 
@@ -36,14 +36,14 @@ function update_script() {
 
   case $CHOICE in
   1)
-      msg_info "Stopping Loki"
+      msg_info "正在停止 Loki"
       systemctl stop loki
       if systemctl is-active --quiet promtail 2>/dev/null || dpkg -s promtail >/dev/null 2>&1; then
         systemctl stop promtail
       fi
-      msg_ok "Stopped Loki"
+      msg_ok "已停止 Loki"
 
-      msg_info "Updating Loki"
+      msg_info "正在更新 Loki"
       $STD apt update
       $STD apt install -y --only-upgrade loki
       if dpkg -s promtail >/dev/null 2>&1; then
@@ -51,29 +51,29 @@ function update_script() {
       fi
       msg_ok "Updated Loki"
 
-      msg_info "Starting Loki"
+      msg_info "正在启动 Loki"
       systemctl start loki
       if dpkg -s promtail >/dev/null 2>&1; then
         systemctl start promtail
       fi
-      msg_ok "Started Loki"
-      msg_ok "Updated successfully!"
+      msg_ok "已启动 Loki"
+      msg_ok "已成功更新!"
       exit
       ;;
     2)
-      msg_info "Configuring Loki to listen on 0.0.0.0"
+      msg_info "正在配置 Loki to listen on 0.0.0.0"
       sed -i 's/http_listen_address:.*/http_listen_address: 0.0.0.0/' /etc/loki/config.yml
       sed -i 's/http_listen_port:.*/http_listen_port: 3100/' /etc/loki/config.yml
       systemctl restart loki
-      msg_ok "Configured Loki to listen on 0.0.0.0"
+      msg_ok "已配置 Loki to listen on 0.0.0.0"
       exit
       ;;
     3)
-      msg_info "Configuring Loki to listen on ${LOCAL_IP}"
+      msg_info "正在配置 Loki to listen on ${LOCAL_IP}"
       sed -i "s/http_listen_address:.*/http_listen_address: $LOCAL_IP/" /etc/loki/config.yml
       sed -i 's/http_listen_port:.*/http_listen_port: 3100/' /etc/loki/config.yml
       systemctl restart loki
-      msg_ok "Configured Loki to listen on ${LOCAL_IP}"
+      msg_ok "已配置 Loki to listen on ${LOCAL_IP}"
       exit
       ;;
     esac
@@ -84,8 +84,8 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access loki using the following URL:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3100${CL}\n"
 if dpkg -s promtail >/dev/null 2>&1; then

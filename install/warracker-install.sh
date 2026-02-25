@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     build-essential \
     libpq-dev \
     nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.12" setup_uv
 PG_VERSION="17" setup_postgresql
 
-msg_info "Setup PostgreSQL"
+msg_info "设置 PostgreSQL"
 DB_NAME="warranty_db"
 DB_USER="warranty_user"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)
@@ -43,11 +43,11 @@ $STD sudo -u postgres psql -d "$DB_NAME" -c "ALTER DEFAULT PRIVILEGES IN SCHEMA 
     echo "DB_ADMIN_USER: $DB_ADMIN_USER"
     echo "DB_ADMIN_PASS: $DB_ADMIN_PASS"
 } >>~/warracker.creds
-msg_ok "Setup PostgreSQL"
+msg_ok "设置 PostgreSQL"
 
 fetch_and_deploy_gh_release "warracker" "sassanix/Warracker" "tarball" "latest" "/opt/warracker"
 
-msg_info "Installing Warracker"
+msg_info "正在安装 Warracker"
 cd /opt/warracker/backend
 $STD uv venv --clear .venv
 $STD source .venv/bin/activate
@@ -60,9 +60,9 @@ sed -i \
     -e "s|your_very_secure_flask_secret_key_change_this_in_production|$(openssl rand -base64 32 | tr -d '\n')|" \
     /opt/.env
 mkdir -p /data/uploads
-msg_ok "Installed Warracker"
+msg_ok "已安装 Warracker"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 mv /opt/warracker/nginx.conf /etc/nginx/sites-available/warracker.conf
 sed -i \
     -e "s|alias /var/www/html/locales/;|alias /opt/warracker/locales/;|" \
@@ -73,9 +73,9 @@ ln -s /etc/nginx/sites-available/warracker.conf /etc/nginx/sites-enabled/warrack
 rm /etc/nginx/sites-enabled/default
 systemctl restart nginx
 
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
-msg_info "Creating systemd services"
+msg_info "正在创建 systemd services"
 cat <<EOF >/etc/systemd/system/warrackermigration.service
 [Unit]
 Description=Warracker Migration Service
@@ -107,7 +107,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now warracker
-msg_ok "Started Warracker Services"
+msg_ok "已启动 Warracker Services"
 
 motd_ssh
 customize

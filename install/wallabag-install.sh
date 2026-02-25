@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nginx \
   redis-server \
   imagemagick
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mariadb
 MARIADB_DB_NAME="wallabag" MARIADB_DB_USER="wallabag" setup_mariadb_db
@@ -27,7 +27,7 @@ setup_composer
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "wallabag" "wallabag/wallabag" "prebuild" "latest" "/opt/wallabag" "wallabag-*.tar.gz"
 
-msg_info "Configuring Wallabag"
+msg_info "正在配置 Wallabag"
 cd /opt/wallabag
 SECRET_KEY="$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | cut -c1-32)"
 cat <<EOF >/opt/wallabag/app/config/parameters.yml
@@ -80,9 +80,9 @@ parameters:
     sentry_dsn: null
 EOF
 chown -R www-data:www-data /opt/wallabag
-msg_ok "Configured Wallabag"
+msg_ok "已配置 Wallabag"
 
-msg_info "Installing Wallabag (Patience)"
+msg_info "正在安装 Wallabag (Patience)"
 export COMPOSER_ALLOW_SUPERUSER=1
 export SYMFONY_ENV=prod
 cd /opt/wallabag
@@ -90,9 +90,9 @@ $STD php bin/console wallabag:install --env=prod --no-interaction
 $STD php bin/console cache:clear --env=prod
 chown -R www-data:www-data /opt/wallabag
 chmod -R 755 /opt/wallabag/{var,web/assets}
-msg_ok "Installed Wallabag"
+msg_ok "已安装 Wallabag"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<'EOF' >/etc/nginx/sites-available/wallabag
 server {
     listen 8000;
@@ -134,13 +134,13 @@ EOF
 ln -sf /etc/nginx/sites-available/wallabag /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
-msg_info "Enabling Services"
+msg_info "正在启用 Services"
 systemctl enable -q --now redis-server
 systemctl enable -q --now php8.3-fpm
 systemctl enable -q --now nginx
-msg_ok "Enabled Services"
+msg_ok "已启用 Services"
 
 motd_ssh
 customize

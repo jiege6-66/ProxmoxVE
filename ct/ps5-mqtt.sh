@@ -28,22 +28,22 @@ function update_script() {
     exit
   fi
   if check_for_gh_release "ps5-mqtt" "FunkeyFlo/ps5-mqtt"; then
-    msg_info "Stopping service"
+    msg_info "正在停止 service"
     systemctl stop ps5-mqtt
-    msg_ok "Stopped service"
+    msg_ok "已停止 service"
 
     fetch_and_deploy_gh_release "ps5-mqtt" "FunkeyFlo/ps5-mqtt" "tarball"
 
-    msg_info "Configuring ${APP}"
+    msg_info "正在配置 ${APP}"
     cd /opt/ps5-mqtt/ps5-mqtt/
     $STD npm install
     $STD npm run build
-    msg_ok "Configured ${APP}"
+    msg_ok "已配置 ${APP}"
 
-    msg_info "Starting service"
+    msg_info "正在启动 service"
     systemctl start ps5-mqtt
-    msg_ok "Started service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -52,7 +52,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8645${CL}"

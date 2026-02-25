@@ -13,7 +13,7 @@
   "website": "https://github.com/Forceu/Gokapi",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/gokapi.webp",
   "config_path": "/opt/gokapi/config",
-  "description": "Gokapi is a lightweight server to share files, which expire after a set amount of downloads or days.",
+  "description": "Gokapi 是一个轻量级服务器，用于分享文件，这些文件在设定的下载次数或天数后过期。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "website": "https://www.odoo.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/odoo.webp",
   "config_path": "/etc/odoo/odoo.conf",
-  "description": "Odoo is a comprehensive open-source business platform made up of modular apps that cover key areas such as CRM, accounting, inventory, sales, project management, HR, helpdesk, and e-commerce. All modules are tightly integrated, allowing businesses to fully digitize and automate their workflows. Its modular design makes it suitable for both small companies and large enterprises, with flexibility to adapt to different industries. Odoo combines user-friendliness with powerful functionality, offering a unified solution for managing a wide range of business operations.",
+  "description": "Odoo 是一个全面的开源业务平台，由模块化应用程序组成，涵盖 CRM、会计、库存、销售、项目管理、HR、帮助台和电子商务等关键领域。所有模块紧密集成，允许企业完全数字化和自动化其工作流程。其模块化设计使其适用于小型公司和大型企业，具有适应不同行业的灵活性。Odoo 将用户友好性与强大功能相结合，为管理广泛的业务运营提供统一的解决方案。",
   "install_methods": [
     {
       "type": "default",

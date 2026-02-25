@@ -21,7 +21,7 @@ case "${ssl_choice,,}" in
 i)
   DEFAULT_HOST="$LOCAL_IP"
 
-  msg_info "Configuring Caddy"
+  msg_info "正在配置 Caddy"
   $STD apt install -y caddy
   cat <<EOF >/etc/caddy/Caddyfile
 $LOCAL_IP {
@@ -29,7 +29,7 @@ $LOCAL_IP {
 }
 EOF
   systemctl restart caddy
-  msg_ok "Configured Caddy"
+  msg_ok "已配置 Caddy"
   ;;
 e)
   read -r -p "${TAB3}Enter the hostname you want to use for Kutt (eg. kutt.example.com): " custom_host
@@ -42,16 +42,16 @@ esac
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "kutt" "thedevs-network/kutt" "tarball"
 
-msg_info "Configuring Kutt"
+msg_info "正在配置 Kutt"
 cd /opt/kutt
 cp .example.env ".env"
 sed -i "s|JWT_SECRET=|JWT_SECRET=$(openssl rand -base64 32)|g" ".env"
 sed -i "s|DEFAULT_DOMAIN=.*|DEFAULT_DOMAIN=$DEFAULT_HOST|g" ".env"
 $STD npm install
 $STD npm run migrate
-msg_ok "Configured Kutt"
+msg_ok "已配置 Kutt"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/kutt.service
 [Unit]
 Description=Kutt server
@@ -67,7 +67,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now kutt
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

@@ -24,17 +24,17 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/partdb ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   
   RELEASE=$(get_latest_github_release "Part-DB/Part-DB-server")
   if check_for_gh_release "partdb" "Part-DB/Part-DB-server"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop apache2
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating $APP to v${RELEASE}"
+    msg_info "正在更新 $APP to v${RELEASE}"
     cd /opt
     mv /opt/partdb/ /opt/partdb-backup
     curl -fsSL "https://github.com/Part-DB/Part-DB-server/archive/refs/tags/v${RELEASE}.zip" -o "/opt/v${RELEASE}.zip"
@@ -58,10 +58,10 @@ function update_script() {
     echo "${RELEASE}" >~/.partdb
     msg_ok "Updated $APP to v${RELEASE}"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start apache2
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -70,7 +70,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

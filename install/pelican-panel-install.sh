@@ -19,7 +19,7 @@ setup_mariadb
 MARIADB_DB_NAME="panel" MARIADB_DB_USER="pelican" setup_mariadb_db
 fetch_and_deploy_gh_release "pelican-panel" "pelican-dev/panel" "prebuild" "latest" "/opt/pelican-panel" "panel.tar.gz"
 
-msg_info "Installing Pelican Panel"
+msg_info "正在安装 Pelican Panel"
 cd /opt/pelican-panel
 $STD composer install --no-dev --optimize-autoloader --no-interaction
 $STD php artisan p:environment:setup
@@ -27,9 +27,9 @@ $STD php artisan p:environment:queue-service --no-interaction
 echo "* * * * * php /opt/pelican-panel/artisan schedule:run >> /dev/null 2>&1" | crontab -u www-data -
 chown -R www-data:www-data /opt/pelican-panel
 chmod -R 755 /opt/pelican-panel/storage /opt/pelican-panel/bootstrap/cache/
-msg_ok "Installed Pelican Panel"
+msg_ok "已安装 Pelican Panel"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/pelican.conf
 <VirtualHost *:80>
     ServerName pelican
@@ -52,7 +52,7 @@ $STD a2ensite pelican
 $STD a2enmod rewrite
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

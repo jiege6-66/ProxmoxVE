@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y build-essential
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 NODE_VERSION="22" setup_nodejs
 setup_mariadb
 
-msg_info "Setting up Database"
+msg_info "正在设置 Database"
 DB_NAME="mmdl"
 DB_USER="mmdl"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -37,7 +37,7 @@ msg_ok "Set up Database"
 
 fetch_and_deploy_gh_release "mmdl" "intri-in/manage-my-damn-life-nextjs" "tarball"
 
-msg_info "Configuring ${APPLICATION}"
+msg_info "正在配置 ${APPLICATION}"
 cp /opt/mmdl/sample.env.local /opt/mmdl/.env
 sed -i -e 's|db|localhost|' \
   -e "s|myuser|${DB_USER}|" \
@@ -53,9 +53,9 @@ export CI="true"
 $STD npm install
 $STD npm run migrate
 $STD npm run build
-msg_ok "Configured ${APPLICATION}"
+msg_ok "已配置 ${APPLICATION}"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/mmdl.service
 [Unit]
 Description=${APPLICATION} Service
@@ -71,7 +71,7 @@ Restart=on-abnormal
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now mmdl
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

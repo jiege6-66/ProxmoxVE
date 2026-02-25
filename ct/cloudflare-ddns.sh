@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/cloudflare-ddns.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   msg_error "There is no update function for ${APP}."
@@ -34,4 +34,4 @@ function update_script() {
 start
 build_container
 description
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"

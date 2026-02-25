@@ -23,7 +23,7 @@ NODE_VERSION="24" setup_nodejs
 setup_uv
 PG_VERSION="17" setup_postgresql
 
-msg_info "Setting up PostgreSQL"
+msg_info "正在设置 PostgreSQL"
 DB_NAME="mm_db"
 DB_USER="mm_user"
 DB_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)"
@@ -40,7 +40,7 @@ msg_ok "Set up PostgreSQL"
 
 fetch_and_deploy_gh_release "MediaManager" "maxdorninger/MediaManager" "tarball" "latest" "/opt/mediamanager"
 
-msg_info "Configuring MediaManager"
+msg_info "正在配置 MediaManager"
 MM_DIR="/opt/mm"
 MEDIA_DIR="${MM_DIR}/media"
 export CONFIG_DIR="${MM_DIR}/config"
@@ -58,9 +58,9 @@ export VIRTUAL_ENV="${MM_DIR}/venv"
 cd /opt/mediamanager
 cp -r {media_manager,alembic*} "$MM_DIR"
 $STD /usr/local/bin/uv sync --locked --active -n -p cpython3.13 --managed-python
-msg_ok "Configured MediaManager"
+msg_ok "已配置 MediaManager"
 
-msg_info "Creating config and start script"
+msg_info "正在创建 config and start script"
 SECRET="$(openssl rand -hex 32)"
 sed -e "s/localhost:8/$LOCAL_IP:8/g" \
   -e "s|/data/|$MEDIA_DIR/|g" \
@@ -88,9 +88,9 @@ source ./venv/bin/activate
 /usr/local/bin/uv run fastapi run ./media_manager/main.py --port 8000
 EOF
 chmod +x "$MM_DIR"/start.sh
-msg_ok "Created config and start script"
+msg_ok "已创建 config and start script"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/mediamanager.service
 [Unit]
 Description=MediaManager Backend Service
@@ -105,7 +105,7 @@ ExecStart=/usr/bin/bash start.sh
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now mediamanager
-msg_ok "Created service"
+msg_ok "已创建 service"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://changedetection.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/changedetection.webp",
   "config_path": "/opt/changedetection/url-watches.json",
-  "description": "Change Detection is a service that allows you to monitor changes to web pages and receive notifications when changes occur. It can be used for a variety of purposes such as keeping track of online price changes, monitoring news websites for updates, or tracking changes to online forums.",
+  "description": "Change Detection 是一项允许您监控网页变化并在发生变化时接收通知的服务。它可用于多种目的，例如跟踪在线价格变化、监控新闻网站更新或跟踪在线论坛的变化。",
   "install_methods": [
     {
       "type": "default",

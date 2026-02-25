@@ -13,20 +13,20 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   redis-server \
   rabbitmq-server \
   libpq-dev \
   zstd \
   nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 JAVA_VERSION="25" setup_java
 PG_VERSION="17" PG_MODULES="postgis" setup_postgresql
 PG_DB_NAME="reitti_db" PG_DB_USER="reitti" PG_DB_EXTENSIONS="postgis" setup_postgresql_db
 
-msg_info "Configuring RabbitMQ"
+msg_info "正在配置 RabbitMQ"
 RABBIT_USER="reitti"
 RABBIT_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)"
 RABBIT_VHOST="/"
@@ -40,14 +40,14 @@ $STD rabbitmqctl set_user_tags "$RABBIT_USER" administrator
   echo "RabbitMQ User: $RABBIT_USER"
   echo "RabbitMQ Password: $RABBIT_PASS"
 } >>~/reitti.creds
-msg_ok "Configured RabbitMQ"
+msg_ok "已配置 RabbitMQ"
 
 USE_ORIGINAL_FILENAME="true" fetch_and_deploy_gh_release "reitti" "dedicatedcode/reitti" "singlefile" "latest" "/opt/reitti" "reitti-app.jar"
 mv /opt/reitti/reitti-*.jar /opt/reitti/reitti.jar
 USE_ORIGINAL_FILENAME="true" fetch_and_deploy_gh_release "photon" "komoot/photon" "singlefile" "latest" "/opt/photon" "photon-0*.jar"
 mv /opt/photon/photon-*.jar /opt/photon/photon.jar
 
-msg_info "Installing Nginx Tile Cache"
+msg_info "正在安装 Nginx Tile Cache"
 mkdir -p /var/cache/nginx/tiles
 cat <<EOF >/etc/nginx/nginx.conf
 user www-data;
@@ -73,9 +73,9 @@ EOF
 chown -R www-data:www-data /var/cache/nginx
 chmod -R 750 /var/cache/nginx
 systemctl restart nginx
-msg_info "Installed Nginx Tile Cache"
+msg_info "已安装 Nginx Tile Cache"
 
-msg_info "Creating Reitti Configuration-File"
+msg_info "正在创建 Reitti Configuration-File"
 mkdir -p /opt/reitti/data
 cat <<EOF >/opt/reitti/application.properties
 # Reitti Server Base URI
@@ -125,9 +125,9 @@ DANGEROUS_LIFE=false
 # Tiles Cache
 reitti.ui.tiles.cache.url=http://127.0.0.1
 EOF
-msg_ok "Created Configuration-File for Reitti"
+msg_ok "已创建 Configuration-File for Reitti"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/reitti.service
 [Unit]
 Description=Reitti
@@ -167,7 +167,7 @@ WantedBy=multi-user.target
 EOF
 systemctl enable -q --now photon
 systemctl enable -q --now reitti
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

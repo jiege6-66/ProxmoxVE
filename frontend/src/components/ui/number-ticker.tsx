@@ -15,7 +15,7 @@ export default function NumberTicker({
   value: number;
   direction?: "up" | "down";
   className?: string;
-  delay?: number; // delay in s
+  delay?: number; // 延迟时间（秒）
   decimalPlaces?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -40,7 +40,7 @@ export default function NumberTicker({
     () =>
       springValue.on("change", (latest) => {
         if (ref.current) {
-          ref.current.textContent = Intl.NumberFormat("en-US", {
+          ref.current.textContent = Intl.NumberFormat("zh-CN", {
             minimumFractionDigits: decimalPlaces,
             maximumFractionDigits: decimalPlaces,
           }).format(Number(latest.toFixed(decimalPlaces)));

@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y \
   lsb-release \
   git
@@ -45,7 +45,7 @@ while true; do
   fi
 done
 
-msg_info "Downloading Jeedom installation script"
+msg_info "正在下载 Jeedom installation script"
 cd /tmp
 wget -q https://raw.githubusercontent.com/jeedom/core/"${BRANCH}"/install/install.sh
 chmod +x install.sh
@@ -53,7 +53,7 @@ msg_ok "Installation script downloaded"
 
 msg_info "Install Jeedom main dependencies, please wait"
 $STD ./install.sh -v "$BRANCH" -s 2
-msg_ok "Installed Jeedom main dependencies"
+msg_ok "已安装 Jeedom main dependencies"
 
 msg_info "Install Database"
 $STD ./install.sh -v "$BRANCH" -s 3
@@ -79,11 +79,11 @@ msg_info "Jeedom customisation"
 $STD ./install.sh -v "$BRANCH" -s 8
 msg_ok "Jeedom customisation done"
 
-msg_info "Configuring Jeedom"
+msg_info "正在配置 Jeedom"
 $STD ./install.sh -v "$BRANCH" -s 9
 msg_ok "Jeedom configured"
 
-msg_info "Installing Jeedom"
+msg_info "正在安装 Jeedom"
 $STD ./install.sh -v "$BRANCH" -s 10
 msg_ok "Jeedom installed"
 

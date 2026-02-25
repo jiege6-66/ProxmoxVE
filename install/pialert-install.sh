@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt -y install \
   apt-utils \
   avahi-utils \
@@ -31,9 +31,9 @@ $STD apt -y install \
   fping \
   zip \
   libtext-csv-perl
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing PHP Dependencies"
+msg_info "正在安装 PHP 依赖"
 $STD apt -y install \
   php \
   php-cgi \
@@ -43,9 +43,9 @@ $STD apt -y install \
   php-sqlite3
 $STD lighttpd-enable-mod fastcgi-php
 service lighttpd force-reload
-msg_ok "Installed PHP Dependencies"
+msg_ok "已安装 PHP 依赖"
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 $STD apt -y install \
   python3-pip \
   python3-requests \
@@ -61,9 +61,9 @@ $STD pip3 install pyunifi
 $STD pip3 install openwrt-luci-rpc
 $STD pip3 install asusrouter
 $STD pip3 install paho-mqtt
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Installing Pi.Alert"
+msg_info "正在安装 Pi.Alert"
 curl -fsSL https://github.com/leiweibau/Pi.Alert/raw/main/tar/pialert_latest.tar | tar xvf - -C /opt >/dev/null 2>&1
 rm -rf /var/lib/ieee-data /var/www/html/index.html
 sed -i -e 's#^sudo cp -n /usr/share/ieee-data/.* /var/lib/ieee-data/#\# &#' -e '/^sudo mkdir -p 2_backup$/s/^/# /' -e '/^sudo cp \*.txt 2_backup$/s/^/# /' -e '/^sudo cp \*.csv 2_backup$/s/^/# /' /opt/pialert/back/update_vendors.sh
@@ -89,7 +89,7 @@ echo "/opt/pialert/back/pialert-cli set_permissions --lxc" >/usr/bin/permissions
 chmod +x /usr/bin/permissions
 echo "/opt/pialert/back/pialert-cli set_sudoers --lxc" >/usr/bin/sudoers
 chmod +x /usr/bin/sudoers
-msg_ok "Installed Pi.Alert"
+msg_ok "已安装 Pi.Alert"
 
 msg_info "Start Pi.Alert Scan (Patience)"
 $STD python3 /opt/pialert/back/pialert.py update_vendors

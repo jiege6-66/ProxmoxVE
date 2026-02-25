@@ -13,10 +13,10 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing ebusd"
+msg_info "正在安装 ebusd"
 fetch_and_deploy_gh_release "ebusd" "john30/ebusd" "binary" "latest" "" "ebusd-*_amd64-trixie_mqtt1.deb"
 systemctl enable -q ebusd
-msg_ok "Installed ebusd"
+msg_ok "已安装 ebusd"
 
 motd_ssh
 customize

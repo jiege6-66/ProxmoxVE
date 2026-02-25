@@ -13,7 +13,7 @@
   "config_path": "/opt/.env",
   "website": "https://warracker.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/warracker.webp",
-  "description": "Warracker is an open source, self-hostable warranty tracker to monitor expirations, store receipts, files. You own the data, your rules!",
+  "description": "Warracker 是一个开源的自托管保修跟踪器，用于监控到期日期、存储收据和文件。数据归您所有，您说了算!",
   "install_methods": [
     {
       "type": "default",

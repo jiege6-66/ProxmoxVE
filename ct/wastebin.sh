@@ -24,13 +24,13 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/wastebin ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   ensure_dependencies zstd
   RELEASE=$(curl -fsSL https://api.github.com/repos/matze/wastebin/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
   # Dirty-Fix 03/2025 for missing APP_version.txt on old installations, set to pre-latest release
-  msg_info "Running Migration"
+  msg_info "正在运行 Migration"
   if [[ ! -f /opt/${APP}_version.txt ]]; then
     echo "2.7.1" >/opt/${APP}_version.txt
     mkdir -p /opt/wastebin-data
@@ -59,11 +59,11 @@ EOF
   fi
   msg_ok "Migration Done"
   if [[ ! -f /opt/${APP}_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
-    msg_info "Stopping Wastebin"
+    msg_info "正在停止 Wastebin"
     systemctl stop wastebin
-    msg_ok "Wastebin Stopped"
+    msg_ok "Wastebin 已停止"
 
-    msg_info "Updating Wastebin"
+    msg_info "正在更新 Wastebin"
     temp_file=$(mktemp)
     curl -fsSL "https://github.com/matze/wastebin/releases/download/${RELEASE}/wastebin_${RELEASE}_x86_64-unknown-linux-musl.tar.zst" -o "$temp_file"
     tar -xf "$temp_file"
@@ -74,12 +74,12 @@ EOF
     echo "${RELEASE}" >/opt/${APP}_version.txt
     msg_ok "Updated Wastebin"
 
-    msg_info "Starting Wastebin"
+    msg_info "正在启动 Wastebin"
     systemctl start wastebin
-    msg_ok "Started Wastebin"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Wastebin"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at v${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at v${RELEASE}"
   fi
   exit
 }
@@ -88,7 +88,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8088${CL}"

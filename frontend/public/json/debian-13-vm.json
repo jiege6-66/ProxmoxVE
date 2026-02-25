@@ -13,7 +13,7 @@
   "website": "https://www.debian.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/debian.webp",
   "config_path": "",
-  "description": "Debian 13 (Trixie) Linux is a distribution that emphasizes free software. It supports many hardware platforms",
+  "description": "Debian 13 (Trixie) Linux 是一个强调自由软件的发行版。它支持多种硬件平台。",
   "install_methods": [
     {
       "type": "default",
@@ -37,7 +37,7 @@
       "type": "info"
     },
     {
-      "text": "For additional Debian commands and tips after installation, checkout: `https://github.com/community-scripts/ProxmoxVE/discussions/836`",  
+      "text": "For additional Debian commands and tips after installation, checkout: `https://github.com/community-scripts/ProxmoxVE/discussions/836`",
       "type": "info"
     },
     {

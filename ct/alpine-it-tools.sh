@@ -23,13 +23,13 @@ function update_script() {
   header_info
 
   if [ ! -d /usr/share/nginx/html ]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   RELEASE=$(curl -fsSL https://api.github.com/repos/sharevb/it-tools/releases/latest | grep '"tag_name":' | cut -d '"' -f4)
   if [ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ] || [ ! -f /opt/${APP}_version.txt ]; then
-    msg_info "Updating ${APP} LXC"
+    msg_info "正在更新 ${APP} LXC"
     curl -fsSL "https://github.com/sharevb/it-tools/releases/download/${RELEASE}/it-tools-${RELEASE#v}.zip" -o it-tools.zip
     mkdir -p /usr/share/nginx/html
     rm -rf /usr/share/nginx/html/*
@@ -37,9 +37,9 @@ function update_script() {
     cp -r /tmp/dist/* /usr/share/nginx/html
     rm -rf /tmp/dist
     rm -f it-tools.zip
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at ${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at ${RELEASE}"
   fi
   exit 0
 }
@@ -48,7 +48,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access it using the following IP:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

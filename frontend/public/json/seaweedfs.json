@@ -13,7 +13,7 @@
   "website": "https://seaweedfs.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/seaweedfs.webp",
   "config_path": "",
-  "description": "SeaweedFS is a fast distributed storage system for blobs, objects, files, and data lakes, with O(1) disk seek, S3 API, FUSE mount, WebDAV, and cloud tiering support.",
+  "description": "SeaweedFS 是一个快速的分布式存储系统，用于存储二进制对象、对象、文件和数据湖，具有 O(1) 磁盘寻址、S3 API、FUSE 挂载、WebDAV 和云分层支持。",
   "install_methods": [
     {
       "type": "default",

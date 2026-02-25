@@ -15,7 +15,7 @@ update_os
 
 setup_mariadb
 
-msg_info "Setting up database"
+msg_info "正在设置 database"
 DB_NAME=itsmng_db
 DB_USER=itsmng
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -32,23 +32,23 @@ mariadb -u root -e "GRANT SELECT ON \`mysql\`.\`time_zone_name\` TO '$DB_USER'@'
 } >>~/itsmng_db.creds
 msg_ok "Set up database"
 
-msg_info "Setup ITSM-NG Repository"
+msg_info "设置 ITSM-NG Repository"
 setup_deb822_repo \
   "itsm-ng" \
   "http://deb.itsm-ng.org/pubkey.gpg" \
   "http://deb.itsm-ng.org/$(get_os_info id)/" \
   "$(get_os_info codename)"
-msg_ok "Setup ITSM-NG Repository"
+msg_ok "设置 ITSM-NG Repository"
 
-msg_info "Installing ITSM-NG"
+msg_info "正在安装 ITSM-NG"
 $STD apt install -y itsm-ng
 cd /usr/share/itsm-ng
 $STD php bin/console db:install --db-name=$DB_NAME --db-user=$DB_USER --db-password=$DB_PASS --no-interaction
 $STD a2dissite 000-default.conf
 echo "* * * * * php /usr/share/itsm-ng/front/cron.php" | crontab -
-msg_ok "Installed ITSM-NG"
+msg_ok "已安装 ITSM-NG"
 
-msg_info "Configuring PHP"
+msg_info "正在配置 PHP"
 PHP_VERSION=$(ls /etc/php/ | grep -E '^[0-9]+\.[0-9]+$' | head -n 1)
 PHP_INI="/etc/php/$PHP_VERSION/apache2/php.ini"
 sed -i 's/^upload_max_filesize = .*/upload_max_filesize = 20M/' $PHP_INI
@@ -59,7 +59,7 @@ sed -i 's/^memory_limit = .*/memory_limit = 256M/' $PHP_INI
 sed -i 's/^;\?\s*session.cookie_httponly\s*=.*/session.cookie_httponly = On/' $PHP_INI
 systemctl restart apache2
 rm -rf /usr/share/itsm-ng/install
-msg_ok "Configured PHP"
+msg_ok "已配置 PHP"
 
 motd_ssh
 customize

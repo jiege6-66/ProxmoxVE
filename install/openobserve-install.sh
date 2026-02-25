@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing OpenObserve"
+msg_info "正在安装 OpenObserve"
 mkdir -p /opt/openobserve/data
 RELEASE=$(get_latest_github_release "openobserve/openobserve")
 tar zxf <(curl -fsSL https://downloads.openobserve.ai/releases/openobserve/v$RELEASE/openobserve-v$RELEASE-linux-amd64.tar.gz) -C /opt/openobserve
@@ -26,9 +26,9 @@ ZO_DATA_DIR = "/opt/openobserve/data"
 ZO_HTTP_PORT = "5080"
 EOF
 echo "${RELEASE}" >>~/.openobserve
-msg_ok "Installed OpenObserve"
+msg_ok "已安装 OpenObserve"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/openobserve.service
 [Unit]
 Description=OpenObserve
@@ -45,7 +45,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now openobserve
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

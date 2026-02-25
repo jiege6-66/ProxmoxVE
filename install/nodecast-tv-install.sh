@@ -16,16 +16,16 @@ update_os
 fetch_and_deploy_gh_release "nodecast-tv" "technomancer702/nodecast-tv"
 setup_nodejs
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Modules"
+msg_info "正在安装 Modules"
 cd /opt/nodecast-tv
 $STD npm install
-msg_ok "Installed Modules"
+msg_ok "已安装 Modules"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/nodecast-tv.service
 [Unit]
 Description=nodecast-tv
@@ -43,7 +43,7 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now nodecast-tv
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

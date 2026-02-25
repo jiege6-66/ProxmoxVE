@@ -24,24 +24,24 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/koillection ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "koillection" "benjaminjonard/koillection"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop apache2
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     PHP_VERSION="8.5" PHP_APACHE="YES" setup_php
     setup_composer
 
-    msg_info "Creating a backup"
+    msg_info "正在创建 a backup"
     mv /opt/koillection/ /opt/koillection-backup
     msg_ok "Backup created"
 
     fetch_and_deploy_gh_release "koillection" "benjaminjonard/koillection" "tarball"
 
-    msg_info "Updating Koillection"
+    msg_info "正在更新 Koillection"
     cd /opt/koillection 
     cp -r /opt/koillection-backup/.env.local /opt/koillection
     cp -r /opt/koillection-backup/public/uploads/. /opt/koillection/public/uploads/
@@ -71,10 +71,10 @@ function update_script() {
     fi
     msg_ok "Updated Koillection"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start apache2
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -83,7 +83,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

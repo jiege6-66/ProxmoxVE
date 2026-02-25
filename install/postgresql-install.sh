@@ -121,15 +121,15 @@ include_dir = 'conf.d'
 EOF
 
 systemctl restart postgresql
-msg_ok "Installed PostgreSQL"
+msg_ok "已安装 PostgreSQL"
 
 read -r -p "${TAB3}Would you like to add Adminer? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Adminer"
+  msg_info "正在安装 Adminer"
   $STD apt install -y adminer
   $STD a2enconf adminer
   systemctl reload apache2
-  msg_ok "Installed Adminer"
+  msg_ok "已安装 Adminer"
 fi
 
 motd_ssh

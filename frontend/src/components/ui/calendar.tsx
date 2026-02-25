@@ -65,6 +65,6 @@ function Calendar({
     />
   );
 }
-Calendar.displayName = "Calendar";
+Calendar.displayName = "日历";
 
 export { Calendar };

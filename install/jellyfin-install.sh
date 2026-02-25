@@ -16,7 +16,7 @@ update_os
 msg_custom "ℹ️" "${GN}" "If NVIDIA GPU passthrough is detected, you'll be asked whether to install drivers in the container"
 setup_hwaccel
 
-msg_info "Installing Jellyfin"
+msg_info "正在安装 Jellyfin"
 VERSION="$(awk -F'=' '/^VERSION_CODENAME=/{ print $NF }' /etc/os-release)"
 if ! dpkg -s libjemalloc2 >/dev/null 2>&1; then
   $STD apt install -y libjemalloc2
@@ -60,7 +60,7 @@ if [[ "$CTTYPE" == "0" ]]; then
 else
   sed -i -e 's/^ssl-cert:x:104:$/render:x:104:jellyfin/' -e 's/^render:x:108:jellyfin$/ssl-cert:x:108:/' /etc/group
 fi
-msg_ok "Installed Jellyfin"
+msg_ok "已安装 Jellyfin"
 
 motd_ssh
 customize

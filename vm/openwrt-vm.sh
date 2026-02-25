@@ -22,7 +22,7 @@ function header_info {
 EOF
 }
 header_info
-echo -e "\n Loading..."
+echo -e "\n 正在加载..."
 RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)"
 METHOD=""
 NSAPP="openwrt-vm"
@@ -466,7 +466,7 @@ function advanced_settings() {
   echo -e "${DGN}Start VM when completed: ${BGN}$START_VM${CL}"
 
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create OpenWrt VM?" --no-button Do-Over 10 58); then
-    echo -e "${RD}Creating a OpenWrt VM using the above advanced settings${CL}"
+    echo -e "${RD}正在创建 a OpenWrt VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${RD}Using Advanced Settings${CL}"
@@ -530,13 +530,13 @@ URL="https://downloads.openwrt.org/releases/$stableversion/targets/x86/64/openwr
 msg_ok "${CL}${BL}${URL}${CL}"
 curl -f#SL -o "$(basename "$URL")" "$URL"
 FILE=$(basename "$URL")
-msg_ok "Downloaded ${CL}${BL}$FILE${CL}"
+msg_ok "已下载 ${CL}${BL}$FILE${CL}"
 
 gunzip -f "$FILE" >/dev/null 2>&1 || true
 FILE="${FILE%.*}"
-msg_ok "Extracted OpenWrt Disk Image ${CL}${BL}$FILE${CL}"
+msg_ok "已解压 OpenWrt Disk Image ${CL}${BL}$FILE${CL}"
 
-msg_info "Creating OpenWrt VM"
+msg_info "正在创建 OpenWrt VM"
 qm create $VMID -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
   -onboot 1 -ostype l26 -scsihw virtio-scsi-pci --tablet 0
 if [[ "$(pvesm status | awk -v s=$STORAGE '$1==s {print $2}')" == "dir" ]]; then
@@ -602,7 +602,7 @@ EOF
 )
 qm set $VMID -description "$DESCRIPTION" >/dev/null
 
-msg_ok "Created OpenWrt VM ${CL}${BL}(${HN})"
+msg_ok "已创建 OpenWrt VM ${CL}${BL}(${HN})"
 msg_info "OpenWrt is being started in order to configure the network interfaces."
 qm start $VMID
 sleep 15
@@ -644,16 +644,16 @@ until qm status "$VMID" | grep -q "stopped"; do
 done
 msg_ok "OpenWrt has shut down"
 
-msg_info "Adding bridge interfaces on Proxmox side"
+msg_info "正在添加 bridge interfaces on Proxmox side"
 qm set $VMID \
   -net0 virtio,bridge=${LAN_BRG},macaddr=${LAN_MAC}${LAN_VLAN}${MTU} \
   -net1 virtio,bridge=${BRG},macaddr=${MAC}${VLAN}${MTU} >/dev/null
 msg_ok "Bridge interfaces added"
 
 if [ "$START_VM" = "yes" ]; then
-  msg_info "Starting OpenWrt VM"
+  msg_info "正在启动 OpenWrt VM"
   qm start $VMID
-  msg_ok "Started OpenWrt VM"
+  msg_ok "已启动 OpenWrt VM"
 fi
 
 VLAN_FINISH=""
@@ -661,4 +661,4 @@ if [ -z "$VLAN" ] && [ "$VLAN2" != "999" ]; then
   VLAN_FINISH=" Please remember to adjust the VLAN tags to suit your network."
 fi
 post_update_to_api "done" "none"
-msg_ok "Completed Successfully!${VLAN_FINISH:+\n$VLAN_FINISH}"
+msg_ok "已成功完成！${VLAN_FINISH:+\n$VLAN_FINISH}"

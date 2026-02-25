@@ -14,7 +14,7 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   python3-dev \
@@ -26,7 +26,7 @@ $STD apt install -y \
   vlc-bin \
   vlc-plugin-base \
   streamlink
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_uv
 NODE_VERSION="24" setup_nodejs
@@ -34,14 +34,14 @@ PG_VERSION="16" setup_postgresql
 PG_DB_NAME="dispatcharr_db" PG_DB_USER="dispatcharr_usr" setup_postgresql_db
 fetch_and_deploy_gh_release "dispatcharr" "Dispatcharr/Dispatcharr" "tarball"
 
-msg_info "Installing Python Dependencies with uv"
+msg_info "正在安装 Python 依赖 with uv"
 cd /opt/dispatcharr
 $STD uv venv --clear
 $STD uv sync
 $STD uv pip install gunicorn gevent celery redis daphne
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Configuring Dispatcharr"
+msg_info "正在配置 Dispatcharr"
 install -d -m 755 \
   /data/{logos,recordings,plugins,db} \
   /data/uploads/{m3us,epgs} \
@@ -68,9 +68,9 @@ EOF
 cd /opt/dispatcharr/frontend
 $STD npm install --legacy-peer-deps
 $STD npm run build
-msg_ok "Configured Dispatcharr"
+msg_ok "已配置 Dispatcharr"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<EOF >/etc/nginx/sites-available/dispatcharr.conf
 server {
     listen 9191;
@@ -126,9 +126,9 @@ EOF
 ln -sf /etc/nginx/sites-available/dispatcharr.conf /etc/nginx/sites-enabled/dispatcharr.conf
 rm -f /etc/nginx/sites-enabled/default
 systemctl restart nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/opt/dispatcharr/start-gunicorn.sh
 #!/usr/bin/env bash
 cd /opt/dispatcharr
@@ -245,7 +245,7 @@ User=root
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now dispatcharr dispatcharr-celery dispatcharr-celerybeat dispatcharr-daphne
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

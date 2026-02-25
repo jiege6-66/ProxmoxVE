@@ -24,22 +24,22 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/joplin-server ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   NODE_VERSION=24 NODE_MODULE="yarn,npm,pm2" setup_nodejs
 
   if check_for_gh_release "joplin-server" "laurent22/joplin"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop joplin-server
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
     cp /opt/joplin-server/.env /opt
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "joplin-server" "laurent22/joplin" "tarball"
     mv /opt/.env /opt/joplin-server
 
-    msg_info "Updating Joplin-Server"
+    msg_info "正在更新 Joplin-Server"
     cd /opt/joplin-server
     sed -i "/onenote-converter/d" packages/lib/package.json
     $STD yarn config set --home enableTelemetry 0
@@ -49,10 +49,10 @@ function update_script() {
     $STD yarn workspaces foreach -R --topological-dev --from @joplin/server run tsc
     msg_ok "Updated Joplin-Server"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start joplin-server
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -61,7 +61,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:22300${CL}"

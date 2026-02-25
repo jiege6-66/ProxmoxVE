@@ -13,7 +13,7 @@
   "config_path": "/etc/passbolt/passbolt.php",
   "website": "https://www.passbolt.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/passbolt.webp",
-  "description": "Passbolt is a hybrid credential platform. It is built-first for modern IT teams, yet simple enough for everyone. A sovereign, battle-tested solution that delivers for a team of 5, or an organisation of 5000.",
+  "description": "Passbolt 是一个混合凭证平台。它首先为现代 IT 团队构建,但足够简单,适合所有人使用。一个经过实战检验的主权解决方案,可为 5 人团队或 5000 人组织提供服务。",
   "install_methods": [
     {
       "type": "default",

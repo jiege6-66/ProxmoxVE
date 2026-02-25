@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Transmission"
+msg_info "正在安装 Transmission"
 $STD apt install -y transmission-daemon
 systemctl stop transmission-daemon
 sed -i '{s/"rpc-whitelist-enabled": true/"rpc-whitelist-enabled": false/g; s/"rpc-host-whitelist-enabled": true,/"rpc-host-whitelist-enabled": false,/g}' /etc/transmission-daemon/settings.json
 systemctl start transmission-daemon
-msg_ok "Installed Transmission"
+msg_ok "已安装 Transmission"
 
 motd_ssh
 customize

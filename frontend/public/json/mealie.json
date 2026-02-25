@@ -13,7 +13,7 @@
   "documentation": "https://mealie.io/",
   "website": "https://mealie.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mealie.webp",
-  "description": "Mealie is a self hosted recipe manager, meal planner and shopping list with a RestAPI backend and a reactive frontend built in Vue for a pleasant user experience for the whole family. Easily add recipes into your database by providing the URL and Mealie will automatically import the relevant data, or add a family recipe with the UI editor. Mealie also provides an API for interactions from 3rd party applications.",
+  "description": "Mealie 是一个自托管的食谱管理器、膳食计划器和购物清单，具有 RestAPI 后端和用 Vue 构建的响应式前端，为全家人提供愉快的用户体验。通过提供 URL 轻松将食谱添加到数据库中，Mealie 将自动导入相关数据，或使用 UI 编辑器添加家庭食谱。Mealie 还提供 API 供第三方应用程序交互。",
   "install_methods": [
     {
       "type": "default",

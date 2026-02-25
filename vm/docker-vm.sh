@@ -163,7 +163,7 @@ function default_settings() {
   echo -e "${VLANTAG}${BOLD}${DGN}VLAN: ${BGN}Default${CL}"
   echo -e "${DEFAULT}${BOLD}${DGN}Interface MTU Size: ${BGN}Default${CL}"
   echo -e "${GATEWAY}${BOLD}${DGN}Start VM when completed: ${BGN}yes${CL}"
-  echo -e "${CREATING}${BOLD}${DGN}Creating a Docker VM using the above settings${CL}"
+  echo -e "${CREATING}${BOLD}${DGN}正在创建 a Docker VM using the above settings${CL}"
 }
 
 function advanced_settings() {
@@ -353,7 +353,7 @@ function advanced_settings() {
 
   # Confirm
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create a Docker VM?" --no-button Do-Over 10 58); then
-    echo -e "${CREATING}${BOLD}${DGN}Creating a Docker VM using the above advanced settings${CL}"
+    echo -e "${CREATING}${BOLD}${DGN}正在创建 a Docker VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${ADVANCED}${BOLD}${RD}Using Advanced Settings${CL}"
@@ -430,11 +430,11 @@ msg_ok "Virtual Machine ID is ${CL}${BL}$VMID${CL}."
 # PREREQUISITES
 # ==============================================================================
 if ! command -v virt-customize &>/dev/null; then
-  msg_info "Installing libguestfs-tools"
+  msg_info "正在安装 libguestfs-tools"
   apt-get -qq update >/dev/null
   apt-get -qq install libguestfs-tools lsb-release -y >/dev/null
   apt-get -qq install dhcpcd-base -y >/dev/null 2>&1 || true
-  msg_ok "Installed libguestfs-tools"
+  msg_ok "已安装 libguestfs-tools"
 fi
 
 # ==============================================================================
@@ -450,7 +450,7 @@ msg_ok "${CL}${BL}${URL}${CL}"
 if [[ ! -s "$CACHE_FILE" ]]; then
   curl -f#SL -o "$CACHE_FILE" "$URL"
   echo -en "\e[1A\e[0K"
-  msg_ok "Downloaded ${CL}${BL}$(basename "$CACHE_FILE")${CL}"
+  msg_ok "已下载 ${CL}${BL}$(basename "$CACHE_FILE")${CL}"
 else
   msg_ok "Using cached image ${CL}${BL}$(basename "$CACHE_FILE")${CL}"
 fi
@@ -493,16 +493,16 @@ export LIBGUESTFS_BACKEND_SETTINGS=dns=8.8.8.8,1.1.1.1
 DOCKER_PREINSTALLED="no"
 
 # Install qemu-guest-agent and Docker during image customization
-msg_info "Installing base packages in image"
+msg_info "正在安装 base packages in image"
 if virt-customize -a "$WORK_FILE" --install qemu-guest-agent,curl,ca-certificates >/dev/null 2>&1; then
-  msg_ok "Installed base packages"
+  msg_ok "已安装 base packages"
 
-  msg_info "Installing Docker (this may take 2-5 minutes)"
+  msg_info "正在安装 Docker (this may take 2-5 minutes)"
   if virt-customize -q -a "$WORK_FILE" --run-command "curl -fsSL https://get.docker.com | sh" >/dev/null 2>&1 &&
     virt-customize -q -a "$WORK_FILE" --run-command "systemctl enable docker" >/dev/null 2>&1; then
-    msg_ok "Installed Docker"
+    msg_ok "已安装 Docker"
 
-    msg_info "Configuring Docker daemon"
+    msg_info "正在配置 Docker daemon"
     # Optimize Docker daemon configuration
     virt-customize -q -a "$WORK_FILE" --run-command "mkdir -p /etc/docker" >/dev/null 2>&1
     virt-customize -q -a "$WORK_FILE" --run-command 'cat > /etc/docker/daemon.json << EOF
@@ -516,7 +516,7 @@ if virt-customize -a "$WORK_FILE" --install qemu-guest-agent,curl,ca-certificate
 }
 EOF' >/dev/null 2>&1
     DOCKER_PREINSTALLED="yes"
-    msg_ok "Configured Docker daemon"
+    msg_ok "已配置 Docker daemon"
   else
     msg_ok "Docker will be installed on first boot"
   fi
@@ -556,7 +556,7 @@ if [ "$DOCKER_PREINSTALLED" = "no" ]; then
   if virt-customize -q -a "$WORK_FILE" --run-command 'cat > /root/install-docker.sh << "DOCKERSCRIPT"
 #!/bin/bash
 exec > /var/log/install-docker.log 2>&1
-echo "[$(date)] Starting Docker installation"
+echo "[$(date)] 正在启动 Docker installation"
 
 for i in {1..30}; do
   ping -c 1 8.8.8.8 >/dev/null 2>&1 && break
@@ -614,17 +614,17 @@ msg_ok "Resized disk image"
 # ==============================================================================
 # VM CREATION
 # ==============================================================================
-msg_info "Creating Docker VM shell"
+msg_info "正在创建 Docker VM shell"
 
 qm create $VMID -agent 1${MACHINE} -tablet 0 -localtime 1 -bios ovmf${CPU_TYPE} -cores $CORE_COUNT -memory $RAM_SIZE \
   -name $HN -tags community-script -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU -onboot 1 -ostype l26 -scsihw virtio-scsi-pci >/dev/null
 
-msg_ok "Created VM shell"
+msg_ok "已创建 VM shell"
 
 # ==============================================================================
 # DISK IMPORT
 # ==============================================================================
-msg_info "Importing disk into storage ($STORAGE)"
+msg_info "正在导入 disk into storage ($STORAGE)"
 
 if qm disk import --help >/dev/null 2>&1; then
   IMPORT_CMD=(qm disk import)
@@ -641,7 +641,7 @@ DISK_REF_IMPORTED="$(printf '%s\n' "$IMPORT_OUT" | sed -n "s/.*successfully impo
   exit 1
 }
 
-msg_ok "Imported disk (${CL}${BL}${DISK_REF_IMPORTED}${CL})"
+msg_ok "已导入 disk (${CL}${BL}${DISK_REF_IMPORTED}${CL})"
 
 # Clean up work file
 rm -f "$WORK_FILE"
@@ -666,16 +666,16 @@ set_description
 
 # Cloud-Init configuration
 if [ "$USE_CLOUD_INIT" = "yes" ]; then
-  msg_info "Configuring Cloud-Init"
+  msg_info "正在配置 Cloud-Init"
   setup_cloud_init "$VMID" "$STORAGE" "$HN" "yes"
   msg_ok "Cloud-Init configured"
 fi
 
 # Start VM
 if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Docker VM"
+  msg_info "正在启动 Docker VM"
   qm start $VMID >/dev/null 2>&1
-  msg_ok "Started Docker VM"
+  msg_ok "已启动 Docker VM"
 fi
 
 # ==============================================================================
@@ -703,7 +703,7 @@ echo -e "${TAB}${DGN}OS: ${BGN}${OS_DISPLAY}${CL}"
 if [ "$DOCKER_PREINSTALLED" = "yes" ]; then
   echo -e "${TAB}${DGN}Docker: ${BGN}Pre-installed (via get.docker.com)${CL}"
 else
-  echo -e "${TAB}${DGN}Docker: ${BGN}Installing on first boot${CL}"
+  echo -e "${TAB}${DGN}Docker: ${BGN}正在安装 on first boot${CL}"
   echo -e "${TAB}${YW}⚠️  Wait 2-3 minutes for installation to complete${CL}"
   echo -e "${TAB}${YW}⚠️  Check progress: ${BL}cat /var/log/install-docker.log${CL}"
 fi
@@ -713,4 +713,4 @@ if [ "$USE_CLOUD_INIT" = "yes" ]; then
 fi
 
 post_update_to_api "done" "none"
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"

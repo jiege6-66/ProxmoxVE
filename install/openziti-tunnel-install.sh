@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing openziti"
+msg_info "正在安装 openziti"
 mkdir -p --mode=0755 /usr/share/keyrings
 curl -sSLf https://get.openziti.io/tun/package-repos.gpg | gpg --dearmor -o /usr/share/keyrings/openziti.gpg
 cat <<EOF >/etc/apt/sources.list.d/openziti.sources
@@ -27,15 +27,15 @@ $STD apt update
 $STD apt install -y ziti-edge-tunnel
 sed -i '0,/^ExecStart/ { /^ExecStart/ { n; s|^ExecStart.*|ExecStart=/opt/openziti/bin/ziti-edge-tunnel run-host --verbose=${ZITI_VERBOSE} --identity-dir=${ZITI_IDENTITY_DIR}| } }' /usr/lib/systemd/system/ziti-edge-tunnel.service
 systemctl daemon-reload
-msg_ok "Installed openziti"
+msg_ok "已安装 openziti"
 
 read -r -p "${TAB3}Please paste an identity enrollment token(JTW)" prompt
 if [[ ${prompt} ]]; then
-  msg_info "Adding identity"
+  msg_info "正在添加 identity"
   echo "${prompt}" >/opt/openziti/etc/identities/identity.jwt
   chown ziti:ziti /opt/openziti/etc/identities/identity.jwt
   systemctl enable -q --now ziti-edge-tunnel
-  msg_ok "Service Started"
+  msg_ok "Service 已启动"
 else
   systemctl enable -q ziti-edge-tunnel
   msg_error "No identity provided; please place an identity file in /opt/openziti/etc/identities/ and restart the service"

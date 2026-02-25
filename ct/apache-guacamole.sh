@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/apache-guacamole ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -53,13 +53,13 @@ function update_script() {
 
   JAVA_VERSION="17" setup_java
 
-  msg_info "Stopping Services"
+  msg_info "正在停止 Services"
   systemctl stop guacd tomcat
-  msg_ok "Stopped Services"
+  msg_ok "已停止 Services"
 
   # Update Tomcat
   if [[ "$CURRENT_TOMCAT" != "$LATEST_TOMCAT" ]]; then
-    msg_info "Updating Tomcat (${CURRENT_TOMCAT} → ${LATEST_TOMCAT})"
+    msg_info "正在更新 Tomcat (${CURRENT_TOMCAT} → ${LATEST_TOMCAT})"
     cp -a /opt/apache-guacamole/tomcat9/conf /tmp/tomcat-conf-backup
     curl -fsSL "https://dlcdn.apache.org/tomcat/tomcat-9/v${LATEST_TOMCAT}/bin/apache-tomcat-${LATEST_TOMCAT}.tar.gz" | tar -xz -C /opt/apache-guacamole/tomcat9 --strip-components=1 --exclude='conf/*'
     cp -a /tmp/tomcat-conf-backup/* /opt/apache-guacamole/tomcat9/conf/
@@ -68,12 +68,12 @@ function update_script() {
     echo "${LATEST_TOMCAT}" >~/.guacamole_tomcat
     msg_ok "Updated Tomcat"
   else
-    msg_ok "Tomcat already up to date (${CURRENT_TOMCAT})"
+    msg_ok "Tomcat 已是最新 (${CURRENT_TOMCAT})"
   fi
 
   # Update Guacamole Server
   if [[ "$CURRENT_SERVER" != "$LATEST_SERVER" ]]; then
-    msg_info "Updating Guacamole Server (${CURRENT_SERVER} → ${LATEST_SERVER})"
+    msg_info "正在更新 Guacamole Server (${CURRENT_SERVER} → ${LATEST_SERVER})"
     rm -rf /opt/apache-guacamole/server/*
     curl -fsSL "https://api.github.com/repos/apache/guacamole-server/tarball/refs/tags/${LATEST_SERVER}" | tar -xz --strip-components=1 -C /opt/apache-guacamole/server
     cd /opt/apache-guacamole/server
@@ -87,7 +87,7 @@ function update_script() {
     msg_ok "Updated Guacamole Server"
 
     # Auth JDBC follows server version
-    msg_info "Updating Guacamole Auth JDBC"
+    msg_info "正在更新 Guacamole Auth JDBC"
     rm -f /etc/guacamole/extensions/guacamole-auth-jdbc-mysql-*.jar
     curl -fsSL "https://downloads.apache.org/guacamole/${LATEST_SERVER}/binary/guacamole-auth-jdbc-${LATEST_SERVER}.tar.gz" -o "/tmp/guacamole-auth-jdbc.tar.gz"
     $STD tar -xf /tmp/guacamole-auth-jdbc.tar.gz -C /tmp
@@ -95,27 +95,27 @@ function update_script() {
     echo "${LATEST_SERVER}" >~/.guacamole_auth_jdbc
     msg_ok "Updated Guacamole Auth JDBC"
   else
-    msg_ok "Guacamole Server already up to date (${CURRENT_SERVER})"
+    msg_ok "Guacamole Server 已是最新 (${CURRENT_SERVER})"
   fi
 
   # Update Guacamole Client
   if [[ "$CURRENT_CLIENT" != "$LATEST_CLIENT" ]]; then
-    msg_info "Updating Guacamole Client (${CURRENT_CLIENT} → ${LATEST_CLIENT})"
+    msg_info "正在更新 Guacamole Client (${CURRENT_CLIENT} → ${LATEST_CLIENT})"
     curl -fsSL "https://downloads.apache.org/guacamole/${LATEST_CLIENT}/binary/guacamole-${LATEST_CLIENT}.war" -o "/opt/apache-guacamole/tomcat9/webapps/guacamole.war"
     echo "${LATEST_CLIENT}" >~/.guacamole_client
     msg_ok "Updated Guacamole Client"
   else
-    msg_ok "Guacamole Client already up to date (${CURRENT_CLIENT})"
+    msg_ok "Guacamole Client 已是最新 (${CURRENT_CLIENT})"
   fi
 
   # Update MySQL Connector
   if [[ "$CURRENT_MYSQL_CONNECTOR" != "$LATEST_MYSQL_CONNECTOR" ]]; then
-    msg_info "Updating MySQL Connector (${CURRENT_MYSQL_CONNECTOR} → ${LATEST_MYSQL_CONNECTOR})"
+    msg_info "正在更新 MySQL Connector (${CURRENT_MYSQL_CONNECTOR} → ${LATEST_MYSQL_CONNECTOR})"
     curl -fsSL "https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/${LATEST_MYSQL_CONNECTOR}/mysql-connector-j-${LATEST_MYSQL_CONNECTOR}.jar" -o "/etc/guacamole/lib/mysql-connector-j.jar"
     echo "${LATEST_MYSQL_CONNECTOR}" >~/.guacamole_mysql_connector
     msg_ok "Updated MySQL Connector"
   else
-    msg_ok "MySQL Connector already up to date (${CURRENT_MYSQL_CONNECTOR})"
+    msg_ok "MySQL Connector 已是最新 (${CURRENT_MYSQL_CONNECTOR})"
   fi
 
   # Apply SQL Schema Upgrades (CRITICAL!)
@@ -134,7 +134,7 @@ function update_script() {
           if [[ $? -eq 0 ]]; then
             msg_ok "Applied ${SQL_FILE}"
           else
-            msg_warn "Failed to apply ${SQL_FILE} (may already be applied)"
+            msg_warn "无法 apply ${SQL_FILE} (may already be applied)"
           fi
         fi
       done
@@ -146,7 +146,7 @@ function update_script() {
   # Check and upgrade optional extensions
   # TOTP Extension
   if [[ -f /etc/guacamole/extensions/guacamole-auth-totp-*.jar ]]; then
-    msg_info "Updating TOTP Extension"
+    msg_info "正在更新 TOTP Extension"
     rm -f /etc/guacamole/extensions/guacamole-auth-totp-*.jar
     curl -fsSL "https://downloads.apache.org/guacamole/${LATEST_SERVER}/binary/guacamole-auth-totp-${LATEST_SERVER}.tar.gz" -o "/tmp/guacamole-auth-totp.tar.gz"
     $STD tar -xf /tmp/guacamole-auth-totp.tar.gz -C /tmp
@@ -158,7 +158,7 @@ function update_script() {
 
   # DUO Extension
   if [[ -f /etc/guacamole/extensions/guacamole-auth-duo-*.jar ]]; then
-    msg_info "Updating DUO Extension"
+    msg_info "正在更新 DUO Extension"
     rm -f /etc/guacamole/extensions/guacamole-auth-duo-*.jar
     curl -fsSL "https://downloads.apache.org/guacamole/${LATEST_SERVER}/binary/guacamole-auth-duo-${LATEST_SERVER}.tar.gz" -o "/tmp/guacamole-auth-duo.tar.gz"
     $STD tar -xf /tmp/guacamole-auth-duo.tar.gz -C /tmp
@@ -170,7 +170,7 @@ function update_script() {
 
   # LDAP Extension
   if [[ -f /etc/guacamole/extensions/guacamole-auth-ldap-*.jar ]]; then
-    msg_info "Updating LDAP Extension"
+    msg_info "正在更新 LDAP Extension"
     rm -f /etc/guacamole/extensions/guacamole-auth-ldap-*.jar
     curl -fsSL "https://downloads.apache.org/guacamole/${LATEST_SERVER}/binary/guacamole-auth-ldap-${LATEST_SERVER}.tar.gz" -o "/tmp/guacamole-auth-ldap.tar.gz"
     $STD tar -xf /tmp/guacamole-auth-ldap.tar.gz -C /tmp
@@ -182,7 +182,7 @@ function update_script() {
 
   # Quick Connect Extension
   if [[ -f /etc/guacamole/extensions/guacamole-auth-quickconnect-*.jar ]]; then
-    msg_info "Updating Quick Connect Extension"
+    msg_info "正在更新 Quick Connect Extension"
     rm -f /etc/guacamole/extensions/guacamole-auth-quickconnect-*.jar
     curl -fsSL "https://downloads.apache.org/guacamole/${LATEST_SERVER}/binary/guacamole-auth-quickconnect-${LATEST_SERVER}.tar.gz" -o "/tmp/guacamole-auth-quickconnect.tar.gz"
     $STD tar -xf /tmp/guacamole-auth-quickconnect.tar.gz -C /tmp
@@ -194,7 +194,7 @@ function update_script() {
 
   # History Recording Storage Extension
   if [[ -f /etc/guacamole/extensions/guacamole-history-recording-storage-*.jar ]]; then
-    msg_info "Updating History Recording Storage Extension"
+    msg_info "正在更新 History Recording Storage Extension"
     rm -f /etc/guacamole/extensions/guacamole-history-recording-storage-*.jar
     curl -fsSL "https://downloads.apache.org/guacamole/${LATEST_SERVER}/binary/guacamole-history-recording-storage-${LATEST_SERVER}.tar.gz" -o "/tmp/guacamole-history-recording-storage.tar.gz"
     $STD tar -xf /tmp/guacamole-history-recording-storage.tar.gz -C /tmp
@@ -212,11 +212,11 @@ function update_script() {
   chown daemon:daemon /home/daemon/.config/freerdp
   msg_ok "Permissions reset"
 
-  msg_info "Starting Services"
+  msg_info "正在启动 Services"
   systemctl daemon-reload
   systemctl start tomcat guacd
-  msg_ok "Started Services"
-  msg_ok "Updated successfully!"
+  msg_ok "已启动 Services"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -224,7 +224,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080/guacamole${CL}"

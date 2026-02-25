@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   ca-certificates \
@@ -21,7 +21,7 @@ $STD apt install -y \
   graphicsmagick \
   ghostscript \
   ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "monolith" "Y2Z/monolith" "singlefile" "latest" "/usr/bin" "monolith-gnu-linux-x86_64"
 fetch_and_deploy_gh_release "yt-dlp" "yt-dlp/yt-dlp-nightly-builds" "singlefile" "latest" "/usr/bin" "yt-dlp_linux"
@@ -32,7 +32,7 @@ cd /opt/karakeep
 MODULE_VERSION="$(jq -r '.packageManager | split("@")[1]' /opt/karakeep/package.json)"
 NODE_VERSION="24" NODE_MODULE="pnpm@${MODULE_VERSION}" setup_nodejs
 
-msg_info "Installing karakeep"
+msg_info "正在安装 karakeep"
 export PUPPETEER_SKIP_DOWNLOAD="true"
 export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="true"
 export NEXT_TELEMETRY_DISABLED=1
@@ -87,15 +87,15 @@ DB_WAL_MODE=true
 # CRAWLER_VIDEO_DOWNLOAD_MAX_SIZE="50"
 # CRAWLER_ENABLE_ADBLOCKER=true
 EOF
-msg_ok "Installed karakeep"
+msg_ok "已安装 karakeep"
 
-msg_info "Running Database Migration"
+msg_info "正在运行 Database Migration"
 mkdir -p ${DATA_DIR}
 cd /opt/karakeep/packages/db
 $STD pnpm migrate
 msg_ok "Database Migration Completed"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/karakeep-web.service
 [Unit]
 Description=karakeep Web
@@ -144,7 +144,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now karakeep-browser karakeep-workers karakeep-web
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

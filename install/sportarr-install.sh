@@ -14,16 +14,16 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   ffmpeg \
   gosu \
   sqlite3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "sportarr" "Sportarr/Sportarr" "prebuild" "latest" "/opt/sportarr" "Sportarr-linux-x64-*.tar.gz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/opt/sportarr/.env
 Sportarr__DataPath="/opt/sportarr-data/config"
 ASPNETCORE_URLS="http://*:1867"
@@ -47,7 +47,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now sportarr
-msg_info "Created Service"
+msg_info "已创建 Service"
 
 motd_ssh
 customize

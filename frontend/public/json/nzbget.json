@@ -13,7 +13,7 @@
   "website": "https://nzbget.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/nzbget.webp",
   "config_path": "/usr/share/nzbget/nzbget.conf",
-  "description": "NZBGet is a Usenet downloader focused on efficiency and performance, designed to handle NZB files for downloading content from Usenet. It automates downloading, checking, repairing, and extracting files, optimizing resources to run well on lower-powered devices.",
+  "description": "NZBGet 是一个专注于效率和性能的 Usenet 下载器，旨在处理 NZB 文件以从 Usenet 下载内容。它自动化下载、检查、修复和提取文件，优化资源以在低功耗设备上良好运行。",
   "install_methods": [
     {
       "type": "default",

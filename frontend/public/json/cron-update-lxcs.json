@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script will add/remove a crontab schedule that updates the operating system of all LXCs every Sunday at midnight.",
+  "description": "此脚本将添加/删除一个 crontab 计划任务，在每周日午夜更新所有 LXC 的操作系统。",
   "install_methods": [
     {
       "type": "default",

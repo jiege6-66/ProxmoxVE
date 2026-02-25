@@ -25,26 +25,26 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/photoprism ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "photoprism" "photoprism/photoprism"; then
-    msg_info "Stopping PhotoPrism"
+    msg_info "正在停止 PhotoPrism"
     systemctl stop photoprism
-    msg_ok "Stopped PhotoPrism"
+    msg_ok "已停止 PhotoPrism"
 
     if ! grep -q "photoprism/config/.env" ~/.bashrc 2>/dev/null; then
-      msg_info "Adding environment export for CLI tools"
+      msg_info "正在添加 environment export for CLI tools"
       echo '# Load PhotoPrism environment variables for CLI tools' >>~/.bashrc
       echo 'export $(grep -v "^#" /opt/photoprism/config/.env | xargs)' >>~/.bashrc
-      msg_ok "Added environment export"
+      msg_ok "已添加 environment export"
     fi
 
     fetch_and_deploy_gh_release "photoprism" "photoprism/photoprism" "prebuild" "latest" "/opt/photoprism" "*linux-amd64.tar.gz"
 
     LIBHEIF_URL=$(curl -fsSL "https://dl.photoprism.app/dist/libheif/" | grep -oP "libheif-bookworm-amd64-v[0-9\.]+\.tar\.gz" | sort -V | tail -n 1)
     if [[ "${LIBHEIF_URL}" != "$(cat ~/.photoprism_libheif 2>/dev/null)" ]] || [[ ! -f ~/.photoprism_libheif ]]; then
-      msg_info "Updating PhotoPrism LibHeif"
+      msg_info "正在更新 PhotoPrism LibHeif"
       ensure_dependencies libvips42
       curl -fsSL "https://dl.photoprism.app/dist/libheif/$LIBHEIF_URL" -o /tmp/libheif.tar.gz
       tar -xzf /tmp/libheif.tar.gz -C /usr/local
@@ -53,10 +53,10 @@ function update_script() {
       msg_ok "Updated PhotoPrism LibHeif"
     fi
 
-    msg_info "Starting PhotoPrism"
+    msg_info "正在启动 PhotoPrism"
     systemctl start photoprism
-    msg_ok "Started PhotoPrism"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 PhotoPrism"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -65,7 +65,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:2342${CL}"

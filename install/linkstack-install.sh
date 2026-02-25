@@ -16,7 +16,7 @@ update_os
 PHP_VERSION="8.3" PHP_APACHE="YES" setup_php
 fetch_and_deploy_gh_release "linkstack" "linkstackorg/linkstack" "prebuild" "latest" "/var/www/html/" "linkstack.zip"
 
-msg_info "Configuring LinkStack"
+msg_info "正在配置 LinkStack"
 $STD a2enmod rewrite
 chown -R www-data:www-data /var/www/html/linkstack
 chmod -R 755 /var/www/html/linkstack
@@ -37,7 +37,7 @@ EOF
 $STD a2dissite 000-default.conf
 $STD a2ensite linkstack.conf
 $STD systemctl restart apache2
-msg_ok "Configured LinkStack"
+msg_ok "已配置 LinkStack"
 
 motd_ssh
 customize

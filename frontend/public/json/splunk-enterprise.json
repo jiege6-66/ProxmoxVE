@@ -13,7 +13,7 @@
   "config_path": "",
   "website": "https://www.splunk.com/en_us/download/splunk-enterprise.html",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/splunk-light.webp",
-  "description": "Platform for searching, monitoring, and analyzing machine-generated data at scale for operational intelligence and security.",
+  "description": "用于搜索、监控和分析大规模机器生成数据的平台，用于运营智能和安全。",
   "install_methods": [
     {
       "type": "default",

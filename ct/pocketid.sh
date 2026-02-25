@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/pocket-id ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -38,7 +38,7 @@ function update_script() {
   if check_for_gh_release "pocket-id" "pocket-id/pocket-id"; then
     if [ "$(printf '%s\n%s' "$(cat ~/.pocket-id 2>/dev/null || echo 0.0.0)" "1.0.0" | sort -V | head -n1)" = "$(cat ~/.pocket-id 2>/dev/null || echo 0.0.0)" ] &&
       [ "$(cat ~/.pocket-id 2>/dev/null || echo 0.0.0)" != "1.0.0" ]; then
-      msg_info "Migrating ${APP}"
+      msg_info "正在迁移 ${APP}"
       systemctl -q disable --now pocketid-backend pocketid-frontend caddy
       mv /etc/caddy/Caddyfile ~/Caddyfile.bak
       $STD apt remove --purge caddy nodejs -y
@@ -64,19 +64,19 @@ function update_script() {
       mv /opt/data /opt/pocket-id
       msg_ok "Migration complete. The reverse proxy port has been changed to 1411."
     else
-      msg_info "Stopping Service"
+      msg_info "正在停止 Service"
       systemctl stop pocketid
-      msg_ok "Stopped Service"
+      msg_ok "已停止 Service"
       cp /opt/pocket-id/.env /opt/env
     fi
 
     fetch_and_deploy_gh_release "pocket-id" "pocket-id/pocket-id" "singlefile" "latest" "/opt/pocket-id/" "pocket-id-linux-amd64"
     mv /opt/env /opt/pocket-id/.env
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start pocketid
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -85,8 +85,8 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Configure your reverse proxy to point to:${BGN} ${IP}:1411${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://{PUBLIC_URL}/setup${CL}"

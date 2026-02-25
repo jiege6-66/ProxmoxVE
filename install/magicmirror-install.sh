@@ -16,7 +16,7 @@ update_os
 NODE_VERSION="24" setup_nodejs
 fetch_and_deploy_gh_release "magicmirror" "MagicMirrorOrg/MagicMirror" "tarball"
 
-msg_info "Configuring MagicMirror"
+msg_info "正在配置 MagicMirror"
 cd /opt/magicmirror
 sed -i -E 's/("postinstall": )".*"/\1""/; s/("prepare": )".*"/\1""/' package.json
 $STD npm run install-mm
@@ -109,9 +109,9 @@ let config = {
 /*************** DO NOT EDIT THE LINE BELOW ***************/
 if (typeof module !== "undefined") {module.exports = config;}
 EOF
-msg_ok "Configured MagicMirror"
+msg_ok "已配置 MagicMirror"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/magicmirror.service
 [Unit]
 Description=Magic Mirror
@@ -130,7 +130,7 @@ ExecStart=/usr/bin/npm run server
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now magicmirror
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

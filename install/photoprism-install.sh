@@ -14,7 +14,7 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y \
   exiftool \
   ffmpeg \
@@ -32,11 +32,11 @@ echo 'export PATH=/usr/local:$PATH' >>~/.bashrc
 echo '# Load PhotoPrism environment variables for CLI tools' >>~/.bashrc
 echo 'export $(grep -v "^#" /opt/photoprism/config/.env | xargs)' >>~/.bashrc
 export PATH=/usr/local:$PATH
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "photoprism" "photoprism/photoprism" "prebuild" "latest" "/opt/photoprism" "*linux-amd64.tar.gz"
 
-msg_info "Installing PhotoPrism (Patience)"
+msg_info "正在安装 PhotoPrism (Patience)"
 mkdir -p /opt/photoprism/{cache,config,photos,storage,temp}
 mkdir -p /opt/photoprism/photos/{originals,import}
 mkdir -p /opt/photoprism_backups
@@ -88,7 +88,7 @@ PHOTOPRISM_DISABLE_CHOWN='false'
 PHOTOPRISM_EXPERIMENTAL='false'
 PHOTOPRISM_INIT='https tensorflow'
 
-# Image Processing
+# Image 正在处理
 PHOTOPRISM_ORIGINALS_LIMIT='5000'
 PHOTOPRISM_JPEG_QUALITY='85'
 PHOTOPRISM_RAW_PRESETS='false'
@@ -133,9 +133,9 @@ JpegQuality: 85
 DetectNSFW: false
 UploadNSFW: true
 EOF
-msg_ok "Installed PhotoPrism"
+msg_ok "已安装 PhotoPrism"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/photoprism.service
 [Unit]
 Description=PhotoPrism service
@@ -153,7 +153,7 @@ ExecStop=/opt/photoprism/bin/photoprism down
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now photoprism
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

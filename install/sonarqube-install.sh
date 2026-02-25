@@ -16,7 +16,7 @@ JAVA_VERSION="21" setup_java
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="sonarqube" PG_DB_USER="sonarqube" setup_postgresql_db
 
-msg_info "Setting up SonarQube"
+msg_info "正在设置 SonarQube"
 temp_file=$(mktemp)
 RELEASE=$(get_latest_github_release "SonarSource/sonarqube")
 curl -fsSL "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${RELEASE}.zip" -o $temp_file
@@ -35,9 +35,9 @@ sonar.web.port=9000
 EOF
 chmod +x /opt/sonarqube/bin/linux-x86-64/sonar.sh
 echo ${RELEASE} >>~/.sonarqube
-msg_ok "Configured SonarQube"
+msg_ok "已配置 SonarQube"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/sonarqube.service
 [Unit]
 Description=SonarQube service
@@ -57,7 +57,7 @@ LimitNPROC=8192
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now sonarqube
-msg_ok "Service Created"
+msg_ok "Service 已创建"
 
 motd_ssh
 customize

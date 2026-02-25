@@ -15,13 +15,13 @@ update_os
 
 fetch_and_deploy_gh_release "prometheus" "prometheus/prometheus" "prebuild" "latest" "/usr/local/bin" "*linux-amd64.tar.gz"
 
-msg_info "Installing Prometheus"
+msg_info "正在安装 Prometheus"
 mkdir -p /etc/prometheus
 mkdir -p /var/lib/prometheus
 mv /usr/local/bin/prometheus.yml /etc/prometheus/prometheus.yml
-msg_ok "Installed Prometheus"
+msg_ok "已安装 Prometheus"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/etc/systemd/system/prometheus.service
 [Unit]
 Description=Prometheus
@@ -42,7 +42,7 @@ ExecReload=/bin/kill -HUP \$MAINPID
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now prometheus
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

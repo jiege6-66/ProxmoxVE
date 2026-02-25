@@ -14,16 +14,16 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apt-transport-https \
   alsa-utils \
   libxext-dev \
   fontconfig \
   libva-drm2
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing AgentDVR"
+msg_info "正在安装 AgentDVR"
 mkdir -p /opt/agentdvr/agent
 RELEASE=$(curl -fsSL "https://www.ispyconnect.com/api/Agent/DownloadLocation4?platform=Linux64&fromVersion=0" | grep -o 'https://.*\.zip')
 cd /opt/agentdvr/agent
@@ -32,9 +32,9 @@ $STD unzip Agent_Linux64*.zip
 chmod +x ./Agent
 echo $RELEASE >~/.agentdvr
 rm -rf Agent_Linux64*.zip
-msg_ok "Installed AgentDVR"
+msg_ok "已安装 AgentDVR"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/AgentDVR.service
 [Unit]
 Description=AgentDVR
@@ -51,7 +51,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now AgentDVR
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

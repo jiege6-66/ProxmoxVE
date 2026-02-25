@@ -30,7 +30,7 @@ function update_script() {
   SERVICE_FILE="/etc/systemd/system/jupyternotebook.service"
 
   if [[ ! -x "$VENV_JUPYTER" ]]; then
-    msg_info "Migrating to uv venv"
+    msg_info "正在迁移 to uv venv"
     PYTHON_VERSION="3.12" setup_uv
     mkdir -p "$INSTALL_DIR"
     cd "$INSTALL_DIR"
@@ -38,16 +38,16 @@ function update_script() {
     $STD "$VENV_PYTHON" -m ensurepip --upgrade
     $STD "$VENV_PYTHON" -m pip install --upgrade pip
     $STD "$VENV_PYTHON" -m pip install jupyter
-    msg_ok "Migrated to uv and installed Jupyter"
+    msg_ok "已迁移 to uv and installed Jupyter"
   else
-    msg_info "Updating Jupyter"
+    msg_info "正在更新 Jupyter"
     $STD "$VENV_PYTHON" -m pip install --upgrade pip
     $STD "$VENV_PYTHON" -m pip install --upgrade jupyter
     msg_ok "Jupyter updated"
   fi
 
   if [[ -f "$SERVICE_FILE" && "$(grep ExecStart "$SERVICE_FILE")" != *".venv/bin/jupyter"* ]]; then
-    msg_info "Updating systemd service to use .venv"
+    msg_info "正在更新 systemd service to use .venv"
     cat <<EOF >"$SERVICE_FILE"
 [Unit]
 Description=Jupyter Notebook Server
@@ -63,7 +63,7 @@ WantedBy=multi-user.target
 EOF
     systemctl daemon-reexec
     systemctl restart jupyternotebook
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -72,7 +72,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8888${CL}"

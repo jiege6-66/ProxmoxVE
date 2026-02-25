@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add --no-cache \
   openssl \
   argon2
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Alpine-Vaultwarden"
+msg_info "正在安装 Alpine-Vaultwarden"
 $STD apk add --no-cache vaultwarden
 sed -i 's|export WEB_VAULT_ENABLED=.*|export WEB_VAULT_ENABLED=true|' /etc/conf.d/vaultwarden
 echo -e "export ADMIN_TOKEN=''" >>/etc/conf.d/vaultwarden
@@ -28,16 +28,16 @@ echo -e "export ROCKET_TLS='{certs=\"/etc/ssl/certs/vaultwarden-selfsigned.crt\"
 $STD openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/private/vaultwarden-selfsigned.key -out /etc/ssl/certs/vaultwarden-selfsigned.crt -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost"
 chown vaultwarden:vaultwarden /etc/ssl/certs/vaultwarden-selfsigned.crt
 chown vaultwarden:vaultwarden /etc/ssl/private/vaultwarden-selfsigned.key
-msg_ok "Installed Alpine-Vaultwarden"
+msg_ok "已安装 Alpine-Vaultwarden"
 
-msg_info "Installing Web-Vault"
+msg_info "正在安装 Web-Vault"
 $STD apk add --no-cache vaultwarden-web-vault
-msg_ok "Installed Web-Vault"
+msg_ok "已安装 Web-Vault"
 
-msg_info "Starting Alpine-Vaultwarden"
+msg_info "正在启动 Alpine-Vaultwarden"
 $STD rc-service vaultwarden start
 $STD rc-update add vaultwarden default
-msg_ok "Started Alpine-Vaultwarden"
+msg_ok "已启动 Alpine-Vaultwarden"
 
 motd_ssh
 customize

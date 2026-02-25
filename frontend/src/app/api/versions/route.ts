@@ -39,8 +39,8 @@ export async function GET() {
     const err = error as globalThis.Error;
     return NextResponse.json({
       name: err.name,
-      message: err.message || "An unexpected error occurred",
-      version: "No version found - Error",
+      message: err.message || "发生了意外错误",
+      version: "未找到版本 - 错误",
     }, {
       status: 500,
     });

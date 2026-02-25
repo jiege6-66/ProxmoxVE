@@ -24,16 +24,16 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/traccar ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "traccar" "traccar/traccar"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop traccar
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Creating backup"
+    msg_info "正在创建 backup"
     mv /opt/traccar/conf/traccar.xml /opt
     [[ -d /opt/traccar/data ]] && mv /opt/traccar/data /opt
     [[ -d /opt/traccar/media ]] && mv /opt/traccar/media /opt
@@ -44,19 +44,19 @@ function update_script() {
     msg_info "Perform Update"
     cd /opt/traccar
     $STD ./traccar.run
-    msg_ok "App-Update completed"
+    msg_ok "App-更新完成"
 
-    msg_info "Restoring data"
+    msg_info "正在恢复 data"
     mv /opt/traccar.xml /opt/traccar/conf
     [[ -d /opt/data ]] && mv /opt/data /opt/traccar
     [[ -d /opt/media ]] && mv /opt/media /opt/traccar
     [ -f README.txt ] || [ -f traccar.run ] && rm -f README.txt traccar.run
     msg_ok "Data restored"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start traccar
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -65,7 +65,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8082${CL}"

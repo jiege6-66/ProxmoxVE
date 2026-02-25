@@ -46,3 +46,5 @@ export function HDDIcon() {
     </svg>
   );
 }
+
+这段代码中没有用户可见的 UI 文本字符串需要翻译，只包含 SVG 图标组件的定义。

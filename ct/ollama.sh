@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /usr/local/lib/ollama ]]; then
-    msg_error "No Ollama Installation Found!"
+    msg_error "No Ollama 安装已找到！"
     exit
   fi
   RELEASE=$(curl -fsSL https://api.github.com/repos/ollama/ollama/releases/latest | grep "tag_name" | awk -F '"' '{print $4}')
@@ -33,13 +33,13 @@ function update_script() {
       touch /opt/Ollama_version.txt
     fi
     ensure_dependencies zstd
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop ollama
-    msg_ok "Services Stopped"
+    msg_ok "Services 已停止"
 
     TMP_TAR=$(mktemp --suffix=.tar.zst)
     curl -fL# -C - -o "${TMP_TAR}" "https://github.com/ollama/ollama/releases/download/${RELEASE}/ollama-linux-amd64.tar.zst"
-    msg_info "Updating Ollama to ${RELEASE}"
+    msg_info "正在更新 Ollama to ${RELEASE}"
     rm -rf /usr/local/lib/ollama
     rm -rf /usr/local/bin/ollama
     mkdir -p /usr/local/lib/ollama
@@ -49,12 +49,12 @@ function update_script() {
     echo "${RELEASE}" >/opt/Ollama_version.txt
     msg_ok "Updated Ollama to ${RELEASE}"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start ollama
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. Ollama is already at ${RELEASE}"
+    msg_ok "无需更新。 Ollama is already at ${RELEASE}"
   fi
   exit
 }
@@ -63,7 +63,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:11434${CL}"

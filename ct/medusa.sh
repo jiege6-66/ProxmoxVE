@@ -24,25 +24,25 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/medusa ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
-  msg_info "Stopping Service"
+  msg_info "正在停止 Service"
   systemctl stop medusa
-  msg_ok "Stopped Service"
+  msg_ok "已停止 Service"
 
-  msg_info "Updating ${APP}"
+  msg_info "正在更新 ${APP}"
   cd /opt/medusa
   output=$(git pull --no-rebase)
   if echo "$output" | grep -q "Already up to date."; then
-    msg_ok "$APP is already up to date."
+    msg_ok "$APP is 已是最新."
     exit
   fi
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
 
-  msg_info "Starting Service"
+  msg_info "正在启动 Service"
   systemctl start medusa
-  msg_ok "Started Service"
+  msg_ok "已启动 Service"
   exit
 }
 
@@ -50,7 +50,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8081${CL}"

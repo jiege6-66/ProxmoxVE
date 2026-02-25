@@ -13,7 +13,7 @@
   "website": "https://github.com/fccview/cronmaster",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cr-nmaster.webp",
   "config_path": "/opt/cronmaster/.env",
-  "description": "Self-hosted cron job scheduler with web UI, live logs, auth and prebuilt binaries provided upstream.",
+  "description": "自托管的 cron 作业调度器，带有 Web UI、实时日志、身份验证，上游提供预构建二进制文件。",
   "install_methods": [
     {
       "type": "default",

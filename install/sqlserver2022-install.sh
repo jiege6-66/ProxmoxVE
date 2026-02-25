@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y coreutils
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setting up SQL Server 2022 Repository"
+msg_info "正在设置 SQL Server 2022 Repository"
 setup_deb822_repo \
   "mssql-server-2022" \
   "https://packages.microsoft.com/keys/microsoft.asc" \
@@ -26,11 +26,11 @@ setup_deb822_repo \
   "main"
 msg_ok "Repository configured"
 
-msg_info "Installing SQL Server 2022"
+msg_info "正在安装 SQL Server 2022"
 $STD apt install -y mssql-server
-msg_ok "Installed SQL Server 2022"
+msg_ok "已安装 SQL Server 2022"
 
-msg_info "Installing SQL Server Tools"
+msg_info "正在安装 SQL Server Tools"
 export DEBIAN_FRONTEND=noninteractive
 export ACCEPT_EULA=Y
 setup_deb822_repo \
@@ -44,23 +44,23 @@ $STD apt-get install -y \
   unixodbc-dev
 echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >>~/.bash_profile
 source ~/.bash_profile
-msg_ok "Installed SQL Server Tools"
+msg_ok "已安装 SQL Server Tools"
 
 read -r -p "${TAB3}Do you want to run the SQL server setup now? (Later is also possible) <y/N>" prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
   /opt/mssql/bin/mssql-conf setup
 else
-  msg_ok "Skipping SQL Server setup. You can run it later with '/opt/mssql/bin/mssql-conf setup'."
+  msg_ok "正在跳过 SQL Server setup. You can run it later with '/opt/mssql/bin/mssql-conf setup'."
 fi
 
 msg_info "Start Service"
 systemctl enable -q --now mssql-server
 msg_ok "Service started"
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 rm -f /etc/profile.d/debuginfod.sh
 rm -f /etc/profile.d/debuginfod.csh
-msg_ok "Cleaned up"
+msg_ok "已清理"
 
 motd_ssh
 customize

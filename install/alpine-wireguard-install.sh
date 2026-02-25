@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add \
   iptables \
   openrc
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing WireGuard"
+msg_info "正在安装 WireGuard"
 $STD apk add --no-cache wireguard-tools
 if [[ ! -L /etc/init.d/wg-quick.wg0 ]]; then
   ln -s /etc/init.d/wg-quick /etc/init.d/wg-quick.wg0
@@ -38,11 +38,11 @@ EOF
 echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf
 $STD rc-update add sysctl
 $STD sysctl -p /etc/sysctl.conf
-msg_ok "Installed WireGuard"
+msg_ok "已安装 WireGuard"
 
 read -rp "${TAB3}Do you want to install WGDashboard? (y/N): " INSTALL_WGD
 if [[ "$INSTALL_WGD" =~ ^[Yy]$ ]]; then
-  msg_info "Installing additional dependencies for WGDashboard"
+  msg_info "正在安装 additional dependencies for WGDashboard"
   $STD apk add --no-cache \
     python3 \
     py3-pip \
@@ -52,15 +52,15 @@ if [[ "$INSTALL_WGD" =~ ^[Yy]$ ]]; then
     linux-headers \
     gcc \
     python3-dev
-  msg_ok "Installed additional dependencies for WGDashboard"
-  msg_info "Installing WGDashboard"
+  msg_ok "已安装 additional dependencies for WGDashboard"
+  msg_info "正在安装 WGDashboard"
   git clone -q https://github.com/WGDashboard/WGDashboard.git /etc/wgdashboard
   cd /etc/wgdashboard/src
   chmod u+x wgd.sh
   $STD ./wgd.sh install
-  msg_ok "Installed WGDashboard"
+  msg_ok "已安装 WGDashboard"
 
-  msg_info "Creating Service for WGDashboard"
+  msg_info "正在创建 Service for WGDashboard"
   cat <<EOF >/etc/init.d/wg-dashboard
 #!/sbin/openrc-run
 
@@ -72,14 +72,14 @@ depend() {
 }
 
 start() {
-    ebegin "Starting WGDashboard"
+    ebegin "正在启动 WGDashboard"
     cd /etc/wgdashboard/src/
     ./wgd.sh start &
     eend $?
 }
 
 stop() {
-    ebegin "Stopping WGDashboard"
+    ebegin "正在停止 WGDashboard"
     pkill -f "wgd.sh"
     eend $?
 }
@@ -87,14 +87,14 @@ EOF
   chmod +x /etc/init.d/wg-dashboard
   $STD rc-update add wg-dashboard default
   $STD rc-service wg-dashboard start
-  msg_ok "Created Service for WGDashboard"
+  msg_ok "已创建 Service for WGDashboard"
 
 fi
 
-msg_info "Starting Services"
+msg_info "正在启动 Services"
 $STD rc-update add wg-quick.wg0 default
 $STD rc-service wg-quick.wg0 start
-msg_ok "Started Services"
+msg_ok "已启动 Services"
 
 motd_ssh
 customize

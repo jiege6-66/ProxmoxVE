@@ -13,7 +13,7 @@
   "website": "https://duplicati.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/duplicati.webp",
   "config_path": "",
-  "description": "Duplicati is a free, open-source backup solution that offers zero-trust, fully encrypted backups for your data.",
+  "description": "Duplicati 是一个免费的开源备份解决方案,为你的数据提供零信任、完全加密的备份。",
   "install_methods": [
     {
       "type": "default",

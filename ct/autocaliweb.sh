@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/autocaliweb ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -32,16 +32,16 @@ function update_script() {
 
   RELEASE=$(get_latest_codeberg_release "gelbphoenix/autocaliweb")
   if check_for_codeberg_release "autocaliweb" "gelbphoenix/autocaliweb"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop autocaliweb metadata-change-detector acw-ingest-service acw-auto-zipper
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
     INSTALL_DIR="/opt/autocaliweb"
     export VIRTUAL_ENV="${INSTALL_DIR}/venv"
     $STD tar -cf ~/autocaliweb_bkp.tar "$INSTALL_DIR"/{metadata_change_logs,dirs.json,.env,scripts/ingest_watcher.sh,scripts/auto_zipper_wrapper.sh,scripts/metadata_change_detector_wrapper.sh}
     fetch_and_deploy_codeberg_release "autocaliweb" "gelbphoenix/autocaliweb" "tarball" "latest" "/opt/autocaliweb"
     
-    msg_info "Updating Autocaliweb"
+    msg_info "正在更新 Autocaliweb"
     cd "$INSTALL_DIR" 
     if [[ ! -d "$VIRTUAL_ENV" ]]; then
       $STD uv venv --clear "$VIRTUAL_ENV"
@@ -65,11 +65,11 @@ function update_script() {
     rm ~/autocaliweb_bkp.tar
     msg_ok "Updated Autocaliweb"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start autocaliweb metadata-change-detector acw-ingest-service acw-auto-zipper
-    msg_ok "Started Services"
+    msg_ok "已启动 Services"
 
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -78,7 +78,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8083${CL}"

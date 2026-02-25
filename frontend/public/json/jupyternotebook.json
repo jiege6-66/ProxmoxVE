@@ -13,7 +13,7 @@
   "website": "https://jupyter.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/jupyter.webp",
   "config_path": "",
-  "description": "The Jupyter Notebook is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and narrative text. Uses include: data cleaning and transformation, numerical simulation, statistical modeling, data visualization, machine learning, and much more.",
+  "description": "Jupyter Notebook 是一个开源的 Web 应用程序，允许你创建和共享包含实时代码、方程式、可视化和叙述性文本的文档。用途包括：数据清理和转换、数值模拟、统计建模、数据可视化、机器学习等等。",
   "install_methods": [
     {
       "type": "default",

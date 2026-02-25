@@ -13,7 +13,7 @@
   "website": "https://www.home-assistant.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/home-assistant.webp",
   "config_path": "/var/lib/containers/storage/volumes/hass_config/_data",
-  "description": "A standalone Podman container-based installation of Home Assistant Core means that the Home Assistant Core software is installed inside a container managed by Podman, separate from the host operating system. This provides a flexible and scalable solution for running the software, as the container can be easily moved between host systems or isolated from other processes for security. Podman is a popular open-source tool for managing containers that is similar to Docker, but designed for use on Linux systems without a daemon.\r\n\r\n\ud83d\udec8 If the LXC is created Privileged, the script will automatically set up USB passthrough.",
+  "description": "独立的基于 Podman 容器的 Home Assistant Core 安装意味着 Home Assistant Core 软件安装在由 Podman 管理的容器内，与主机操作系统分离。这为运行软件提供了灵活且可扩展的解决方案,因为容器可以轻松地在主机系统之间移动或与其他进程隔离以提高安全性。Podman 是一个流行的开源容器管理工具，类似于 Docker，但专为在没有守护进程的 Linux 系统上使用而设计。\r\n\r\n🛈 如果 LXC 以 Privileged 模式创建，脚本将自动设置 USB 直通。",
   "install_methods": [
     {
       "type": "default",

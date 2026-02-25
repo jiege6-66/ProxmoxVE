@@ -13,10 +13,10 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y unrar-free
 ln -sf /usr/bin/unrar-free /usr/bin/unrar
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 mkdir -p /etc/shelfmark
 cat <<EOF >/etc/shelfmark/.env
@@ -75,7 +75,7 @@ case "$DEPLOYMENT_TYPE" in
   fi
   ;;
 4)
-  msg_warn "Disabling captcha bypass. This may cause the majority of searches and downloads to fail."
+  msg_warn "正在禁用 captcha bypass. This may cause the majority of searches and downloads to fail."
   ;;
 *)
   msg_warn "Invalid selection. Reverting to default (internal bypasser)!"
@@ -84,7 +84,7 @@ esac
 
 if [[ "$DEPLOYMENT_TYPE" == "2" ]]; then
   fetch_and_deploy_gh_release "flaresolverr" "FlareSolverr/FlareSolverr" "prebuild" "latest" "/opt/flaresolverr" "flaresolverr_linux_x64.tar.gz"
-  msg_info "Installing FlareSolverr (patience)"
+  msg_info "正在安装 FlareSolverr (patience)"
   $STD apt install -y xvfb
   setup_deb822_repo \
     "google-chrome" \
@@ -96,7 +96,7 @@ if [[ "$DEPLOYMENT_TYPE" == "2" ]]; then
   sed -i -e '/BYPASSER=/s/false/true/' \
     -e 's/^# EXT_/EXT_/' \
     -e "s|_URL=.*|_URL=http://localhost:8191|" /etc/shelfmark/.env
-  msg_ok "Installed FlareSolverr"
+  msg_ok "已安装 FlareSolverr"
 elif [[ "$DEPLOYMENT_TYPE" == "3" ]]; then
   sed -i -e '/BYPASSER=/s/false/true/' \
     -e 's/^# EXT_/EXT_/' \
@@ -105,14 +105,14 @@ elif [[ "$DEPLOYMENT_TYPE" == "4" ]]; then
   sed -i '/_BYPASS=/s/true/false/' /etc/shelfmark/.env
 else
   DEPLOYMENT_TYPE="1"
-  msg_info "Installing internal bypasser dependencies"
+  msg_info "正在安装 internal bypasser dependencies"
   $STD apt install -y --no-install-recommends \
     xvfb \
     ffmpeg \
     chromium-common \
     chromium \
     python3-tk
-  msg_ok "Installed internal bypasser dependencies"
+  msg_ok "已安装 internal bypasser dependencies"
 fi
 
 NODE_VERSION="22" setup_nodejs
@@ -121,24 +121,24 @@ PYTHON_VERSION="3.12" setup_uv
 fetch_and_deploy_gh_release "shelfmark" "calibrain/shelfmark" "tarball" "latest" "/opt/shelfmark"
 RELEASE_VERSION=$(cat "$HOME/.shelfmark")
 
-msg_info "Building Shelfmark frontend"
+msg_info "正在构建 Shelfmark frontend"
 cd /opt/shelfmark/src/frontend
 echo "RELEASE_VERSION=${RELEASE_VERSION}" >>/etc/shelfmark/.env
 $STD npm ci
 $STD npm run build
 mv /opt/shelfmark/src/frontend/dist /opt/shelfmark/frontend-dist
-msg_ok "Built Shelfmark frontend"
+msg_ok "已构建 Shelfmark frontend"
 
-msg_info "Configuring Shelfmark"
+msg_info "正在配置 Shelfmark"
 cd /opt/shelfmark
 $STD uv venv --clear ./venv
 $STD source ./venv/bin/activate
 $STD uv pip install -r ./requirements-base.txt
 [[ "$DEPLOYMENT_TYPE" == "1" ]] && $STD uv pip install -r ./requirements-shelfmark.txt
 mkdir -p {/var/log/shelfmark,/tmp/shelfmark}
-msg_ok "Configured Shelfmark"
+msg_ok "已配置 Shelfmark"
 
-msg_info "Creating Services and start script"
+msg_info "正在创建 Services and start script"
 cat <<EOF >/etc/systemd/system/shelfmark.service
 [Unit]
 Description=Shelfmark server
@@ -207,7 +207,7 @@ EOF
 chmod +x /opt/shelfmark/start.sh
 
 systemctl enable -q --now shelfmark
-msg_ok "Created Services and start script"
+msg_ok "已创建 Services and start script"
 
 motd_ssh
 customize

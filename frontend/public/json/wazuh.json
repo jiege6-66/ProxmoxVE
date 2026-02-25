@@ -13,7 +13,7 @@
   "website": "https://wazuh.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wazuh.webp",
   "config_path": "",
-  "description": "Wazuh is an open-source security monitoring solution that provides endpoint protection, network monitoring, and log analysis capabilities.",
+  "description": "Wazuh 是一个开源安全监控解决方案，提供端点保护、网络监控和日志分析功能。",
   "install_methods": [
     {
       "type": "default",

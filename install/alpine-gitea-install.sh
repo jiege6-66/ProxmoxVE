@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Gitea"
+msg_info "正在安装 Gitea"
 $STD apk add --no-cache gitea
-msg_ok "Installed Gitea"
+msg_ok "已安装 Gitea"
 
-msg_info "Enabling Gitea Service"
+msg_info "正在启用 Gitea Service"
 $STD rc-update add gitea default
-msg_ok "Enabled Gitea Service"
+msg_ok "已启用 Gitea Service"
 
-msg_info "Starting Gitea"
+msg_info "正在启动 Gitea"
 $STD service gitea start
-msg_ok "Started Gitea"
+msg_ok "已启动 Gitea"
 
 motd_ssh
 customize

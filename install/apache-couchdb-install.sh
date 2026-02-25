@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Apache CouchDB"
+msg_info "正在安装 Apache CouchDB"
 ERLANG_COOKIE=$(openssl rand -base64 32)
 ADMIN_PASS="$(openssl rand -base64 18 | cut -c1-13)"
 debconf-set-selections <<<"couchdb couchdb/cookie string $ERLANG_COOKIE"
@@ -33,7 +33,7 @@ $STD apt install -y couchdb
   echo "CouchDB Erlang Cookie: $ERLANG_COOKIE"
   echo "CouchDB Admin Password: $ADMIN_PASS"
 } >>~/couchdb.creds
-msg_ok "Installed Apache CouchDB"
+msg_ok "已安装 Apache CouchDB"
 
 motd_ssh
 customize

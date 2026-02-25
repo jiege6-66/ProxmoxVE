@@ -38,7 +38,7 @@ const CategoryTag = memo(({
       className="ml-1 inline-flex text-blue-400 hover:text-blue-600"
       onClick={onRemove}
     >
-      <span className="sr-only">Remove</span>
+      <span className="sr-only">移除</span>
       <svg
         className="h-3 w-3"
         fill="none"
@@ -83,13 +83,13 @@ function Categories({
   return (
     <div>
       <Label>
-        Category
+        分类
         {" "}
         <span className="text-red-500">*</span>
       </Label>
       <Select onValueChange={value => addCategory(Number(value))}>
         <SelectTrigger>
-          <SelectValue placeholder="Select a category" />
+          <SelectValue placeholder="选择一个分类" />
         </SelectTrigger>
         <SelectContent>
           {categories.map(category => (

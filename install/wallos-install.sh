@@ -17,7 +17,7 @@ update_os
 PHP_VERSION="8.4" PHP_APACHE="YES" setup_php
 fetch_and_deploy_gh_release "wallos" "ellite/Wallos" "tarball"
 
-msg_info "Installing Wallos (Patience)"
+msg_info "正在安装 Wallos (Patience)"
 cd /opt/wallos
 mv /opt/wallos/db/wallos.empty.db /opt/wallos/db/wallos.db
 chown -R www-data:www-data /opt/wallos
@@ -41,9 +41,9 @@ $STD a2ensite wallos.conf
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
 $STD curl http://localhost/endpoints/db/migrate.php
-msg_ok "Installed Wallos"
+msg_ok "已安装 Wallos"
 
-msg_info "Setting up Crontabs"
+msg_info "正在设置 Crontabs"
 mkdir -p /var/log/cron
 cat <<EOF >/opt/wallos.cron
 0 1 * * * php /opt/wallos/endpoints/cronjobs/updatenextpayment.php >> /var/log/cron/updatenextpayment.log 2>&1

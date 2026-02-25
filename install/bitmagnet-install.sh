@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   iproute2 \
   gcc \
   musl-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="16" setup_postgresql
 PG_DB_NAME="bitmagnet" PG_DB_USER="bitmagnet" setup_postgresql_db
@@ -27,11 +27,11 @@ setup_go
 fetch_and_deploy_gh_release "bitmagnet" "bitmagnet-io/bitmagnet" "tarball"
 RELEASE=$(cat ~/.bitmagnet)
 
-msg_info "Configuring bitmagnet"
+msg_info "正在配置 bitmagnet"
 cd /opt/bitmagnet
 $STD go build -ldflags "-s -w -X github.com/bitmagnet-io/bitmagnet/internal/version.GitTag=v${RELEASE}"
 chmod +x bitmagnet
-msg_ok "Configured bitmagnet"
+msg_ok "已配置 bitmagnet"
 
 read -r -p "${TAB3}Enter your TMDB API key if you have one: " tmdbapikey
 
@@ -48,7 +48,7 @@ else
   echo "TMDB_API_KEY=$tmdbapikey" >>/etc/bitmagnet.env
 fi
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/bitmagnet-web.service
 [Unit]
 Description=bitmagnet Web GUI
@@ -66,7 +66,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now bitmagnet-web
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

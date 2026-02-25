@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Docker"
+msg_info "正在安装 Docker"
 $STD sh <(curl -fsSL https://get.docker.com/)
-msg_ok "Installed Docker"
+msg_ok "已安装 Docker"
 
-msg_info "Detecting latest Kasm Workspaces release"
+msg_info "正在检测 latest Kasm Workspaces release"
 KASM_URL=$(curl -fsSL "https://www.kasm.com/downloads" | tr '\n' ' ' | grep -oE 'https://kasm-static-content[^"]*kasm_release_[0-9]+\.[0-9]+\.[0-9]+\.[a-z0-9]+\.tar\.gz' | head -n 1)
 if [[ -z "$KASM_URL" ]]; then
   SERVICE_IMAGE_URL=$(curl -fsSL "https://www.kasm.com/downloads" | tr '\n' ' ' | grep -oE 'https://kasm-static-content[^"]*kasm_release_service_images_amd64_[0-9]+\.[0-9]+\.[0-9]+\.tar\.gz' | head -n 1)
@@ -33,7 +33,7 @@ if [[ -z "$KASM_URL" ]] || [[ -z "$KASM_VERSION" ]]; then
   msg_error "Unable to detect latest Kasm release URL."
   exit 1
 fi
-msg_ok "Detected Kasm Workspaces version $KASM_VERSION"
+msg_ok "已检测到 Kasm Workspaces version $KASM_VERSION"
 
 msg_warn "WARNING: This script will run an external installer from a third-party source (https://www.kasmweb.com/)."
 msg_warn "The following code is NOT maintained or audited by our repository."
@@ -46,7 +46,7 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   exit 10
 fi
 
-msg_info "Installing Kasm Workspaces"
+msg_info "正在安装 Kasm Workspaces"
 curl -fsSL -o "/opt/kasm_release_${KASM_VERSION}.tar.gz" "$KASM_URL"
 cd /opt
 tar -xf "kasm_release_${KASM_VERSION}.tar.gz"
@@ -61,7 +61,7 @@ awk '
 ' ~/kasm-install.output >~/kasm.creds
 rm -f /opt/kasm_release_${KASM_VERSION}.tar.gz
 rm -f ~/kasm-install.output
-msg_ok "Installed Kasm Workspaces"
+msg_ok "已安装 Kasm Workspaces"
 
 motd_ssh
 customize

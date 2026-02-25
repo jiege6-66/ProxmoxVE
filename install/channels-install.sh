@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   chromium \
   xvfb
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 msg_warn "WARNING: This script will run an external installer from a third-party source (https://getchannels.com)."
 msg_warn "The following code is NOT maintained or audited by our repository."
@@ -32,11 +32,11 @@ fi
 
 setup_hwaccel
 
-msg_info "Installing Channels DVR Server (Patience)"
+msg_info "正在安装 Channels DVR Server (Patience)"
 cd /opt
 $STD bash <(curl -fsSL https://getchannels.com/dvr/setup.sh)
 sed -i -e 's/^sgx:x:104:$/render:x:104:root/' -e 's/^render:x:106:root$/sgx:x:106:/' /etc/group
-msg_ok "Installed Channels DVR Server"
+msg_ok "已安装 Channels DVR Server"
 
 motd_ssh
 customize

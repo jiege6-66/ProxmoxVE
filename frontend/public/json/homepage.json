@@ -13,7 +13,7 @@
   "website": "https://gethomepage.dev",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/homepage.webp",
   "config_path": "/opt/homepage/config/",
-  "description": "Homepage is a self-hosted dashboard solution for centralizing and organizing data and information.",
+  "description": "Homepage 是一个自托管的仪表板解决方案，用于集中和组织数据与信息。",
   "install_methods": [
     {
       "type": "default",

@@ -1,25 +1,25 @@
-# tools.func Usage Examples
+# tools.func 使用示例
 
-Practical, real-world examples for using tools.func functions in application installation scripts.
+在应用程序安装脚本中使用 tools.func 函数的实用、真实示例。
 
-## Basic Examples
+## 基础示例
 
-### Example 1: Simple Package Installation
+### 示例 1：简单的软件包安装
 
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-# Update packages
+# 更新软件包
 pkg_update
 
-# Install basic tools
+# 安装基础工具
 pkg_install curl wget git htop
 
-msg_ok "Basic tools installed"
+msg_ok "基础工具已安装"
 ```
 
-### Example 2: Node.js Application
+### 示例 2：Node.js 应用程序
 
 ```bash
 #!/usr/bin/env bash
@@ -29,17 +29,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Node.js"
+msg_info "正在安装 Node.js"
 pkg_update
 setup_nodejs "20"
-msg_ok "Node.js installed"
+msg_ok "Node.js 已安装"
 
-msg_info "Downloading application"
+msg_info "正在下载应用程序"
 cd /opt
 git clone https://github.com/example/app.git
 cd app
 npm install
-msg_ok "Application installed"
+msg_ok "应用程序已安装"
 
 motd_ssh
 customize
@@ -48,9 +48,9 @@ cleanup_lxc
 
 ---
 
-## Advanced Examples
+## 高级示例
 
-### Example 3: PHP + MySQL Web Application
+### 示例 3：PHP + MySQL Web 应用程序
 
 ```bash
 #!/usr/bin/env bash
@@ -59,31 +59,31 @@ source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 setting_up_container
 update_os
 
-# Install web stack
-msg_info "Installing web server stack"
+# 安装 Web 技术栈
+msg_info "正在安装 Web 服务器技术栈"
 pkg_update
 
 setup_nginx
 setup_php "8.3"
-setup_mariadb  # Uses distribution packages (recommended)
+setup_mariadb  # 使用发行版软件包(推荐)
 setup_composer
 
-msg_ok "Web stack installed"
+msg_ok "Web 技术栈已安装"
 
-# Download application
-msg_info "Downloading application"
+# 下载应用程序
+msg_info "正在下载应用程序"
 git clone https://github.com/example/php-app /var/www/html/app
 cd /var/www/html/app
 
-# Install dependencies
+# 安装依赖
 composer install --no-dev
 
-# Setup database
-msg_info "Setting up database"
+# 设置数据库
+msg_info "正在设置数据库"
 DBPASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 mysql -e "CREATE DATABASE phpapp; GRANT ALL ON phpapp.* TO 'phpapp'@'localhost' IDENTIFIED BY '$DBPASS';"
 
-# Create .env file
+# 创建 .env 文件
 cat > .env <<EOF
 DB_HOST=localhost
 DB_NAME=phpapp
@@ -92,18 +92,18 @@ DB_PASS=$DBPASS
 APP_ENV=production
 EOF
 
-# Fix permissions
+# 修复权限
 chown -R www-data:www-data /var/www/html/app
 chmod -R 755 /var/www/html/app
 
-msg_ok "PHP application configured"
+msg_ok "PHP 应用程序已配置"
 
 motd_ssh
 customize
 cleanup_lxc
 ```
 
-### Example 4: Docker Application
+### 示例 4：Docker 应用程序
 
 ```bash
 #!/usr/bin/env bash
@@ -112,15 +112,15 @@ source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 setting_up_container
 update_os
 
-msg_info "Installing Docker"
+msg_info "正在安装 Docker"
 setup_docker
-msg_ok "Docker installed"
+msg_ok "Docker 已安装"
 
-msg_info "Pulling application image"
+msg_info "正在拉取应用程序镜像"
 docker pull myregistry.io/myapp:latest
-msg_ok "Application image ready"
+msg_ok "应用程序镜像已就绪"
 
-msg_info "Starting Docker container"
+msg_info "正在启动 Docker 容器"
 docker run -d \
   --name myapp \
   --restart unless-stopped \
@@ -128,9 +128,9 @@ docker run -d \
   -e APP_ENV=production \
   myregistry.io/myapp:latest
 
-msg_ok "Docker container running"
+msg_ok "Docker 容器正在运行"
 
-# Enable Docker service
+# 启用 Docker 服务
 systemctl enable docker
 systemctl start docker
 
@@ -139,7 +139,7 @@ customize
 cleanup_lxc
 ```
 
-### Example 5: PostgreSQL + Node.js
+### 示例 5：PostgreSQL + Node.js
 
 ```bash
 #!/usr/bin/env bash
@@ -148,19 +148,19 @@ source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 setting_up_container
 update_os
 
-# Install full stack
+# 安装完整技术栈
 setup_nodejs "20"
 setup_postgresql "16"
 setup_git
 
-msg_info "Installing application"
+msg_info "正在安装应用程序"
 git clone https://github.com/example/nodejs-app /opt/app
 cd /opt/app
 
 npm install
 npm run build
 
-# Setup database
+# 设置数据库
 DBPASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 sudo -u postgres psql <<EOF
 CREATE DATABASE nodeapp;
@@ -168,14 +168,14 @@ CREATE USER nodeapp WITH PASSWORD '$DBPASS';
 GRANT ALL PRIVILEGES ON DATABASE nodeapp TO nodeapp;
 EOF
 
-# Create environment file
+# 创建环境文件
 cat > .env <<EOF
 DATABASE_URL=postgresql://nodeapp:$DBPASS@localhost/nodeapp
 NODE_ENV=production
 PORT=3000
 EOF
 
-# Create systemd service
+# 创建 systemd 服务
 cat > /etc/systemd/system/nodeapp.service <<EOF
 [Unit]
 Description=Node.js Application
@@ -193,11 +193,11 @@ RestartSec=5s
 WantedBy=multi-user.target
 EOF
 
-# Create nodeapp user
+# 创建 nodeapp 用户
 useradd -r -s /bin/bash nodeapp || true
 chown -R nodeapp:nodeapp /opt/app
 
-# Start service
+# 启动服务
 systemctl daemon-reload
 systemctl enable nodeapp
 systemctl start nodeapp
@@ -209,17 +209,17 @@ cleanup_lxc
 
 ---
 
-## Repository Configuration Examples
+## 仓库配置示例
 
-### Example 6: Adding Custom Repository
+### 示例 6：添加自定义仓库
 
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-msg_info "Setting up repository"
+msg_info "正在设置仓库"
 
-# Add custom repository in deb822 format
+# 以 deb822 格式添加自定义仓库
 setup_deb822_repo \
   "my-applications" \
   "https://my-repo.example.com/gpg.key" \
@@ -227,22 +227,22 @@ setup_deb822_repo \
   "jammy" \
   "main"
 
-msg_ok "Repository configured"
+msg_ok "仓库已配置"
 
-# Update and install
+# 更新并安装
 pkg_update
 pkg_install my-app-package
 ```
 
-### Example 7: Multiple Repository Setup
+### 示例 7：多仓库设置
 
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-msg_info "Setting up repositories"
+msg_info "正在设置仓库"
 
-# Node.js repository
+# Node.js 仓库
 setup_deb822_repo \
   "nodejs" \
   "https://deb.nodesource.com/gpgkey/nodesource.gpg.key" \
@@ -250,7 +250,7 @@ setup_deb822_repo \
   "jammy" \
   "main"
 
-# Docker repository
+# Docker 仓库
 setup_deb822_repo \
   "docker" \
   "https://download.docker.com/linux/ubuntu/gpg" \
@@ -258,21 +258,21 @@ setup_deb822_repo \
   "jammy" \
   "stable"
 
-# Update once for all repos
+# 为所有仓库更新一次
 pkg_update
 
-# Install from repos
+# 从仓库安装
 setup_nodejs "20"
 setup_docker
 
-msg_ok "All repositories configured"
+msg_ok "所有仓库已配置"
 ```
 
 ---
 
-## Error Handling Examples
+## 错误处理示例
 
-### Example 8: With Error Handling
+### 示例 8：带错误处理
 
 ```bash
 #!/usr/bin/env bash
@@ -282,22 +282,22 @@ catch_errors
 setting_up_container
 update_os
 
-# Install with error checking
+# 带错误检查的安装
 if ! pkg_update; then
-  msg_error "Failed to update packages"
+  msg_error "更新软件包失败"
   exit 1
 fi
 
 if ! setup_nodejs "20"; then
-  msg_error "Failed to install Node.js"
-  # Could retry or fallback here
+  msg_error "安装 Node.js 失败"
+  # 可以在这里重试或回退
   exit 1
 fi
 
-msg_ok "Installation successful"
+msg_ok "安装成功"
 ```
 
-### Example 9: Conditional Installation
+### 示例 9：条件安装
 
 ```bash
 #!/usr/bin/env bash
@@ -306,67 +306,67 @@ source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 setting_up_container
 update_os
 
-# Check if Node.js already installed
+# 检查 Node.js 是否已安装
 if command -v node >/dev/null 2>&1; then
-  msg_ok "Node.js already installed: $(node --version)"
+  msg_ok "Node.js 已安装: $(node --version)"
 else
-  msg_info "Installing Node.js"
+  msg_info "正在安装 Node.js"
   setup_nodejs "20"
-  msg_ok "Node.js installed: $(node --version)"
+  msg_ok "Node.js 已安装: $(node --version)"
 fi
 
-# Same for other tools
+# 其他工具同理
 if command -v docker >/dev/null 2>&1; then
-  msg_ok "Docker already installed"
+  msg_ok "Docker 已安装"
 else
-  msg_info "Installing Docker"
+  msg_info "正在安装 Docker"
   setup_docker
 fi
 ```
 
 ---
 
-## Production Patterns
+## 生产环境模式
 
-### Example 10: Production Installation Template
+### 示例 10：生产环境安装模板
 
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-# === INITIALIZATION ===
+# === 初始化 ===
 catch_errors
 setting_up_container
 network_check
 update_os
 
-# === DEPENDENCIES ===
-msg_info "Installing base dependencies"
+# === 依赖项 ===
+msg_info "正在安装基础依赖"
 pkg_update
 pkg_install curl wget git build-essential
 
-# === RUNTIME SETUP ===
-msg_info "Installing runtime"
+# === 运行时设置 ===
+msg_info "正在安装运行时"
 setup_nodejs "20"
 setup_postgresql "16"
 
-# === APPLICATION ===
-msg_info "Installing application"
+# === 应用程序 ===
+msg_info "正在安装应用程序"
 git clone https://github.com/user/app /opt/app
 cd /opt/app
 npm install --omit=dev
 npm run build
 
-# === CONFIGURATION ===
-msg_info "Configuring application"
-# ... configuration steps ...
+# === 配置 ===
+msg_info "正在配置应用程序"
+# ... 配置步骤 ...
 
-# === SERVICES ===
-msg_info "Setting up services"
-# ... service setup ...
+# === 服务 ===
+msg_info "正在设置服务"
+# ... 服务设置 ...
 
-# === FINALIZATION ===
-msg_ok "Installation complete"
+# === 完成 ===
+msg_ok "安装完成"
 motd_ssh
 customize
 cleanup_lxc
@@ -374,47 +374,47 @@ cleanup_lxc
 
 ---
 
-## Tips & Best Practices
+## 提示与最佳实践
 
-### ✅ DO
+### ✅ 应该做
 ```bash
-# Use $STD for silent operations
+# 使用 $STD 进行静默操作
 $STD apt-get install curl
 
-# Use pkg_update before installing
+# 安装前使用 pkg_update
 pkg_update
 pkg_install package-name
 
-# Chain multiple tools together
+# 将多个工具链接在一起
 setup_nodejs "20"
 setup_php "8.3"
-setup_mariadb  # Distribution packages (recommended)
+setup_mariadb  # 发行版软件包(推荐)
 
-# Check command success
+# 检查命令是否成功
 if ! setup_docker; then
-  msg_error "Docker installation failed"
+  msg_error "Docker 安装失败"
   exit 1
 fi
 ```
 
-### ❌ DON'T
+### ❌ 不应该做
 ```bash
-# Don't hardcode commands
-apt-get install curl  # Bad
+# 不要硬编码命令
+apt-get install curl  # 不好
 
-# Don't skip updates
-pkg_install package   # May fail if cache stale
+# 不要跳过更新
+pkg_install package   # 如果缓存过期可能失败
 
-# Don't ignore errors
-setup_nodejs || true  # Silences errors silently
+# 不要忽略错误
+setup_nodejs || true  # 静默忽略错误
 
-# Don't mix package managers
+# 不要混用包管理器
 apt-get install curl
-apk add wget  # Don't mix!
+apk add wget  # 不要混用!
 ```
 
 ---
 
-**Last Updated**: December 2025
-**Examples**: 10 detailed patterns
-**All examples tested and verified**
+**最后更新**: 2025年12月
+**示例数量**: 10个详细模式
+**所有示例均已测试和验证**

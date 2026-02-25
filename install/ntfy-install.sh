@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up ntfy"
+msg_info "正在设置 ntfy"
 setup_deb822_repo \
   "ntfy" \
   "https://archive.ntfy.sh/apt/keyring.gpg" \
@@ -21,7 +21,7 @@ setup_deb822_repo \
   "stable"
 $STD apt install -y ntfy
 systemctl enable -q --now ntfy
-msg_ok "Setup ntfy"
+msg_ok "设置 ntfy"
 
 motd_ssh
 customize

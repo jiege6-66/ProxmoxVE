@@ -24,32 +24,32 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /usr/local/bin/garage ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   GITEA_RELEASE=$(curl -fsSL https://api.github.com/repos/deuxfleurs-org/garage/tags | jq -r '.[0].name')
   if [[ "${GITEA_RELEASE}" != "$(cat ~/.garage 2>/dev/null)" ]] || [[ ! -f ~/.garage ]]; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop garage
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     msg_info "Backing Up Data"
     cp /usr/local/bin/garage /usr/local/bin/garage.old 2>/dev/null || true
     cp /etc/garage.toml /etc/garage.toml.bak 2>/dev/null || true
     msg_ok "Backed Up Data"
 
-    msg_info "Updating Garage"
+    msg_info "正在更新 Garage"
     curl -fsSL "https://garagehq.deuxfleurs.fr/_releases/${GITEA_RELEASE}/x86_64-unknown-linux-musl/garage" -o /usr/local/bin/garage
     chmod +x /usr/local/bin/garage
     echo "${GITEA_RELEASE}" >~/.garage
     msg_ok "Updated Garage"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start garage
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. Garage is already at ${GITEA_RELEASE}"
+    msg_ok "无需更新。 Garage is already at ${GITEA_RELEASE}"
   fi
   exit
 }
@@ -58,7 +58,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

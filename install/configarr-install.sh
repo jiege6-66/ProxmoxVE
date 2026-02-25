@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "configarr" "raydak-labs/configarr" "prebuild" "latest" "/opt/configarr" "configarr-linux-x64.tar.xz"
 
-msg_info "Setup Configarr"
+msg_info "设置 Configarr"
 cat <<EOF >/opt/configarr/.env
 ROOT_PATH=/opt/configarr
 CUSTOM_REPO_ROOT=/opt/configarr/repos
@@ -31,9 +31,9 @@ cd /opt/configarr
 curl -fsSLO https://raw.githubusercontent.com/raydak-labs/configarr/refs/heads/main/examples/full/config/config.yml
 curl -fsSLO https://raw.githubusercontent.com/raydak-labs/configarr/refs/heads/main/examples/full/config/secrets.yml
 sed 's|#localConfigTemplatesPath: /app/templates|#localConfigTemplatesPath: /opt/configarr/templates|' /opt/configarr/config.yml
-msg_ok "Setup Configarr"
+msg_ok "设置 Configarr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/configarr-task.service
 [Unit]
 Description=Run Configarr Task
@@ -57,7 +57,7 @@ Persistent=true
 WantedBy=timers.target
 EOF
 systemctl enable -q --now configarr-task.timer configarr-task.service
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

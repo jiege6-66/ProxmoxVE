@@ -13,7 +13,7 @@
   "website": "https://mylarcomics.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mylar3.webp",
   "config_path": "",
-  "description": "Mylar is an automated Comic Book (cbr/cbz) downloader program for use with NZB and torrents.\r\nMylar allows you to create a watchlist of series that it monitors for various things (new issues, updated information, etc). It will grab, sort, and rename downloaded issues. It will also allow you to monitor weekly pull-lists for items belonging to said watchlisted series to download, as well as being able to monitor and maintain story-arcs.",
+  "description": "Mylar 是一个自动化的漫画书 (cbr/cbz) 下载程序，用于 NZB 和 torrents。\r\nMylar 允许您创建一个系列监视列表，它会监控各种内容（新期刊、更新信息等）。它会抓取、排序和重命名下载的期刊。它还允许您监控每周拉取列表中属于所述监视列表系列的项目进行下载，以及能够监控和维护故事弧。",
   "install_methods": [
     {
       "type": "default",

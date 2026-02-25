@@ -13,7 +13,7 @@
   "website": "https://github.com/redlib-org/redlib",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/redlib.webp",
   "config_path": "/opt/redlib/redlib.conf",
-  "description": "An alternative private front-end to Reddit. Redlib hopes to provide an easier way to browse Reddit, without the ads, trackers, and bloat.",
+  "description": "Reddit 的替代私有前端。Redlib 希望提供一种更简单的方式来浏览 Reddit,没有广告、跟踪器和冗余内容。",
   "install_methods": [
     {
       "type": "default",

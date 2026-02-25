@@ -13,7 +13,7 @@
   "website": "https://glpi-project.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/glpi.webp",
   "config_path": "/etc/glpi",
-  "description": "GLPI is a Free Asset and IT Management Software package, Data center management, ITIL Service Desk, licenses tracking and software auditing.",
+  "description": "GLPI 是一个免费的资产和 IT 管理软件包，包括数据中心管理、ITIL 服务台、许可证跟踪和软件审计。",
   "install_methods": [
     {
       "type": "default",

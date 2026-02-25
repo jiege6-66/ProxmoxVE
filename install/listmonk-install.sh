@@ -15,7 +15,7 @@ update_os
 
 PG_VERSION="17" setup_postgresql
 
-msg_info "Configuring PostgreSQL"
+msg_info "正在配置 PostgreSQL"
 DB_NAME=listmonk
 DB_USER=listmonk
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)
@@ -27,18 +27,18 @@ $STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME WITH OWNER $DB_USER TEMP
   echo -e "listmonk Database Password: \e[32m$DB_PASS\e[0m"
   echo -e "listmonk Database Name: \e[32m$DB_NAME\e[0m"
 } >>~/listmonk.creds
-msg_ok "Configured PostgreSQL"
+msg_ok "已配置 PostgreSQL"
 
 fetch_and_deploy_gh_release "listmonk" "knadh/listmonk" "prebuild" "latest" "/opt/listmonk" "listmonk*linux_amd64.tar.gz"
 
-msg_info "Configuring listmonk"
+msg_info "正在配置 listmonk"
 mkdir -p /opt/listmonk/uploads
 $STD /opt/listmonk/listmonk --new-config --config /opt/listmonk/config.toml
 sed -i -e 's/address = "localhost:9000"/address = "0.0.0.0:9000"/' -e 's/^password = ".*"/password = "'"$DB_PASS"'"/' /opt/listmonk/config.toml
 $STD /opt/listmonk/listmonk --install --yes --config /opt/listmonk/config.toml
-msg_ok "Configured listmonk"
+msg_ok "已配置 listmonk"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/listmonk.service
 [Unit]
 Description=Listmonk Service
@@ -56,7 +56,7 @@ WorkingDirectory=/opt/listmonk
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now listmonk
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

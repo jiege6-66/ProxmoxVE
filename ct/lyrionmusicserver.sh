@@ -26,7 +26,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /lib/systemd/system/lyrionmusicserver.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -34,16 +34,16 @@ function update_script() {
   RELEASE=$(echo "$DEB_URL" | grep -oP 'lyrionmusicserver_\K[0-9.]+(?=_amd64\.deb)')
   DEB_FILE="/tmp/lyrionmusicserver_${RELEASE}_amd64.deb"
   if [[ ! -f /opt/lyrion_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/lyrion_version.txt)" ]]; then
-    msg_info "Updating $APP to ${RELEASE}"
+    msg_info "正在更新 $APP to ${RELEASE}"
     curl -fsSL -o "$DEB_FILE" "$DEB_URL"
     $STD apt install "$DEB_FILE" -y
     systemctl restart lyrion
     $STD rm -f "$DEB_FILE"
     echo "${RELEASE}" >/opt/${APP}_version.txt
     msg_ok "Updated $APP to ${RELEASE}"
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   else
-    msg_ok "$APP is already up to date (${RELEASE})"
+    msg_ok "$APP is 已是最新 (${RELEASE})"
   fi
   exit
 }
@@ -52,7 +52,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access the web interface at:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:9000${CL}"

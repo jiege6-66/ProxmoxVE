@@ -13,7 +13,7 @@
   "website": "https://github.com/zwave-js/zwave-js-ui#",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/z-wave-js-ui.webp",
   "config_path": "/opt/.env",
-  "description": "Z-Wave JS UI is an open-source software that serves as a gateway between Z-Wave devices and MQTT (Message Queuing Telemetry Transport) protocol, allowing users to control and monitor their Z-Wave devices via a user interface. The software provides a configurable platform to manage Z-Wave networks and integrate with other smart home systems through MQTT.",
+  "description": "Z-Wave JS UI 是一个开源软件,充当 Z-Wave 设备和 MQTT 协议之间的网关,允许用户通过用户界面控制和监控其 Z-Wave 设备。该软件提供可配置的平台来管理 Z-Wave 网络,并通过 MQTT 与其他智能家居系统集成。",
   "install_methods": [
     {
       "type": "default",

@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/sure ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -54,19 +54,19 @@ StandardError=journal
 WantedBy=multi-user.target
 EOF
       systemctl enable -q sure-worker
-      msg_info "Stopping Service"
+      msg_info "正在停止 Service"
       $STD systemctl stop sure
-      msg_ok "Stopped Service"
+      msg_ok "已停止 Service"
     else
-      msg_info "Stopping services"
+      msg_info "正在停止 services"
       $STD systemctl stop sure-worker sure
-      msg_ok "Stopped services"
+      msg_ok "已停止 services"
     fi
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "Sure" "we-promise/sure" "tarball" "latest" "/opt/sure"
     RUBY_VERSION="$(cat /opt/sure/.ruby-version)" RUBY_INSTALL_RAILS=false setup_ruby
 
-    msg_info "Updating Sure"
+    msg_info "正在更新 Sure"
     source ~/.profile
     cd /opt/sure
     export RAILS_ENV=production
@@ -79,10 +79,10 @@ EOF
     unset SECRET_KEY_BASE_DUMMY
     msg_ok "Updated Sure"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     $STD systemctl start sure sure-worker
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -91,7 +91,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

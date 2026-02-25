@@ -13,7 +13,7 @@
   "website": "https://www.proxmox.com/en/proxmox-backup-server",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script guides you through upgrading Proxmox Backup Server from version 3.x (Debian 12 Bookworm) to version 4.0 (Debian 13 Trixie). It adjusts the Debian base sources, configures PBS 4 repositories in deb822 format, updates enterprise/no-subscription/test repos, runs a full system upgrade, and finalizes with a reboot.",
+  "description": "此脚本指导您将 Proxmox Backup Server 从版本 3.x (Debian 12 Bookworm) 升级到版本 4.0 (Debian 13 Trixie)。它调整 Debian 基础源,以 deb822 格式配置 PBS 4 仓库,更新企业版/无订阅版/测试版仓库,运行完整系统升级,并以重启完成。",
   "install_methods": [
     {
       "type": "default",

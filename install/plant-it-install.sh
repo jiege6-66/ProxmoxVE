@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     redis \
     nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mariadb
 MARIADB_DB_NAME="plantit" MARIADB_DB_USER="plantit_usr" setup_mariadb_db
@@ -25,7 +25,7 @@ JAVA_VERSION="21" setup_java
 USE_ORIGINAL_FILENAME="true" fetch_and_deploy_gh_release "plant-it" "MDeLuise/plant-it" "singlefile" "0.10.0" "/opt/plant-it/backend" "server.jar"
 fetch_and_deploy_gh_release "plant-it-front" "MDeLuise/plant-it" "prebuild" "0.10.0" "/opt/plant-it/frontend" "client.tar.gz"
 
-msg_info "Configured Plant-it"
+msg_info "已配置 Plant-it"
 JWT_SECRET=$(openssl rand -base64 24 | tr -d '/+=')
 mkdir -p /opt/plant-it-data
 cat <<EOF >/opt/plant-it/backend/server.env
@@ -51,9 +51,9 @@ CACHE_TTL=86400
 CACHE_HOST=localhost
 CACHE_PORT=6379
 EOF
-msg_ok "Configured Plant-it"
+msg_ok "已配置 Plant-it"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/plant-it.service
 [Unit]
 Description=Plant-it Backend Service
@@ -98,7 +98,7 @@ http {
 }
 EOF
 systemctl restart nginx
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

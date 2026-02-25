@@ -13,7 +13,7 @@
   "website": "https://www.zigbee2mqtt.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/zigbee2mqtt.webp",
   "config_path": "debian: /opt/zigbee2mqtt/data/configuration.yaml | alpine: /var/lib/zigbee2mqtt/configuration.yaml",
-  "description": "Zigbee2MQTT is an open-source software project that allows you to use Zigbee-based smart home devices (such as those sold under the Philips Hue and Ikea Tradfri brands) with MQTT-based home automation systems, like Home Assistant, Node-RED, and others. The software acts as a bridge between your Zigbee devices and MQTT, allowing you to control and monitor these devices from your home automation system.",
+  "description": "Zigbee2MQTT 是一个开源软件项目,允许您在基于 MQTT 的家庭自动化系统(如 Home Assistant、Node-RED 等)中使用基于 Zigbee 的智能家居设备(如飞利浦 Hue 和宜家 Tradfri 品牌销售的设备)。该软件充当 Zigbee 设备和 MQTT 之间的桥梁,允许您从家庭自动化系统控制和监控这些设备。",
   "install_methods": [
     {
       "type": "default",

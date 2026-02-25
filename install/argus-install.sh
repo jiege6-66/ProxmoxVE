@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "Argus" "release-argus/Argus" "singlefile" "latest" "/opt/argus" "Argus*linux-amd64"
 
-msg_info "Setup Argus Config"
+msg_info "设置 Argus Config"
 cat <<EOF >/opt/argus/config.yml
 settings:
   log:
@@ -61,9 +61,9 @@ service:
       icon_link_to: https://helper-scripts.com/
       web_url: https://github.com/community-scripts/ProxmoxVE/releases
 EOF
-msg_ok "Setup Config"
+msg_ok "设置 Config"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/argus.service
 [Unit]
 Description=Argus
@@ -78,7 +78,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now argus
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://www.docker.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/docker.webp",
   "config_path": "",
-  "description": "Docker is an open-source project for automating the deployment of applications as portable, self-sufficient containers.",
+  "description": "Docker 是一个开源项目,用于将应用程序自动化部署为便携、自给自足的容器。",
   "install_methods": [
     {
       "type": "default",

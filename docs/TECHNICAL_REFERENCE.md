@@ -1,107 +1,107 @@
-# Technical Reference: Configuration System Architecture
+# 技术参考：配置系统架构
 
-> **For Developers and Advanced Users**
+> **面向开发者和高级用户**
 >
-> _Deep dive into how the defaults and configuration system works_
+> _深入了解默认值和配置系统的工作原理_
 
 ---
 
-## Table of Contents
+## 目录
 
-1. [System Architecture](#system-architecture)
-2. [File Format Specifications](#file-format-specifications)
-3. [Function Reference](#function-reference)
-4. [Variable Precedence](#variable-precedence)
-5. [Data Flow Diagrams](#data-flow-diagrams)
-6. [Security Model](#security-model)
-7. [Implementation Details](#implementation-details)
+1. [系统架构](#系统架构)
+2. [文件格式规范](#文件格式规范)
+3. [函数参考](#函数参考)
+4. [变量优先级](#变量优先级)
+5. [数据流图](#数据流图)
+6. [安全模型](#安全模型)
+7. [实现细节](#实现细节)
 
 ---
 
-## System Architecture
+## 系统架构
 
-### Component Overview
+### 组件概览
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Installation Script                       │
+│                    安装脚本                                   │
 │  (pihole-install.sh, docker-install.sh, etc.)              │
 └────────────────────┬────────────────────────────────────────┘
                      │
                      v
 ┌─────────────────────────────────────────────────────────────┐
-│                   build.func Library                         │
+│                   build.func 库                              │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  variables()                                         │   │
-│  │  - Initialize NSAPP, var_install, etc.             │   │
+│  │  - 初始化 NSAPP, var_install 等                      │   │
 │  └──────────────────────────────────────────────────────┘   │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  install_script()                                    │   │
-│  │  - Display mode menu                                │   │
-│  │  - Route to appropriate workflow                    │   │
+│  │  - 显示模式菜单                                       │   │
+│  │  - 路由到相应的工作流                                 │   │
 │  └──────────────────────────────────────────────────────┘   │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  base_settings()                                     │   │
-│  │  - Apply built-in defaults                          │   │
-│  │  - Read environment variables (var_*)               │   │
+│  │  - 应用内置默认值                                     │   │
+│  │  - 读取环境变量 (var_*)                              │   │
 │  └──────────────────────────────────────────────────────┘   │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  load_vars_file()                                    │   │
-│  │  - Safe file parsing (NO source/eval)              │   │
-│  │  - Whitelist validation                             │   │
-│  │  - Value sanitization                               │   │
+│  │  - 安全文件解析（不使用 source/eval）                │   │
+│  │  - 白名单验证                                         │   │
+│  │  - 值清理                                            │   │
 │  └──────────────────────────────────────────────────────┘   │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  default_var_settings()                              │   │
-│  │  - Load user defaults                               │   │
-│  │  - Display summary                                  │   │
+│  │  - 加载用户默认值                                     │   │
+│  │  - 显示摘要                                          │   │
 │  └──────────────────────────────────────────────────────┘   │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  maybe_offer_save_app_defaults()                     │   │
-│  │  - Offer to save current settings                   │   │
-│  │  - Handle updates vs. new saves                     │   │
+│  │  - 提供保存当前设置的选项                             │   │
+│  │  - 处理更新与新保存                                   │   │
 │  └──────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
                      │
                      v
 ┌─────────────────────────────────────────────────────────────┐
-│           Configuration Files (on Disk)                      │
+│           配置文件（磁盘上）                                  │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  /usr/local/community-scripts/default.vars          │   │
-│  │  (User global defaults)                             │   │
+│  │  (用户全局默认值)                                     │   │
 │  └──────────────────────────────────────────────────────┘   │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │  /usr/local/community-scripts/defaults/*.vars       │   │
-│  │  (App-specific defaults)                            │   │
+│  │  (应用特定默认值)                                     │   │
 │  └──────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## File Format Specifications
+## 文件格式规范
 
-### User Defaults: `default.vars`
+### 用户默认值：`default.vars`
 
-**Location**: `/usr/local/community-scripts/default.vars`
+**位置**：`/usr/local/community-scripts/default.vars`
 
-**MIME Type**: `text/plain`
+**MIME 类型**：`text/plain`
 
-**Encoding**: UTF-8 (no BOM)
+**编码**：UTF-8（无 BOM）
 
-**Format Specification**:
+**格式规范**：
 
 ```
-# File Format: Simple key=value pairs
-# Purpose: Store global user defaults
-# Security: Sanitized values, whitelist validation
+# 文件格式：简单的 key=value 对
+# 用途：存储全局用户默认值
+# 安全性：清理后的值，白名单验证
 
-# Comments and blank lines are ignored
-# Line format: var_name=value
-# No spaces around the equals sign
-# String values do not need quoting (but may be quoted)
+# 注释和空行会被忽略
+# 行格式：var_name=value
+# 等号周围不能有空格
+# 字符串值不需要引号（但可以使用引号）
 
-[CONTENT]
+[内容]
 var_cpu=4
 var_ram=2048
 var_disk=20
@@ -110,7 +110,7 @@ var_brg=vmbr0
 var_gateway=192.168.1.1
 ```
 
-**Formal Grammar**:
+**形式化语法**：
 
 ```
 FILE       := (BLANK_LINE | COMMENT_LINE | VAR_LINE)*
@@ -118,70 +118,70 @@ BLANK_LINE := \n
 COMMENT_LINE := '#' [^\n]* \n
 VAR_LINE   := VAR_NAME '=' VAR_VALUE \n
 VAR_NAME   := 'var_' [a-z_]+
-VAR_VALUE  := [^\n]*  # Any printable characters except newline
+VAR_VALUE  := [^\n]*  # 除换行符外的任何可打印字符
 ```
 
-**Constraints**:
+**约束条件**：
 
-| Constraint        | Value                    |
-| ----------------- | ------------------------ |
-| Max file size     | 64 KB                    |
-| Max line length   | 1024 bytes               |
-| Max variables     | 100                      |
-| Allowed var names | `var_[a-z_]+`            |
-| Value validation  | Whitelist + Sanitization |
+| 约束条件      | 值                   |
+| ------------- | -------------------- |
+| 最大文件大小  | 64 KB                |
+| 最大行长度    | 1024 字节            |
+| 最大变量数    | 100                  |
+| 允许的变量名  | `var_[a-z_]+`        |
+| 值验证        | 白名单 + 清理        |
 
-**Example Valid File**:
+**有效文件示例**：
 
 ```bash
-# Global User Defaults
-# Created: 2024-11-28
+# 全局用户默认值
+# 创建时间：2024-11-28
 
-# Resource defaults
+# 资源默认值
 var_cpu=4
 var_ram=2048
 var_disk=20
 
-# Network defaults
+# 网络默认值
 var_brg=vmbr0
 var_gateway=192.168.1.1
 var_mtu=1500
 var_vlan=100
 
-# System defaults
+# 系统默认值
 var_timezone=Europe/Berlin
 var_hostname=default-container
 
-# Storage
+# 存储
 var_container_storage=local
 var_template_storage=local
 
-# Security
+# 安全
 var_ssh=yes
 var_protection=0
 var_unprivileged=1
 ```
 
-### App Defaults: `<app>.vars`
+### 应用默认值：`<app>.vars`
 
-**Location**: `/usr/local/community-scripts/defaults/<appname>.vars`
+**位置**：`/usr/local/community-scripts/defaults/<appname>.vars`
 
-**Format**: Identical to `default.vars`
+**格式**：与 `default.vars` 相同
 
-**Naming Convention**: `<nsapp>.vars`
+**命名约定**：`<nsapp>.vars`
 
-- `nsapp` = lowercase app name with spaces removed
-- Examples:
+- `nsapp` = 小写应用名称，去除空格
+- 示例：
   - `pihole` → `pihole.vars`
   - `opnsense` → `opnsense.vars`
   - `docker compose` → `dockercompose.vars`
 
-**Example App Defaults**:
+**应用默认值示例**：
 
 ```bash
-# App-specific defaults for PiHole (pihole)
-# Generated on 2024-11-28T15:32:00Z
-# These override user defaults when installing pihole
+# PiHole (pihole) 的应用特定默认值
+# 生成时间：2024-11-28T15:32:00Z
+# 这些值在安装 pihole 时会覆盖用户默认值
 
 var_unprivileged=1
 var_cpu=2
@@ -199,55 +199,55 @@ var_tags=dns,pihole
 
 ---
 
-## Function Reference
+## 函数参考
 
 ### `load_vars_file()`
 
-**Purpose**: Safely load variables from .vars files without using `source` or `eval`
+**用途**：安全地从 .vars 文件加载变量，不使用 `source` 或 `eval`
 
-**Signature**:
+**签名**：
 
 ```bash
 load_vars_file(filepath)
 ```
 
-**Parameters**:
+**参数**：
 
-| Param    | Type   | Required | Example                                     |
-| -------- | ------ | -------- | ------------------------------------------- |
-| filepath | String | Yes      | `/usr/local/community-scripts/default.vars` |
+| 参数     | 类型   | 必需 | 示例                                        |
+| -------- | ------ | ---- | ------------------------------------------- |
+| filepath | String | 是   | `/usr/local/community-scripts/default.vars` |
 
-**Returns**:
+**返回值**：
 
-- `0` on success
-- `1` on error (file missing, parse error, etc.)
+- 成功时返回 `0`
+- 错误时返回 `1`（文件缺失、解析错误等）
 
-**Environment Side Effects**:
+**环境副作用**：
 
-- Sets all parsed `var_*` variables as shell variables
-- Does NOT unset variables if file missing (safe)
-- Does NOT affect other variables
+- 将所有解析的 `var_*` 变量设置为 shell 变量
+- 如果文件缺失，不会取消设置变量（安全）
+- 不影响其他变量
 
-**Implementation Pattern**:
+**实现模式**：
 
 ```bash
 load_vars_file() {
   local file="$1"
 
-  # File must exist
+  # 文件必须存在
   [ -f "$file" ] || return 0
 
-  # Parse line by line (not with source/eval)
+  # 逐行解析（不使用 source/eval）
   local line key val
   while IFS='=' read -r key val || [ -n "$key" ]; do
-    # Skip comments and empty lines
+    # 跳过注释和空行
     [[ "$key" =~ ^[[:space:]]*# ]] && continue
     [[ -z "$key" ]] && continue
 
-    # Validate key is in whitelist
+    # 验证键是否在白名单中
     _is_whitelisted_key "$key" || continue
 
-    # Sanitize and export value
+    # 清理并导出值
     val="$(_sanitize_value "$val")"
     [ $? -eq 0 ] && export "$key=$val"
   done < "$file"
@@ -256,46 +256,46 @@ load_vars_file() {
 }
 ```
 
-**Usage Examples**:
+**使用示例**：
 
 ```bash
-# Load user defaults
+# 加载用户默认值
 load_vars_file "/usr/local/community-scripts/default.vars"
 
-# Load app-specific defaults
+# 加载应用特定默认值
 load_vars_file "$(get_app_defaults_path)"
 
-# Check if successful
+# 检查是否成功
 if load_vars_file "$vars_path"; then
-  echo "Settings loaded successfully"
+  echo "设置加载成功"
 else
-  echo "Failed to load settings"
+  echo "加载设置失败"
 fi
 
-# Values are now available as variables
-echo "Using $var_cpu cores"
-echo "Allocating ${var_ram} MB RAM"
+# 值现在可作为变量使用
+echo "使用 $var_cpu 个核心"
+echo "分配 ${var_ram} MB 内存"
 ```
 
 ---
 
 ### `get_app_defaults_path()`
 
-**Purpose**: Get the full path for app-specific defaults file
+**用途**：获取应用特定默认值文件的完整路径
 
-**Signature**:
+**签名**：
 
 ```bash
 get_app_defaults_path()
 ```
 
-**Parameters**: None
+**参数**：无
 
-**Returns**:
+**返回值**：
 
-- String: Full path to app defaults file
+- String：应用默认值文件的完整路径
 
-**Implementation**:
+**实现**：
 
 ```bash
 get_app_defaults_path() {
@@ -304,19 +304,19 @@ get_app_defaults_path() {
 }
 ```
 
-**Usage Examples**:
+**使用示例**：
 
 ```bash
-# Get app defaults path
+# 获取应用默认值路径
 app_defaults="$(get_app_defaults_path)"
-echo "App defaults at: $app_defaults"
+echo "应用默认值位于：$app_defaults"
 
-# Check if app defaults exist
+# 检查应用默认值是否存在
 if [ -f "$(get_app_defaults_path)" ]; then
-  echo "App defaults available"
+  echo "应用默认值可用"
 fi
 
-# Load app defaults
+# 加载应用默认值
 load_vars_file "$(get_app_defaults_path)"
 ```
 
@@ -324,39 +324,39 @@ load_vars_file "$(get_app_defaults_path)"
 
 ### `default_var_settings()`
 
-**Purpose**: Load and display user global defaults
+**用途**：加载并显示用户全局默认值
 
-**Signature**:
+**签名**：
 
 ```bash
 default_var_settings()
 ```
 
-**Parameters**: None
+**参数**：无
 
-**Returns**:
+**返回值**：
 
-- `0` on success
-- `1` on error
+- 成功时返回 `0`
+- 错误时返回 `1`
 
-**Workflow**:
+**工作流**：
 
 ```
-1. Find default.vars location
-   (usually /usr/local/community-scripts/default.vars)
+1. 查找 default.vars 位置
+   (通常是 /usr/local/community-scripts/default.vars)
 
-2. Create if missing
+2. 如果缺失则创建
 
-3. Load variables from file
+3. 从文件加载变量
 
-4. Map var_verbose → VERBOSE variable
+4. 映射 var_verbose → VERBOSE 变量
 
-5. Call base_settings (apply to container config)
+5. 调用 base_settings（应用到容器配置）
 
-6. Call echo_default (display summary)
+6. 调用 echo_default（显示摘要）
 ```
 
-**Implementation Pattern**:
+**实现模式**：
 
 ```bash
 default_var_settings() {
@@ -368,14 +368,14 @@ default_var_settings() {
     var_container_storage var_template_storage
   )
 
-  # Ensure file exists
+  # 确保文件存在
   _ensure_default_vars
 
-  # Find and load
+  # 查找并加载
   local dv="$(_find_default_vars)"
   load_vars_file "$dv"
 
-  # Map verbose flag
+  # 映射详细标志
   if [[ -n "${var_verbose:-}" ]]; then
     case "${var_verbose,,}" in
       1 | yes | true | on) VERBOSE="yes" ;;
@@ -383,7 +383,7 @@ default_var_settings() {
     esac
   fi
 
-  # Apply and display
+  # 应用并显示
   base_settings "$VERBOSE"
   echo_default
 }
@@ -393,45 +393,45 @@ default_var_settings() {
 
 ### `maybe_offer_save_app_defaults()`
 
-**Purpose**: Offer to save current settings as app-specific defaults
+**用途**：提供将当前设置保存为应用特定默认值的选项
 
-**Signature**:
+**签名**：
 
 ```bash
 maybe_offer_save_app_defaults()
 ```
 
-**Parameters**: None
+**参数**：无
 
-**Returns**: None (side effects only)
+**返回值**：无（仅副作用）
 
-**Behavior**:
+**行为**：
 
-1. After advanced installation completes
-2. Offers user: "Save as App Defaults for <APP>?"
-3. If yes:
-   - Saves to `/usr/local/community-scripts/defaults/<app>.vars`
-   - Only whitelisted variables included
-   - Previous defaults backed up (if exists)
-4. If no:
-   - No action taken
+1. 高级安装完成后
+2. 向用户提供："保存为 <APP> 的应用默认值？"
+3. 如果是：
+   - 保存到 `/usr/local/community-scripts/defaults/<app>.vars`
+   - 仅包含白名单变量
+   - 备份之前的默认值（如果存在）
+4. 如果否：
+   - 不执行任何操作
 
-**Flow**:
+**流程**：
 
 ```bash
 maybe_offer_save_app_defaults() {
   local app_vars_path="$(get_app_defaults_path)"
 
-  # Build current settings from memory
+  # 从内存构建当前设置
   local new_tmp="$(_build_current_app_vars_tmp)"
 
-  # Check if already exists
+  # 检查是否已存在
   if [ -f "$app_vars_path" ]; then
-    # Show diff and ask: Update? Keep? View Diff?
+    # 显示差异并询问：更新？保留？查看差异？
     _show_app_defaults_diff_menu "$new_tmp" "$app_vars_path"
   else
-    # New defaults - just save
-    if whiptail --yesno "Save as App Defaults for $APP?" 10 60; then
+    # 新默认值 - 直接保存
+    if whiptail --yesno "保存为 $APP 的应用默认值？" 10 60; then
       mv "$new_tmp" "$app_vars_path"
       chmod 644 "$app_vars_path"
     fi
@@ -443,43 +443,43 @@ maybe_offer_save_app_defaults() {
 
 ### `_sanitize_value()`
 
-**Purpose**: Remove dangerous characters/patterns from configuration values
+**用途**：从配置值中移除危险字符/模式
 
-**Signature**:
+**签名**：
 
 ```bash
 _sanitize_value(value)
 ```
 
-**Parameters**:
+**参数**：
 
-| Param | Type   | Required |
-| ----- | ------ | -------- |
-| value | String | Yes      |
+| 参数  | 类型   | 必需 |
+| ----- | ------ | ---- |
+| value | String | 是   |
 
-**Returns**:
+**返回值**：
 
-- `0` (success) + sanitized value on stdout
-- `1` (failure) + nothing if dangerous
+- `0`（成功）+ 在 stdout 输出清理后的值
+- `1`（失败）+ 如果危险则不输出任何内容
 
-**Dangerous Patterns**:
+**危险模式**：
 
-| Pattern   | Threat               | Example              |
-| --------- | -------------------- | -------------------- |
-| `$(...)`  | Command substitution | `$(rm -rf /)`        |
-| `` ` ` `` | Command substitution | `` `whoami` ``       |
-| `;`       | Command separator    | `value; rm -rf /`    |
-| `&`       | Background execution | `value & malicious`  |
-| `<(`      | Process substitution | `<(cat /etc/passwd)` |
+| 模式      | 威胁             | 示例                 |
+| --------- | ---------------- | -------------------- |
+| `$(...)`  | 命令替换         | `$(rm -rf /)`        |
+| `` ` ` `` | 命令替换         | `` `whoami` ``       |
+| `;`       | 命令分隔符       | `value; rm -rf /`    |
+| `&`       | 后台执行         | `value & malicious`  |
+| `<(`      | 进程替换         | `<(cat /etc/passwd)` |
 
-**Implementation**:
+**实现**：
 
 ```bash
 _sanitize_value() {
   case "$1" in
   *'$('* | *'`'* | *';'* | *'&'* | *'<('*)
     echo ""
-    return 1  # Reject dangerous value
+    return 1  # 拒绝危险值
     ;;
   esac
   echo "$1"
@@ -487,20 +487,20 @@ _sanitize_value() {
 }
 ```
 
-**Usage Examples**:
+**使用示例**：
 
 ```bash
-# Safe value
-_sanitize_value "192.168.1.1"  # Returns: 192.168.1.1 (status: 0)
+# 安全值
+_sanitize_value "192.168.1.1"  # 返回：192.168.1.1（状态：0）
 
-# Dangerous value
-_sanitize_value "$(whoami)"     # Returns: (empty) (status: 1)
+# 危险值
+_sanitize_value "$(whoami)"     # 返回：（空）（状态：1）
 
-# Usage in code
+# 代码中的使用
 if val="$(_sanitize_value "$user_input")"; then
   export var_hostname="$val"
 else
-  msg_error "Invalid value: contains dangerous characters"
+  msg_error "无效值：包含危险字符"
 fi
 ```
 
@@ -508,26 +508,26 @@ fi
 
 ### `_is_whitelisted_key()`
 
-**Purpose**: Check if variable name is in allowed whitelist
+**用途**：检查变量名是否在允许的白名单中
 
-**Signature**:
+**签名**：
 
 ```bash
 _is_whitelisted_key(key)
 ```
 
-**Parameters**:
+**参数**：
 
-| Param | Type   | Required | Example   |
-| ----- | ------ | -------- | --------- |
-| key   | String | Yes      | `var_cpu` |
+| 参数 | 类型   | 必需 | 示例      |
+| ---- | ------ | ---- | --------- |
+| key  | String | 是   | `var_cpu` |
 
-**Returns**:
+**返回值**：
 
-- `0` if key is whitelisted
-- `1` if key is NOT whitelisted
+- 如果键在白名单中返回 `0`
+- 如果键不在白名单中返回 `1`
 
-**Implementation**:
+**实现**：
 
 ```bash
 _is_whitelisted_key() {
@@ -540,267 +540,267 @@ _is_whitelisted_key() {
 }
 ```
 
-**Usage Examples**:
+**使用示例**：
 
 ```bash
-# Check if variable can be saved
+# 检查变量是否可以保存
 if _is_whitelisted_key "var_cpu"; then
-  echo "var_cpu can be saved"
+  echo "var_cpu 可以保存"
 fi
 
-# Reject unknown variables
+# 拒绝未知变量
 if ! _is_whitelisted_key "var_custom"; then
-  msg_error "var_custom is not supported"
+  msg_error "var_custom 不受支持"
 fi
 ```
 
 ---
 
-## Variable Precedence
+## 变量优先级
 
-### Loading Order
+### 加载顺序
 
-When a container is being created, variables are resolved in this order:
+创建容器时，变量按以下顺序解析：
 
 ```
-Step 1: Read ENVIRONMENT VARIABLES
-   ├─ Check if var_cpu is already set in shell environment
-   ├─ Check if var_ram is already set
-   └─ ...all var_* variables
+步骤 1：读取环境变量
+   ├─ 检查 var_cpu 是否已在 shell 环境中设置
+   ├─ 检查 var_ram 是否已设置
+   └─ ...所有 var_* 变量
 
-Step 2: Load APP-SPECIFIC DEFAULTS
-   ├─ Check if /usr/local/community-scripts/defaults/pihole.vars exists
-   ├─ Load all var_* from that file
-   └─ These override built-ins but NOT environment variables
+步骤 2：加载应用特定默认值
+   ├─ 检查 /usr/local/community-scripts/defaults/pihole.vars 是否存在
+   ├─ 从该文件加载所有 var_*
+   └─ 这些会覆盖内置值，但不会覆盖环境变量
 
-Step 3: Load USER GLOBAL DEFAULTS
-   ├─ Check if /usr/local/community-scripts/default.vars exists
-   ├─ Load all var_* from that file
-   └─ These override built-ins but NOT app-specific
+步骤 3：加载用户全局默认值
+   ├─ 检查 /usr/local/community-scripts/default.vars 是否存在
+   ├─ 从该文件加载所有 var_*
+   └─ 这些会覆盖内置值，但不会覆盖应用特定值
 
-Step 4: Use BUILT-IN DEFAULTS
-   └─ Hardcoded in script (lowest priority)
+步骤 4：使用内置默认值
+   └─ 脚本中硬编码（最低优先级）
 ```
 
-### Precedence Examples
+### 优先级示例
 
-**Example 1: Environment Variable Wins**
+**示例 1：环境变量优先**
 
 ```bash
-# Shell environment has highest priority
+# Shell 环境具有最高优先级
 $ export var_cpu=16
 $ bash pihole-install.sh
 
-# Result: Container gets 16 cores
-# (ignores app defaults, user defaults, built-ins)
+# 结果：容器获得 16 个核心
+# （忽略应用默认值、用户默认值、内置值）
 ```
 
-**Example 2: App Defaults Override User Defaults**
+**示例 2：应用默认值覆盖用户默认值**
 
 ```bash
-# User Defaults: var_cpu=4
-# App Defaults: var_cpu=2
+# 用户默认值：var_cpu=4
+# 应用默认值：var_cpu=2
 $ bash pihole-install.sh
 
-# Result: Container gets 2 cores
-# (app-specific setting takes precedence)
+# 结果：容器获得 2 个核心
+# （应用特定设置优先）
 ```
 
-**Example 3: All Defaults Missing (Built-ins Used)**
+**示例 3：所有默认值缺失（使用内置值）**
 
 ```bash
-# No environment variables set
-# No app defaults file
-# No user defaults file
+# 未设置环境变量
+# 无应用默认值文件
+# 无用户默认值文件
 $ bash pihole-install.sh
 
-# Result: Uses built-in defaults
-# (var_cpu might be 2 by default)
+# 结果：使用内置默认值
+# （var_cpu 默认可能是 2）
 ```
 
-### Implementation in Code
+### 代码中的实现
 
 ```bash
-# Typical pattern in build.func
+# build.func 中的典型模式
 
 base_settings() {
-  # Priority 1: Environment variables (already set if export used)
-  CT_TYPE=${var_unprivileged:-"1"}          # Use existing or default
+  # 优先级 1：环境变量（如果使用 export 则已设置）
+  CT_TYPE=${var_unprivileged:-"1"}          # 使用现有值或默认值
 
-  # Priority 2: Load app defaults (may override above)
+  # 优先级 2：加载应用默认值（可能覆盖上述值）
   if [ -f "$(get_app_defaults_path)" ]; then
     load_vars_file "$(get_app_defaults_path)"
   fi
 
-  # Priority 3: Load user defaults
+  # 优先级 3：加载用户默认值
   if [ -f "/usr/local/community-scripts/default.vars" ]; then
     load_vars_file "/usr/local/community-scripts/default.vars"
   fi
 
-  # Priority 4: Apply built-in defaults (lowest)
+  # 优先级 4：应用内置默认值（最低）
   CORE_COUNT=${var_cpu:-"${APP_CPU_DEFAULT:-2}"}
   RAM_SIZE=${var_ram:-"${APP_RAM_DEFAULT:-1024}"}
 
-  # Result: var_cpu has been set through precedence chain
+  # 结果：var_cpu 已通过优先级链设置
 }
 ```
 
 ---
 
-## Data Flow Diagrams
+## 数据流图
 
-### Installation Flow: Advanced Settings
+### 安装流程：高级设置
 
 ```
 ┌──────────────┐
-│  Start Script│
+│  启动脚本    │
 └──────┬───────┘
        │
        v
 ┌──────────────────────────────┐
-│ Display Installation Mode    │
-│ Menu (5 options)             │
+│ 显示安装模式菜单              │
+│ （5 个选项）                  │
 └──────┬───────────────────────┘
-       │ User selects "Advanced Settings"
+       │ 用户选择"高级设置"
        v
 ┌──────────────────────────────────┐
-│ Call: base_settings()            │
-│ (Apply built-in defaults)        │
+│ 调用：base_settings()            │
+│ （应用内置默认值）                │
 └──────┬───────────────────────────┘
        │
        v
 ┌──────────────────────────────────┐
-│ Call: advanced_settings()        │
-│ (Show 19-step wizard)            │
-│ - Ask CPU, RAM, Disk, Network... │
+│ 调用：advanced_settings()        │
+│ （显示 19 步向导）                │
+│ - 询问 CPU、RAM、磁盘、网络...    │
 └──────┬───────────────────────────┘
        │
        v
 ┌──────────────────────────────────┐
-│ Show Summary                     │
-│ Review all chosen values         │
+│ 显示摘要                          │
+│ 查看所有选择的值                  │
 └──────┬───────────────────────────┘
-       │ User confirms
+       │ 用户确认
        v
 ┌──────────────────────────────────┐
-│ Create Container                 │
-│ Using current variable values    │
+│ 创建容器                          │
+│ 使用当前变量值                    │
 └──────┬───────────────────────────┘
        │
        v
 ┌──────────────────────────────────┐
-│ Installation Complete            │
+│ 安装完成                          │
 └──────┬───────────────────────────┘
        │
        v
 ┌──────────────────────────────────────┐
-│ Offer: Save as App Defaults?         │
-│ (Save current settings)              │
+│ 提供：保存为应用默认值？              │
+│ （保存当前设置）                      │
 └──────┬───────────────────────────────┘
        │
-       ├─ YES → Save to defaults/<app>.vars
+       ├─ 是 → 保存到 defaults/<app>.vars
        │
-       └─ NO  → Exit
+       └─ 否 → 退出
 ```
 
-### Variable Resolution Flow
+### 变量解析流程
 
 ```
-CONTAINER CREATION STARTED
+容器创建开始
          │
          v
    ┌─────────────────────┐
-   │ Check ENVIRONMENT   │
-   │ for var_cpu, var_..│
+   │ 检查环境变量         │
+   │ var_cpu, var_...    │
    └──────┬──────────────┘
-          │ Found? Use them (Priority 1)
-          │ Not found? Continue...
+          │ 找到？使用它们（优先级 1）
+          │ 未找到？继续...
           v
    ┌──────────────────────────┐
-   │ Load App Defaults        │
+   │ 加载应用默认值            │
    │ /defaults/<app>.vars     │
    └──────┬───────────────────┘
-          │ File exists? Parse & load (Priority 2)
-          │ Not found? Continue...
+          │ 文件存在？解析并加载（优先级 2）
+          │ 未找到？继续...
           v
    ┌──────────────────────────┐
-   │ Load User Defaults       │
+   │ 加载用户默认值            │
    │ /default.vars            │
    └──────┬───────────────────┘
-          │ File exists? Parse & load (Priority 3)
-          │ Not found? Continue...
+          │ 文件存在？解析并加载（优先级 3）
+          │ 未找到？继续...
           v
    ┌──────────────────────────┐
-   │ Use Built-in Defaults    │
-   │ (Hardcoded values)       │
+   │ 使用内置默认值            │
+   │ （硬编码值）              │
    └──────┬───────────────────┘
           │
           v
    ┌──────────────────────────┐
-   │ All Variables Resolved   │
-   │ Ready for container      │
-   │ creation                 │
+   │ 所有变量已解析            │
+   │ 准备创建容器              │
+   │                          │
    └──────────────────────────┘
 ```
 
 ---
 
-## Security Model
+## 安全模型
 
-### Threat Model
+### 威胁模型
 
-| Threat                       | Mitigation                                        |
-| ---------------------------- | ------------------------------------------------- |
-| **Arbitrary Code Execution** | No `source` or `eval`; manual parsing only        |
-| **Variable Injection**       | Whitelist of allowed variable names               |
-| **Command Substitution**     | `_sanitize_value()` blocks `$()`, backticks, etc. |
-| **Path Traversal**           | Files locked to `/usr/local/community-scripts/`   |
-| **Permission Escalation**    | Files created with restricted permissions         |
-| **Information Disclosure**   | Sensitive variables not logged                    |
+| 威胁                 | 缓解措施                                      |
+| -------------------- | --------------------------------------------- |
+| **任意代码执行**     | 不使用 `source` 或 `eval`；仅手动解析         |
+| **变量注入**         | 允许的变量名白名单                            |
+| **命令替换**         | `_sanitize_value()` 阻止 `$()`、反引号等      |
+| **路径遍历**         | 文件锁定到 `/usr/local/community-scripts/`    |
+| **权限提升**         | 使用受限权限创建文件                          |
+| **信息泄露**         | 敏感变量不记录日志                            |
 
-### Security Controls
+### 安全控制
 
-#### 1. Input Validation
+#### 1. 输入验证
 
 ```bash
-# Only specific variables allowed
+# 仅允许特定变量
 if ! _is_whitelisted_key "$key"; then
   skip_this_variable
 fi
 
-# Values sanitized
+# 值已清理
 if ! val="$(_sanitize_value "$value")"; then
   reject_entire_line
 fi
 ```
 
-#### 2. Safe File Parsing
+#### 2. 安全文件解析
 
 ```bash
-# ❌ DANGEROUS (OLD)
+# ❌ 危险（旧方式）
 source /path/to/config.conf
-# Could execute: rm -rf / or any code
+# 可能执行：rm -rf / 或任何代码
 
-# ✅ SAFE (NEW)
+# ✅ 安全（新方式）
 load_vars_file "/path/to/config.conf"
-# Only reads var_name=value pairs, no execution
+# 仅读取 var_name=value 对，不执行
 ```
 
-#### 3. Whitelisting
+#### 3. 白名单
 
 ```bash
-# Only these variables can be configured
+# 仅这些变量可以配置
 var_cpu, var_ram, var_disk, var_brg, ...
 var_hostname, var_pw, var_ssh, ...
 
-# NOT allowed:
+# 不允许：
 var_malicious, var_hack, custom_var, ...
 ```
 
-#### 4. Value Constraints
+#### 4. 值约束
 
 ```bash
-# No command injection patterns
+# 无命令注入模式
 if [[ "$value" =~ ($|`|;|&|<\() ]]; then
   reject_value
 fi
@@ -808,90 +808,83 @@ fi
 
 ---
 
-## Implementation Details
+## 实现细节
 
-### Module: `build.func`
+### 模块：`build.func`
 
-**Load Order** (in actual scripts):
+**加载顺序**（在实际脚本中）：
 
 1. `#!/usr/bin/env bash` - Shebang
-2. `source /dev/stdin <<<$(curl ... api.func)` - API functions
-3. `source /dev/stdin <<<$(curl ... build.func)` - Build functions
-4. `variables()` - Initialize variables
-5. `check_root()` - Security check
-6. `install_script()` - Main flow
+2. `source /dev/stdin <<<$(curl ... api.func)` - API 函数
+3. `source /dev/stdin <<<$(curl ... build.func)` - 构建函数
+4. `variables()` - 初始化变量
+5. `check_root()` - 安全检查
+6. `install_script()` - 主流程
 
-**Key Sections**:
+**关键部分**：
 
 ```bash
-# Section 1: Initialization & Variables
+# 部分 1：初始化和变量
 - variables()
-- NSAPP, var_install, INTEGER pattern, etc.
+- NSAPP, var_install, INTEGER 模式等
 
-# Section 2: Storage Management
+# 部分 2：存储管理
 - storage_selector()
 - ensure_storage_selection_for_vars_file()
 
-# Section 3: Base Settings
-- base_settings()          # Apply defaults to all var_*
-- echo_default()           # Display current settings
+# 部分 3：基础设置
+- base_settings()          # 将默认值应用到所有 var_*
+- echo_default()           # 显示当前设置
 
-# Section 4: Variable Loading
-- load_vars_file()         # Safe parsing
-- _is_whitelisted_key()    # Validation
-- _sanitize_value()        # Threat mitigation
+# 部分 4：变量加载
+- load_vars_file()         # 安全解析
+- _is_whitelisted_key()    # 验证
+- _sanitize_value()        # 威胁缓解
 
-# Section 5: Defaults Management
-- default_var_settings()   # Load user defaults
-- get_app_defaults_path()  # Get app defaults path
-- maybe_offer_save_app_defaults()  # Save option
+# 部分 5：默认值管理
+- default_var_settings()   # 加载用户默认值
+- get_app_defaults_path()  # 获取应用默认值路径
+- maybe_offer_save_app_defaults()  # 保存选项
 
-# Section 6: Installation Flow
-- install_script()         # Main entry point
-- advanced_settings()      # 20-step wizard
+# 部分 6：安装流程
+- install_script()         # 主入口点
+- advanced_settings()      # 20 步向导
 ```
 
-### Regex Patterns Used
+### 使用的正则表达式模式
 
-| Pattern                | Purpose               | Example Match           |
-| ---------------------- | --------------------- | ----------------------- |
-| `^[0-9]+([.][0-9]+)?$` | Integer validation    | `4`, `192.168`          |
-| `^var_[a-z_]+$`        | Variable name         | `var_cpu`, `var_ssh`    |
-| `*'$('*`               | Command substitution  | `$(whoami)`             |
-| `*\`\*`                | Backtick substitution | `` `cat /etc/passwd` `` |
+| 模式                   | 用途             | 匹配示例                |
+| ---------------------- | ---------------- | ----------------------- |
+| `^[0-9]+([.][0-9]+)?$` | 整数验证         | `4`, `192.168`          |
+| `^var_[a-z_]+$`        | 变量名           | `var_cpu`, `var_ssh`    |
+| `*'$('*`               | 命令替换         | `$(whoami)`             |
+| `*\`\*`                | 反引号替换       | `` `cat /etc/passwd` `` |
 
 ---
 
-## Appendix: Migration Reference
+## 附录：迁移参考
 
-### Old Pattern (Deprecated)
+### 旧模式（已弃用）
 
 ```bash
-# ❌ OLD: config-file.func
-source config-file.conf          # Executes arbitrary code
+# ❌ 旧方式：config-file.func
+source config-file.conf          # 执行任意代码
 if [ "$USE_DEFAULTS" = "yes" ]; then
   apply_settings_directly
 fi
 ```
 
-### New Pattern (Current)
+### 新模式（当前）
 
 ```bash
-# ✅ NEW: load_vars_file()
+# ✅ 新方式：load_vars_file()
 if load_vars_file "$(get_app_defaults_path)"; then
-  echo "Settings loaded securely"
+  echo "设置已安全加载"
 fi
 ```
 
-### Function Mapping
+### 函数映射
 
-| Old              | New                               | Location   |
-| ---------------- | --------------------------------- | ---------- |
-| `read_config()`  | `load_vars_file()`                | build.func |
-| `write_config()` | `_build_current_app_vars_tmp()`   | build.func |
-| None             | `maybe_offer_save_app_defaults()` | build.func |
-| None             | `get_app_defaults_path()`         | build.func |
-
----
-
-**End of Technical Reference**
+| 旧方式           | 新方式                                | 位置       |
+| ---------------- | ------------------------------------- | ---------- |
+| `read_config()`  | `load_vars_file()`                    | build.func

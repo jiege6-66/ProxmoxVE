@@ -14,7 +14,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git-core \
   mediainfo
@@ -25,13 +25,13 @@ EOF
 $STD apt update
 $STD apt install -y unrar
 rm /etc/apt/sources.list.d/non-free.list
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Medusa"
+msg_info "正在安装 Medusa"
 $STD git clone https://github.com/pymedusa/Medusa.git /opt/medusa
-msg_ok "Installed Medusa"
+msg_ok "已安装 Medusa"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/medusa.service
 [Unit]
 Description=Medusa Daemon
@@ -48,7 +48,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now medusa
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,25 +13,25 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   redis-server \
   nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "ots" "Luzifer/ots" "prebuild" "latest" "/opt/ots" "ots_linux_amd64.tgz"
 create_self_signed_cert
 
-msg_info "Setup OTS"
+msg_info "设置 OTS"
 cat <<EOF >/opt/ots/.env
 LISTEN=127.0.0.1:3000
 REDIS_URL=redis://127.0.0.1:6379
 SECRET_EXPIRY=604800
 STORAGE_TYPE=redis
 EOF
-msg_ok "Setup OTS"
+msg_ok "设置 OTS"
 
-msg_info "Setting up nginx"
+msg_info "正在设置 nginx"
 cat <<EOF >/etc/nginx/sites-available/ots.conf
 server {
     listen 80;
@@ -65,9 +65,9 @@ EOF
 ln -s /etc/nginx/sites-available/ots.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Configured nginx"
+msg_ok "已配置 nginx"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/ots.service
 [Unit]
 Description=One-Time-Secret Service
@@ -84,7 +84,7 @@ RestartSecs=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now ots
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

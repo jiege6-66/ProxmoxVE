@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y handbrake-cli
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Tdarr"
+msg_info "正在安装 Tdarr"
 mkdir -p /opt/tdarr
 cd /opt/tdarr
 RELEASE=$(curl -fsSL https://f000.backblazeb2.com/file/tdarrs/versions.json | grep -oP '(?<="Tdarr_Updater": ")[^"]+' | grep linux_x64 | head -n 1)
@@ -26,11 +26,11 @@ $STD unzip Tdarr_Updater.zip
 chmod +x Tdarr_Updater
 $STD ./Tdarr_Updater
 rm -rf /opt/tdarr/Tdarr_Updater.zip
-msg_ok "Installed Tdarr"
+msg_ok "已安装 Tdarr"
 
 setup_hwaccel
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/tdarr-server.service
 [Unit]
 Description=Tdarr Server Daemon
@@ -73,7 +73,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q tdarr-server tdarr-node
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

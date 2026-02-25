@@ -14,7 +14,7 @@
   "website": "https://github.com/gtsteffaniak/filebrowser",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/filebrowser-quantum.webp",
   "config_path": "/usr/local/community-scripts/fq-config.yaml",
-  "description": "FileBrowser Quantum provides an easy way to access and manage your files from the web. It has has a web page interface that allows you to create secure shared links, users with their own specific permissions and settings, and offers a great viewing experience for many file types. This version is called Quantum because it packs tons of advanced features into a tiny easy to run file. Unlike the majority of alternative options, FileBrowser Quantum is simple to install and easy to configure.",
+  "description": "FileBrowser Quantum 提供了一种从 web 访问和管理文件的简便方式。它具有 web 页面界面，允许你创建安全的共享链接、具有特定权限和设置的用户，并为多种文件类型提供出色的查看体验。此版本称为 Quantum，因为它将大量高级功能打包到一个易于运行的小文件中。与大多数替代选项不同，FileBrowser Quantum 安装简单且易于配置。",
   "install_methods": [
     {
       "type": "default",

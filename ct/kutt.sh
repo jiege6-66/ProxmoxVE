@@ -25,41 +25,41 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/kutt ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "kutt" "thedevs-network/kutt"; then
-    msg_info "Stopping services"
+    msg_info "正在停止 services"
     systemctl stop kutt
-    msg_ok "Stopped services"
+    msg_ok "已停止 services"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     mkdir -p /opt/kutt-backup
     [ -d /opt/kutt/custom ] && cp -r /opt/kutt/custom /opt/kutt-backup/
     [ -d /opt/kutt/db ] && cp -r /opt/kutt/db /opt/kutt-backup/
     cp /opt/kutt/.env /opt/kutt-backup/
-    msg_ok "Backed up data"
+    msg_ok "已备份 data"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "kutt" "thedevs-network/kutt" "tarball" "latest"
 
-    msg_info "Restoring data"
+    msg_info "正在恢复 data"
     [ -d /opt/kutt-backup/custom ] && cp -r /opt/kutt-backup/custom /opt/kutt/
     [ -d /opt/kutt-backup/db ] && cp -r /opt/kutt-backup/db /opt/kutt/
     [ -f /opt/kutt-backup/.env ] && cp /opt/kutt-backup/.env /opt/kutt/
     rm -rf /opt/kutt-backup
-    msg_ok "Restored data"
+    msg_ok "已恢复 data"
 
-    msg_info "Configuring Kutt"
+    msg_info "正在配置 Kutt"
     cd /opt/kutt
     $STD npm install
     $STD npm run migrate
-    msg_ok "Configured Kutt"
+    msg_ok "已配置 Kutt"
 
-    msg_info "Starting services"
+    msg_info "正在启动 services"
     systemctl start kutt
-    msg_ok "Started services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -68,7 +68,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP} or https://<your-Kutt-domain>${CL}"

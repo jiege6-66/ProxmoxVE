@@ -24,15 +24,15 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/bitmagnet ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "bitmagnet" "bitmagnet-io/bitmagnet"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop bitmagnet-web
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     rm -f /tmp/backup.sql
     $STD sudo -u postgres pg_dump \
       --column-inserts \
@@ -62,7 +62,7 @@ function update_script() {
     rm -rf /opt/bitmagnet
     fetch_and_deploy_gh_release "bitmagnet" "bitmagnet-io/bitmagnet" "tarball"
 
-    msg_info "Updating Bitmagnet"
+    msg_info "正在更新 Bitmagnet"
     cd /opt/bitmagnet
     VREL=v$(curl -fsSL https://api.github.com/repos/bitmagnet-io/bitmagnet/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
     $STD go build -ldflags "-s -w -X github.com/bitmagnet-io/bitmagnet/internal/version.GitTag=$VREL"
@@ -71,10 +71,10 @@ function update_script() {
     [ -f "/opt/config.yml" ] && cp "/opt/config.yml" /opt/bitmagnet/
     msg_ok "Updated Bitmagnet"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start bitmagnet-web
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -83,7 +83,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3333${CL}"

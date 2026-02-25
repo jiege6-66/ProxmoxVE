@@ -17,7 +17,7 @@ PORTAINER_LATEST_VERSION=$(get_latest_github_release "portainer/portainer")
 PORTAINER_AGENT_LATEST_VERSION=$(get_latest_github_release "portainer/agent")
 
 if $STD mount | grep 'on / type zfs' >null && echo "ZFS"; then
-  msg_info "Enabling ZFS support."
+  msg_info "正在启用 ZFS support."
   mkdir -p /etc/containers
   cat <<'EOF' >/usr/local/bin/overlayzfsmount
 #!/bin/sh
@@ -39,15 +39,15 @@ mountopt = "nodev"
 EOF
 fi
 
-msg_info "Installing Podman"
+msg_info "正在安装 Podman"
 $STD apt install -y podman
 systemctl enable -q --now podman.socket
 echo -e 'unqualified-search-registries=["docker.io"]' >>/etc/containers/registries.conf
-msg_ok "Installed Podman"
+msg_ok "已安装 Podman"
 
 read -r -p "${TAB3}Would you like to add Portainer? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Portainer $PORTAINER_LATEST_VERSION"
+  msg_info "正在安装 Portainer $PORTAINER_LATEST_VERSION"
   podman volume create portainer_data >/dev/null
   $STD podman run -d \
     -p 8000:8000 \
@@ -57,11 +57,11 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
     -v /run/podman/podman.sock:/var/run/docker.sock \
     -v portainer_data:/data \
     portainer/portainer-ce:latest
-  msg_ok "Installed Portainer $PORTAINER_LATEST_VERSION"
+  msg_ok "已安装 Portainer $PORTAINER_LATEST_VERSION"
 else
   read -r -p "${TAB3}Would you like to add the Portainer Agent? <y/N> " prompt
   if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-    msg_info "Installing Portainer agent $PORTAINER_AGENT_LATEST_VERSION"
+    msg_info "正在安装 Portainer agent $PORTAINER_AGENT_LATEST_VERSION"
     podman volume create temp >/dev/null
     podman volume remove temp >/dev/null
     $STD podman run -d \
@@ -71,7 +71,7 @@ else
       -v /run/podman/podman.sock:/var/run/docker.sock \
       -v /var/lib/containers/storage/volumes:/var/lib/docker/volumes \
       portainer/agent
-    msg_ok "Installed Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
+    msg_ok "已安装 Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
   fi
 fi
 
@@ -79,7 +79,7 @@ msg_info "Pulling Home Assistant Image"
 $STD podman pull docker.io/homeassistant/home-assistant:stable
 msg_ok "Pulled Home Assistant Image"
 
-msg_info "Installing Home Assistant"
+msg_info "正在安装 Home Assistant"
 $STD podman volume create hass_config
 $STD podman run -d \
   --name homeassistant \
@@ -94,7 +94,7 @@ podman generate systemd \
   --new --name homeassistant \
   >/etc/systemd/system/homeassistant.service
 systemctl enable -q --now homeassistant
-msg_ok "Installed Home Assistant"
+msg_ok "已安装 Home Assistant"
 
 motd_ssh
 customize

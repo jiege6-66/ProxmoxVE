@@ -28,19 +28,19 @@ function update_script() {
   NODE_VERSION="22" setup_nodejs
   ensure_dependencies git
 
-  msg_info "Updating Ghost"
+  msg_info "正在更新 Ghost"
   if command -v ghost &>/dev/null; then
     current_version=$(ghost version | grep 'Ghost-CLI version' | awk '{print $3}')
     latest_version=$(npm show ghost-cli version)
     if [ "$current_version" != "$latest_version" ]; then
-      msg_info "Updating ${APP} from version v${current_version} to v${latest_version}"
+      msg_info "正在更新 ${APP} from version v${current_version} to v${latest_version}"
       $STD npm install -g ghost-cli@latest
-      msg_ok "Updated successfully!"
+      msg_ok "已成功更新!"
     else
       msg_ok "${APP} is already at v${current_version}"
     fi
   else
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   exit
@@ -50,7 +50,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:2368${CL}"

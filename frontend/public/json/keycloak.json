@@ -13,7 +13,7 @@
   "website": "https://www.keycloak.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/keycloak.webp",
   "config_path": "/opt/keycloak/conf/keycloak.conf",
-  "description": "Keycloak is an open-source identity and access management solution that provides centralized authentication and authorization for modern applications and services. It enables organizations to secure their applications and services with a single sign-on (SSO) solution, reducing the need for users to remember multiple login credentials. Keycloak supports various authentication protocols, including SAML, OAuth, and OpenID Connect, and integrates with a wide range of applications and services. With Keycloak, administrators can manage user identities, define security policies, and monitor access to their applications and services. The software is designed to be scalable, flexible, and easy to use, making it a valuable tool for enhancing the security and usability of modern applications and services.",
+  "description": "Keycloak 是一个开源的身份和访问管理解决方案,为现代应用程序和服务提供集中式身份验证和授权。它使组织能够通过单点登录 (SSO) 解决方案保护其应用程序和服务,减少用户记住多个登录凭据的需要。Keycloak 支持多种身份验证协议,包括 SAML、OAuth 和 OpenID Connect,并与各种应用程序和服务集成。通过 Keycloak,管理员可以管理用户身份、定义安全策略并监控对其应用程序和服务的访问。该软件设计为可扩展、灵活且易于使用,使其成为增强现代应用程序和服务安全性和可用性的宝贵工具。",
   "install_methods": [
     {
       "type": "default",

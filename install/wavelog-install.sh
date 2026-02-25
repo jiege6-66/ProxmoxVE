@@ -18,13 +18,13 @@ setup_mariadb
 MARIADB_DB_NAME="wavelog" MARIADB_DB_USER="waveloguser" setup_mariadb_db
 fetch_and_deploy_gh_release "wavelog" "wavelog/wavelog" "tarball"
 
-msg_info "Configuring Wavelog"
+msg_info "正在配置 Wavelog"
 chown -R www-data:www-data /opt/wavelog/
 find /opt/wavelog/ -type d -exec chmod 755 {} \;
 find /opt/wavelog/ -type f -exec chmod 664 {} \;
-msg_ok "Configured Wavelog"
+msg_ok "已配置 Wavelog"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/wavelog.conf
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
@@ -43,7 +43,7 @@ EOF
 $STD a2ensite wavelog.conf
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

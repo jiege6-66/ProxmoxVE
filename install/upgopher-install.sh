@@ -15,12 +15,12 @@ update_os
 
 fetch_and_deploy_gh_release "upgopher" "wanetty/upgopher" "prebuild" "latest" "/opt/upgopher" "upgopher_*_linux_amd64.tar.gz"
 
-msg_info "Installing Upgopher"
+msg_info "正在安装 Upgopher"
 chmod +x /opt/upgopher/upgopher
 mkdir -p /opt/upgopher/uploads
-msg_ok "Installed Upgopher"
+msg_ok "已安装 Upgopher"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/upgopher.service
 [Unit]
 Description=Upgopher File Server
@@ -39,7 +39,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now upgopher
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

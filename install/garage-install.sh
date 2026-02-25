@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setup Garage"
+msg_info "设置 Garage"
 GITEA_RELEASE=$(curl -s https://api.github.com/repos/deuxfleurs-org/garage/tags | jq -r '.[0].name')
 curl -fsSL "https://garagehq.deuxfleurs.fr/_releases/${GITEA_RELEASE}/x86_64-unknown-linux-musl/garage" -o /usr/local/bin/garage
 chmod +x /usr/local/bin/garage
@@ -59,7 +59,7 @@ metrics_token = "${METRICS_TOKEN}"
 EOF
 msg_ok "Set up Garage"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<'EOF' >/etc/systemd/system/garage.service
 [Unit]
 Description=Garage Object Storage (Deuxfleurs)
@@ -82,7 +82,7 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 EOF
 $STD systemctl enable -q --now garage
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

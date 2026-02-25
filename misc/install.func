@@ -28,7 +28,7 @@
 # ==============================================================================
 
 if ! command -v curl >/dev/null 2>&1; then
-  printf "\r\e[2K%b" '\033[93m Setup Source \033[m' >&2
+  printf "\r\e[2K%b" '\033[93m 设置 Source \033[m' >&2
   apt update >/dev/null 2>&1
   apt install -y curl >/dev/null 2>&1
 fi
@@ -85,7 +85,7 @@ verb_ip6() {
   set_std_mode # Set STD mode based on VERBOSE
 
   if [ "${IPV6_METHOD:-}" = "disable" ]; then
-    msg_info "Disabling IPv6 (this may affect some services)"
+    msg_info "正在禁用 IPv6 (this may affect some services)"
     mkdir -p /etc/sysctl.d
     $STD tee /etc/sysctl.d/99-disable-ipv6.conf >/dev/null <<EOF
 # Disable IPv6 (set by community-scripts)
@@ -94,7 +94,7 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 EOF
     $STD sysctl -p /etc/sysctl.d/99-disable-ipv6.conf
-    msg_ok "Disabled IPv6"
+    msg_ok "已禁用 IPv6"
   fi
 }
 
@@ -108,7 +108,7 @@ EOF
 # - Exits with error if network unavailable after retries
 # ------------------------------------------------------------------------------
 setting_up_container() {
-  msg_info "Setting up Container OS"
+  msg_info "正在设置 Container OS"
 
   # Fix Debian 13 LXC template bug where / is owned by nobody
   # Only attempt in privileged containers (unprivileged cannot chown /)
@@ -220,7 +220,7 @@ network_check() {
 # - Uses $STD wrapper to suppress output unless VERBOSE=yes
 # ------------------------------------------------------------------------------
 update_os() {
-  msg_info "Updating Container OS"
+  msg_info "正在更新 Container OS"
   if [[ "$CACHER" == "yes" ]]; then
     echo 'Acquire::http::Proxy-Auto-Detect "/usr/local/bin/apt-proxy-detect.sh";' >/etc/apt/apt.conf.d/00aptproxy
     cat <<EOF >/usr/local/bin/apt-proxy-detect.sh
@@ -241,7 +241,7 @@ EOF
 
   local tools_content
   tools_content=$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/tools.func) || {
-    msg_error "Failed to download tools.func"
+    msg_error "无法 download tools.func"
     exit 6
   }
   source /dev/stdin <<<"$tools_content"

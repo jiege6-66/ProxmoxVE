@@ -25,18 +25,18 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /opt/wanderer/start.sh ]]; then
-    msg_error "No wanderer Installation Found!"
+    msg_error "No wanderer 安装已找到！"
     exit
   fi
 
   if check_for_gh_release "wanderer" "Flomp/wanderer"; then
-    msg_info "Stopping service"
+    msg_info "正在停止 service"
     systemctl stop wanderer-web
-    msg_ok "Stopped service"
+    msg_ok "已停止 service"
 
     fetch_and_deploy_gh_release "wanderer" "open-wanderer/wanderer" "tarball" "latest" "/opt/wanderer/source"
 
-    msg_info "Updating wanderer"
+    msg_info "正在更新 wanderer"
     cd /opt/wanderer/source/db
     $STD go mod tidy
     $STD go build
@@ -45,23 +45,23 @@ function update_script() {
     $STD npm run build
     msg_ok "Updated wanderer"
 
-    msg_info "Starting service"
+    msg_info "正在启动 service"
     systemctl start wanderer-web
-    msg_ok "Started service"
-    msg_ok "Update Successful"
+    msg_ok "已启动 service"
+    msg_ok "更新成功"
   fi
   if check_for_gh_release "meilisearch" "meilisearch/meilisearch"; then
-    msg_info "Stopping service"
+    msg_info "正在停止 service"
     systemctl stop wanderer-web
-    msg_ok "Stopped service"
+    msg_ok "已停止 service"
 
     fetch_and_deploy_gh_release "meilisearch" "meilisearch/meilisearch" "binary" "latest" "/opt/wanderer/source/search"
     grep -q -- '--experimental-dumpless-upgrade' /opt/wanderer/start.sh || sed -i 's|meilisearch --master-key|meilisearch --experimental-dumpless-upgrade --master-key|' /opt/wanderer/start.sh
 
-    msg_info "Starting service"
+    msg_info "正在启动 service"
     systemctl start wanderer-web
-    msg_ok "Started service"
-    msg_ok "Update Successful"
+    msg_ok "已启动 service"
+    msg_ok "更新成功"
   fi
   exit
 }
@@ -70,7 +70,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

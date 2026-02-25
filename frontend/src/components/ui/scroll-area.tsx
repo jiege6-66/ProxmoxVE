@@ -46,3 +46,5 @@ const ScrollBar = React.forwardRef<
 ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
 
 export { ScrollArea, ScrollBar }
+
+这个组件代码中没有用户可见的 UI 文本需要翻译。代码中只包含 CSS 类名、组件属性和技术性的代码结构，没有显示给用户的文本内容。

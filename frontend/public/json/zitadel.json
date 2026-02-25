@@ -13,7 +13,7 @@
   "website": "https://zitadel.com",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/zitadel.webp",
   "config_path": "/opt/zitadel/config.yaml",
-  "description": "Zitadel is an open-source identity and access management (IAM) solution designed to provide secure authentication, authorization, and user management for modern applications and services. Built with a focus on flexibility, scalability, and security, Zitadel offers a comprehensive set of features for developers and organizations looking to implement robust identity management.",
+  "description": "Zitadel 是一个开源身份和访问管理解决方案,旨在为现代应用程序和服务提供安全的身份验证、授权和用户管理。Zitadel 专注于灵活性、可扩展性和安全性,为希望实施强大身份管理的开发人员和组织提供全面的功能集。",
   "install_methods": [
     {
       "type": "default",

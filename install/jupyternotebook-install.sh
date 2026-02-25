@@ -15,7 +15,7 @@ update_os
 
 PYTHON_VERSION="3.12" setup_uv
 
-msg_info "Installing Jupyter"
+msg_info "正在安装 Jupyter"
 mkdir -p /opt/jupyter
 cd /opt/jupyter
 $STD uv venv --clear /opt/jupyter/.venv
@@ -25,9 +25,9 @@ $STD /opt/jupyter/.venv/bin/python -m pip install jupyter
 ln -s /opt/jupyter/.venv/bin/jupyter /usr/local/bin/jupyter
 ln -s /opt/jupyter/.venv/bin/jupyter-lab /usr/local/bin/jupyter-lab
 ln -s /opt/jupyter/.venv/bin/jupyter-notebook /usr/local/bin/jupyter-notebook
-msg_ok "Installed Jupyter"
+msg_ok "已安装 Jupyter"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/jupyternotebook.service
 [Unit]
 Description=Jupyter Notebook Server
@@ -44,7 +44,7 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now jupyternotebook
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

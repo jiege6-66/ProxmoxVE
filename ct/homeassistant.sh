@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /var/lib/docker/volumes/hass_config/_data ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   UPD=$(msg_menu "Home Assistant Update Options" \
@@ -34,7 +34,7 @@ function update_script() {
     "4" "Install FileBrowser")
 
   if [ "$UPD" == "1" ]; then
-    msg_info "Updating All Containers"
+    msg_info "正在更新 All Containers"
     CONTAINER_LIST="${1:-$(docker ps -q)}"
     for container in ${CONTAINER_LIST}; do
       CONTAINER_IMAGE="$(docker inspect --format "{{.Config.Image}}" --type container "${container}")"
@@ -43,7 +43,7 @@ function update_script() {
       LATEST_IMAGE="$(docker inspect --format "{{.Id}}" --type image "${CONTAINER_IMAGE}")"
       if [[ "${RUNNING_IMAGE}" != "${LATEST_IMAGE}" ]]; then
         pip install -U runlike
-        echo "Updating ${container} image ${CONTAINER_IMAGE}"
+        echo "正在更新 ${container} image ${CONTAINER_IMAGE}"
         DOCKER_COMMAND="$(runlike --use-volume-id "${container}")"
         docker rm --force "${container}"
         eval "${DOCKER_COMMAND}"
@@ -53,30 +53,30 @@ function update_script() {
     exit
   fi
   if [ "$UPD" == "2" ]; then
-    msg_info "Removing ALL Unused Images"
+    msg_info "正在移除 ALL Unused Images"
     docker image prune -af
-    msg_ok "Removed ALL Unused Images"
+    msg_ok "已移除 ALL Unused Images"
     exit
   fi
   if [ "$UPD" == "3" ]; then
-    msg_info "Installing Home Assistant Community Store (HACS)"
+    msg_info "正在安装 Home Assistant Community Store (HACS)"
     $STD apt update
     cd /var/lib/docker/volumes/hass_config/_data
     $STD bash <(curl -fsSL https://get.hacs.xyz)
-    msg_ok "Installed Home Assistant Community Store (HACS)"
+    msg_ok "已安装 Home Assistant Community Store (HACS)"
     echo -e "\n Reboot Home Assistant and clear browser cache then Add HACS integration.\n"
     exit
   fi
   if [ "$UPD" == "4" ]; then
-    msg_info "Installing FileBrowser"
+    msg_info "正在安装 FileBrowser"
     RELEASE=$(curl -fsSL https://api.github.com/repos/filebrowser/filebrowser/releases/latest | grep -o '"tag_name": ".*"' | sed 's/"//g' | sed 's/tag_name: //g')
     $STD curl -fsSL https://github.com/filebrowser/filebrowser/releases/download/v2.23.0/linux-amd64-filebrowser.tar.gz | tar -xzv -C /usr/local/bin
     $STD filebrowser config init -a '0.0.0.0'
     $STD filebrowser config set -a '0.0.0.0'
     $STD filebrowser users add admin helper-scripts.com --perm.admin
-    msg_ok "Installed FileBrowser"
+    msg_ok "已安装 FileBrowser"
 
-    msg_info "Creating Service"
+    msg_info "正在创建 Service"
     service_path="/etc/systemd/system/filebrowser.service"
     echo "[Unit]
 Description=Filebrowser
@@ -89,9 +89,9 @@ ExecStart=/usr/local/bin/filebrowser -r /
 WantedBy=default.target" >$service_path
 
     $STD systemctl enable --now filebrowser
-    msg_ok "Created Service"
+    msg_ok "已创建 Service"
 
-    msg_ok "Completed successfully!\n"
+    msg_ok "已成功完成！\n"
     echo -e "FileBrowser should be reachable by going to the following URL.
          ${BL}http://$LOCAL_IP:8080${CL}   admin|helper-scripts.com\n"
     exit
@@ -102,8 +102,8 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}HA: http://${IP}:8123${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}Portainer: https://${IP}:9443${CL}"

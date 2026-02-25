@@ -32,7 +32,7 @@ else
   USE_LATEST=false
 fi
 
-msg_info "Setting up MinIO"
+msg_info "正在设置 MinIO"
 if [[ "$USE_LATEST" == "true" ]]; then
   RELEASE=$(curl -fsSL https://api.github.com/repos/minio/minio/releases/latest | grep '"tag_name"' | awk -F '"' '{print $4}')
   DOWNLOAD_URL="https://dl.min.io/server/minio/release/linux-amd64/minio"
@@ -64,9 +64,9 @@ EOF
   echo "MinIO Admin Password: $MINIO_ADMIN_PASSWORD"
 } >>~/minio.creds
 echo "${RELEASE}" >/opt/${APPLICATION,,}_version.txt
-msg_ok "Setup MinIO"
+msg_ok "设置 MinIO"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/minio.service
 [Unit]
 Description=MinIO

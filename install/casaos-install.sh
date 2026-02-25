@@ -23,12 +23,12 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   msg_error "Aborted by user. No changes have been made."
   exit 10
 fi
-msg_info "Installing CasaOS (Patience)"
+msg_info "正在安装 CasaOS (Patience)"
 DOCKER_CONFIG_PATH='/etc/docker/daemon.json'
 mkdir -p $(dirname $DOCKER_CONFIG_PATH)
 echo -e '{\n  "log-driver": "journald"\n}' >/etc/docker/daemon.json
 $STD bash <(curl -fsSL https://get.casaos.io/)
-msg_ok "Installed CasaOS"
+msg_ok "已安装 CasaOS"
 
 motd_ssh
 customize

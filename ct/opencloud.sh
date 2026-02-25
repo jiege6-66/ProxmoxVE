@@ -25,17 +25,17 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /etc/opencloud ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   RELEASE="v5.1.0"
   if check_for_gh_release "OpenCloud" "opencloud-eu/opencloud" "${RELEASE}"; then
-    msg_info "Stopping services"
+    msg_info "正在停止 services"
     systemctl stop opencloud opencloud-wopi
-    msg_ok "Stopped services"
+    msg_ok "已停止 services"
 
-    msg_info "Updating packages"
+    msg_info "正在更新 packages"
     $STD apt-get update
     $STD apt-get dist-upgrade -y
     ensure_dependencies "inotify-tools"
@@ -54,10 +54,10 @@ function update_script() {
 # STORAGE_USERS_POSIX_WATCH_PATH=<path-to-storage-or-bind-mount>' /etc/opencloud/opencloud.env
     fi
 
-    msg_info "Starting services"
+    msg_info "正在启动 services"
     systemctl start opencloud opencloud-wopi
-    msg_ok "Started services"
-    msg_ok "Updated successfully"
+    msg_ok "已启动 services"
+    msg_ok "已成功更新"
   fi
   exit
 }
@@ -66,7 +66,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://<your-OpenCloud-FQDN>${CL}"

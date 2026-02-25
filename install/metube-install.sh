@@ -13,29 +13,29 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   aria2 \
   coreutils \
   musl-dev \
   ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.13" setup_uv
 NODE_VERSION="24" NODE_MODULE="pnpm" setup_nodejs
 
-msg_info "Installing Deno"
+msg_info "正在安装 Deno"
 export DENO_INSTALL="/usr/local"
 curl -fsSL https://deno.land/install.sh | $STD sh -s -- -y
 [[ ":$PATH:" != *":/usr/local/bin:"* ]] &&
   echo -e "\nexport PATH=\"/usr/local/bin:\$PATH\"" >>~/.bashrc &&
   source ~/.bashrc
-msg_ok "Installed Deno"
+msg_ok "已安装 Deno"
 
 fetch_and_deploy_gh_release "metube" "alexta69/metube" "tarball" "latest"
 
-msg_info "Installing MeTube"
+msg_info "正在安装 MeTube"
 cd /opt/metube/ui
 if command -v corepack >/dev/null 2>&1; then
   $STD corepack enable
@@ -75,9 +75,9 @@ DEFAULT_THEME=auto
 LOGLEVEL=INFO
 ENABLE_ACCESSLOG=false
 EOF
-msg_ok "Installed MeTube"
+msg_ok "已安装 MeTube"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/metube.service
 [Unit]
 Description=Metube - YouTube Downloader
@@ -93,7 +93,7 @@ User=root
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now metube
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

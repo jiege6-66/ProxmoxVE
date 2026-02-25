@@ -13,7 +13,7 @@
   "website": "https://github.com/itskovacs/TRIP",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/trip.webp",
   "config_path": "/opt/trip.env",
-  "description": "Minimalist POI Map Tracker and Trip Planner. Self-hosted.",
+  "description": "极简 POI 地图跟踪器和旅行规划器。自托管。",
   "install_methods": [
     {
       "type": "default",

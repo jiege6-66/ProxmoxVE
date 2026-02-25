@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 
 read -rp "${TAB3}Install OnlyOffice components instead of CKEditor? (Y/N): " onlyoffice
 fetch_and_deploy_gh_release "cryptpad" "cryptpad/cryptpad" "tarball"
 
-msg_info "Setup CryptPad"
+msg_info "设置 CryptPad"
 cd /opt/cryptpad
 $STD npm ci
 $STD npm run install:components
@@ -33,9 +33,9 @@ cp config/config.example.js config/config.js
 sed -i "51s/localhost/${LOCAL_IP}/g" /opt/cryptpad/config/config.js
 sed -i "80s#//httpAddress: 'localhost'#httpAddress: '0.0.0.0'#g" /opt/cryptpad/config/config.js
 $STD npm run build
-msg_ok "Setup CryptPad"
+msg_ok "设置 CryptPad"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/cryptpad.service
 [Unit]
 Description=CryptPad Service
@@ -56,7 +56,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now cryptpad
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

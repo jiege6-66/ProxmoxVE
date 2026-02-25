@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apk add --no-cache \
   ca-certificates \
   libcap-setcap
 $STD apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community go
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 RELEASE=$(curl -s https://api.github.com/repos/TwiN/gatus/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
-msg_info "Installing gatus v${RELEASE}"
+msg_info "正在安装 gatus v${RELEASE}"
 temp_file=$(mktemp)
 mkdir -p /opt/gatus
 curl -fsSL "https://github.com/TwiN/gatus/archive/refs/tags/v${RELEASE}.tar.gz" -o "$temp_file"
@@ -32,9 +32,9 @@ CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o gatus .
 setcap CAP_NET_RAW+ep gatus
 mv config.yaml config
 echo "${RELEASE}" >/opt/gatus_version.txt
-msg_ok "Installed gatus v${RELEASE}"
+msg_ok "已安装 gatus v${RELEASE}"
 
-msg_info "Enabling gatus Service"
+msg_info "正在启用 gatus Service"
 cat <<EOF >/etc/init.d/gatus
 #!/sbin/openrc-run
 description="gatus Service"
@@ -55,16 +55,16 @@ depend() {
 EOF
 chmod +x /etc/init.d/gatus
 $STD rc-update add gatus default
-msg_ok "Enabled gatus Service"
+msg_ok "已启用 gatus Service"
 
-msg_info "Starting gatus"
+msg_info "正在启动 gatus"
 $STD service gatus start
-msg_ok "Started gatus"
+msg_ok "已启动 gatus"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 rm -f "$temp_file"
 $STD apk cache clean
-msg_ok "Cleaned"
+msg_ok "已清理"

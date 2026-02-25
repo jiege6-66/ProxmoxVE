@@ -25,16 +25,16 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/healthchecks ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "healthchecks" "healthchecks/healthchecks"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop healthchecks
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
-    msg_info "Backing up existing installation"
+    msg_info "正在备份 existing installation"
     BACKUP="/opt/healthchecks-backup-$(date +%F-%H%M)"
     cp -a /opt/healthchecks "$BACKUP"
     msg_ok "Backup created at $BACKUP"
@@ -49,23 +49,23 @@ function update_script() {
     $STD python3 -m venv venv
     $STD source venv/bin/activate
     $STD pip install --upgrade pip wheel
-    msg_ok "Created venv"
+    msg_ok "已创建 venv"
 
-    msg_info "Installing requirements"
+    msg_info "正在安装 requirements"
     $STD pip install gunicorn -r requirements.txt
-    msg_ok "Installed requirements"
+    msg_ok "已安装 requirements"
 
-    msg_info "Running Django migrations"
+    msg_info "正在运行 Django migrations"
     $STD python manage.py migrate --noinput
     $STD python manage.py collectstatic --noinput
     $STD python manage.py compress
     msg_ok "Completed Django migrations and static build"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start healthchecks
     systemctl reload caddy
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -74,7 +74,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}${CL}"

@@ -13,7 +13,7 @@
   "website": "https://umami.is/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/umami.webp",
   "config_path": "/opt/umami/.env",
-  "description": "Umami makes it easy to collect, analyze, and understand your web data while maintaining visitor privacy and data ownership.",
+  "description": "Umami 让您轻松收集、分析和理解网站数据，同时保护访客隐私和数据所有权。",
   "install_methods": [
     {
       "type": "default",

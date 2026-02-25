@@ -13,7 +13,7 @@
   "website": "https://libretranslate.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/libretranslate.webp",
   "config_path": "/opt/libretranslate/.env",
-  "description": "Free and Open Source Machine Translation API, entirely self-hosted. Unlike other APIs, it doesn't rely on proprietary providers such as Google or Azure to perform translations. Instead, its translation engine is powered by the open source Argos Translate library.",
+  "description": "免费开源的机器翻译 API,完全自托管。与其他 API 不同,它不依赖 Google 或 Azure 等专有提供商来执行翻译。相反,其翻译引擎由开源 Argos Translate 库提供支持。",
   "install_methods": [
     {
       "type": "default",

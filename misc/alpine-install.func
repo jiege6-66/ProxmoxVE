@@ -49,7 +49,7 @@ verb_ip6() {
   set_std_mode # Set STD mode based on VERBOSE
 
   if [ "${IPV6_METHOD:-}" = "disable" ]; then
-    msg_info "Disabling IPv6 (this may affect some services)"
+    msg_info "正在禁用 IPv6 (this may affect some services)"
     $STD sysctl -w net.ipv6.conf.all.disable_ipv6=1
     $STD sysctl -w net.ipv6.conf.default.disable_ipv6=1
     $STD sysctl -w net.ipv6.conf.lo.disable_ipv6=1
@@ -60,13 +60,13 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 EOF
     $STD rc-update add sysctl default
-    msg_ok "Disabled IPv6"
+    msg_ok "已禁用 IPv6"
   fi
 }
 
 # This function sets up the Container OS by generating the locale, setting the timezone, and checking the network connection
 setting_up_container() {
-  msg_info "Setting up Container OS"
+  msg_info "正在设置 Container OS"
   while [ $i -gt 0 ]; do
     if [ "$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d'/' -f1)" != "" ]; then
       break
@@ -114,11 +114,11 @@ network_check() {
 
 # This function updates the Container OS by running apt-get update and upgrade
 update_os() {
-  msg_info "Updating Container OS"
+  msg_info "正在更新 Container OS"
   $STD apk -U upgrade
   local tools_content
   tools_content=$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/tools.func) || {
-    msg_error "Failed to download tools.func"
+    msg_error "无法 download tools.func"
     exit 6
   }
   source /dev/stdin <<<"$tools_content"

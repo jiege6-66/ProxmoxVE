@@ -18,7 +18,7 @@ setup_mariadb
 MARIADB_DB_NAME="projectsend" MARIADB_DB_USER="projectsend" setup_mariadb_db
 fetch_and_deploy_gh_release "projectsend" "projectsend/projectsend" "prebuild" "latest" "/opt/projectsend" "projectsend-r*.zip"
 
-msg_info "Installing ProjectSend"
+msg_info "正在安装 ProjectSend"
 mv /opt/projectsend/includes/sys.config.sample.php /opt/projectsend/includes/sys.config.php
 chown -R www-data:www-data /opt/projectsend
 chmod -R 775 /opt/projectsend
@@ -32,9 +32,9 @@ sed -i -e "s/^\(memory_limit = \).*/\1 256M/" \
   -e "s/^\(upload_max_filesize = \).*/\1 256M/" \
   -e "s/^\(max_execution_time = \).*/\1 300/" \
   /etc/php/8.4/apache2/php.ini
-msg_ok "Installed projectsend"
+msg_ok "已安装 projectsend"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/projectsend.conf
 <VirtualHost *:80>
     ServerName projectsend
@@ -53,7 +53,7 @@ $STD a2ensite projectsend
 $STD a2enmod rewrite
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

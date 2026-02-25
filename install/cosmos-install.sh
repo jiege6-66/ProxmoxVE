@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   ca-certificates \
   openssl \
@@ -22,17 +22,17 @@ $STD apt install -y \
   fdisk \
   mergerfs \
   unzip
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_docker
 fetch_and_deploy_gh_release "cosmos" "azukaar/Cosmos-Server" "prebuild" "latest" "/opt/cosmos" "cosmos-cloud-*-amd64.zip"
 
-msg_info "Setting up Cosmos"
+msg_info "正在设置 Cosmos"
 cd /opt/cosmos
 chmod +x /opt/cosmos/cosmos
 msg_ok "Set up Cosmos"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/cosmos.service
 [Unit]
 Description=Cosmos Cloud service
@@ -55,7 +55,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now cosmos
-msg_info "Created Service"
+msg_info "已创建 Service"
 
 motd_ssh
 customize

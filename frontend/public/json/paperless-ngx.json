@@ -13,7 +13,7 @@
   "website": "https://docs.paperless-ngx.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/paperless-ngx.webp",
   "config_path": "/opt/paperless/paperless.conf",
-  "description": "Paperless-ngx is a software tool designed for digitizing and organizing paper documents. It provides a web-based interface for scanning, uploading, and organizing paper documents, making it easier to manage, search, and access important information. Paperless-ngx uses the OCR (Optical Character Recognition) technology to extract text from scanned images and makes it searchable, thus increasing the efficiency of document management.",
+  "description": "Paperless-ngx 是一个用于数字化和组织纸质文档的软件工具。它提供基于网页的界面用于扫描、上传和组织纸质文档,使管理、搜索和访问重要信息变得更容易。Paperless-ngx 使用 OCR(光学字符识别)技术从扫描图像中提取文本并使其可搜索,从而提高文档管理的效率。",
   "install_methods": [
     {
       "type": "default",

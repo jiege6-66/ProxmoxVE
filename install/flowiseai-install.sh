@@ -15,7 +15,7 @@ update_os
 
 NODE_VERSION="20" setup_nodejs
 
-msg_info "Installing FlowiseAI (Patience)"
+msg_info "正在安装 FlowiseAI (Patience)"
 $STD npm install -g flowise \
   @opentelemetry/exporter-trace-otlp-grpc \
   @opentelemetry/exporter-trace-otlp-proto \
@@ -23,9 +23,9 @@ $STD npm install -g flowise \
   langchainhub
 mkdir -p /opt/flowiseai
 curl -fsSL "https://raw.githubusercontent.com/FlowiseAI/Flowise/main/packages/server/.env.example" -o "/opt/flowiseai/.env"
-msg_ok "Installed FlowiseAI"
+msg_ok "已安装 FlowiseAI"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/flowise.service
 [Unit]
 Description=FlowiseAI
@@ -40,7 +40,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now flowise
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

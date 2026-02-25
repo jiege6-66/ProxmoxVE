@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/trilium ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "Trilium" "TriliumNext/Trilium"; then
@@ -35,34 +35,34 @@ function update_script() {
       DB_PATH="/opt/trilium/assets/db"
       DB_RESTORE_PATH="/opt/trilium/assets/db"
     else
-      msg_error "Database not found in either /opt/trilium/db or /opt/trilium/assets/db"
+      msg_error "Database 未找到 in either /opt/trilium/db or /opt/trilium/assets/db"
       exit
     fi
 
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop trilium
     sleep 1
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up Database"
+    msg_info "正在备份 Database"
     mkdir -p /opt/trilium_backup
     cp -r "${DB_PATH}" /opt/trilium_backup/
     rm -rf /opt/trilium
-    msg_ok "Backed up Database"
+    msg_ok "已备份 Database"
 
     fetch_and_deploy_gh_release "Trilium" "TriliumNext/Trilium" "prebuild" "latest" "/opt/trilium" "TriliumNotes-Server-*linux-x64.tar.xz"
 
-    msg_info "Restoring Database"
+    msg_info "正在恢复 Database"
     mkdir -p "$(dirname "${DB_RESTORE_PATH}")"
     cp -r /opt/trilium_backup/$(basename "${DB_PATH}") "${DB_RESTORE_PATH}"
     rm -rf /opt/trilium_backup
-    msg_ok "Restored Database"
+    msg_ok "已恢复 Database"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start trilium
     sleep 1
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -71,7 +71,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

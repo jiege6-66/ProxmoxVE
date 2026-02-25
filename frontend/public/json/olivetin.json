@@ -13,7 +13,7 @@
   "website": "https://www.olivetin.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/olivetin.webp",
   "config_path": "/etc/OliveTin/config.yaml",
-  "description": "OliveTin provides a secure and straightforward way to execute pre-determined shell commands through a web-based interface.",
+  "description": "OliveTin 提供了一种安全且直接的方式，通过基于网页的界面执行预定的 shell 命令。",
   "install_methods": [
     {
       "type": "default",

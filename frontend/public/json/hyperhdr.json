@@ -13,7 +13,7 @@
   "website": "https://github.com/awawa-dev/HyperHDR",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/hyperhdr.webp",
   "config_path": "",
-  "description": "HyperHDR is a highly optimized open source ambient lighting implementation based on modern digital video and audio stream analysis.",
+  "description": "HyperHDR 是一个高度优化的开源环境光照明实现，基于现代数字视频和音频流分析。",
   "install_methods": [
     {
       "type": "default",

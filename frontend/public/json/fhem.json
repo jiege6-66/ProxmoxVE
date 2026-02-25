@@ -13,7 +13,7 @@
   "website": "https://fhem.de/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/fhem.webp",
   "config_path": "",
-  "description": "FHEM stands for \"Freundliche Hausautomation und Energie-Messung,\" which translates to \"Friendly Home Automation and Energy Measurement\" in English. The software can interface with a wide range of devices, including lighting systems, thermostats, weather stations, and media devices, among others.",
+  "description": "FHEM 代表 \"Freundliche Hausautomation und Energie-Messung\"，翻译为 \"友好的家庭自动化和能源测量\"。该软件可以与各种设备接口，包括照明系统、恒温器、气象站和媒体设备等。",
   "install_methods": [
     {
       "type": "default",

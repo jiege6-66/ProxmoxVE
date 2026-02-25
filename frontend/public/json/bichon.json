@@ -13,7 +13,7 @@
   "config_path": "/opt/bichon/bichon.env",
   "website": "https://github.com/rustmailer/bichon",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/bichon.webp",
-  "description": "Bichon is an open-source email archiving system that synchronizes emails from IMAP servers, indexes them for full-text search, and provides a REST API for programmatic access. Unlike email clients, Bichon is designed for archiving and searching rather than sending/receiving emails. It runs as a standalone server application that continuously synchronizes configured email accounts and maintains a searchable local archive.",
+  "description": "Bichon 是一个开源的电子邮件归档系统，可以从 IMAP 服务器同步电子邮件，为其建立全文搜索索引，并提供 REST API 以供程序化访问。与电子邮件客户端不同，Bichon 专为归档和搜索而设计，而不是发送/接收电子邮件。它作为独立的服务器应用程序运行，持续同步配置的电子邮件账户并维护可搜索的本地存档。",
   "install_methods": [
     {
       "type": "default",

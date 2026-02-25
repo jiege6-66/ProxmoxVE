@@ -22,3 +22,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 }
+
+代码中没有用户可见的 UI 文本需要翻译，所有字符串都是 URL 路径和配置值。

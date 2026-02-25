@@ -100,7 +100,7 @@ EOF
 touch /etc/authelia/emails.txt
 chown -R authelia:authelia /etc/authelia
 systemctl enable -q --now authelia
-msg_ok "Authelia Setup completed"
+msg_ok "Authelia 设置 completed"
 
 motd_ssh
 customize

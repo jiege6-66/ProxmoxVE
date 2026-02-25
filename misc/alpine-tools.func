@@ -17,7 +17,7 @@ need_tool() {
     if ! has "$t"; then missing=1; fi
   done
   if [ "$missing" -eq 1 ]; then
-    msg_info "Installing tools: $*"
+    msg_info "正在安装 tools: $*"
     apk add --no-cache "$@" >/dev/null 2>&1 || {
       msg_error "apk add failed for: $*"
       return 1
@@ -199,7 +199,7 @@ fetch_and_deploy_gh() {
         $0 ~ p {print; exit}
       ')"
     [ -z "$url" ] && {
-      msg_error "asset not found for pattern: $pattern"
+      msg_error "asset 未找到 for pattern: $pattern"
       rm -rf "$tmpd"
       return 1
     }
@@ -255,7 +255,7 @@ fetch_and_deploy_gh() {
         $0 ~ p {print; exit}
       ')"
     [ -z "$url" ] && {
-      msg_error "asset not found for pattern: $pattern"
+      msg_error "asset 未找到 for pattern: $pattern"
       rm -rf "$tmpd"
       return 1
     }
@@ -285,7 +285,7 @@ fetch_and_deploy_gh() {
 setup_yq() {
   # prefer apk, unless FORCE_GH=1
   if [ "${FORCE_GH:-0}" != "1" ] && apk info -e yq >/dev/null 2>&1; then
-    msg_info "Updating yq via apk"
+    msg_info "正在更新 yq via apk"
     apk add --no-cache --upgrade yq >/dev/null 2>&1 || true
     msg_ok "yq ready ($(yq --version 2>/dev/null))"
     return 0
@@ -306,7 +306,7 @@ setup_yq() {
   download_with_progress "$url" "$tmp" || return 1
   install -m 0755 "$tmp" /usr/local/bin/yq
   rm -f "$tmp"
-  msg_ok "Setup yq ($(yq --version 2>/dev/null))"
+  msg_ok "设置 yq ($(yq --version 2>/dev/null))"
 }
 
 # ------------------------------
@@ -314,7 +314,7 @@ setup_yq() {
 # ------------------------------
 setup_adminer() {
   need_tool curl || return 1
-  msg_info "Setup Adminer (Alpine)"
+  msg_info "设置 Adminer (Alpine)"
   mkdir -p /var/www/localhost/htdocs/adminer
   curl -fsSL https://github.com/vrana/adminer/releases/latest/download/adminer.php \
     -o /var/www/localhost/htdocs/adminer/index.php || {
@@ -355,9 +355,9 @@ setup_uv() {
       msg_ok "uv $ver already installed"
       return 0
     }
-    msg_info "Updating uv $installed → $ver"
+    msg_info "正在更新 uv $installed → $ver"
   else
-    msg_info "Setup uv $ver"
+    msg_info "设置 uv $ver"
   fi
 
   tmpd="$(mktemp -d)" || return 1
@@ -380,14 +380,14 @@ setup_uv() {
   else
     # fallback: in subfolder
     install -m 0755 "$tmpd"/*/uv "$UV_BIN" 2>/dev/null || {
-      msg_error "uv binary not found in tar"
+      msg_error "uv binary 未找到 in tar"
       rm -rf "$tmpd"
       return 1
     }
   fi
   rm -rf "$tmpd"
   ensure_usr_local_bin_persist
-  msg_ok "Setup uv $ver"
+  msg_ok "设置 uv $ver"
 
   if [ -n "${PYTHON_VERSION:-}" ]; then
     local match
@@ -398,7 +398,7 @@ setup_uv() {
       return 1
     }
     if ! uv python list | grep -q "cpython-${match}-linux"; then
-      msg_info "Installing Python $match via uv"
+      msg_info "正在安装 Python $match via uv"
       uv python install "$match" || {
         msg_error "uv python install failed"
         return 1
@@ -418,7 +418,7 @@ setup_java() {
   17) pkg="openjdk17-jdk" ;;
   21 | *) pkg="openjdk21-jdk" ;;
   esac
-  msg_info "Setup Java (OpenJDK $JAVA_VERSION)"
+  msg_info "设置 Java (OpenJDK $JAVA_VERSION)"
   apk add --no-cache "$pkg" >/dev/null 2>&1 || {
     msg_error "apk add $pkg failed"
     return 1
@@ -438,7 +438,7 @@ setup_java() {
 # ------------------------------
 setup_go() {
   if [ -z "${GO_VERSION:-}" ]; then
-    msg_info "Setup Go (apk)"
+    msg_info "设置 Go (apk)"
     apk add --no-cache go >/dev/null 2>&1 || {
       msg_error "apk add go failed"
       return 1
@@ -459,7 +459,7 @@ setup_go() {
   esac
   TARBALL="go${GO_VERSION}.linux-${ARCH}.tar.gz"
   URL="https://go.dev/dl/${TARBALL}"
-  msg_info "Setup Go $GO_VERSION (tarball)"
+  msg_info "设置 Go $GO_VERSION (tarball)"
   TMP="$(mktemp)"
   download_with_progress "$URL" "$TMP" || return 1
   rm -rf /usr/local/go
@@ -483,11 +483,11 @@ setup_composer() {
   local COMPOSER_BIN="/usr/local/bin/composer"
   if ! has php; then
     # prefers php83
-    msg_info "Installing PHP CLI for Composer"
+    msg_info "正在安装 PHP CLI for Composer"
     apk add --no-cache php83-cli php83-openssl php83-phar php83-iconv >/dev/null 2>&1 || {
       # Fallback to generic php if 83 not available
       apk add --no-cache php-cli php-openssl php-phar php-iconv >/dev/null 2>&1 || {
-        msg_error "Failed to install php-cli for composer"
+        msg_error "无法 install php-cli for composer"
         return 1
       }
     }
@@ -495,9 +495,9 @@ setup_composer() {
   fi
 
   if [ -x "$COMPOSER_BIN" ]; then
-    msg_info "Updating Composer"
+    msg_info "正在更新 Composer"
   else
-    msg_info "Setup Composer"
+    msg_info "设置 Composer"
   fi
 
   need_tool curl || return 1

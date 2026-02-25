@@ -13,19 +13,19 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing MariaDB"
+msg_info "正在安装 MariaDB"
 $STD apk add --no-cache mariadb mariadb-client
 $STD rc-update add mariadb default
-msg_ok "Installed MariaDB"
+msg_ok "已安装 MariaDB"
 
-msg_info "Configuring MariaDB"
+msg_info "正在配置 MariaDB"
 mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql >/dev/null 2>&1
 $STD rc-service mariadb start
-msg_ok "MariaDB Configured"
+msg_ok "MariaDB 已配置"
 
 read -r -p "${TAB3}Would you like to install Adminer with lighttpd? <y/N>: " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Adminer and dependencies"
+  msg_info "正在安装 Adminer and dependencies"
   $STD apk add --no-cache \
     lighttpd \
     lighttpd-openrc \
@@ -49,16 +49,16 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   curl -fsSL "https://github.com/vrana/adminer/releases/download/v${ADMINER_VERSION}/adminer-${ADMINER_VERSION}.php" -o /var/www/localhost/htdocs/adminer.php
   chown lighttpd:lighttpd /var/www/localhost/htdocs/adminer.php
   chmod 755 /var/www/localhost/htdocs/adminer.php
-  msg_ok "Adminer Installed"
+  msg_ok "Adminer 已安装"
 
-  msg_info "Starting Lighttpd"
+  msg_info "正在启动 Lighttpd"
   $STD rc-update add lighttpd default
   $STD rc-service lighttpd restart
-  msg_ok "Lighttpd Started"
+  msg_ok "Lighttpd 已启动"
 fi
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
-msg_ok "Cleaned"
+msg_info "正在清理"
+msg_ok "已清理"

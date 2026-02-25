@@ -21,7 +21,7 @@ catch_errors
 
 function update_script() {
   if [[ ! -d /usr/share/webapps/nextcloud ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -32,10 +32,10 @@ function update_script() {
 
   case $CHOICE in
   1)
-    msg_info "Updating Alpine Packages"
+    msg_info "正在更新 Alpine Packages"
     $STD apk -U upgrade
     msg_ok "Updated Alpine Packages"
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
     exit
     ;;
   2)
@@ -55,6 +55,6 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"
 echo -e "${APP} should be reachable by going to the following URL.
          ${BL}https://${IP}${CL} \n"

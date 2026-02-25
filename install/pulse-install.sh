@@ -14,15 +14,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   diffutils \
   polkitd
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Creating User"
+msg_info "正在创建 User"
 if useradd -r -m -d /opt/pulse-home -s /usr/sbin/nologin pulse; then
-  msg_ok "Created User"
+  msg_ok "已创建 User"
 else
   msg_error "User creation failed"
   exit 1
@@ -32,9 +32,9 @@ mkdir -p /etc/pulse
 fetch_and_deploy_gh_release "pulse" "rcourtman/Pulse" "prebuild" "latest" "/opt/pulse" "pulse-v*-linux-amd64.tar.gz"
 ln -sf /opt/pulse/bin/pulse /usr/local/bin/pulse
 chown -R pulse:pulse /etc/pulse /opt/pulse
-msg_ok "Installed Pulse"
+msg_ok "已安装 Pulse"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/pulse.service
 [Unit]
 Description=Pulse Monitoring Server
@@ -57,7 +57,7 @@ Environment="PULSE_DATA_DIR=/etc/pulse"
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now pulse
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

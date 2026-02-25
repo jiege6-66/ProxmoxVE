@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   pkg-config \
@@ -23,20 +23,20 @@ $STD apt install -y \
   libicu-dev \
   libsqlite3-dev \
   libffi-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 setup_uv
 fetch_and_deploy_gh_release "linkding" "sissbruecker/linkding"
 
-msg_info "Building Frontend"
+msg_info "正在构建 Frontend"
 cd /opt/linkding
 $STD npm ci
 $STD npm run build
 ln -sf /usr/lib/x86_64-linux-gnu/mod_icu.so /opt/linkding/libicu.so
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
-msg_info "Setting up LinkDing"
+msg_info "正在设置 LinkDing"
 rm -f bookmarks/settings/dev.py
 touch bookmarks/settings/custom.py
 $STD uv sync --no-dev --frozen
@@ -56,7 +56,7 @@ $STD /opt/linkding/.venv/bin/python manage.py create_initial_superuser
 $STD /opt/linkding/.venv/bin/python manage.py collectstatic --no-input
 msg_ok "Set up LinkDing"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/linkding.service
 [Unit]
 Description=linkding Bookmark Manager
@@ -119,7 +119,7 @@ $STD rm -f /etc/nginx/sites-enabled/default
 $STD ln -sf /etc/nginx/sites-available/linkding /etc/nginx/sites-enabled/linkding
 systemctl enable -q --now nginx linkding linkding-tasks
 systemctl restart nginx
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

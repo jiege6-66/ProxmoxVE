@@ -16,7 +16,7 @@ update_os
 fetch_and_deploy_gh_release "oauth2-proxy" "oauth2-proxy/oauth2-proxy" "prebuild" "latest" "/opt/oauth2-proxy" "oauth2-proxy*linux-amd64.tar.gz"
 touch /opt/oauth2-proxy/config.toml
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/oauth2-proxy.service
 [Unit]
 Description=OAuth2-Proxy Service
@@ -33,7 +33,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now oauth2-proxy
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

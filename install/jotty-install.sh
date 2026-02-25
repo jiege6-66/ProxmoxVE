@@ -16,7 +16,7 @@ update_os
 NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
 fetch_and_deploy_gh_release "jotty" "fccview/jotty" "prebuild" "latest" "/opt/jotty" "jotty_*_prebuild.tar.gz"
 
-msg_info "Setup jotty"
+msg_info "设置 jotty"
 mkdir -p data/{users,checklists,notes}
 
 cat <<EOF >/opt/jotty/.env
@@ -40,9 +40,9 @@ NODE_ENV=production
 # OIDC_CLIENT_SECRET=your_client_secret
 # OIDC_ADMIN_GROUPS=admins
 EOF
-msg_ok "Setup jotty"
+msg_ok "设置 jotty"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/jotty.service
 [Unit]
 Description=jotty server
@@ -58,7 +58,7 @@ Restart=on-abnormal
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now jotty
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

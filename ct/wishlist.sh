@@ -23,28 +23,28 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/wishlist ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "wishlist" "cmintey/wishlist"; then
     NODE_VERSION="24" NODE_MODULE="pnpm" setup_nodejs
 
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop wishlist
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     mkdir -p /opt/wishlist-backup
     cp /opt/wishlist/.env /opt/wishlist-backup/.env
     cp -a /opt/wishlist/uploads /opt/wishlist-backup
     cp -a /opt/wishlist/data /opt/wishlist-backup
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "wishlist" "cmintey/wishlist" "tarball"
     LATEST_APP_VERSION=$(get_latest_github_release "cmintey/wishlist")
 
-    msg_info "Updating Wishlist"
+    msg_info "正在更新 Wishlist"
     cd /opt/wishlist
     $STD pnpm install
     $STD pnpm svelte-kit sync
@@ -56,18 +56,18 @@ function update_script() {
     $STD pnpm prune --prod
     chmod +x /opt/wishlist/entrypoint.sh
 
-    msg_info "Restoring Backup"
+    msg_info "正在恢复 Backup"
     cp /opt/wishlist-backup/.env /opt/wishlist/.env
     cp -a /opt/wishlist-backup/uploads /opt/wishlist
     cp -a /opt/wishlist-backup/data /opt/wishlist
     rm -rf /opt/wishlist-backup
-    msg_ok "Restored Backup"
+    msg_ok "已恢复 Backup"
     
     msg_ok "Updated Wishlist"
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start wishlist
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -76,7 +76,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3280${CL}"

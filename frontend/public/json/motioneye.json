@@ -13,7 +13,7 @@
   "website": "https://github.com/motioneye-project/motioneye",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/motioneye.webp",
   "config_path": "/etc/motioneye/motioneye.conf",
-  "description": "MotionEye is an open-source, self-hosted network video recording (NVR) software designed to manage and monitor IP cameras. It runs on various platforms such as Linux, Raspberry Pi, and Docker, and offers features such as real-time video streaming, motion detection, and customizable camera views.",
+  "description": "MotionEye 是一个开源的自托管网络视频录制 (NVR) 软件，旨在管理和监控 IP 摄像头。它可在 Linux、Raspberry Pi 和 Docker 等各种平台上运行，并提供实时视频流、运动检测和可自定义的摄像头视图等功能。",
   "install_methods": [
     {
       "type": "default",

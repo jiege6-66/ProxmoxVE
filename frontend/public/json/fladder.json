@@ -13,7 +13,7 @@
   "website": "https://github.com/DonutWare/Fladder",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/fladder.webp",
   "config_path": "/opt/fladder/assets/config/config.json",
-  "description": "Fladder is a simple Jellyfin frontend built on top of Flutter. It provides a modern interface to stream and sync content locally, manage libraries, support multiple profiles, and offers direct, transcode and offline playback with media segments skipping.",
+  "description": "Fladder 是一个基于 Flutter 构建的简单 Jellyfin 前端。它提供现代化界面来流式传输和本地同步内容、管理库、支持多个配置文件，并提供直接、转码和离线播放以及媒体片段跳过功能。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   libssl-dev \
@@ -21,43 +21,43 @@ $STD apt install -y \
   python3-dev \
   ffmpeg \
   git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Bun"
+msg_info "正在安装 Bun"
 export BUN_INSTALL=/opt/bun
 curl -fsSL https://bun.sh/install | $STD bash
 ln -sf /opt/bun/bin/bun /usr/local/bin/bun
 ln -sf /opt/bun/bin/bunx /usr/local/bin/bunx
-msg_ok "Installed Bun"
+msg_ok "已安装 Bun"
 
 UV_VERSION="0.7.19" PYTHON_VERSION="3.12" setup_uv
 
-msg_info "Installing Deno"
+msg_info "正在安装 Deno"
 $STD sh -c "curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh -s -- -y"
-msg_ok "Installed Deno"
+msg_ok "已安装 Deno"
 
-msg_info "Creating directories"
+msg_info "正在创建 directories"
 mkdir -p /opt/yubal \
   /opt/yubal_data \
   /opt/yubal_config
-msg_ok "Created directories"
+msg_ok "已创建 directories"
 
 fetch_and_deploy_gh_release "yubal" "guillevc/yubal" "tarball" "latest" "/opt/yubal"
 
-msg_info "Building Frontend"
+msg_info "正在构建 Frontend"
 cd /opt/yubal/web
 $STD bun install --frozen-lockfile
 VERSION=$(get_latest_github_release "guillevc/yubal")
 VITE_VERSION=$VERSION VITE_COMMIT_SHA=$VERSION VITE_IS_RELEASE=true $STD bun run build
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 cd /opt/yubal
 export UV_CONCURRENT_DOWNLOADS=1
 $STD uv sync --package yubal-api --no-dev --frozen
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/opt/yubal.env
 YUBAL_HOST=0.0.0.0
 YUBAL_PORT=8000
@@ -85,7 +85,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now yubal
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://sharevb-it-tools.vercel.app/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/it-tools.webp",
   "config_path": "",
-  "description": "IT-Tools is a web-based suite of utilities designed to streamline and simplify various IT tasks, providing tools for developers and system administrators to manage their workflows efficiently.",
+  "description": "IT-Tools 是一个基于 Web 的实用工具套件,旨在简化各种 IT 任务,为开发人员和系统管理员提供高效管理工作流程的工具。",
   "install_methods": [
     {
       "type": "default",

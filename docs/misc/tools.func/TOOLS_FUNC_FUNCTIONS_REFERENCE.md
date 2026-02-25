@@ -1,93 +1,93 @@
-# tools.func Functions Reference
+# tools.func 函数参考
 
-Complete alphabetical reference of all functions in tools.func with parameters, usage, and examples.
+tools.func 中所有函数的完整字母顺序参考，包含参数、用法和示例。
 
-## Function Index
+## 函数索引
 
-### Package Management
-- `pkg_install()` - Install packages safely with retry
-- `pkg_update()` - Update package lists with retry
-- `pkg_remove()` - Remove packages cleanly
+### 包管理
+- `pkg_install()` - 安全安装包并支持重试
+- `pkg_update()` - 更新包列表并支持重试
+- `pkg_remove()` - 干净地移除包
 
-### Repository Management
-- `setup_deb822_repo()` - Add repository in modern deb822 format
-- `cleanup_repo_metadata()` - Clean GPG keys and old repositories
-- `check_repository()` - Verify repository accessibility
+### 仓库管理
+- `setup_deb822_repo()` - 以现代 deb822 格式添加仓库
+- `cleanup_repo_metadata()` - 清理 GPG 密钥和旧仓库
+- `check_repository()` - 验证仓库可访问性
 
-### Tool Installation Functions (30+)
+### 工具安装函数（30+）
 
-**Programming Languages**:
-- `setup_nodejs(VERSION)` - Install Node.js and npm
-- `setup_php(VERSION)` - Install PHP-FPM and CLI
-- `setup_python(VERSION)` - Install Python 3 with pip
-- `setup_uv()` - Install Python uv (modern & fast)
-- `setup_ruby(VERSION)` - Install Ruby with gem
-- `setup_golang(VERSION)` - Install Go programming language
-- `setup_java(VERSION)` - Install OpenJDK (Adoptium)
+**编程语言**：
+- `setup_nodejs(VERSION)` - 安装 Node.js 和 npm
+- `setup_php(VERSION)` - 安装 PHP-FPM 和 CLI
+- `setup_python(VERSION)` - 安装 Python 3 和 pip
+- `setup_uv()` - 安装 Python uv（现代且快速）
+- `setup_ruby(VERSION)` - 安装 Ruby 和 gem
+- `setup_golang(VERSION)` - 安装 Go 编程语言
+- `setup_java(VERSION)` - 安装 OpenJDK (Adoptium)
 
-**Databases**:
-- `setup_mariadb()` - Install MariaDB server
-- `setup_mariadb_db()` - Create user/db in MariaDB
-- `setup_postgresql(VERSION)` - Install PostgreSQL
-- `setup_postgresql_db()` - Create user/db in PostgreSQL
-- `setup_mongodb(VERSION)` - Install MongoDB
-- `setup_redis(VERSION)` - Install Redis cache
-- `setup_meilisearch()` - Install Meilisearch engine
+**数据库**：
+- `setup_mariadb()` - 安装 MariaDB 服务器
+- `setup_mariadb_db()` - 在 MariaDB 中创建用户/数据库
+- `setup_postgresql(VERSION)` - 安装 PostgreSQL
+- `setup_postgresql_db()` - 在 PostgreSQL 中创建用户/数据库
+- `setup_mongodb(VERSION)` - 安装 MongoDB
+- `setup_redis(VERSION)` - 安装 Redis 缓存
+- `setup_meilisearch()` - 安装 Meilisearch 引擎
 
-**Web Servers**:
-- `setup_nginx()` - Install Nginx
-- `setup_apache()` - Install Apache HTTP Server
-- `setup_caddy()` - Install Caddy
-- `setup_traefik()` - Install Traefik proxy
+**Web 服务器**：
+- `setup_nginx()` - 安装 Nginx
+- `setup_apache()` - 安装 Apache HTTP Server
+- `setup_caddy()` - 安装 Caddy
+- `setup_traefik()` - 安装 Traefik 代理
 
-**Containers**:
-- `setup_docker()` - Install Docker
-- `setup_podman()` - Install Podman
+**容器**：
+- `setup_docker()` - 安装 Docker
+- `setup_podman()` - 安装 Podman
 
-**Development**:
-- `setup_git()` - Install Git
-- `setup_docker_compose()` - Install Docker Compose
-- `setup_composer()` - Install PHP Composer
-- `setup_build_tools()` - Install build-essential
-- `setup_yq()` - Install mikefarah/yq processor
+**开发工具**：
+- `setup_git()` - 安装 Git
+- `setup_docker_compose()` - 安装 Docker Compose
+- `setup_composer()` - 安装 PHP Composer
+- `setup_build_tools()` - 安装 build-essential
+- `setup_yq()` - 安装 mikefarah/yq 处理器
 
-**Monitoring**:
-- `setup_grafana()` - Install Grafana
-- `setup_prometheus()` - Install Prometheus
-- `setup_telegraf()` - Install Telegraf
+**监控**：
+- `setup_grafana()` - 安装 Grafana
+- `setup_prometheus()` - 安装 Prometheus
+- `setup_telegraf()` - 安装 Telegraf
 
-**System**:
-- `setup_wireguard()` - Install WireGuard VPN
-- `setup_netdata()` - Install Netdata monitoring
-- `setup_tailscale()` - Install Tailscale
-- (+ more...)
+**系统**：
+- `setup_wireguard()` - 安装 WireGuard VPN
+- `setup_netdata()` - 安装 Netdata 监控
+- `setup_tailscale()` - 安装 Tailscale
+- （更多...）
 
 ---
 
-## Core Functions
+## 核心函数
 
 ### install_packages_with_retry()
 
-Install one or more packages safely with automatic retry logic (3 attempts), APT refresh, and lock handling.
+安全安装一个或多个包，具有自动重试逻辑（3 次尝试）、APT 刷新和锁处理。
 
-**Signature**:
+**签名**：
 ```bash
 install_packages_with_retry PACKAGE1 [PACKAGE2 ...]
 ```
 
-**Parameters**:
-- `PACKAGE1, PACKAGE2, ...` - Package names to install
+**参数**：
+- `PACKAGE1, PACKAGE2, ...` - 要安装的包名
 
-**Returns**:
-- `0` - All packages installed successfully
-- `1` - Installation failed after all retries
+**返回值**：
+- `0` - 所有包安装成功
+- `1` - 所有重试后安装失败
 
-**Features**:
-- Automatically sets `DEBIAN_FRONTEND=noninteractive`
-- Handles DPKG lock errors with `dpkg --configure -a`
-- Retries on transient network or APT failures
+**特性**：
+- 自动设置 `DEBIAN_FRONTEND=noninteractive`
+- 使用 `dpkg --configure -a` 处理 DPKG 锁错误
+- 在临时网络或 APT 故障时重试
 
-**Example**:
+**示例**：
 ```bash
 install_packages_with_retry curl wget git
 ```
@@ -96,47 +96,47 @@ install_packages_with_retry curl wget git
 
 ### upgrade_packages_with_retry()
 
-Upgrades installed packages with the same robust retry logic as the installation helper.
+使用与安装助手相同的强大重试逻辑升级已安装的包。
 
-**Signature**:
+**签名**：
 ```bash
 upgrade_packages_with_retry
 ```
 
-**Returns**:
-- `0` - Upgrade successful
-- `1` - Upgrade failed
+**返回值**：
+- `0` - 升级成功
+- `1` - 升级失败
 
 ---
 
 ### fetch_and_deploy_gh_release()
 
-The primary tool for downloading and installing software from GitHub Releases. Supports binaries, tarballs, and Debian packages.
+从 GitHub Releases 下载和安装软件的主要工具。支持二进制文件、压缩包和 Debian 包。
 
-**Signature**:
+**签名**：
 ```bash
 fetch_and_deploy_gh_release APPREPO TYPE [VERSION] [DEST] [ASSET_PATTERN]
 ```
 
-**Environment Variables**:
-- `APPREPO`: GitHub repository (e.g., `owner/repo`)
-- `TYPE`: Asset type (`binary`, `tarball`, `prebuild`, `singlefile`)
-- `VERSION`: Specific tag or `latest` (Default: `latest`)
-- `DEST`: Target directory (Default: `/opt/$APP`)
-- `ASSET_PATTERN`: Regex or string pattern to match the release asset (Required for `prebuild` and `singlefile`)
+**环境变量**：
+- `APPREPO`：GitHub 仓库（例如 `owner/repo`）
+- `TYPE`：资源类型（`binary`、`tarball`、`prebuild`、`singlefile`）
+- `VERSION`：特定标签或 `latest`（默认：`latest`）
+- `DEST`：目标目录（默认：`/opt/$APP`）
+- `ASSET_PATTERN`：用于匹配发布资源的正则表达式或字符串模式（`prebuild` 和 `singlefile` 必需）
 
-**Supported Operation Modes**:
-- `tarball`: Downloads and extracts the source tarball.
-- `binary`: Detects host architecture and installs a `.deb` package using `apt` or `dpkg`.
-- `prebuild`: Downloads and extracts a pre-built binary archive (supports `.tar.gz`, `.zip`, `.tgz`, `.txz`).
-- `singlefile`: Downloads a single binary file to the destination.
+**支持的操作模式**：
+- `tarball`：下载并解压源代码压缩包。
+- `binary`：检测主机架构并使用 `apt` 或 `dpkg` 安装 `.deb` 包。
+- `prebuild`：下载并解压预构建的二进制归档（支持 `.tar.gz`、`.zip`、`.tgz`、`.txz`）。
+- `singlefile`：下载单个二进制文件到目标位置。
 
-**Environment Variables**:
-- `CLEAN_INSTALL=1`: Removes all contents of the destination directory before extraction.
-- `DPKG_FORCE_CONFOLD=1`: Forces `dpkg` to keep old config files during package updates.
-- `SYSTEMD_OFFLINE=1`: Used automatically for `.deb` installs to prevent systemd-tmpfiles failures in unprivileged containers.
+**环境变量**：
+- `CLEAN_INSTALL=1`：在解压前删除目标目录的所有内容。
+- `DPKG_FORCE_CONFOLD=1`：强制 `dpkg` 在包更新期间保留旧配置文件。
+- `SYSTEMD_OFFLINE=1`：自动用于 `.deb` 安装，以防止在非特权容器中出现 systemd-tmpfiles 故障。
 
-**Example**:
+**示例**：
 ```bash
 fetch_and_deploy_gh_release "muesli/duf" "binary" "latest" "/opt/duf" "duf_.*_linux_amd64.tar.gz"
 ```
@@ -145,17 +145,17 @@ fetch_and_deploy_gh_release "muesli/duf" "binary" "latest" "/opt/duf" "duf_.*_li
 
 ### check_for_gh_release()
 
-Checks if a newer version is available on GitHub compared to the installed version.
+检查 GitHub 上是否有比已安装版本更新的版本。
 
-**Signature**:
+**签名**：
 ```bash
 check_for_gh_release APP REPO
 ```
 
-**Example**:
+**示例**：
 ```bash
 if check_for_gh_release "nodejs" "nodesource/distributions"; then
-  # update logic
+  # 更新逻辑
 fi
 ```
 
@@ -163,14 +163,14 @@ fi
 
 ### prepare_repository_setup()
 
-Performs safe repository preparation by cleaning up old files, keyrings, and ensuring the APT system is in a working state.
+通过清理旧文件、密钥环并确保 APT 系统处于工作状态来执行安全的仓库准备。
 
-**Signature**:
+**签名**：
 ```bash
 prepare_repository_setup REPO_NAME [REPO_NAME2 ...]
 ```
 
-**Example**:
+**示例**：
 ```bash
 prepare_repository_setup "mariadb" "mysql"
 ```
@@ -179,14 +179,14 @@ prepare_repository_setup "mariadb" "mysql"
 
 ### verify_tool_version()
 
-Validates if the installed major version matches the expected version.
+验证已安装的主版本是否与预期版本匹配。
 
-**Signature**:
+**签名**：
 ```bash
 verify_tool_version NAME EXPECTED INSTALLED
 ```
 
-**Example**:
+**示例**：
 ```bash
 verify_tool_version "nodejs" "22" "$(node -v | grep -oP '^v\K[0-9]+')"
 ```
@@ -195,27 +195,27 @@ verify_tool_version "nodejs" "22" "$(node -v | grep -oP '^v\K[0-9]+')"
 
 ### setup_deb822_repo()
 
-Add repository in modern deb822 format.
+以现代 deb822 格式添加仓库。
 
-**Signature**:
+**签名**：
 ```bash
 setup_deb822_repo NAME GPG_URL REPO_URL SUITE COMPONENT [ARCHITECTURES] [ENABLED]
 ```
 
-**Parameters**:
-- `NAME` - Repository name (e.g., "nodejs")
-- `GPG_URL` - URL to GPG key (e.g., https://example.com/key.gpg)
-- `REPO_URL` - Main repository URL (e.g., https://example.com/repo)
-- `SUITE` - Repository suite (e.g., "jammy", "bookworm")
-- `COMPONENT` - Repository component (e.g., "main", "testing")
-- `ARCHITECTURES` - Optional Comma-separated list of architectures (e.g., "amd64,arm64")
-- `ENABLED` - Optional "true" or "false" (default: "true")
+**参数**：
+- `NAME` - 仓库名称（例如 "nodejs"）
+- `GPG_URL` - GPG 密钥的 URL（例如 https://example.com/key.gpg）
+- `REPO_URL` - 主仓库 URL（例如 https://example.com/repo）
+- `SUITE` - 仓库套件（例如 "jammy"、"bookworm"）
+- `COMPONENT` - 仓库组件（例如 "main"、"testing"）
+- `ARCHITECTURES` - 可选，逗号分隔的架构列表（例如 "amd64,arm64"）
+- `ENABLED` - 可选，"true" 或 "false"（默认："true"）
 
-**Returns**:
-- `0` - Repository added successfully
-- `1` - Repository setup failed
+**返回值**：
+- `0` - 仓库添加成功
+- `1` - 仓库设置失败
 
-**Example**:
+**示例**：
 ```bash
 setup_deb822_repo \
   "nodejs" \
@@ -229,41 +229,41 @@ setup_deb822_repo \
 
 ### cleanup_repo_metadata()
 
-Clean up GPG keys and old repository configurations.
+清理 GPG 密钥和旧仓库配置。
 
-**Signature**:
+**签名**：
 ```bash
 cleanup_repo_metadata
 ```
 
-**Parameters**: None
+**参数**：无
 
-**Returns**:
-- `0` - Cleanup complete
+**返回值**：
+- `0` - 清理完成
 
-**Example**:
+**示例**：
 ```bash
 cleanup_repo_metadata
 ```
 
 ---
 
-## Tool Installation Functions
+## 工具安装函数
 
 ### setup_nodejs()
 
-Install Node.js and npm from official repositories. Handles legacy version cleanup (nvm) automatically.
+从官方仓库安装 Node.js 和 npm。自动处理旧版本清理（nvm）。
 
-**Signature**:
+**签名**：
 ```bash
 setup_nodejs
 ```
 
-**Environment Variables**:
-- `NODE_VERSION`: Major version to install (e.g. "20", "22", "24"). Default: "24".
-- `NODE_MODULE`: Optional npm package to install globally during setup (e.g. "pnpm", "yarn").
+**环境变量**：
+- `NODE_VERSION`：要安装的主版本（例如 "20"、"22"、"24"）。默认："24"。
+- `NODE_MODULE`：可选，在设置期间全局安装的 npm 包（例如 "pnpm"、"yarn"）。
 
-**Example**:
+**示例**：
 ```bash
 NODE_VERSION="22" NODE_MODULE="pnpm" setup_nodejs
 ```
@@ -272,20 +272,20 @@ NODE_VERSION="22" NODE_MODULE="pnpm" setup_nodejs
 
 ### setup_php()
 
-Install PHP with configurable extensions and FPM/Apache integration.
+安装 PHP，支持可配置的扩展和 FPM/Apache 集成。
 
-**Signature**:
+**签名**：
 ```bash
 setup_php
 ```
 
-**Environment Variables**:
-- `PHP_VERSION`: Version to install (e.g. "8.3", "8.4"). Default: "8.4".
-- `PHP_MODULE`: Comma-separated list of additional extensions.
-- `PHP_FPM`: Set to "YES" to install php-fpm.
-- `PHP_APACHE`: Set to "YES" to install libapache2-mod-php.
+**环境变量**：
+- `PHP_VERSION`：要安装的版本（例如 "8.3"、"8.4"）。默认："8.4"。
+- `PHP_MODULE`：逗号分隔的附加扩展列表。
+- `PHP_FPM`：设置为 "YES" 以安装 php-fpm。
+- `PHP_APACHE`：设置为 "YES" 以安装 libapache2-mod-php。
 
-**Example**:
+**示例**：
 ```bash
 PHP_VERSION="8.3" PHP_FPM="YES" PHP_MODULE="mysql,xml,zip" setup_php
 ```
@@ -294,14 +294,14 @@ PHP_VERSION="8.3" PHP_FPM="YES" PHP_MODULE="mysql,xml,zip" setup_php
 
 ### setup_mariadb_db()
 
-Creates a new MariaDB database and a dedicated user with all privileges. Automatically generates a password if not provided and saves it to a credentials file.
+创建新的 MariaDB 数据库和具有所有权限的专用用户。如果未提供密码，则自动生成密码并保存到凭据文件。
 
-**Environment Variables**:
-- `MARIADB_DB_NAME`: Name of the database (required)
-- `MARIADB_DB_USER`: Name of the database user (required)
-- `MARIADB_DB_PASS`: User password (optional, auto-generated if omitted)
+**环境变量**：
+- `MARIADB_DB_NAME`：数据库名称（必需）
+- `MARIADB_DB_USER`：数据库用户名（必需）
+- `MARIADB_DB_PASS`：用户密码（可选，如果省略则自动生成）
 
-**Example**:
+**示例**：
 ```bash
 MARIADB_DB_NAME="myapp" MARIADB_DB_USER="myapp_user" setup_mariadb_db
 ```
@@ -310,28 +310,28 @@ MARIADB_DB_NAME="myapp" MARIADB_DB_USER="myapp_user" setup_mariadb_db
 
 ### setup_postgresql_db()
 
-Creates a new PostgreSQL database and a dedicated user/role with all privileges. Automatically generates a password if not provided and saves it to a credentials file.
+创建新的 PostgreSQL 数据库和具有所有权限的专用用户/角色。如果未提供密码，则自动生成密码并保存到凭据文件。
 
-**Environment Variables**:
-- `PG_DB_NAME`: Name of the database (required)
-- `PG_DB_USER`: Name of the database user (required)
-- `PG_DB_PASS`: User password (optional, auto-generated if omitted)
+**环境变量**：
+- `PG_DB_NAME`：数据库名称（必需）
+- `PG_DB_USER`：数据库用户名（必需）
+- `PG_DB_PASS`：用户密码（可选，如果省略则自动生成）
 
 ---
 
 ### setup_java()
 
-Installs Temurin JDK.
+安装 Temurin JDK。
 
-**Signature**:
+**签名**：
 ```bash
 JAVA_VERSION="21" setup_java
 ```
 
-**Parameters**:
-- `JAVA_VERSION` - JDK version (e.g., "17", "21") (default: "21")
+**参数**：
+- `JAVA_VERSION` - JDK 版本（例如 "17"、"21"）（默认："21"）
 
-**Example**:
+**示例**：
 ```bash
 JAVA_VERSION="17" setup_java
 ```
@@ -340,17 +340,17 @@ JAVA_VERSION="17" setup_java
 
 ### setup_uv()
 
-Installs `uv` (modern Python package manager).
+安装 `uv`（现代 Python 包管理器）。
 
-**Signature**:
+**签名**：
 ```bash
 PYTHON_VERSION="3.13" setup_uv
 ```
 
-**Parameters**:
-- `PYTHON_VERSION` - Optional Python version to pre-install via uv (e.g., "3.12", "3.13")
+**参数**：
+- `PYTHON_VERSION` - 可选，通过 uv 预安装的 Python 版本（例如 "3.12"、"3.13"）
 
-**Example**:
+**示例**：
 ```bash
 PYTHON_VERSION="3.13" setup_uv
 ```
@@ -359,17 +359,17 @@ PYTHON_VERSION="3.13" setup_uv
 
 ### setup_go()
 
-Installs Go programming language.
+安装 Go 编程语言。
 
-**Signature**:
+**签名**：
 ```bash
 GO_VERSION="1.23" setup_go
 ```
 
-**Parameters**:
-- `GO_VERSION` - Go version to install (default: "1.23")
+**参数**：
+- `GO_VERSION` - 要安装的 Go 版本（默认："1.23"）
 
-**Example**:
+**示例**：
 ```bash
 GO_VERSION="1.24" setup_go
 ```
@@ -378,14 +378,14 @@ GO_VERSION="1.24" setup_go
 
 ### setup_yq()
 
-Installs `yq` (YAML processor).
+安装 `yq`（YAML 处理器）。
 
-**Signature**:
+**签名**：
 ```bash
 setup_yq
 ```
 
-**Example**:
+**示例**：
 ```bash
 setup_yq
 ```
@@ -394,14 +394,14 @@ setup_yq
 
 ### setup_composer()
 
-Installs PHP Composer.
+安装 PHP Composer。
 
-**Signature**:
+**签名**：
 ```bash
 setup_composer
 ```
 
-**Example**:
+**示例**：
 ```bash
 setup_composer
 ```
@@ -410,19 +410,19 @@ setup_composer
 
 ### setup_meilisearch()
 
-Install and configure Meilisearch search engine.
+安装和配置 Meilisearch 搜索引擎。
 
-**Environment Variables**:
-- `MEILISEARCH_BIND`: Address and port to bind to (Default: "127.0.0.1:7700")
-- `MEILISEARCH_ENV`: Environment mode (Default: "production")
+**环境变量**：
+- `MEILISEARCH_BIND`：绑定的地址和端口（默认："127.0.0.1:7700"）
+- `MEILISEARCH_ENV`：环境模式（默认："production"）
 
 ---
 
 ### setup_yq()
 
-Install the `mikefarah/yq` YAML processor. Removes existing non-compliant versions.
+安装 `mikefarah/yq` YAML 处理器。删除现有的不兼容版本。
 
-**Example**:
+**示例**：
 ```bash
 setup_yq
 yq eval '.app.version = "1.0.0"' -i config.yaml
@@ -432,9 +432,9 @@ yq eval '.app.version = "1.0.0"' -i config.yaml
 
 ### setup_composer()
 
-Install or update the PHP Composer package manager. Handles `COMPOSER_ALLOW_SUPERUSER` automatically and performs self-updates if already installed.
+安装或更新 PHP Composer 包管理器。自动处理 `COMPOSER_ALLOW_SUPERUSER` 并在已安装时执行自我更新。
 
-**Example**:
+**示例**：
 ```bash
 setup_php
 setup_composer
@@ -445,18 +445,18 @@ $STD composer install --no-dev
 
 ### setup_build_tools()
 
-Install the `build-essential` package suite for compiling software.
+安装 `build-essential` 包套件以编译软件。
 
 ---
 
 ### setup_uv()
 
-Install the modern Python package manager `uv`. Extremely fast replacement for pip/venv.
+安装现代 Python 包管理器 `uv`。pip/venv 的极快替代品。
 
-**Environment Variables**:
-- `PYTHON_VERSION`: Major.Minor version to ensure is installed.
+**环境变量**：
+- `PYTHON_VERSION`：确保安装的主.次版本。
 
-**Example**:
+**示例**：
 ```bash
 PYTHON_VERSION="3.12" setup_uv
 uv sync --locked
@@ -466,12 +466,12 @@ uv sync --locked
 
 ### setup_java()
 
-Install OpenJDK via the Adoptium repository.
+通过 Adoptium 仓库安装 OpenJDK。
 
-**Environment Variables**:
-- `JAVA_VERSION`: Major version to install (e.g. "17", "21"). Default: "21".
+**环境变量**：
+- `JAVA_VERSION`：要安装的主版本（例如 "17"、"21"）。默认："21"。
 
-**Example**:
+**示例**：
 ```bash
 JAVA_VERSION="21" setup_java
 ```
@@ -481,17 +481,17 @@ JAVA_VERSION="21" setup_java
 setup_nodejs VERSION
 ```
 
-**Parameters**:
-- `VERSION` - Node.js version (e.g., "20", "22", "lts")
+**参数**：
+- `VERSION` - Node.js 版本（例如 "20"、"22"、"lts"）
 
-**Returns**:
-- `0` - Installation successful
-- `1` - Installation failed
+**返回值**：
+- `0` - 安装成功
+- `1` - 安装失败
 
-**Creates**:
-- `/opt/nodejs_version.txt` - Version file
+**创建**：
+- `/opt/nodejs_version.txt` - 版本文件
 
-**Example**:
+**示例**：
 ```bash
 setup_nodejs "20"
 ```
@@ -500,24 +500,24 @@ setup_nodejs "20"
 
 ### setup_php(VERSION)
 
-Install PHP-FPM, CLI, and common extensions.
+安装 PHP-FPM、CLI 和常用扩展。
 
-**Signature**:
+**签名**：
 ```bash
 setup_php VERSION
 ```
 
-**Parameters**:
-- `VERSION` - PHP version (e.g., "8.2", "8.3")
+**参数**：
+- `VERSION` - PHP 版本（例如 "8.2"、"8.3"）
 
-**Returns**:
-- `0` - Installation successful
-- `1` - Installation failed
+**返回值**：
+- `0` - 安装成功
+- `1` - 安装失败
 
-**Creates**:
-- `/opt/php_version.txt` - Version file
+**创建**：
+- `/opt/php_version.txt` - 版本文件
 
-**Example**:
+**示例**：
 ```bash
 setup_php "8.3"
 ```
@@ -526,32 +526,32 @@ setup_php "8.3"
 
 ### setup_mariadb()
 
-Install MariaDB server and client utilities.
+安装 MariaDB 服务器和客户端工具。
 
-**Signature**:
+**签名**：
 ```bash
-setup_mariadb                         # Uses distribution packages (recommended)
-MARIADB_VERSION="11.4" setup_mariadb  # Uses official MariaDB repository
+setup_mariadb                         # 使用发行版包（推荐）
+MARIADB_VERSION="11.4" setup_mariadb  # 使用官方 MariaDB 仓库
 ```
 
-**Variables**:
-- `MARIADB_VERSION` - (optional) Specific MariaDB version
-  - Not set or `"latest"`: Uses distribution packages (most reliable, avoids mirror issues)
-  - Specific version (e.g., `"11.4"`, `"12.2"`): Uses official MariaDB repository
+**变量**：
+- `MARIADB_VERSION` - （可选）特定 MariaDB 版本
+  - 未设置或 `"latest"`：使用发行版包（最可靠，避免镜像问题）
+  - 特定版本（例如 `"11.4"`、`"12.2"`）：使用官方 MariaDB 仓库
 
-**Returns**:
-- `0` - Installation successful
-- `1` - Installation failed
+**返回值**：
+- `0` - 安装成功
+- `1` - 安装失败
 
-**Creates**:
-- `/opt/mariadb_version.txt` - Version file
+**创建**：
+- `/opt/mariadb_version.txt` - 版本文件
 
-**Example**:
+**示例**：
 ```bash
-# Recommended: Use distribution packages (stable, no mirror issues)
+# 推荐：使用发行版包（稳定，无镜像问题）
 setup_mariadb
 
-# Specific version from official repository
+# 从官方仓库安装特定版本
 MARIADB_VERSION="11.4" setup_mariadb
 ```
 
@@ -559,24 +559,24 @@ MARIADB_VERSION="11.4" setup_mariadb
 
 ### setup_postgresql(VERSION)
 
-Install PostgreSQL server and client utilities.
+安装 PostgreSQL 服务器和客户端工具。
 
-**Signature**:
+**签名**：
 ```bash
 setup_postgresql VERSION
 ```
 
-**Parameters**:
-- `VERSION` - PostgreSQL version (e.g., "14", "15", "16")
+**参数**：
+- `VERSION` - PostgreSQL 版本（例如 "14"、"15"、"16"）
 
-**Returns**:
-- `0` - Installation successful
-- `1` - Installation failed
+**返回值**：
+- `0` - 安装成功
+- `1` - 安装失败
 
-**Creates**:
-- `/opt/postgresql_version.txt` - Version file
+**创建**：
+- `/opt/postgresql_version.txt` - 版本文件
 
-**Example**:
+**示例**：
 ```bash
 setup_postgresql "16"
 ```
@@ -585,23 +585,23 @@ setup_postgresql "16"
 
 ### setup_docker()
 
-Install Docker and Docker CLI.
+安装 Docker 和 Docker CLI。
 
-**Signature**:
+**签名**：
 ```bash
 setup_docker
 ```
 
-**Parameters**: None
+**参数**：无
 
-**Returns**:
-- `0` - Installation successful
-- `1` - Installation failed
+**返回值**：
+- `0` - 安装成功
+- `1` - 安装失败
 
-**Creates**:
-- `/opt/docker_version.txt` - Version file
+**创建**：
+- `/opt/docker_version.txt` - 版本文件
 
-**Example**:
+**示例**：
 ```bash
 setup_docker
 ```
@@ -610,23 +610,23 @@ setup_docker
 
 ### setup_composer()
 
-Install PHP Composer (dependency manager).
+安装 PHP Composer（依赖管理器）。
 
-**Signature**:
+**签名**：
 ```bash
 setup_composer
 ```
 
-**Parameters**: None
+**参数**：无
 
-**Returns**:
-- `0` - Installation successful
-- `1` - Installation failed
+**返回值**：
+- `0` - 安装成功
+- `1` - 安装失败
 
-**Creates**:
-- `/usr/local/bin/composer` - Composer executable
+**创建**：
+- `/usr/local/bin/composer` - Composer 可执行文件
 
-**Example**:
+**示例**：
 ```bash
 setup_composer
 ```
@@ -635,72 +635,72 @@ setup_composer
 
 ### setup_build_tools()
 
-Install build-essential and development tools (gcc, make, etc.).
+安装 build-essential 和开发工具（gcc、make 等）。
 
-**Signature**:
+**签名**：
 ```bash
 setup_build_tools
 ```
 
-**Parameters**: None
+**参数**：无
 
-**Returns**:
-- `0` - Installation successful
-- `1` - Installation failed
+**返回值**：
+- `0` - 安装成功
+- `1` - 安装失败
 
-**Example**:
+**示例**：
 ```bash
 setup_build_tools
 ```
 
 ---
 
-## System Configuration
+## 系统配置
 
 ### setting_up_container()
 
-Display setup message and initialize container environment.
+显示设置消息并初始化容器环境。
 
-**Signature**:
+**签名**：
 ```bash
 setting_up_container
 ```
 
-**Example**:
+**示例**：
 ```bash
 setting_up_container
-# Output: ⏳ Setting up container...
+# 输出：⏳ 正在设置容器...
 ```
 
 ---
 
 ### motd_ssh()
 
-Configure SSH daemon and MOTD for container.
+为容器配置 SSH 守护进程和 MOTD。
 
-**Signature**:
+**签名**：
 ```bash
 motd_ssh
 ```
 
-**Example**:
+**示例**：
 ```bash
 motd_ssh
-# Configures SSH and creates MOTD
+# 配置 SSH 并创建 MOTD
 ```
 
 ---
 
 ### customize()
 
-Apply container customizations and final setup.
+应用容器自定义和最终设置。
 
-**Signature**:
+**签名**：
 ```bash
 customize
 ```
 
-**Example**:
+**示例**：
 ```bash
 customize
 ```
@@ -709,55 +709,55 @@ customize
 
 ### cleanup_lxc()
 
-Final cleanup of temporary files and logs.
+最终清理临时文件和日志。
 
-**Signature**:
+**签名**：
 ```bash
 cleanup_lxc
 ```
 
-**Example**:
+**示例**：
 ```bash
 cleanup_lxc
-# Removes temp files, finalizes installation
+# 删除临时文件，完成安装
 ```
 
 ---
 
-## Usage Patterns
+## 使用模式
 
-### Basic Installation Sequence
+### 基本安装序列
 
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-pkg_update                    # Update package lists
-setup_nodejs "20"             # Install Node.js
-setup_mariadb                 # Install MariaDB (distribution packages)
+pkg_update                    # 更新包列表
+setup_nodejs "20"             # 安装 Node.js
+setup_mariadb                 # 安装 MariaDB（发行版包）
 
-# ... application installation ...
+# ... 应用程序安装 ...
 
-motd_ssh                      # Setup SSH/MOTD
-customize                     # Apply customizations
-cleanup_lxc                   # Final cleanup
+motd_ssh                      # 设置 SSH/MOTD
+customize                     # 应用自定义
+cleanup_lxc                   # 最终清理
 ```
 
-### Tool Chain Installation
+### 工具链安装
 
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-# Install full web stack
+# 安装完整的 Web 栈
 pkg_update
 setup_nginx
 setup_php "8.3"
-setup_mariadb  # Uses distribution packages
+setup_mariadb  # 使用发行版包
 setup_composer
 ```
 
-### With Repository Setup
+### 使用仓库设置
 
 ```bash
 #!/usr/bin/env bash
@@ -765,7 +765,7 @@ source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
 pkg_update
 
-# Add Node.js repository
+# 添加 Node.js 仓库
 setup_deb822_repo \
   "https://deb.nodesource.com/gpgkey/nodesource.gpg.key" \
   "nodejs" \
@@ -779,6 +779,6 @@ setup_nodejs "20"
 
 ---
 
-**Last Updated**: December 2025
-**Total Functions**: 30+
-**Maintained by**: community-scripts team
+**最后更新**：2025 年 12 月
+**函数总数**：30+
+**维护者**：community-scripts 团队

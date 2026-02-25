@@ -13,7 +13,7 @@
   "website": "https://github.com/bastienwirtz/homer",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/homer.webp",
   "config_path": "/opt/homer/assets/config.yml",
-  "description": "Homer is a simple and lightweight static homepage generator that allows you to create and manage a home page for your server. It uses a YAML configuration file to define the layout and content of your homepage, making it easy to set up and customize. The generated homepage is static, meaning it does not require any server-side processing, making it fast and efficient to serve. Homer is designed to be a flexible and low-maintenance solution for organizing and accessing your services and information from a single, centralized location.",
+  "description": "Homer 是一个简单轻量的静态主页生成器，允许你为服务器创建和管理主页。它使用 YAML 配置文件来定义主页的布局和内容，使设置和自定义变得简单。生成的主页是静态的，不需要任何服务器端处理，因此提供服务时快速高效。Homer 旨在成为一个灵活且低维护的解决方案，用于从单一集中位置组织和访问你的服务和信息。",
   "install_methods": [
     {
       "type": "default",

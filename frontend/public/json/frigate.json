@@ -13,7 +13,7 @@
   "documentation": "https://docs.frigate.video/",
   "website": "https://frigate.video/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/frigate-light.webp",
-  "description": "Frigate is a complete and local NVR (Network Video Recorder) with realtime AI object detection for CCTV cameras.",
+  "description": "Frigate 是一个完整的本地 NVR（Network Video Recorder），具有用于 CCTV 摄像头的实时 AI 对象检测功能。",
   "install_methods": [
     {
       "type": "default",

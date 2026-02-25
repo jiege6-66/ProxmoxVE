@@ -29,10 +29,10 @@ function update_script() {
 
   case $CHOICE in
   1)
-    msg_info "Updating Redis"
+    msg_info "正在更新 Redis"
     apk update && apk upgrade redis
     rc-service redis restart
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
     exit
     ;;
   2)
@@ -56,6 +56,6 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"
 echo -e "${APP} should be reachable on port 6379.
          ${BL}redis-cli -h ${IP} -p 6379${CL} \n"

@@ -24,7 +24,7 @@ ln -sf /opt/ErsatzTV-ffmpeg/bin/ffplay /usr/local/bin/ffplay
 ln -sf /opt/ErsatzTV-ffmpeg/bin/ffprobe /usr/local/bin/ffprobe
 msg_ok "ffmpeg links set"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/ersatzTV.service
 [Unit]
 Description=ErsatzTV Service
@@ -42,7 +42,7 @@ RestartSec=30
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now ersatzTV
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

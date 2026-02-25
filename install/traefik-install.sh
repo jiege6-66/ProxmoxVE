@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apt-transport-https
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "traefik" "traefik/traefik" "prebuild" "latest" "/usr/bin" "traefik_v*_linux_amd64.tar.gz"
 mkdir -p /etc/traefik/{conf.d,ssl}
 
-msg_info "Creating Traefik configuration"
+msg_info "正在创建 Traefik configuration"
 cat <<EOF >/etc/traefik/traefik.yaml
 providers:
   file:
@@ -74,9 +74,9 @@ accessLog:
       names:
         User-Agent: keep
 EOF
-msg_ok "Created Traefik configuration"
+msg_ok "已创建 Traefik configuration"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/etc/systemd/system/traefik.service
 [Unit]
 Description=Traefik is an open-source Edge Router that makes publishing your services a fun and easy experience
@@ -91,7 +91,7 @@ ExecReload=/bin/kill -USR1 \$MAINPID
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now traefik
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

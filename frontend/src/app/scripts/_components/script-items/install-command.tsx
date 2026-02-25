@@ -26,61 +26,58 @@ export default function InstallCommand({ item }: { item: Script }) {
         {isAlpine
           ? (
               <>
-                As an alternative option, you can use Alpine Linux and the
+                作为替代选项，您可以使用 Alpine Linux 和
                 {" "}
                 {item.name}
                 {" "}
-                package to create a
+                软件包来创建一个
                 {" "}
                 {item.name}
                 {" "}
                 {getDisplayValueFromType(item.type)}
                 {" "}
-                container with faster creation time and minimal system resource usage.
-                You are also obliged to adhere to updates provided by the package maintainer.
+                容器，具有更快的创建时间和最小的系统资源使用。
+                您还需要遵守软件包维护者提供的更新。
               </>
             )
           : item.type === "pve"
             ? (
                 <>
-                  To use the
+                  要使用
                   {" "}
                   {item.name}
                   {" "}
-                  script, run the command below **only** in the Proxmox VE Shell. This script is
-                  intended for managing or enhancing the host system directly.
+                  脚本，请**仅**在 Proxmox VE Shell 中运行以下命令。此脚本旨在直接管理或增强主机系统。
                 </>
               )
             : item.type === "addon"
               ? (
                   <>
-                    This script enhances an existing setup. You can use it inside a running LXC container or directly on the
-                    Proxmox VE host to extend functionality with
+                    此脚本增强现有设置。您可以在运行的 LXC 容器内或直接在 Proxmox VE 主机上使用它，以通过
                     {" "}
                     {item.name}
-                    .
+                    {" "}
+                    扩展功能。
                   </>
                 )
               : (
                   <>
-                    To create a new Proxmox VE
+                    要创建新的 Proxmox VE
                     {" "}
                     {item.name}
                     {" "}
                     {getDisplayValueFromType(item.type)}
-                    , run the command below in the
-                    Proxmox VE Shell.
+                    ，请在 Proxmox VE Shell 中运行以下命令。
                   </>
                 )}
       </p>
       {isAlpine && (
         <p className="mt-2 text-sm">
-          To create a new Proxmox VE Alpine-
+          要创建新的 Proxmox VE Alpine-
           {item.name}
           {" "}
           {getDisplayValueFromType(item.type)}
-          , run the command below in
-          the Proxmox VE Shell.
+          ，请在 Proxmox VE Shell 中运行以下命令。
         </p>
       )}
     </>
@@ -90,11 +87,9 @@ export default function InstallCommand({ item }: { item: Script }) {
     <Alert className="mt-3 mb-3">
       <Info className="h-4 w-4" />
       <AlertDescription className="text-sm">
-        <strong>When to use Gitea:</strong>
+        <strong>何时使用 Gitea：</strong>
         {" "}
-        GitHub may have issues including slow connections, delayed updates after bug
-        fixes, no IPv6 support, API rate limits (60/hour). Use our Gitea mirror as a reliable alternative when
-        experiencing these issues.
+        GitHub 可能存在问题，包括连接缓慢、错误修复后更新延迟、不支持 IPv6、API 速率限制（60次/小时）。当遇到这些问题时，请使用我们的 Gitea 镜像作为可靠的替代方案。
       </AlertDescription>
     </Alert>
   );
@@ -104,7 +99,7 @@ export default function InstallCommand({ item }: { item: Script }) {
       return (
         <Tabs defaultValue="default" className="mt-2 w-full max-w-4xl">
           <TabsList>
-            <TabsTrigger value="default">Default</TabsTrigger>
+            <TabsTrigger value="default">默认</TabsTrigger>
             <TabsTrigger value="alpine">Alpine Linux</TabsTrigger>
           </TabsList>
           <TabsContent value="default">

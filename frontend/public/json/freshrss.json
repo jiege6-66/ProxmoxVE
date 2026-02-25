@@ -13,7 +13,7 @@
   "website": "https://freshrss.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/freshrss.webp",
   "config_path": "/opt/freshrss/data/config.php",
-  "description": "FreshRSS is a self-hosted RSS and Atom feed aggregator that lets users collect, organize, and read from multiple sources in one place. It is lightweight, easy to work with, powerful, and customizable.",
+  "description": "FreshRSS 是一个自托管的 RSS 和 Atom feed 聚合器，让用户可以在一个地方收集、组织和阅读多个来源的内容。它轻量、易用、功能强大且可定制。",
   "install_methods": [
     {
       "type": "default",

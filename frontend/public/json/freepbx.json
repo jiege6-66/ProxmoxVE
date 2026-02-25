@@ -13,7 +13,7 @@
   "website": "https://www.freepbx.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/freepbx.webp",
   "config_path": "",
-  "description": "FreePBX is a web-based open-source graphical user interface that manages Asterisk, a voice over IP and telephony server.",
+  "description": "FreePBX 是一个基于 web 的开源图形用户界面，用于管理 Asterisk，一个 voice over IP 和电话服务器。",
   "install_methods": [
     {
       "type": "default",

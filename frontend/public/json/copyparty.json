@@ -13,7 +13,7 @@
   "website": "https://github.com/9001/copyparty",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/copyparty.webp",
   "config_path": "/etc/copyparty.conf",
-  "description": "Copyparty is a lightweight, portable HTTP file server with a browser-based interface. It supports drag-and-drop uploads, downloads, deduplication, media playback, and advanced search, making it ideal for quickly sharing and managing files.",
+  "description": "Copyparty 是一个轻量级、便携的 HTTP 文件服务器，具有基于浏览器的界面。它支持拖放上传、下载、去重、媒体播放和高级搜索，非常适合快速共享和管理文件。",
   "install_methods": [
     {
       "type": "default",

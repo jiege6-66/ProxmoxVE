@@ -13,7 +13,7 @@
   "config_path": "/etc/systemd/system/cloudflare-ddns.service",
   "website": "https://github.com/favonia/cloudflare-ddns",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cloudflare.webp",
-  "description": "A feature-rich and robust Cloudflare DDNS updater with a small footprint. The program will detect your machine’s public IP addresses and update DNS records using the Cloudflare API",
+  "description": "一个功能丰富且强大的 Cloudflare DDNS 更新器,占用空间小。该程序将检测您机器的公共 IP 地址并使用 Cloudflare API 更新 DNS 记录",
   "install_methods": [
     {
       "type": "default",

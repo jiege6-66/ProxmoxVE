@@ -13,7 +13,7 @@
   "website": "https://www.hivemq.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/hivemq.webp",
   "config_path": "/opt/hivemq/conf/config.xml",
-  "description": "HiveMQ CE is a Java-based open source MQTT broker that fully supports MQTT 3.x and MQTT 5.",
+  "description": "HiveMQ CE 是一个基于 Java 的开源 MQTT 代理，完全支持 MQTT 3.x 和 MQTT 5。",
   "install_methods": [
     {
       "type": "default",

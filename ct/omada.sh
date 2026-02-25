@@ -24,11 +24,11 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/tplink ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Updating MongoDB"
+  msg_info "正在更新 MongoDB"
   if lscpu | grep -q 'avx'; then
     MONGO_VERSION="8.0"
   else
@@ -38,7 +38,7 @@ function update_script() {
 
   JAVA_VERSION="21" setup_java
 
-  msg_info "Updating Omada Controller"
+  msg_info "正在更新 Omada Controller"
   OMADA_URL=$(curl -fsSL "https://support.omadanetworks.com/en/download/software/omada-controller/" |
     grep -o 'https://static\.tp-link\.com/upload/software/[^"]*linux_x64[^"]*\.deb' |
     head -n1)
@@ -51,7 +51,7 @@ function update_script() {
   export DEBIAN_FRONTEND=noninteractive
   $STD dpkg -i "$OMADA_PKG"
   rm -f "$OMADA_PKG"
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -59,7 +59,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}:8043${CL}"

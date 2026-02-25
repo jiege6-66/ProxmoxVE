@@ -12,22 +12,22 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   libssl-dev \
   openssl
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 MONGO_VERSION="8.0" setup_mongodb
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "nightscout" "nightscout/cgm-remote-monitor" "tarball"
 
-msg_info "Installing Nightscout"
+msg_info "正在安装 Nightscout"
 $STD npm install --prefix /opt/nightscout
-msg_ok "Installed Nightscout"
+msg_ok "已安装 Nightscout"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 useradd -s /bin/bash -m nightscout
 chown -R nightscout:nightscout /opt/nightscout
 API_SECRET=$(openssl rand -hex 16)
@@ -57,7 +57,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now nightscout
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 {
   echo "Nightscout Credentials"

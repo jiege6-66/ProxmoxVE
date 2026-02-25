@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add tzdata
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Docker"
+msg_info "正在安装 Docker"
 $STD apk add docker
 $STD rc-service docker start
 $STD rc-update add docker default
-msg_ok "Installed Docker"
+msg_ok "已安装 Docker"
 
 get_latest_release() {
   curl -fsSL https://api.github.com/repos/"$1"/releases/latest | grep '"tag_name":' | cut -d'"' -f4
@@ -32,7 +32,7 @@ PORTAINER_AGENT_LATEST_VERSION=$(get_latest_release "portainer/agent")
 
 read -r -p "${TAB3}Would you like to add Portainer? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Portainer $PORTAINER_LATEST_VERSION"
+  msg_info "正在安装 Portainer $PORTAINER_LATEST_VERSION"
   docker volume create portainer_data >/dev/null
   $STD docker run -d \
     -p 8000:8000 \
@@ -42,11 +42,11 @@ if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v portainer_data:/data \
     portainer/portainer-ce:latest
-  msg_ok "Installed Portainer $PORTAINER_LATEST_VERSION"
+  msg_ok "已安装 Portainer $PORTAINER_LATEST_VERSION"
 else
   read -r -p "${TAB3}Would you like to add the Portainer Agent? <y/N> " prompt
   if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-    msg_info "Installing Portainer agent $PORTAINER_AGENT_LATEST_VERSION"
+    msg_info "正在安装 Portainer agent $PORTAINER_AGENT_LATEST_VERSION"
     $STD docker run -d \
       -p 9001:9001 \
       --name portainer_agent \
@@ -54,17 +54,17 @@ else
       -v /var/run/docker.sock:/var/run/docker.sock \
       -v /var/lib/docker/volumes:/var/lib/docker/volumes \
       portainer/agent
-    msg_ok "Installed Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
+    msg_ok "已安装 Portainer Agent $PORTAINER_AGENT_LATEST_VERSION"
   fi
 fi
 read -r -p "${TAB3}Would you like to add Docker Compose? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Docker Compose $DOCKER_COMPOSE_LATEST_VERSION"
+  msg_info "正在安装 Docker Compose $DOCKER_COMPOSE_LATEST_VERSION"
   DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
   mkdir -p "$DOCKER_CONFIG"/cli-plugins
   curl -fsSL https://github.com/docker/compose/releases/download/"$DOCKER_COMPOSE_LATEST_VERSION"/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
   chmod +x "$DOCKER_CONFIG"/cli-plugins/docker-compose
-  msg_ok "Installed Docker Compose $DOCKER_COMPOSE_LATEST_VERSION"
+  msg_ok "已安装 Docker Compose $DOCKER_COMPOSE_LATEST_VERSION"
 fi
 
 read -r -p "${TAB3}Would you like to expose the Docker TCP socket? <y/N> " prompt

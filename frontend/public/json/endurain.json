@@ -13,7 +13,7 @@
   "website": "https://github.com/joaovitoriasilva/endurain",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/endurain.webp",
   "config_path": "/opt/endurain/.env",
-  "description": "Endurain is a self-hosted fitness tracking service designed to give users full control over their data and hosting environment. It's similar to Strava but focused on privacy and customization",
+  "description": "Endurain 是一个自托管的健身追踪服务,旨在让用户完全控制其数据和托管环境。它类似于 Strava,但专注于隐私和定制化。",
   "install_methods": [
     {
       "type": "default",

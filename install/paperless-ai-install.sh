@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Python3"
+msg_info "正在安装 Python3"
 $STD apt install -y \
   python3-pip \
   python3-dev \
@@ -28,12 +28,12 @@ cat >~/.config/pip/pip.conf <<EOF
 [global]
 break-system-packages = true
 EOF
-msg_ok "Installed Python3"
+msg_ok "已安装 Python3"
 
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "paperless-ai" "clusterzx/paperless-ai" "tarball"
 
-msg_info "Setup Paperless-AI"
+msg_info "设置 Paperless-AI"
 cd /opt/paperless-ai
 $STD python3 -m venv /opt/paperless-ai/venv
 source /opt/paperless-ai/venv/bin/activate
@@ -71,9 +71,9 @@ CUSTOM_MODEL=
 RAG_SERVICE_URL=http://localhost:8000
 RAG_SERVICE_ENABLED=true
 EOF
-msg_ok "Setup Paperless-AI"
+msg_ok "设置 Paperless-AI"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/paperless-ai.service
 [Unit]
 Description=PaperlessAI Service
@@ -108,7 +108,7 @@ EOF
 systemctl enable -q --now paperless-rag
 sleep 5
 systemctl enable -q --now paperless-ai
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

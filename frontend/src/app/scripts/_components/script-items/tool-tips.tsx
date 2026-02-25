@@ -37,16 +37,16 @@ export default function Tooltips({ item }: { item: Script }) {
   return (
     <div className="flex items-center gap-2">
       {item.privileged && (
-        <TooltipBadge variant="warning" label="Privileged" content="This script will be run in a privileged LXC" />
+        <TooltipBadge variant="warning" label="特权模式" content="此脚本将在特权 LXC 中运行" />
       )}
       {item.updateable && item.type !== "pve" && (
         <TooltipBadge
           variant="success"
-          label="Updateable"
-          content={`To Update ${item.name}, run the command below (or type update) in the LXC Console.`}
+          label="可更新"
+          content={`要更新 ${item.name}，请在 LXC 控制台中运行以下命令（或输入 update）。`}
         />
       )}
-      {!item.updateable && item.type !== "pve" && <TooltipBadge variant="failure" label="Not Updateable" />}
+      {!item.updateable && item.type !== "pve" && <TooltipBadge variant="failure" label="不可更新" />}
     </div>
   );
 }

@@ -13,7 +13,7 @@
   "website": "https://github.com/bakito/adguardhome-sync",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/adguardhome-sync.webp",
   "config_path": "/opt/adguardhome-sync/adguardhome-sync.yaml",
-  "description": "Synchronize AdGuardHome config to one or multiple replica instances. Syncs General Settings, Filters, Rewrites, Services, Clients, DNS Config, DHCP Config and Theme.",
+  "description": "将 AdGuardHome 配置同步到一个或多个副本实例。同步常规设置、过滤器、重写规则、服务、客户端、DNS 配置、DHCP 配置和主题。",
   "install_methods": [
     {
       "type": "default",

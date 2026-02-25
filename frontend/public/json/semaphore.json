@@ -13,7 +13,7 @@
   "website": "https://semaphoreui.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/semaphore-ui.webp",
   "config_path": "/opt/semaphore/config.json",
-  "description": "Semaphore UI is a modern web interface for managing popular DevOps tools",
+  "description": "Semaphore UI 是一个用于管理流行 DevOps 工具的现代 Web 界面",
   "install_methods": [
     {
       "type": "default",

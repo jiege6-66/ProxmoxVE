@@ -24,26 +24,26 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/zigbee2mqtt ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "Zigbee2MQTT" "Koenkk/zigbee2mqtt"; then
     NODE_VERSION=24 NODE_MODULE="pnpm@$(curl -fsSL https://raw.githubusercontent.com/Koenkk/zigbee2mqtt/master/package.json | jq -r '.packageManager | split("@")[1]')" setup_nodejs
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop zigbee2mqtt
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     rm -rf /opt/${APP}_backup*.tar.gz
     mkdir -p /opt/z2m_backup
     $STD tar -czf /opt/z2m_backup/${APP}_backup_$(date +%Y%m%d%H%M%S).tar.gz -C /opt zigbee2mqtt
     mv /opt/zigbee2mqtt/data /opt/z2m_backup
-    msg_ok "Backup Created"
+    msg_ok "Backup 已创建"
 
     fetch_and_deploy_gh_release "Zigbee2MQTT" "Koenkk/zigbee2mqtt" "tarball" "latest" "/opt/zigbee2mqtt"
 
-    msg_info "Updating Zigbee2MQTT"
+    msg_info "正在更新 Zigbee2MQTT"
     rm -rf /opt/zigbee2mqtt/data
     mv /opt/z2m_backup/data /opt/zigbee2mqtt
     cd /opt/zigbee2mqtt
@@ -53,10 +53,10 @@ function update_script() {
     rm -rf /opt/z2m_backup
     msg_ok "Updated Zigbee2MQTT"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start zigbee2mqtt
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -65,7 +65,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:9442${CL}"

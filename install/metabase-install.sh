@@ -17,7 +17,7 @@ JAVA_VERSION="21" setup_java
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="metabase_db" PG_DB_USER="metabase" setup_postgresql_db
 
-msg_info "Setting up Metabase"
+msg_info "正在设置 Metabase"
 mkdir -p /opt/metabase
 RELEASE=$(get_latest_github_release "metabase/metabase")
 curl -fsSL "https://downloads.metabase.com/v${RELEASE}.x/metabase.jar" -o /opt/metabase/metabase.jar
@@ -32,9 +32,9 @@ MB_DB_PASS=$PG_DB_PASS
 MB_DB_HOST=localhost
 EOF
 echo $RELEASE >~/.metabase
-msg_ok "Setup Metabase"
+msg_ok "设置 Metabase"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/metabase.service
 [Unit]
 Description=Metabase Service
@@ -52,7 +52,7 @@ TimeoutStopSec=120
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now metabase
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

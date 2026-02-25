@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add sudo
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 motd_ssh
 customize

@@ -15,7 +15,7 @@ update_os
 
 JAVA_VERSION="21" setup_java
 
-msg_info "Installing openHAB"
+msg_info "正在安装 openHAB"
 setup_deb822_repo \
   "openhab" \
   "https://openhab.jfrog.io/artifactory/api/gpg/key/public" \
@@ -23,19 +23,19 @@ setup_deb822_repo \
   "stable" \
   "main"
 $STD apt install -y openhab
-msg_ok "Installed openHAB"
+msg_ok "已安装 openHAB"
 
-msg_info "Initializing openHAB directories"
+msg_info "正在初始化 openHAB directories"
 mkdir -p /var/lib/openhab/{tmp,etc,cache}
 mkdir -p /etc/openhab
 mkdir -p /var/log/openhab
 chown -R openhab:openhab /var/lib/openhab /etc/openhab /var/log/openhab
-msg_ok "Initialized openHAB directories"
+msg_ok "已初始化 openHAB directories"
 
-msg_info "Starting Service"
+msg_info "正在启动 Service"
 systemctl daemon-reload
 systemctl enable -q --now openhab
-msg_ok "Started Service"
+msg_ok "已启动 Service"
 
 motd_ssh
 customize

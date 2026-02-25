@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   ansible
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "semaphore" "semaphoreui/semaphore" "binary" "latest" "/opt/semaphore" "semaphore_*_linux_amd64.deb"
 
-msg_info "Configuring Semaphore"
+msg_info "正在配置 Semaphore"
 mkdir -p /opt/semaphore
 cd /opt/semaphore
 SEM_HASH=$(openssl rand -base64 32)
@@ -41,9 +41,9 @@ cat <<EOF >/opt/semaphore/config.json
 EOF
 $STD semaphore user add --admin --login admin --email admin@helper-scripts.com --name Administrator --password "${SEM_PW}" --config /opt/semaphore/config.json
 echo "${SEM_PW}" >~/semaphore.creds
-msg_ok "Setup Semaphore"
+msg_ok "设置 Semaphore"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/semaphore.service
 [Unit]
 Description=Semaphore UI
@@ -60,7 +60,7 @@ RestartSec=10s
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now semaphore
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

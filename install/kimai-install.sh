@@ -13,19 +13,19 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apt-transport-https \
   apache2 \
   git \
   expect
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mariadb
 PHP_VERSION="8.4" PHP_APACHE="YES" setup_php
 setup_composer
 
-msg_info "Setting up database"
+msg_info "正在设置 database"
 DB_NAME=kimai_db
 DB_USER=kimai
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -43,7 +43,7 @@ msg_ok "Set up database"
 
 fetch_and_deploy_gh_release "kimai" "kimai/kimai" "tarball"
 
-msg_info "Setup Kimai"
+msg_info "设置 Kimai"
 cd /opt/kimai
 echo "export COMPOSER_ALLOW_SUPERUSER=1" >>~/.bashrc
 source ~/.bashrc
@@ -72,9 +72,9 @@ kimai:
                 end: 15
 
 EOF
-msg_ok "Installed Kimai"
+msg_ok "已安装 Kimai"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/kimai.conf
 <VirtualHost *:80>
   ServerAdmin webmaster@localhost
@@ -94,15 +94,15 @@ EOF
 $STD a2ensite kimai.conf
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
-msg_info "Setup Permissions"
+msg_info "设置 Permissions"
 chown -R :www-data /opt/*
 chmod -R g+r /opt/*
 chmod -R g+rw /opt/*
 chown -R www-data:www-data /opt/*
 chmod -R 777 /opt/*
-msg_ok "Setup Permissions"
+msg_ok "设置 Permissions"
 
 motd_ssh
 customize

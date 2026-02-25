@@ -13,7 +13,7 @@
   "website": "https://www.nocodb.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/nocodb.webp",
   "config_path": "",
-  "description": "NocoDB is a document-oriented database management system. It uses the NoSQL (Not Only SQL) data model, which allows for more flexible and scalable data storage than traditional relational databases. NoCoDB stores data in JSON format, making it easier to manage and query complex data structures, and supports a range of data types, including strings, numbers, arrays, and objects. The software provides a web-based interface for managing and querying data, and includes features such as real-time data synchronization, auto-indexing, and full-text search. NoCoDB is designed to be scalable, and can be used for a range of applications, from small projects to large enterprise systems. The software is free and open-source, and is designed to be easy to use and integrate with other applications.",
+  "description": "NocoDB 是一个面向文档的数据库管理系统。它使用 NoSQL（不仅仅是 SQL）数据模型，与传统关系数据库相比，允许更灵活和可扩展的数据存储。NoCoDB 以 JSON 格式存储数据，使管理和查询复杂数据结构变得更容易，并支持多种数据类型，包括字符串、数字、数组和对象。该软件提供了一个基于网页的界面来管理和查询数据，并包括实时数据同步、自动索引和全文搜索等功能。NoCoDB 设计为可扩展，可用于从小型项目到大型企业系统的各种应用。该软件是免费和开源的，设计为易于使用并与其他应用程序集成。",
   "install_methods": [
     {
       "type": "default",

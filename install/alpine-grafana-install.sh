@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Grafana"
+msg_info "正在安装 Grafana"
 $STD apk add grafana
 $STD sed -i '/http_addr/s/127.0.0.1/0.0.0.0/g' /etc/conf.d/grafana
 $STD rc-service grafana start
 $STD rc-update add grafana default
-msg_ok "Installed Grafana"
+msg_ok "已安装 Grafana"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script helps Proxmox users identify and remove orphaned LVM volumes that are no longer associated with any VM or LXC container. It scans all LVM volumes, detects unused ones, and provides an interactive prompt to delete them safely. System-critical volumes like root, swap, and data are excluded to prevent accidental deletion.",
+  "description": "此脚本帮助 Proxmox 用户识别和删除不再与任何 VM 或 LXC 容器关联的孤立 LVM 卷。它扫描所有 LVM 卷,检测未使用的卷,并提供交互式提示以安全删除它们。系统关键卷(如 root、swap 和 data)被排除在外,以防止意外删除。",
   "install_methods": [
     {
       "type": "default",

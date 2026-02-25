@@ -13,7 +13,7 @@
   "website": "https://www.bookstackapp.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/bookstack.webp",
   "config_path": "/opt/bookstack/.env",
-  "description": "BookStack is a user-friendly documentation platform that offers a simple and intuitive experience. New users should be able to create content with basic word-processing skills. While the platform provides advanced features, they do not interfere with the core simplicity of the user experience.",
+  "description": "BookStack 是一个用户友好的文档平台，提供简单直观的体验。新用户应该能够使用基本的文字处理技能创建内容。虽然该平台提供高级功能，但它们不会干扰用户体验的核心简洁性。",
   "install_methods": [
     {
       "type": "default",

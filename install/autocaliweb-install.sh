@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y --no-install-recommends \
     python3-dev \
     sqlite3 \
@@ -43,22 +43,22 @@ $STD apt install -y --no-install-recommends \
     binutils \
     unrar-free \
     zip
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 fetch_and_deploy_gh_release "kepubify" "pgaskin/kepubify" "singlefile" "latest" "/usr/bin" "kepubify-linux-64bit"
 KEPUB_VERSION="$(/usr/bin/kepubify --version | awk '{print $2}')"
 fetch_and_deploy_gh_release "calibre" "kovidgoyal/calibre" "prebuild" "latest" "/opt/calibre" "calibre-*-x86_64.txz"
 
-msg_info "Installing Calibre"
+msg_info "正在安装 Calibre"
 $STD /opt/calibre/calibre_postinstall
 CALIBRE_VERSION=$(cat ~/.calibre)
-msg_ok "Installed Calibre"
+msg_ok "已安装 Calibre"
 
 setup_uv
 
 fetch_and_deploy_codeberg_release "autocaliweb" "gelbphoenix/autocaliweb" "tarball" "latest" "/opt/autocaliweb"
 
-msg_info "Configuring Autocaliweb"
+msg_info "正在配置 Autocaliweb"
 INSTALL_DIR="/opt/autocaliweb"
 CONFIG_DIR="/etc/autocaliweb"
 CALIBRE_LIB_DIR="/opt/calibre-library"
@@ -95,9 +95,9 @@ ACW_USER=$SERVICE_USER
 ACW_GROUP=$SERVICE_GROUP
 LIBRARY_DIR=$CALIBRE_LIB_DIR
 EOF
-msg_ok "Configured Autocaliweb"
+msg_ok "已配置 Autocaliweb"
 
-msg_info "Creating ACWSync Plugin for KOReader"
+msg_info "正在创建 ACWSync Plugin for KOReader"
 cd "$INSTALL_DIR"/koreader/plugins
 PLUGIN_DIGEST="$(find acwsync.koplugin -type f -name "*.lua" -o -name "*.json" | sort | xargs sha256sum | sha256sum | cut -d' ' -f1)"
 echo "Plugin files digest: $PLUGIN_DIGEST" >acwsync.koplugin/${PLUGIN_DIGEST}.digest
@@ -105,9 +105,9 @@ echo "Build date: $(date)" >>acwsync.koplugin/${PLUGIN_DIGEST}.digest
 echo "Files included:" >>acwsync.koplugin/${PLUGIN_DIGEST}.digest
 $STD zip -r koplugin.zip acwsync.koplugin/
 cp -r koplugin.zip "$INSTALL_DIR"/cps/static
-msg_ok "Created ACWSync Plugin"
+msg_ok "已创建 ACWSync Plugin"
 
-msg_info "Initializing databases"
+msg_info "正在初始化 databases"
 KEPUBIFY_PATH=$(command -v kepubify 2>/dev/null || echo "/usr/bin/kepubify")
 EBOOK_CONVERT_PATH=$(command -v ebook-convert 2>/dev/null || echo "/usr/bin/ebook-convert")
 CALIBRE_BIN_DIR=$(dirname "$EBOOK_CONVERT_PATH")
@@ -123,9 +123,9 @@ UPDATE settings SET
     config_access_logfile='$CONFIG_DIR/access.log'
 WHERE 1=1;
 EOS
-msg_ok "Initialized databases"
+msg_ok "已初始化 databases"
 
-msg_info "Creating scripts and service files"
+msg_info "正在创建 scripts and service files"
 
 # auto-ingest watcher
 cat <<EOF >"$SCRIPTS_DIR"/ingest_watcher.sh
@@ -138,7 +138,7 @@ echo "[acw-ingest-service] Watching folder: \$WATCH_FOLDER"
 # Monitor the folder for new files
 /usr/bin/inotifywait -m -r --format="%e %w%f" -e close_write -e moved_to "\$WATCH_FOLDER" |
 while read -r events filepath ; do
-    echo "[acw-ingest-service] New files detected - \$filepath - Starting Ingest Processor..."
+    echo "[acw-ingest-service] New files detected - \$filepath - 正在启动 Ingest Processor..."
     # Use the Python interpreter from the virtual environment
     \${INSTALL_PATH}/venv/bin/python \${INSTALL_PATH}/scripts/ingest_processor.py "\$filepath"
 done
@@ -191,8 +191,8 @@ source ${INSTALL_DIR}/venv/bin/activate
 CHECK_INTERVAL=300  # Check every 5 minutes (300 seconds)
 METADATA_LOGS_DIR="${INSTALL_DIR}/metadata_change_logs"
 
-echo "[metadata-change-detector] Starting metadata change detector service..."
-echo "[metadata-change-detector] Checking for changes every \$CHECK_INTERVAL seconds"
+echo "[metadata-change-detector] 正在启动 metadata change detector service..."
+echo "[metadata-change-detector] 正在检查 for changes every \$CHECK_INTERVAL seconds"
 
 while true; do
     # Check if there are any log files to process
@@ -203,7 +203,7 @@ while true; do
         for log_file in "\$METADATA_LOGS_DIR"/*.json; do
             if [ -f "\$log_file" ]; then
                 log_name=\$(basename "\$log_file")
-                echo "[metadata-change-detector] Processing log: \$log_name"
+                echo "[metadata-change-detector] 正在处理 log: \$log_name"
 
                 # Call cover_enforcer.py with the log file
                  ${INSTALL_DIR}/venv/bin/python  ${SCRIPTS_DIR}/cover_enforcer.py --log "\$log_name"
@@ -315,7 +315,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl -q enable --now autocaliweb acw-ingest-service acw-auto-zipper metadata-change-detector
-msg_ok "Created scripts and service files"
+msg_ok "已创建 scripts and service files"
 
 motd_ssh
 customize

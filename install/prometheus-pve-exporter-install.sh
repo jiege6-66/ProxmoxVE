@@ -15,7 +15,7 @@ update_os
 
 PYTHON_VERSION="3.12" setup_uv
 
-msg_info "Installing Prometheus Proxmox VE Exporter"
+msg_info "正在安装 Prometheus Proxmox VE Exporter"
 mkdir -p /opt/prometheus-pve-exporter
 cd /opt/prometheus-pve-exporter
 
@@ -29,9 +29,9 @@ default:
     password: sEcr3T!
     verify_ssl: false
 EOF
-msg_ok "Installed Prometheus Proxmox VE Exporter"
+msg_ok "已安装 Prometheus Proxmox VE Exporter"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/prometheus-pve-exporter.service
 [Unit]
 Description=Prometheus Proxmox VE Exporter
@@ -52,7 +52,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now prometheus-pve-exporter
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

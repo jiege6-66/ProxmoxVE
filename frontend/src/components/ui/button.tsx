@@ -104,6 +104,6 @@ const Button = React.forwardRef<
     );
   },
 );
-Button.displayName = "Button";
+Button.displayName = "按钮";
 
 export { Button, buttonVariants };

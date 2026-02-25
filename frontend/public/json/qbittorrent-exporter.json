@@ -13,7 +13,7 @@
   "website": "https://github.com/martabal/qbittorrent-exporter",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/qbittorrent.webp",
   "config_path": "/opt/qbittorrent-exporter.env",
-  "description": "A fast and lightweight prometheus exporter for qBittorrent ",
+  "description": "一个快速轻量级的 qBittorrent prometheus 导出器",
   "install_methods": [
     {
       "type": "default",

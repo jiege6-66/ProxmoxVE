@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y \
   automake \
   autoconf \
@@ -28,7 +28,7 @@ $STD apt install -y \
   qpdf \
   poppler-utils \
   jbig2
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.12" setup_uv
 JAVA_VERSION="21" setup_java
@@ -45,7 +45,7 @@ else
   USE_ORIGINAL_FILENAME=true fetch_and_deploy_gh_release "stirling-pdf" "Stirling-Tools/Stirling-PDF" "singlefile" "latest" "/opt/Stirling-PDF" "Stirling-PDF.jar"
 fi
 
-msg_info "Installing LibreOffice Components"
+msg_info "正在安装 LibreOffice Components"
 $STD apt install -y \
   libreoffice-writer \
   libreoffice-calc \
@@ -57,9 +57,9 @@ $STD apt install -y \
   libreoffice-java-common \
   pngquant \
   weasyprint
-msg_ok "Installed LibreOffice Components"
+msg_ok "已安装 LibreOffice Components"
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 mkdir -p /tmp/stirling-pdf
 $STD uv venv --clear /opt/.venv
 export PATH="/opt/.venv/bin:$PATH"
@@ -74,13 +74,13 @@ $STD apt install -y python3-uno python3-pip
 $STD pip3 install --break-system-packages --timeout=120 unoserver
 ln -sf /opt/.venv/bin/python3 /usr/local/bin/python3
 ln -sf /opt/.venv/bin/pip /usr/local/bin/pip
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Installing Language Packs (Patience)"
+msg_info "正在安装 Language Packs (Patience)"
 $STD apt install -y 'tesseract-ocr-*'
-msg_ok "Installed Language Packs"
+msg_ok "已安装 Language Packs"
 
-msg_info "Creating Environment Variables"
+msg_info "正在创建 Environment Variables"
 cat <<EOF >/opt/Stirling-PDF/.env
 # Java tuning
 JAVA_BASE_OPTS="-XX:+UnlockExperimentalVMOptions -XX:MaxRAMPercentage=75 -XX:InitiatingHeapOccupancyPercent=20 -XX:+G1PeriodicGCInvokesConcurrent -XX:G1PeriodicGCInterval=10000 -XX:+UseStringDeduplication -XX:G1PeriodicGCSystemLoadThreshold=70"
@@ -113,13 +113,13 @@ SECURITY_INITIALLOGIN_USERNAME=admin
 SECURITY_INITIALLOGIN_PASSWORD=stirling
 EOF
 fi
-msg_ok "Created Environment Variables"
+msg_ok "已创建 Environment Variables"
 
 msg_info "Refreshing Font Cache"
 $STD fc-cache -fv
 msg_ok "Font Cache Updated"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/libreoffice-listener.service
 [Unit]
 Description=LibreOffice Headless Listener Service
@@ -177,7 +177,7 @@ EOF
 systemctl enable -q --now libreoffice-listener
 systemctl enable -q --now stirlingpdf
 systemctl enable -q --now unoserver
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,20 +13,20 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies. Patience"
+msg_info "正在安装依赖. Patience"
 $STD apt-get install -y \
   git \
   python3-venv
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="yarn@latest" setup_nodejs
 
-msg_info "Setup Platformio"
+msg_info "设置 Platformio"
 curl -fsSL -o get-platformio.py https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py
 $STD python3 get-platformio.py
-msg_ok "Setup Platformio"
+msg_ok "设置 Platformio"
 
-msg_info "Setup TasmoCompiler"
+msg_info "设置 TasmoCompiler"
 mkdir /tmp/Tasmota
 RELEASE=$(curl -fsSL https://api.github.com/repos/benzino77/tasmocompiler/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
 curl -fsSL "https://github.com/benzino77/tasmocompiler/archive/refs/tags/v${RELEASE}.tar.gz" -o "/tmp/v${RELEASE}.tar.gz"
@@ -44,9 +44,9 @@ ln -s ~/.platformio/penv/bin/pio /usr/local/bin/pio
 ln -s ~/.platformio/penv/bin/piodebuggdb /usr/local/bin/piodebuggdb
 rm -f /tmp/v${RELEASE}.tar.gz
 echo "${RELEASE}" >"/opt/tasmocompiler_version.txt"
-msg_ok "Setup TasmoCompiler"
+msg_ok "设置 TasmoCompiler"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/tasmocompiler.service
 [Unit]
 Description=TasmoCompiler Service
@@ -61,7 +61,7 @@ ExecStart=/usr/bin/node /opt/tasmocompiler/server/app.js
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now tasmocompiler
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

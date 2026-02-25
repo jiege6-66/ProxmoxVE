@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y \
   apt-transport-https \
   lsb-release \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 msg_warn "WARNING: This script will run an external installer from a third-party source (https://yunohost.org/)."
 msg_warn "The following code is NOT maintained or audited by our repository."
@@ -31,11 +31,11 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   exit 10
 fi
 
-msg_info "Installing YunoHost (Patience)"
+msg_info "正在安装 YunoHost (Patience)"
 touch /etc/.pve-ignore.resolv.conf
 curl -fsSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
 $STD bash <(curl -fsSL https://install.yunohost.org) -a
-msg_ok "Installed YunoHost"
+msg_ok "已安装 YunoHost"
 
 motd_ssh
 customize

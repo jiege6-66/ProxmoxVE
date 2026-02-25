@@ -13,7 +13,7 @@
   "website": "https://github.com/technomancer702/nodecast-tv",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/nodecast-tv.webp",
   "config_path": "",
-  "description": "nodecast-tv is a modern, web-based IPTV player featuring Live TV, EPG, Movies (VOD), and Series support. Built with performance and user experience in mind.",
+  "description": "nodecast-tv 是一个现代的基于网页的 IPTV 播放器，具有直播电视、EPG、电影 (VOD) 和剧集支持。注重性能和用户体验而构建。",
   "install_methods": [
     {
       "type": "default",

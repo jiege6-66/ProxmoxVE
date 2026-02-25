@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   pkgconf \
@@ -22,19 +22,19 @@ $STD apt install -y \
   libpq-dev \
   argon2 \
   ssl-cert
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_rust
 fetch_and_deploy_gh_release "vaultwarden" "dani-garcia/vaultwarden" "tarball" "latest" "/tmp/vaultwarden-src"
 
-msg_info "Building Vaultwarden (Patience)"
+msg_info "正在构建 Vaultwarden (Patience)"
 cd /tmp/vaultwarden-src
 VW_VERSION=$(get_latest_github_release "dani-garcia/vaultwarden")
 export VW_VERSION
 $STD cargo build --features "sqlite,mysql,postgresql" --release
-msg_ok "Built Vaultwarden"
+msg_ok "已构建 Vaultwarden"
 
-msg_info "Setting up Vaultwarden"
+msg_info "正在设置 Vaultwarden"
 $STD addgroup --system vaultwarden
 $STD adduser --system --home /opt/vaultwarden --shell /usr/sbin/nologin --no-create-home --gecos 'vaultwarden' --ingroup vaultwarden --disabled-login --disabled-password vaultwarden
 mkdir -p /opt/vaultwarden/{bin,data,web-vault}
@@ -44,7 +44,7 @@ msg_ok "Set up Vaultwarden"
 
 fetch_and_deploy_gh_release "vaultwarden_webvault" "dani-garcia/bw_web_builds" "prebuild" "latest" "/opt/vaultwarden/web-vault" "bw_web_*.tar.gz"
 
-msg_info "Configuring Vaultwarden"
+msg_info "正在配置 Vaultwarden"
 cat <<EOF >/opt/vaultwarden/.env
 ADMIN_TOKEN=''
 ROCKET_ADDRESS=0.0.0.0
@@ -62,9 +62,9 @@ chown root:root /opt/vaultwarden/bin/vaultwarden
 chmod +x /opt/vaultwarden/bin/vaultwarden
 chown -R root:root /opt/vaultwarden/web-vault/
 chmod +r /opt/vaultwarden/.env
-msg_ok "Configured Vaultwarden"
+msg_ok "已配置 Vaultwarden"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/vaultwarden.service
 [Unit]
 Description=Bitwarden Server (Powered by Vaultwarden)
@@ -98,7 +98,7 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now vaultwarden
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -24,11 +24,11 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   exit 10
 fi
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y ufw
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Pi-hole"
+msg_info "正在安装 Pi-hole"
 mkdir -p /etc/pihole
 touch /etc/pihole/pihole.toml
 $STD bash <(curl -fsSL https://install.pi-hole.net) --unattended
@@ -63,12 +63,12 @@ server=8.8.4.4
 EOF
 $STD pihole-FTL --config ntp.sync.interval 0
 systemctl restart pihole-FTL.service
-msg_ok "Installed Pi-hole"
+msg_ok "已安装 Pi-hole"
 
 read -r -p "${TAB3}Would you like to add Unbound? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   read -r -p "${TAB3}Unbound is configured as a recursive DNS server by default, would you like it to be configured as a forwarding DNS server (using DNS-over-TLS (DoT)) instead? <y/N> " prompt
-  msg_info "Installing Unbound"
+  msg_info "正在安装 Unbound"
   mkdir -p /etc/unbound/unbound.conf.d
   cat <<EOF >/etc/unbound/unbound.conf.d/pi-hole.conf
 server:
@@ -152,7 +152,7 @@ EOF
   sed -i -E '/^\s*upstreams\s*=\s*\[/,/^\s*\]/c\  upstreams = [\n    "127.0.0.1#5335",\n    "8.8.4.4"\n  ]' /etc/pihole/pihole.toml
   systemctl restart unbound
   systemctl restart pihole-FTL.service
-  msg_ok "Installed Unbound"
+  msg_ok "已安装 Unbound"
 fi
 
 motd_ssh

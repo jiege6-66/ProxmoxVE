@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="verdaccio" setup_nodejs
 
-msg_info "Configuring Verdaccio"
+msg_info "正在配置 Verdaccio"
 mkdir -p /opt/verdaccio/config
 mkdir -p /opt/verdaccio/storage
 cat <<EOF >/opt/verdaccio/config/config.yaml
@@ -57,9 +57,9 @@ web:
 EOF
 chown -R root:root /opt/verdaccio
 chmod -R 755 /opt/verdaccio
-msg_ok "Configured Verdaccio"
+msg_ok "已配置 Verdaccio"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/verdaccio.service
 [Unit]
 Description=Verdaccio lightweight private npm proxy registry
@@ -78,7 +78,7 @@ KillMode=control-group
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now verdaccio
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

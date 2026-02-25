@@ -17,7 +17,7 @@ fetch_and_deploy_gh_release "Palmr" "kyantech/Palmr" "tarball" "latest" "/opt/pa
 PNPM="$(jq -r '.packageManager' /opt/palmr/package.json)"
 NODE_VERSION="24" NODE_MODULE="$PNPM" setup_nodejs
 
-msg_info "Configuring palmr backend"
+msg_info "正在配置 palmr backend"
 PALMR_DIR="/opt/palmr_data"
 mkdir -p "$PALMR_DIR"
 PALMR_DB="${PALMR_DIR}/palmr.db"
@@ -38,18 +38,18 @@ $STD npx prisma migrate deploy
 $STD npx prisma db push
 $STD pnpm db:seed
 $STD pnpm build
-msg_ok "Configured palmr backend"
+msg_ok "已配置 palmr backend"
 
-msg_info "Configuring palmr frontend"
+msg_info "正在配置 palmr frontend"
 cd /opt/palmr/apps/web
 mv ./.env.example ./.env
 export NODE_ENV=production
 export NEXT_TELEMETRY_DISABLED=1
 $STD pnpm install
 $STD pnpm build
-msg_ok "Configured palmr frontend"
+msg_ok "已配置 palmr frontend"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 useradd -d "$PALMR_DIR" -M -s /usr/sbin/nologin -U palmr
 chown -R palmr:palmr "$PALMR_DIR" /opt/palmr
 cat <<EOF >/etc/systemd/system/palmr-backend.service
@@ -84,7 +84,7 @@ ExecStart=/usr/bin/pnpm start
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now palmr-backend palmr-frontend
-msg_ok "Created service"
+msg_ok "已创建 service"
 
 motd_ssh
 customize

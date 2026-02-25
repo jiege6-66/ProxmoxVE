@@ -13,7 +13,7 @@
   "website": "https://www.home-assistant.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/home-assistant.webp",
   "config_path": "",
-  "description": "This script automates the process of creating a Virtual Machine (VM) using the official KVM (qcow2) disk image provided by the Home Assistant Team. It involves finding, downloading, and extracting the image, defining user-defined settings, importing and attaching the disk, setting the boot order, and starting the VM. It supports various storage types, and does not involve any hidden installations. After the script completes, click on the VM, then on the Summary tab to find the VM IP.",
+  "description": "此脚本自动化了使用 Home Assistant 团队提供的官方 KVM（qcow2）磁盘镜像创建虚拟机（VM）的过程。它涉及查找、下载和解压镜像，定义用户自定义设置，导入和附加磁盘，设置启动顺序并启动 VM。它支持各种存储类型，不涉及任何隐藏安装。脚本完成后，点击 VM，然后点击摘要选项卡以查找 VM IP。",
   "install_methods": [
     {
       "type": "default",

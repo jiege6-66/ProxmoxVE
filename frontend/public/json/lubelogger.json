@@ -13,7 +13,7 @@
   "website": "https://lubelogger.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/lubelogger.webp",
   "config_path": "/opt/lubelogger/appsettings.json",
-  "description": "Web-Based Vehicle Maintenance and Fuel Mileage Tracker",
+  "description": "基于 Web 的车辆维护和燃油里程跟踪器",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "config_path": "/opt/LanguageTool/server.properties",
   "website": "https://languagetool.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/languagetool.webp",
-  "description": "LanguageTool is an Open Source proofreading software for English, Spanish, French, German, Portuguese, Polish, Dutch, and more than 20 other languages. It finds many errors that a simple spell checker cannot detect.",
+  "description": "LanguageTool 是一个开源的校对软件,支持英语、西班牙语、法语、德语、葡萄牙语、波兰语、荷兰语以及 20 多种其他语言。它可以发现简单拼写检查器无法检测到的许多错误。",
   "install_methods": [
     {
       "type": "default",

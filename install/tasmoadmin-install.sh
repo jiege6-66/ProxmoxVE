@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.4" PHP_APACHE="YES" setup_php
 fetch_and_deploy_gh_release "tasmoadmin" "TasmoAdmin/TasmoAdmin" "prebuild" "latest" "/var/www/tasmoadmin" "tasmoadmin_v*.tar.gz"
 
-msg_info "Configuring TasmoAdmin"
+msg_info "正在配置 TasmoAdmin"
 rm -rf /etc/php/8.4/apache2/conf.d/10-opcache.ini
 chown -R www-data:www-data /var/www/tasmoadmin
 chmod 777 /var/www/tasmoadmin/tmp /var/www/tasmoadmin/data
@@ -45,7 +45,7 @@ $STD a2ensite tasmoadmin
 $STD a2enmod rewrite
 systemctl reload apache2
 systemctl restart apache2
-msg_ok "Configured TasmoAdmin"
+msg_ok "已配置 TasmoAdmin"
 
 motd_ssh
 customize

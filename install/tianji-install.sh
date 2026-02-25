@@ -14,13 +14,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   python3 \
   cmake \
   build-essential \
   git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="pnpm@$(curl -s https://raw.githubusercontent.com/msgbyte/tianji/master/package.json | jq -r '.packageManager | split("@")[1]')" setup_nodejs
 PG_VERSION="17" setup_postgresql
@@ -28,7 +28,7 @@ PG_DB_NAME="tianji_db" PG_DB_USER="tianji" setup_postgresql_db
 PYTHON_VERSION="3.13" setup_uv
 fetch_and_deploy_gh_release "tianji" "msgbyte/tianji" "tarball"
 
-msg_info "Setting up Tianji"
+msg_info "正在设置 Tianji"
 cd /opt/tianji
 $STD pnpm install --filter @tianji/client... --config.dedupe-peer-dependents=false --frozen-lockfile
 $STD pnpm build:static
@@ -46,13 +46,13 @@ $STD pnpm db:migrate:apply
 rm -rf /opt/tianji/src/client
 rm -rf /opt/tianji/website
 rm -rf /opt/tianji/reporter
-msg_ok "Setup Tianji"
+msg_ok "设置 Tianji"
 
-msg_info "Setting up AppRise"
+msg_info "正在设置 AppRise"
 $STD uv pip install apprise cryptography --system
-msg_ok "Setup AppRise"
+msg_ok "设置 AppRise"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/tianji.service
 [Unit]
 Description=Tianji Server
@@ -69,7 +69,7 @@ Environment=NODE_ENV=production
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now tianji
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -15,9 +15,9 @@ update_os
 
 fetch_and_deploy_gh_release "librespeed-rust" "librespeed/speedtest-rust" "binary" "latest" "/opt/librespeed-rust" "librespeed-rs-x86_64-unknown-linux-gnu.deb"
 
-msg_info "Enabling Service"
+msg_info "正在启用 Service"
 systemctl enable -q --now speedtest_rs
-msg_ok "Enabled Service"
+msg_ok "已启用 Service"
 
 motd_ssh
 customize

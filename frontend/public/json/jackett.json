@@ -13,7 +13,7 @@
   "website": "https://github.com/Jackett/Jackett",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/jackett.webp",
   "config_path": "/opt/.env",
-  "description": "Jackett supports a wide range of trackers, including popular ones like The Pirate Bay, RARBG, and Torrentz2, as well as many private trackers. It can be integrated with several BitTorrent clients, including qBittorrent, Deluge, and uTorrent, among others.",
+  "description": "Jackett 支持广泛的追踪器，包括流行的如 The Pirate Bay、RARBG 和 Torrentz2，以及许多私有追踪器。它可以与多个 BitTorrent 客户端集成，包括 qBittorrent、Deluge 和 uTorrent 等。",
   "install_methods": [
     {
       "type": "default",

@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y avahi-daemon
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setting up Homebridge Repository"
+msg_info "正在设置 Homebridge Repository"
 setup_deb822_repo \
   "homebridge" \
   "https://repo.homebridge.io/KEY.gpg" \
@@ -25,9 +25,9 @@ setup_deb822_repo \
   "stable"
 msg_ok "Set up Homebridge Repository"
 
-msg_info "Installing Homebridge"
+msg_info "正在安装 Homebridge"
 $STD apt install -y homebridge
-msg_ok "Installed Homebridge"
+msg_ok "已安装 Homebridge"
 
 motd_ssh
 customize

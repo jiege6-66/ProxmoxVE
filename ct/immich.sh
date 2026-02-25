@@ -25,7 +25,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/immich ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if [[ -f /etc/apt/sources.list.d/immich.list ]]; then
@@ -37,7 +37,7 @@ function update_script() {
   fi
 
   if [[ ! -f /etc/apt/preferences.d/preferences ]]; then
-    msg_info "Adding Debian Testing repo"
+    msg_info "正在添加 Debian Testing repo"
     sed -i 's/ trixie-updates/ trixie-updates testing/g' /etc/apt/sources.list.d/debian.sources
     cat <<EOF >/etc/apt/preferences.d/preferences
 Package: *
@@ -50,21 +50,21 @@ Pin-Priority: 450
 EOF
     [[ -f /etc/apt/preferences.d/immich ]] && rm /etc/apt/preferences.d/immich
     $STD apt update
-    msg_ok "Added Debian Testing repo"
+    msg_ok "已添加 Debian Testing repo"
   fi
 
   if ! dpkg -l "libmimalloc3" | grep -q '3.1' || ! dpkg -l "libde265-dev" | grep -q '1.0.16'; then
-    msg_info "Installing/upgrading Testing repo packages"
+    msg_info "正在安装/upgrading Testing repo packages"
     $STD apt install -t testing libmimalloc3 libde265-dev -y
-    msg_ok "Installed/upgraded Testing repo packages"
+    msg_ok "已安装/upgraded Testing repo packages"
   fi
 
   if [[ ! -f /etc/apt/sources.list.d/mise.list ]]; then
-    msg_info "Installing Mise"
+    msg_info "正在安装 Mise"
     curl -fSs https://mise.jdx.dev/gpg-key.pub | tee /etc/apt/keyrings/mise-archive-keyring.pub 1>/dev/null
     echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.pub arch=amd64] https://mise.jdx.dev/deb stable main" >/etc/apt/sources.list.d/mise.list
     ensure_dependencies mise
-    msg_ok "Installed Mise"
+    msg_ok "已安装 Mise"
   fi
 
   STAGING_DIR=/opt/staging
@@ -79,7 +79,7 @@ EOF
     )
     INTEL_RELEASE="$(grep "intel-opencl-icd_" ./Dockerfile | awk -F '_' '{print $2}')"
     if [[ "$INTEL_RELEASE" != "$(cat ~/.intel_version)" ]]; then
-      msg_info "Updating Intel iGPU dependencies"
+      msg_info "正在更新 Intel iGPU dependencies"
       for url in "${INTEL_URLS[@]}"; do
         curl -fsSLO "$url"
       done
@@ -97,7 +97,7 @@ EOF
   if [[ -f ~/.immich_library_revisions ]]; then
     libraries=("libjxl" "libheif" "libraw" "imagemagick" "libvips")
     cd "$BASE_DIR"
-    msg_info "Checking for updates to custom image-processing libraries"
+    msg_info "正在检查 for updates to custom image-processing libraries"
     $STD git pull
     for library in "${libraries[@]}"; do
       compile_"$library"
@@ -108,17 +108,17 @@ EOF
   RELEASE="2.5.6"
   if check_for_gh_release "Immich" "immich-app/immich" "${RELEASE}"; then
     if [[ $(cat ~/.immich) > "2.5.1" ]]; then
-      msg_info "Enabling Maintenance Mode"
+      msg_info "正在启用 Maintenance Mode"
       cd /opt/immich/app/bin
       $STD ./immich-admin enable-maintenance-mode
       export MAINT_MODE=1
       $STD cd -
-      msg_ok "Enabled Maintenance Mode"
+      msg_ok "已启用 Maintenance Mode"
     fi
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop immich-web
     systemctl stop immich-ml
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
     VCHORD_RELEASE="0.5.3"
     [[ -f ~/.vchord_version ]] && mv ~/.vchord_version ~/.vectorchord
     if check_for_gh_release "VectorChord" "tensorchord/VectorChord" "${VCHORD_RELEASE}"; then
@@ -165,7 +165,7 @@ EOF
     PNPM_VERSION="$(jq -r '.packageManager | split("@")[1]' ${SRC_DIR}/package.json)"
     NODE_VERSION="24" NODE_MODULE="pnpm@${PNPM_VERSION}" setup_nodejs
 
-    msg_info "Updating Immich web and microservices"
+    msg_info "正在更新 Immich web and microservices"
     cd "$SRC_DIR"/server
     export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
     export CI=1
@@ -213,13 +213,13 @@ EOF
     chown immich:immich ./uv.lock
     export VIRTUAL_ENV="${ML_DIR}"/ml-venv
     if [[ -f ~/.openvino ]]; then
-      msg_info "Updating HW-accelerated machine-learning"
+      msg_info "正在更新 HW-accelerated machine-learning"
       $STD uv add --no-sync --optional openvino onnxruntime-openvino==1.20.0 --active -n -p python3.12 --managed-python
       $STD sudo --preserve-env=VIRTUAL_ENV -nu immich uv sync --extra openvino --no-dev --active --link-mode copy -n -p python3.12 --managed-python
       patchelf --clear-execstack "${VIRTUAL_ENV}/lib/python3.12/site-packages/onnxruntime/capi/onnxruntime_pybind11_state.cpython-312-x86_64-linux-gnu.so"
       msg_ok "Updated HW-accelerated machine-learning"
     else
-      msg_info "Updating machine-learning"
+      msg_info "正在更新 machine-learning"
       $STD sudo --preserve-env=VIRTUAL_ENV -nu immich uv sync --extra cpu --no-dev --active --link-mode copy -n -p python3.11 --managed-python
       msg_ok "Updated machine-learning"
     fi
@@ -240,16 +240,16 @@ EOF
 
     chown -R immich:immich "$INSTALL_DIR"
     if [[ "${MAINT_MODE:-0}" == 1 ]]; then
-      msg_info "Disabling Maintenance Mode"
+      msg_info "正在禁用 Maintenance Mode"
       cd /opt/immich/app/bin
       $STD ./immich-admin disable-maintenance-mode
       unset MAINT_MODE
       $STD cd -
-      msg_ok "Disabled Maintenance Mode"
+      msg_ok "已禁用 Maintenance Mode"
     fi
     systemctl restart immich-ml immich-web
     [[ -f /etc/systemd/system/immich-proxy.service ]] && systemctl restart immich-proxy
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -397,7 +397,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:2283${CL}"

@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt update
 $STD apt -y install \
   ca-certificates \
@@ -21,25 +21,25 @@ $STD apt -y install \
   logrotate \
   build-essential \
   git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 $STD apt install -y \
   python3 \
   python3-dev \
   python3-pip \
   python3-venv \
   python3-cffi
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Setting up Certbot"
+msg_info "正在设置 Certbot"
 $STD python3 -m venv /opt/certbot
 $STD /opt/certbot/bin/pip install --upgrade pip setuptools wheel
 $STD /opt/certbot/bin/pip install certbot certbot-dns-cloudflare
 ln -sf /opt/certbot/bin/certbot /usr/local/bin/certbot
 msg_ok "Set up Certbot"
 
-msg_info "Installing Openresty"
+msg_info "正在安装 Openresty"
 curl -fsSL "https://openresty.org/package/pubkey.gpg" | gpg --dearmor -o /etc/apt/trusted.gpg.d/openresty.gpg
 cat <<'EOF' >/etc/apt/sources.list.d/openresty.sources
 Types: deb
@@ -50,7 +50,7 @@ Signed-By: /etc/apt/trusted.gpg.d/openresty.gpg
 EOF
 $STD apt update
 $STD apt -y install openresty
-msg_ok "Installed Openresty"
+msg_ok "已安装 Openresty"
 
 NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
 
@@ -60,7 +60,7 @@ RELEASE=$(curl -fsSL https://api.github.com/repos/NginxProxyManager/nginx-proxy-
 
 fetch_and_deploy_gh_release "nginxproxymanager" "NginxProxyManager/nginx-proxy-manager" "tarball" "v${RELEASE}"
 
-msg_info "Setting up Environment"
+msg_info "正在设置 Environment"
 ln -sf /usr/bin/python3 /usr/bin/python
 ln -sf /usr/local/openresty/nginx/sbin/nginx /usr/sbin/nginx
 ln -sf /usr/local/openresty/nginx/ /etc/nginx
@@ -110,7 +110,7 @@ mkdir -p /app/frontend/images
 cp -r /opt/nginxproxymanager/backend/* /app
 msg_ok "Set up Environment"
 
-msg_info "Building Frontend"
+msg_info "正在构建 Frontend"
 export NODE_OPTIONS="--max_old_space_size=2048 --openssl-legacy-provider"
 cd /opt/nginxproxymanager/frontend
 # Replace node-sass with sass in package.json before installation
@@ -120,9 +120,9 @@ $STD yarn locale-compile
 $STD yarn build
 cp -r /opt/nginxproxymanager/frontend/dist/* /app/frontend
 cp -r /opt/nginxproxymanager/frontend/public/images/* /app/frontend/images
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
-msg_info "Initializing Backend"
+msg_info "正在初始化 Backend"
 rm -rf /app/config/default.json
 if [ ! -f /app/config/production.json ]; then
   cat <<'EOF' >/app/config/production.json
@@ -142,9 +142,9 @@ EOF
 fi
 cd /app
 $STD yarn install --network-timeout 600000
-msg_ok "Initialized Backend"
+msg_ok "已初始化 Backend"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/lib/systemd/system/npm.service
 [Unit]
 Description=Nginx Proxy Manager
@@ -162,15 +162,15 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 EOF
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
-msg_info "Starting Services"
+msg_info "正在启动 Services"
 sed -i 's/user npm/user root/g; s/^pid/#pid/g' /usr/local/openresty/nginx/conf/nginx.conf
 sed -r -i 's/^([[:space:]]*)su npm npm/\1#su npm npm/g;' /etc/logrotate.d/nginx-proxy-manager
 systemctl enable -q --now openresty
 systemctl enable -q --now npm
 systemctl restart openresty
-msg_ok "Started Services"
+msg_ok "已启动 Services"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://checkmk.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/checkmk.webp",
   "config_path": "",
-  "description": "Checkmk is an IT monitoring software that tracks the health and performance of your systems, networks, servers, applications, and cloud services. It provides real-time insights, alerts for issues, and tools for troubleshooting, helping ensure smooth operations across your infrastructure.",
+  "description": "Checkmk 是一款 IT 监控软件,可跟踪您的系统、网络、服务器、应用程序和云服务的健康状况和性能。它提供实时洞察、问题警报和故障排除工具,有助于确保整个基础设施的平稳运行。",
   "install_methods": [
     {
       "type": "default",

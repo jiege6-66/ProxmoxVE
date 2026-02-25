@@ -14,7 +14,7 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   make \
   net-tools \
@@ -23,9 +23,9 @@ $STD apt install -y \
   libtalloc2 \
   libwbclient0 \
   keyutils
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setup Nx Witness"
+msg_info "设置 Nx Witness"
 cd /tmp
 BASE_URL="https://updates.networkoptix.com/default/index.html"
 RELEASE=$(curl -fsSL "$BASE_URL" | grep -oP '(?<=<b>)[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(?=</b>)' | head -n 1)
@@ -36,7 +36,7 @@ export DEBIAN_FRONTEND=noninteractive
 $STD dpkg -i nxwitness-server-$RELEASE-linux_x64.deb
 rm -f /tmp/nxwitness-server-$RELEASE-linux_x64.deb
 echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
-msg_ok "Setup Nx Witness"
+msg_ok "设置 Nx Witness"
 
 motd_ssh
 customize

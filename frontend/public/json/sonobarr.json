@@ -13,7 +13,7 @@
   "config_path": "/etc/sonobarr/.env",
   "website": "https://github.com/Dodelidoo-Labs/sonobarr",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/sonobarr.webp",
-  "description": "Sonobarr marries your existing Lidarr library with Last.fm’s discovery graph to surface artists you'll actually like. It runs as a Flask + Socket.IO application, ships with a polished Bootstrap UI, and includes admin tooling so folks can share a single instance safely.",
+  "description": "Sonobarr 将您现有的 Lidarr 库与 Last.fm 的发现图谱结合起来，为您推荐真正喜欢的艺术家。它作为 Flask + Socket.IO 应用程序运行，配备精美的 Bootstrap UI，并包含管理工具，以便人们可以安全地共享单个实例。",
   "install_methods": [
     {
       "type": "default",

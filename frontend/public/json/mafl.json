@@ -13,7 +13,7 @@
   "website": "https://mafl.hywax.space/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mafl.webp",
   "config_path": "/opt/mafl/data/config.yml",
-  "description": "Mafl is an intuitive service for organizing your homepage. Customize Mafl to your individual needs and work even more efficiently!",
+  "description": "Mafl 是一个直观的服务，用于组织您的主页。根据您的个人需求自定义 Mafl，工作效率更高！",
   "install_methods": [
     {
       "type": "default",

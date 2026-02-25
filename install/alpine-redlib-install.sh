@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "redlib" "redlib-org/redlib" "prebuild" "latest" "/opt/redlib" "redlib-x86_64-unknown-linux-musl.tar.gz"
 
-msg_info "Configuring Redlib"
+msg_info "正在配置 Redlib"
 cat <<EOF >/opt/redlib/redlib.conf
 ############################################
 # Redlib Instance Configuration File
@@ -53,9 +53,9 @@ PORT=5252                           # Integer (0-65535) - Internal port
 #REDLIB_DEFAULT_FIXED_NAVBAR=on     # ["on", "off"]
 #REDLIB_DEFAULT_REMOVE_DEFAULT_FEEDS=off # ["on", "off"]
 EOF
-msg_ok "Configured Redlib"
+msg_ok "已配置 Redlib"
 
-msg_info "Creating Redlib Service"
+msg_info "正在创建 Redlib Service"
 cat <<EOF >/etc/init.d/redlib
 #!/sbin/openrc-run
 
@@ -84,15 +84,15 @@ start_pre() {
 EOF
 $STD chmod +x /etc/init.d/redlib
 $STD rc-update add redlib default
-msg_ok "Created Redlib Service"
+msg_ok "已创建 Redlib Service"
 
-msg_info "Starting Redlib Service"
+msg_info "正在启动 Redlib Service"
 $STD rc-service redlib start
-msg_ok "Started Redlib Service"
+msg_ok "已启动 Redlib Service"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 $STD apk cache clean
-msg_ok "Cleaned"
+msg_ok "已清理"

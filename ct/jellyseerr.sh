@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/jellyseerr ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -55,14 +55,14 @@ EOF
     exit
   fi
 
-  msg_info "Updating Jellyseerr"
+  msg_info "正在更新 Jellyseerr"
   cd /opt/jellyseerr
   systemctl stop jellyseerr
   output=$(git pull --no-rebase)
   pnpm_desired=$(grep -Po '"pnpm":\s*"\K[^"]+' /opt/jellyseerr/package.json)
   NODE_VERSION="22" NODE_MODULE="pnpm@$pnpm_desired" setup_nodejs
   if echo "$output" | grep -q "Already up to date."; then
-    msg_ok "$APP is already up to date."
+    msg_ok "$APP is 已是最新."
     exit
   fi
   rm -rf dist .next node_modules
@@ -89,7 +89,7 @@ EOF
   systemctl daemon-reload
   systemctl start jellyseerr
   msg_ok "Updated Jellyseerr"
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -97,7 +97,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5055${CL}"

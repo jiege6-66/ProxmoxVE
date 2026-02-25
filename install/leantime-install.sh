@@ -18,7 +18,7 @@ setup_mariadb
 MARIADB_DB_NAME="leantime" MARIADB_DB_USER="leantime" setup_mariadb_db
 fetch_and_deploy_gh_release "leantime" "Leantime/leantime" "prebuild" "latest" "/opt/leantime" Leantime*.tar.gz
 
-msg_info "Setup Leantime"
+msg_info "设置 Leantime"
 chown -R www-data:www-data "/opt/leantime"
 chmod -R 750 "/opt/leantime"
 cat <<EOF >/etc/apache2/sites-enabled/000-default.conf
@@ -52,7 +52,7 @@ $STD a2enmod -q proxy_fcgi setenvif rewrite
 $STD a2enconf -q "php8.4-fpm"
 sed -i -e "s/^;extension.\(curl\|fileinfo\|gd\|intl\|ldap\|mbstring\|exif\|mysqli\|odbc\|openssl\|pdo_mysql\)/extension=\1/g" "/etc/php/8.4/apache2/php.ini"
 systemctl restart apache2
-msg_ok "Setup leantime"
+msg_ok "设置 leantime"
 
 motd_ssh
 customize

@@ -1,32 +1,32 @@
-# error_handler.func Integration Guide
+# error_handler.func 集成指南
 
-## Overview
+## 概述
 
-This document describes how `error_handler.func` integrates with other components in the Proxmox Community Scripts project, including dependencies, data flow, and API surface.
+本文档描述了 `error_handler.func` 如何与 Proxmox Community Scripts 项目中的其他组件集成，包括依赖关系、数据流和 API 接口。
 
-## Dependencies
+## 依赖关系
 
-### External Dependencies
+### 外部依赖
 
-#### Required Commands
-- **None**: Pure Bash implementation
+#### 必需命令
+- **无**: 纯 Bash 实现
 
-#### Optional Commands
-- **None**: No external command dependencies
+#### 可选命令
+- **无**: 无外部命令依赖
 
-### Internal Dependencies
+### 内部依赖
 
 #### core.func
-- **Purpose**: Provides color variables for error display
-- **Usage**: Uses `RD`, `CL`, `YWB` color variables
-- **Integration**: Called automatically when core.func is sourced
-- **Data Flow**: Color variables → error display formatting
+- **用途**: 为错误显示提供颜色变量
+- **使用**: 使用 `RD`、`CL`、`YWB` 颜色变量
+- **集成**: 当 core.func 被 source 时自动调用
+- **数据流**: 颜色变量 → 错误显示格式化
 
-## Integration Points
+## 集成点
 
-### With core.func
+### 与 core.func 集成
 
-#### Silent Execution Integration
+#### 静默执行集成
 ```bash
 # core.func silent() function uses error_handler.func
 silent() {

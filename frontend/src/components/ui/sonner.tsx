@@ -29,3 +29,5 @@ function Toaster({ ...props }: ToasterProps) {
 }
 
 export { Toaster };
+
+这个组件没有用户可见的 UI 文本需要翻译。代码中只包含 CSS 类名和组件配置，没有显示给用户的文字内容。

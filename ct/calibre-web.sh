@@ -25,40 +25,40 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/calibre-web ]]; then
-    msg_error "No Calibre-Web Installation Found!"
+    msg_error "No Calibre-Web 安装已找到！"
     exit
   fi
 
   if check_for_gh_release "Calibre-Web" "janeczku/calibre-web"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop calibre-web
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up Data"
+    msg_info "正在备份 Data"
     cp -r /opt/calibre-web/app.db /opt/app.db_backup
     cp -r /opt/calibre-web/data /opt/data_backup
-    msg_ok "Backed up Data"
+    msg_ok "已备份 Data"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "Calibre-Web" "janeczku/calibre-web" "prebuild" "latest" "/opt/calibre-web" "calibre-web*.tar.gz"
     setup_uv
 
-    msg_info "Installing Dependencies"
+    msg_info "正在安装依赖"
     cd /opt/calibre-web
     $STD uv venv
     $STD uv pip install --python /opt/calibre-web/.venv/bin/python --no-cache-dir --upgrade pip setuptools wheel
     $STD uv pip install --python /opt/calibre-web/.venv/bin/python --no-cache-dir -r requirements.txt
-    msg_ok "Installed Dependencies"
+    msg_ok "已安装依赖"
 
-    msg_info "Restoring Data"
+    msg_info "正在恢复 Data"
     cp /opt/app.db_backup /opt/calibre-web/app.db 2>/dev/null
     cp -r /opt/data_backup /opt/calibre-web/data 2>/dev/null
     rm -rf /opt/app.db_backup /opt/data_backup
-    msg_ok "Restored Data"
+    msg_ok "已恢复 Data"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start calibre-web
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -67,7 +67,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8083${CL}"

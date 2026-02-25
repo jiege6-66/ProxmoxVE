@@ -25,31 +25,31 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/investbrain ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "Investbrain" "investbrainapp/investbrain"; then
     PHP_VERSION="8.4"
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop nginx php${PHP_VERSION}-fpm
     $STD supervisorctl stop all
-    msg_ok "Services Stopped"
+    msg_ok "Services 已停止"
 
     setup_composer
     NODE_VERSION="22" setup_nodejs
     PG_VERSION="17" setup_postgresql
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     rm -f /opt/.env.backup
     rm -rf /opt/investbrain_backup
     cp /opt/investbrain/.env /opt/.env.backup
     cp -r /opt/investbrain/storage /opt/investbrain_backup
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
     fetch_and_deploy_gh_release "Investbrain" "investbrainapp/investbrain" "tarball" "latest" "/opt/investbrain"
 
-    msg_info "Updating Investbrain"
+    msg_info "正在更新 Investbrain"
     cd /opt/investbrain
     rm -rf /opt/investbrain/storage
     cp /opt/.env.backup /opt/investbrain/.env
@@ -71,11 +71,11 @@ function update_script() {
     rm -rf /opt/.env.backup /opt/investbrain_backup
     msg_ok "Updated Investbrain"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start php${PHP_VERSION}-fpm nginx
     $STD supervisorctl start all
-    msg_ok "Services Started"
-    msg_ok "Updated successfully!"
+    msg_ok "Services 已启动"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -84,7 +84,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8000${CL}"

@@ -13,7 +13,7 @@
   "website": "https://www.turnkeylinux.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/turnkey-linux.webp",
   "config_path": "",
-  "description": "TurnKey LXC Appliances is an open-source project that provides a collection of free, ready-to-use virtual appliances and installation images for various software applications and services. These appliances are pre-configured and come with all the necessary software and settings to simplify deployment and management. The goal of TurnKey Linux is to make it easier for users to set up and run popular software applications without the need for extensive manual configuration.",
+  "description": "TurnKey LXC Appliances 是一个开源项目,为各种软件应用程序和服务提供一系列免费、即用型虚拟设备和安装镜像。这些设备已预先配置,并附带所有必要的软件和设置,以简化部署和管理。TurnKey Linux 的目标是让用户更轻松地设置和运行流行的软件应用程序,而无需进行大量手动配置。",
   "install_methods": [
     {
       "type": "default",

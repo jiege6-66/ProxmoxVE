@@ -13,20 +13,20 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y chromium
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "uptime-kuma" "louislam/uptime-kuma" "tarball"
 
-msg_info "Installing Uptime Kuma"
+msg_info "正在安装 Uptime Kuma"
 cd /opt/uptime-kuma
 $STD npm ci --omit dev
 $STD npm run download-dist
-msg_ok "Installed Uptime Kuma"
+msg_ok "已安装 Uptime Kuma"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 ln -s /usr/bin/chromium /opt/uptime-kuma/chromium
 cat <<EOF >/etc/systemd/system/uptime-kuma.service
 [Unit]
@@ -43,7 +43,7 @@ ExecStart=/usr/bin/npm start
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now uptime-kuma
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

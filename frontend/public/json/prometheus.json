@@ -13,7 +13,7 @@
   "website": "https://prometheus.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/prometheus.webp",
   "config_path": "/etc/prometheus/prometheus.yml",
-  "description": "Prometheus is widely used to monitor the performance and health of various infrastructure components and applications, and trigger alerts based on predefined rules. It has a multi-dimensional data model and supports various data sources and exporters, making it an extremely flexible and scalable monitoring solution.",
+  "description": "Prometheus 被广泛用于监控各种基础设施组件和应用程序的性能和健康状况，并根据预定义规则触发告警。它具有多维数据模型，支持各种数据源和导出器，使其成为一个极其灵活和可扩展的监控解决方案。",
   "install_methods": [
     {
       "type": "default",

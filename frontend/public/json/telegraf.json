@@ -13,7 +13,7 @@
   "config_path": "/etc/telegraf/telegraf.conf",
   "website": "https://github.com/influxdata/telegraf",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/telegraf.webp",
-  "description": "Telegraf collects and sends time series data from databases, systems, and IoT sensors. It has no external dependencies, is easy to install, and requires minimal memory.",
+  "description": "Telegraf 从数据库、系统和物联网传感器收集并发送时间序列数据。它没有外部依赖,易于安装,并且需要最少的内存。",
   "install_methods": [
     {
       "type": "default",

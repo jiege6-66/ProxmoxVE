@@ -13,7 +13,7 @@
   "website": "https://cockpit-project.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cockpit.webp",
   "config_path": "/etc/cockpit/cockpit.conf",
-  "description": "Cockpit is a web-based graphical interface for managing Linux servers. It allows users to perform tasks like configuring networks, managing storage, and monitoring system performance directly through a web browser. It integrates with existing system tools, making it suitable for both beginners and experienced admins.",
+  "description": "Cockpit 是一个基于 Web 的图形界面,用于管理 Linux 服务器。它允许用户直接通过 Web 浏览器执行配置网络、管理存储和监控系统性能等任务。它与现有系统工具集成,适合初学者和有经验的管理员。",
   "install_methods": [
     {
       "type": "default",

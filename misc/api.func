@@ -147,7 +147,7 @@ explain_exit_code() {
   4) echo "curl: Feature not supported or protocol error" ;;
   5) echo "curl: Could not resolve proxy" ;;
   6) echo "curl: DNS resolution failed (could not resolve host)" ;;
-  7) echo "curl: Failed to connect (network unreachable / host down)" ;;
+  7) echo "curl: 无法 connect (network unreachable / host down)" ;;
   8) echo "curl: Server reply error (FTP/SFTP or apk untrusted key)" ;;
   16) echo "curl: HTTP/2 framing layer error" ;;
   18) echo "curl: Partial file (transfer not completed)" ;;
@@ -179,7 +179,7 @@ explain_exit_code() {
   61) echo "curl: Bad/unrecognized transfer encoding" ;;
   63) echo "curl: Maximum file size exceeded" ;;
   75) echo "Temporary failure (retry later)" ;;
-  78) echo "curl: Remote file not found (404 on FTP/file)" ;;
+  78) echo "curl: Remote file 未找到 (404 on FTP/file)" ;;
   79) echo "curl: SSH session error (key exchange/auth failed)" ;;
   92) echo "curl: HTTP/2 stream error (protocol violation)" ;;
   95) echo "curl: HTTP/3 layer error" ;;
@@ -192,9 +192,9 @@ explain_exit_code() {
   # --- BSD sysexits.h (64-78) ---
   64) echo "Usage error (wrong arguments)" ;;
   65) echo "Data format error (bad input data)" ;;
-  66) echo "Input file not found (cannot open input)" ;;
-  67) echo "User not found (addressee unknown)" ;;
-  68) echo "Host not found (hostname unknown)" ;;
+  66) echo "Input file 未找到 (cannot open input)" ;;
+  67) echo "User 未找到 (addressee unknown)" ;;
+  68) echo "Host 未找到 (hostname unknown)" ;;
   69) echo "Service unavailable" ;;
   70) echo "Internal software error" ;;
   71) echo "System error (OS-level failure)" ;;
@@ -208,7 +208,7 @@ explain_exit_code() {
   124) echo "Command timed out (timeout command)" ;;
   125) echo "Command failed to start (Docker daemon or execution error)" ;;
   126) echo "Command invoked cannot execute (permission problem?)" ;;
-  127) echo "Command not found" ;;
+  127) echo "Command 未找到" ;;
   128) echo "Invalid argument to exit" ;;
   129) echo "Killed by SIGHUP (terminal closed / hangup)" ;;
   130) echo "Aborted by user (SIGINT)" ;;
@@ -224,7 +224,7 @@ explain_exit_code() {
 
   # --- Systemd / Service errors (150-154) ---
   150) echo "Systemd: Service failed to start" ;;
-  151) echo "Systemd: Service unit not found" ;;
+  151) echo "Systemd: Service unit 未找到" ;;
   152) echo "Permission denied (EACCES)" ;;
   153) echo "Build/compile failed (make/gcc/cmake)" ;;
   154) echo "Node.js: Native addon build failed (node-gyp)" ;;
@@ -248,11 +248,11 @@ explain_exit_code() {
   # --- MongoDB (190-193) ---
   190) echo "MongoDB: Connection failed (server not running)" ;;
   191) echo "MongoDB: Authentication failed (bad user/password)" ;;
-  192) echo "MongoDB: Database not found" ;;
+  192) echo "MongoDB: Database 未找到" ;;
   193) echo "MongoDB: Fatal query error" ;;
 
   # --- Proxmox Custom Codes (200-231) ---
-  200) echo "Proxmox: Failed to create lock file" ;;
+  200) echo "Proxmox: 无法 create lock file" ;;
   203) echo "Proxmox: Missing CTID variable" ;;
   204) echo "Proxmox: Missing PCT_OSTYPE variable" ;;
   205) echo "Proxmox: Invalid CTID (<100)" ;;
@@ -519,9 +519,9 @@ detect_ram() {
   if command -v dmidecode &>/dev/null; then
     # Get configured memory speed (actual running speed)
     # Use || true to handle "Unknown" values in nested VMs (no numeric match)
-    RAM_SPEED=$(dmidecode -t memory 2>/dev/null | grep -m1 "Configured Memory Speed:" | grep -oE "[0-9]+" | head -1) || true
+    RAM_SPEED=$(dmidecode -t memory 2>/dev/null | grep -m1 "已配置 Memory Speed:" | grep -oE "[0-9]+" | head -1) || true
 
-    # Fallback to Speed: if Configured not available
+    # Fallback to Speed: if 已配置 not available
     if [[ -z "$RAM_SPEED" ]]; then
       RAM_SPEED=$(dmidecode -t memory 2>/dev/null | grep -m1 "Speed:" | grep -oE "[0-9]+" | head -1) || true
     fi
@@ -555,7 +555,7 @@ post_to_api() {
 
   # Silent fail - telemetry should never break scripts
   command -v curl &>/dev/null || {
-    [[ "${DEV_MODE:-}" == "true" ]] && echo "[DEBUG] curl not found, skipping" >&2
+    [[ "${DEV_MODE:-}" == "true" ]] && echo "[DEBUG] curl 未找到, skipping" >&2
     return 0
   }
   [[ "${DIAGNOSTICS:-no}" == "no" ]] && {

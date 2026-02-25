@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y ca-certificates
-msg_ok "Installed Dependecies"
+msg_ok "已安装 Dependecies"
 
 PG_VERSION="17" setup_postgresql
 
-msg_info "Installing Postgresql"
+msg_info "正在安装 Postgresql"
 DB_NAME="zitadel"
 DB_USER="zitadel"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)
@@ -37,11 +37,11 @@ $STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME OWNER $DB_ADMIN_USER;"
   echo "DB_ADMIN_USER: $DB_ADMIN_USER"
   echo "DB_ADMIN_PASS: $DB_ADMIN_PASS"
 } >>~/zitadel.creds
-msg_ok "Installed PostgreSQL"
+msg_ok "已安装 PostgreSQL"
 
 fetch_and_deploy_gh_release "zitadel" "zitadel/zitadel" "prebuild" "latest" "/usr/local/bin" "zitadel-linux-amd64.tar.gz"
 
-msg_info "Setting up Zitadel Environments"
+msg_info "正在设置 Zitadel Environments"
 mkdir -p /opt/zitadel
 echo "/opt/zitadel/config.yaml" >"/opt/zitadel/.config"
 head -c 32 < <(openssl rand -base64 48 | tr -dc 'a-zA-Z0-9') >"/opt/zitadel/.masterkey"
@@ -55,7 +55,7 @@ ExternalPort: 8080
 ExternalDomain: localhost
 ExternalSecure: false
 TLS:
-  Enabled: false
+  已启用: false
   KeyPath: ""
   Key: ""
   CertPath: ""
@@ -87,9 +87,9 @@ DefaultInstance:
     LoginV2:
       Required: false
 EOF
-msg_ok "Installed Zitadel Enviroments"
+msg_ok "已安装 Zitadel Enviroments"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/zitadel.service
 [Unit]
 Description=ZITADEL Identiy Server
@@ -115,7 +115,7 @@ NoNewPrivileges=true
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now zitadel
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 msg_info "Zitadel initial setup"
 zitadel start-from-init --masterkeyFile /opt/zitadel/.masterkey --config /opt/zitadel/config.yaml &>/dev/null &

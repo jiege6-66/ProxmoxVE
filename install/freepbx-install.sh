@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing FreePBX (Patience)"
+msg_info "正在安装 FreePBX (Patience)"
 curl -fsSL https://github.com/FreePBX/sng_freepbx_debian_install/raw/master/sng_freepbx_debian_install.sh -o /opt/sng_freepbx_debian_install.sh
 $STD bash /opt/sng_freepbx_debian_install.sh
 rm /opt/sng_freepbx_debian_install.sh
-msg_ok "Installed FreePBX"
+msg_ok "已安装 FreePBX"
 
 motd_ssh
 customize

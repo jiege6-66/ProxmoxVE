@@ -13,7 +13,7 @@
   "website": "https://www.authelia.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/authelia.webp",
   "config_path": "/etc/authelia/configuration.yml",
-  "description": "Authelia is an open-source authentication and authorization server and portal fulfilling the identity and access management (IAM) role of information security in providing multi-factor authentication and single sign-on (SSO) for your applications via a web portal. It acts as a companion for common reverse proxies.",
+  "description": "Authelia 是一个开源的身份验证和授权服务器及门户,履行信息安全中身份和访问管理 (IAM) 的角色,通过 Web 门户为您的应用程序提供多因素身份验证和单点登录 (SSO)。它充当常见反向代理的配套工具。",
   "install_methods": [
     {
       "type": "default",

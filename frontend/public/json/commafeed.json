@@ -13,7 +13,7 @@
   "website": "https://www.commafeed.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/commafeed.webp",
   "config_path": "",
-  "description": "CommaFeed is a Google Reader inspired self-hosted RSS reader.",
+  "description": "CommaFeed 是一个受 Google Reader 启发的自托管 RSS 阅读器。",
   "install_methods": [
     {
       "type": "default",

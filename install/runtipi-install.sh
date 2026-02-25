@@ -24,7 +24,7 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   exit 10
 fi
 
-msg_info "Installing Runtipi (Patience)"
+msg_info "正在安装 Runtipi (Patience)"
 DOCKER_CONFIG_PATH='/etc/docker/daemon.json'
 mkdir -p "$(dirname "$DOCKER_CONFIG_PATH")"
 echo -e '{\n  "log-driver": "journald"\n}' >"$DOCKER_CONFIG_PATH"
@@ -34,7 +34,7 @@ chmod +x install.sh
 $STD ./install.sh
 chmod 666 /opt/runtipi/state/settings.json
 rm -f /opt/install.sh
-msg_ok "Installed Runtipi"
+msg_ok "已安装 Runtipi"
 
 motd_ssh
 customize

@@ -26,7 +26,7 @@ function update_script() {
   check_container_resources
 
   if ! dpkg -l plexmediaserver &>/dev/null; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -35,7 +35,7 @@ function update_script() {
     local current_uri
     current_uri=$(grep -oP '(?<=URIs: ).*' /etc/apt/sources.list.d/plexmediaserver.sources 2>/dev/null || true)
     if [[ "$current_uri" == *"downloads.plex.tv/repo/deb"* ]]; then
-      msg_info "Migrating to new Plex repository"
+      msg_info "正在迁移 to new Plex repository"
       rm -f /etc/apt/sources.list.d/plexmediaserver.sources
       rm -f /usr/share/keyrings/PlexSign.asc
       setup_deb822_repo \
@@ -44,10 +44,10 @@ function update_script() {
         "https://repo.plex.tv/deb/" \
         "public" \
         "main"
-      msg_ok "Migrated to new Plex repository"
+      msg_ok "已迁移 to new Plex repository"
     fi
   elif [[ -f /etc/apt/sources.list.d/plexmediaserver.list ]]; then
-    msg_info "Migrating to new Plex repository (deb822)"
+    msg_info "正在迁移 to new Plex repository (deb822)"
     rm -f /etc/apt/sources.list.d/plexmediaserver.list
     rm -f /etc/apt/sources.list.d/plex*
     rm -f /usr/share/keyrings/PlexSign.asc
@@ -57,20 +57,20 @@ function update_script() {
       "https://repo.plex.tv/deb/" \
       "public" \
       "main"
-    msg_ok "Migrated to new Plex repository (deb822)"
+    msg_ok "已迁移 to new Plex repository (deb822)"
   fi
   if [[ -f /usr/local/bin/plexupdate ]] || [[ -d /opt/plexupdate ]]; then
-    msg_info "Removing legacy plexupdate"
+    msg_info "正在移除 legacy plexupdate"
     rm -rf /opt/plexupdate /usr/local/bin/plexupdate
     crontab -l 2>/dev/null | grep -v plexupdate | crontab - 2>/dev/null || true
-    msg_ok "Removed legacy plexupdate"
+    msg_ok "已移除 legacy plexupdate"
   fi
 
-  msg_info "Updating Plex Media Server"
+  msg_info "正在更新 Plex Media Server"
   $STD apt update
   $STD apt install -y plexmediaserver
   msg_ok "Updated Plex Media Server"
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -78,7 +78,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:32400/web${CL}"

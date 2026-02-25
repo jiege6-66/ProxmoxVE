@@ -13,7 +13,7 @@
   "website": "https://github.com/cmintey/wishlist",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cmintey-wishlist.webp",
   "config_path": "/opt/wishlist/.env",
-  "description": "Wishlist is a self-hosted wishlist application that you can share with your friends and family. You no longer have to wonder what to get your family for the holidays, simply check their wishlist and claim any available item!",
+  "description": "Wishlist 是一个可自托管的愿望清单应用程序,您可以与朋友和家人分享。您不再需要为节日送礼而烦恼,只需查看他们的愿望清单并认领任何可用的物品!",
   "install_methods": [
     {
       "type": "default",

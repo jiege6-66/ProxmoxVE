@@ -13,7 +13,7 @@
   "website": "https://www.bentopdf.com",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/bentopdf.webp",
   "config_path": "",
-  "description": "A privacy-first, 100% client-side PDF Toolkit. No signups/accounts, works in the browser, online or offline.",
+  "description": "一个隐私优先、100% 客户端的 PDF 工具包。无需注册/账户，在浏览器中工作，在线或离线均可。",
   "install_methods": [
     {
       "type": "default",

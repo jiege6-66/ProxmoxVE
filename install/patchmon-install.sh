@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   nginx \
   redis-server
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="24" setup_nodejs
 PG_VERSION="17" setup_postgresql
@@ -26,7 +26,7 @@ PG_DB_NAME="patchmon_db" PG_DB_USER="patchmon_usr" setup_postgresql_db
 
 fetch_and_deploy_gh_release "PatchMon" "PatchMon/PatchMon" "tarball" "latest" "/opt/patchmon"
 
-msg_info "Configuring PatchMon"
+msg_info "正在配置 PatchMon"
 VERSION=$(get_latest_github_release "PatchMon/PatchMon")
 export NODE_ENV=production
 cd /opt/patchmon
@@ -55,9 +55,9 @@ sed -i -e "s|DATABASE_URL=.*|DATABASE_URL=\"postgresql://$PG_DB_USER:$PG_DB_PASS
 cd /opt/patchmon/backend
 $STD npm run db:generate
 $STD npx prisma migrate deploy
-msg_ok "Configured PatchMon"
+msg_ok "已配置 PatchMon"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cp /opt/patchmon/docker/nginx.conf.template /etc/nginx/sites-available/patchmon.conf
 sed -i -e 's|proxy_pass .*|proxy_pass http://127.0.0.1:3001;|' \
   -e '\|try_files |i\        root /opt/patchmon/frontend/dist;' \
@@ -67,9 +67,9 @@ ln -sf /etc/nginx/sites-available/patchmon.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD nginx -t
 systemctl restart nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/patchmon-server.service
 [Unit]
 Description=PatchMon Service
@@ -93,7 +93,7 @@ ReadWritePaths=/opt/patchmon
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now patchmon-server
-msg_ok "Created and started service"
+msg_ok "已创建 and started service"
 
 motd_ssh
 customize

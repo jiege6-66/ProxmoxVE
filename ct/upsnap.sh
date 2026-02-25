@@ -24,21 +24,21 @@ function update_script() {
     check_container_storage
     check_container_resources
     if [[ ! -d /opt/upsnap ]]; then
-        msg_error "No ${APP} Installation Found!"
+        msg_error "未找到 ${APP} 安装！"
         exit
     fi
 
     if check_for_gh_release "upsnap" "seriousm4x/UpSnap"; then
-        msg_info "Stopping Services"
+        msg_info "正在停止 Services"
         systemctl stop upsnap
-        msg_ok "Stopped Services"
+        msg_ok "已停止 Services"
 
         fetch_and_deploy_gh_release "upsnap" "seriousm4x/UpSnap" "prebuild" "latest" "/opt/upsnap" "UpSnap_*_linux_amd64.zip"
 
-        msg_info "Starting Services"
+        msg_info "正在启动 Services"
         systemctl start upsnap
-        msg_ok "Started Services"
-        msg_ok "Updated successfully!"
+        msg_ok "已启动 Services"
+        msg_ok "已成功更新!"
     fi
     exit
 }
@@ -47,7 +47,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8090${CL}"

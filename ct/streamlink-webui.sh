@@ -25,20 +25,20 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/streamlink-webui ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "streamlink-webui" "CrazyWolf13/streamlink-webui"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop streamlink-webui
-    msg_info "Stopped Service"
+    msg_info "已停止 Service"
 
     NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
     setup_uv
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "streamlink-webui" "CrazyWolf13/streamlink-webui" "tarball"
 
-    msg_info "Updating streamlink-webui"
+    msg_info "正在更新 streamlink-webui"
     $STD uv venv --clear /opt/streamlink-webui/backend/src/.venv
     source /opt/streamlink-webui/backend/src/.venv/bin/activate
     $STD uv pip install -r /opt/streamlink-webui/backend/src/requirements.txt --python=/opt/streamlink-webui/backend/src/.venv
@@ -48,10 +48,10 @@ function update_script() {
     chmod +x /opt/streamlink-webui/start.sh
     msg_ok "Updated streamlink-webui"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start streamlink-webui
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -60,7 +60,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8000${CL}"

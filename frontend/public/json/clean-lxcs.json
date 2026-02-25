@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/linuxcontainers.webp",
   "config_path": "",
-  "description": "This script provides options to delete logs and cache, and repopulate apt lists for Ubuntu and Debian systems.",
+  "description": "此脚本提供删除日志和缓存以及为 Ubuntu 和 Debian 系统重新填充 apt 列表的选项。",
   "install_methods": [
     {
       "type": "default",

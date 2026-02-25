@@ -13,7 +13,7 @@
   "website": "https://syncthing.net/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/syncthing.webp",
   "config_path": "/root/.local/state/syncthing/config.xml - Alpine: /var/lib/syncthing/.local/state/syncthing/config.xml",
-  "description": "Syncthing is an open-source file syncing tool that allows users to keep their files in sync across multiple devices by using peer-to-peer synchronization. It doesn't rely on any central server, so all data transfers are directly between devices.",
+  "description": "Syncthing 是一个开源文件同步工具,允许用户通过点对点同步在多个设备之间保持文件同步。它不依赖任何中央服务器,因此所有数据传输都直接在设备之间进行。",
   "install_methods": [
     {
       "type": "default",

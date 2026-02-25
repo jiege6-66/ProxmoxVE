@@ -13,7 +13,7 @@
   "website": "https://emby.media/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/emby.webp",
   "config_path": "/var/lib/emby/config/system.xml",
-  "description": "Emby brings together your personal videos, music, photos, and live television.",
+  "description": "Emby 将您的个人视频、音乐、照片和直播电视整合在一起。",
   "install_methods": [
     {
       "type": "default",

@@ -24,15 +24,15 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/homarr ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "homarr" "homarr-labs/homarr"; then
-    msg_info "Stopping Services (Patience)"
+    msg_info "正在停止 Services (Patience)"
     systemctl stop homarr
     systemctl stop redis-server
-    msg_ok "Services Stopped"
+    msg_ok "Services 已停止"
 
     if ! { grep -q '^REDIS_IS_EXTERNAL=' /opt/homarr/.env 2>/dev/null || grep -q '^REDIS_IS_EXTERNAL=' /opt/homarr.env 2>/dev/null; }; then
       msg_info "Fixing old structure"
@@ -54,7 +54,7 @@ EOF
       msg_ok "Fixed old structure"
     fi
 
-    msg_info "Updating Nodejs"
+    msg_info "正在更新 Nodejs"
     $STD apt update
     $STD apt upgrade nodejs -y
     msg_ok "Updated Nodejs"
@@ -63,18 +63,18 @@ EOF
     setup_nodejs
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "homarr" "homarr-labs/homarr" "prebuild" "latest" "/opt/homarr" "build-debian-amd64.tar.gz"
 
-    msg_info "Updating Homarr"
+    msg_info "正在更新 Homarr"
     cp /opt/homarr/redis.conf /etc/redis/redis.conf
     rm /etc/nginx/nginx.conf
     cp /opt/homarr/nginx.conf /etc/nginx/templates/nginx.conf
     msg_ok "Updated Homarr"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     chmod +x /opt/homarr/run.sh
     systemctl start homarr
     systemctl start redis-server
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -83,7 +83,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:7575${CL}"

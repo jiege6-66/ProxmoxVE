@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Unbound"
+msg_info "正在安装 Unbound"
 mkdir -p /etc/unbound/unbound.conf.d
 cat <<EOF >/etc/unbound/unbound.conf.d/unbound.conf
 server:
@@ -56,9 +56,9 @@ touch /var/log/unbound.log
 chown unbound:unbound /var/log/unbound.log
 sleep 5
 systemctl restart unbound
-msg_ok "Installed Unbound"
+msg_ok "已安装 Unbound"
 
-msg_info "Configuring Logrotate"
+msg_info "正在配置 Logrotate"
 cat <<EOF >/etc/logrotate.d/unbound
 /var/log/unbound.log {
   daily
@@ -75,7 +75,7 @@ cat <<EOF >/etc/logrotate.d/unbound
 }
 EOF
 systemctl restart logrotate
-msg_ok "Configured Logrotate"
+msg_ok "已配置 Logrotate"
 
 motd_ssh
 customize

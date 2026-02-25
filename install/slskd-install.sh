@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "Slskd" "slskd/slskd" "prebuild" "latest" "/opt/slskd" "slskd-*-linux-x64.zip"
 
-msg_info "Configuring Slskd"
+msg_info "正在配置 Slskd"
 JWT_KEY=$(openssl rand -base64 44)
 SLSKD_API_KEY=$(openssl rand -base64 44)
 cp /opt/slskd/config/slskd.example.yml /opt/slskd/config/slskd.yml
@@ -30,7 +30,7 @@ sed -i \
   -e "\|jwt:|,\|ttl|s|key: ~|key: $JWT_KEY|" \
   -e '/soulseek/,/write_queue/s/^# //' \
   -e 's/^.*picture/#&/' /opt/slskd/config/slskd.yml
-msg_ok "Configured Slskd"
+msg_ok "已配置 Slskd"
 
 read -rp "${TAB3}Do you want to install Soularr? y/N " soularr
 if [[ ${soularr,,} =~ ^(y|yes)$ ]]; then
@@ -57,10 +57,10 @@ fi
 EOF
   chmod +x /opt/soularr/run.sh
   deactivate
-  msg_ok "Installed Soularr"
+  msg_ok "已安装 Soularr"
 fi
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/slskd.service
 [Unit]
 Description=Slskd Service
@@ -109,7 +109,7 @@ EOF
   msg_warn "Add your Lidarr API key to Soularr in '/opt/soularr/config.ini', then run 'systemctl enable --now soularr.timer'"
 fi
 systemctl enable -q --now slskd
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

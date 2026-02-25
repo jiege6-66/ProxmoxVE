@@ -13,7 +13,7 @@
   "website": "https://onedev.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/onedev.webp",
   "config_path": "/opt/onedev/conf",
-  "description": "Git server with CI/CD, kanban, and packages.",
+  "description": "带有 CI/CD、看板和软件包管理的 Git 服务器。",
   "install_methods": [
     {
       "type": "default",

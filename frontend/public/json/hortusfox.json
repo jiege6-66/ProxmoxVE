@@ -13,7 +13,7 @@
   "documentation": "https://github.com/danielbrendel/hortusfox-web",
   "website": "https://www.hortusfox.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/hortusfox.webp",
-  "description": "HortusFox is a collaborative plant management system for plant enthusiasts. Manage, document and track your entire plant collection – self-hosted and privacy-friendly.",
+  "description": "HortusFox 是一个面向植物爱好者的协作植物管理系统。管理、记录和追踪你的整个植物收藏——自托管且注重隐私。",
   "install_methods": [
     {
       "type": "default",

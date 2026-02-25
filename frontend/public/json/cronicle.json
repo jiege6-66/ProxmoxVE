@@ -13,7 +13,7 @@
   "website": "https://github.com/jhuckaby/Cronicle",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/chronicle.webp",
   "config_path": "/opt/cronicle/conf/config.json",
-  "description": "Cronicle is a task scheduling and management software that allows users to schedule and run tasks automatically on multiple servers. It has a web-based user interface that provides a convenient and centralized way to manage tasks and view their execution status. With Cronicle, users can schedule tasks to run at specific times, or on demand, and assign tasks to specific worker servers. The software provides real-time statistics and a live log viewer to help users monitor the progress of tasks. Cronicle is designed for use in large-scale environments, making it a valuable tool for automation and management of complex and time-sensitive tasks.",
+  "description": "Cronicle 是一个任务调度和管理软件，允许用户在多个服务器上自动调度和运行任务。它具有基于 Web 的用户界面，提供了一种便捷且集中的方式来管理任务并查看其执行状态。使用 Cronicle，用户可以安排任务在特定时间或按需运行，并将任务分配给特定的工作服务器。该软件提供实时统计和实时日志查看器，帮助用户监控任务进度。Cronicle 专为大规模环境设计，是自动化和管理复杂且时间敏感任务的宝贵工具。",
   "install_methods": [
     {
       "type": "default",

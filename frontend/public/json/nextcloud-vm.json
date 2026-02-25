@@ -13,7 +13,7 @@
   "website": "https://www.turnkeylinux.org/nextcloud",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/nextcloud.webp",
   "config_path": "",
-  "description": "TurnKey Nextcloud is an open-source file sharing server and collaboration platform that can store your personal content, like documents and pictures, in a centralized location.",
+  "description": "TurnKey Nextcloud 是一个开源文件共享服务器和协作平台，可以将您的个人内容（如文档和图片）存储在集中位置。",
   "install_methods": [
     {
       "type": "default",

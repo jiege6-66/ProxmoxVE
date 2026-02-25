@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   redis \
   make
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="pnpm@$(curl -s https://raw.githubusercontent.com/docmost/docmost/main/package.json | jq -r '.packageManager | split("@")[1]')" setup_nodejs
 PG_VERSION="16" setup_postgresql
 PG_DB_NAME="docmost_db" PG_DB_USER="docmost_user" setup_postgresql_db
 fetch_and_deploy_gh_release "docmost" "docmost/docmost" "tarball"
 
-msg_info "Configuring Docmost (Patience)"
+msg_info "正在配置 Docmost (Patience)"
 cd /opt/docmost
 mv .env.example .env
 mkdir data
@@ -38,9 +38,9 @@ sed -i -e "s|APP_SECRET=.*|APP_SECRET=$(openssl rand -base64 32 | tr -dc 'a-zA-Z
 export NODE_OPTIONS="--max-old-space-size=2048"
 $STD pnpm install
 $STD pnpm build
-msg_ok "Configured Docmost"
+msg_ok "已配置 Docmost"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/docmost.service
 [Unit]
 Description=Docmost Service
@@ -56,7 +56,7 @@ EnvironmentFile=/opt/docmost/.env
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now docmost
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

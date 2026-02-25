@@ -13,7 +13,7 @@
   "config_path": "/opt/rustypaste/config.toml",
   "website": "https://github.com/orhun/rustypaste",
   "logo": "https://github.com/orhun/rustypaste/raw/master/img/rustypaste_logo.png",
-  "description": "Rustypaste is a minimal file upload/pastebin service.",
+  "description": "Rustypaste 是一个极简的文件上传/粘贴板服务。",
   "install_methods": [
     {
       "type": "default",

@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   make \
   ca-certificates \
   python3-venv \
   git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 NODE_VERSION="22" NODE_MODULE="yarn@latest" setup_nodejs
 fetch_and_deploy_gh_release "grist" "gristlabs/grist-core" "tarball"
 
-msg_info "Installing Grist"
+msg_info "正在安装 Grist"
 export CYPRESS_INSTALL_BINARY=0
 export NODE_OPTIONS="--max-old-space-size=2048"
 cd /opt/grist
@@ -35,7 +35,7 @@ cat <<EOF >/opt/grist/.env
 NODE_ENV=production
 GRIST_HOST=0.0.0.0
 EOF
-msg_ok "Installed Grist"
+msg_ok "已安装 Grist"
 
 msg_info "Create Service"
 cat <<EOF >/etc/systemd/system/grist.service
@@ -54,7 +54,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now grist
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

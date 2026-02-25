@@ -13,7 +13,7 @@
   "website": "https://www.globaleaks.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/globaleaks.webp",
   "config_path": "",
-  "description": "GlobaLeaks is a free and open-source whistleblowing software enabling anyone to easily set up and maintain a secure reporting platform.",
+  "description": "GlobaLeaks 是一个免费的开源举报软件，使任何人都能轻松建立和维护一个安全的举报平台。",
   "install_methods": [
     {
       "type": "default",

@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "Cleaning unused kernel images is beneficial for reducing the length of the GRUB menu and freeing up disk space. By removing old, unused kernels, the system is able to conserve disk space and streamline the boot process.",
+  "description": "清理未使用的内核镜像有助于缩短 GRUB 菜单的长度并释放磁盘空间。通过删除旧的、未使用的内核，系统能够节省磁盘空间并简化启动过程。",
   "install_methods": [
     {
       "type": "default",

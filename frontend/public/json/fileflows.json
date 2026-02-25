@@ -13,7 +13,7 @@
   "website": "https://fileflows.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/fileflows.webp",
   "config_path": "/opt/fileflows/Data/server.config",
-  "description": "FileFlows is a powerful, open-source tool for automating media file processing workflows, including encoding, decoding, and media management. It offers an intuitive GUI and extensive plugin support, making it ideal for tasks like video transcoding, organizing, and managing large media libraries.",
+  "description": "FileFlows 是一个强大的开源工具，用于自动化媒体文件处理工作流，包括编码、解码和媒体管理。它提供直观的 GUI 和广泛的插件支持，非常适合视频转码、组织和管理大型媒体库等任务。",
   "install_methods": [
     {
       "type": "default",

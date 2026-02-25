@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/homepage ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -32,26 +32,26 @@ function update_script() {
   ensure_dependencies jq
 
   if check_for_gh_release "homepage" "gethomepage/homepage"; then
-    msg_info "Stopping service"
+    msg_info "正在停止 service"
     systemctl stop homepage
-    msg_ok "Stopped service"
+    msg_ok "已停止 service"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     cp /opt/homepage/.env /opt/homepage.env
     cp -r /opt/homepage/config /opt/homepage_config_backup
     [[ -d /opt/homepage/public/images ]] && cp -r /opt/homepage/public/images /opt/homepage_images_backup
     [[ -d /opt/homepage/public/icons ]] && cp -r /opt/homepage/public/icons /opt/homepage_icons_backup
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
     
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "homepage" "gethomepage/homepage" "tarball"
     
-    msg_info "Restoring Backup"
+    msg_info "正在恢复 Backup"
     mv /opt/homepage.env /opt/homepage
     rm -rf /opt/homepage/config
     mv /opt/homepage_config_backup /opt/homepage/config
-    msg_ok "Restored Backup"
+    msg_ok "已恢复 Backup"
 
-    msg_info "Updating Homepage (Patience)"
+    msg_info "正在更新 Homepage (Patience)"
     RELEASE=$(get_latest_github_release "gethomepage/homepage")
     cd /opt/homepage
     $STD pnpm install
@@ -65,10 +65,10 @@ function update_script() {
     [[ -d /opt/homepage_icons_backup ]] && mv /opt/homepage_icons_backup /opt/homepage/public/icons
     msg_ok "Updated Homepage"
 
-    msg_info "Starting service"
+    msg_info "正在启动 service"
     systemctl start homepage
-    msg_ok "Started service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -77,7 +77,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

@@ -1,68 +1,68 @@
-# error_handler.func Usage Examples
+# error_handler.func 使用示例
 
-## Overview
+## 概述
 
-This document provides practical usage examples for `error_handler.func` functions, covering common scenarios, integration patterns, and best practices.
+本文档提供 `error_handler.func` 函数的实际使用示例，涵盖常见场景、集成模式和最佳实践。
 
-## Basic Error Handling Setup
+## 基本错误处理设置
 
-### Standard Script Initialization
+### 标准脚本初始化
 
 ```bash
 #!/usr/bin/env bash
-# Standard error handling setup
+# 标准错误处理设置
 
-# Source error handler
+# 引入错误处理器
 source error_handler.func
 
-# Initialize error handling
+# 初始化错误处理
 catch_errors
 
-# Your script code here
-# All errors will be automatically caught and handled
+# 你的脚本代码
+# 所有错误将被自动捕获和处理
 echo "Script running..."
 apt-get update
 apt-get install -y package
 echo "Script completed successfully"
 ```
 
-### Minimal Error Handling
+### 最小化错误处理
 
 ```bash
 #!/usr/bin/env bash
-# Minimal error handling setup
+# 最小化错误处理设置
 
 source error_handler.func
 catch_errors
 
-# Simple script with error handling
+# 带错误处理的简单脚本
 echo "Starting operation..."
 command_that_might_fail
 echo "Operation completed"
 ```
 
-## Error Code Explanation Examples
+## 错误码说明示例
 
-### Basic Error Explanation
+### 基本错误说明
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Explain common error codes
+# 说明常见错误码
 echo "Error 1: $(explain_exit_code 1)"
 echo "Error 127: $(explain_exit_code 127)"
 echo "Error 130: $(explain_exit_code 130)"
 echo "Error 200: $(explain_exit_code 200)"
 ```
 
-### Error Code Testing
+### 错误码测试
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Test all error codes
+# 测试所有错误码
 test_error_codes() {
     local codes=(1 2 126 127 128 130 137 139 143 100 101 255 200 203 204 205)
 
@@ -74,42 +74,42 @@ test_error_codes() {
 test_error_codes
 ```
 
-### Custom Error Code Usage
+### 自定义错误码使用
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Use custom error codes
+# 使用自定义错误码
 check_requirements() {
     if [[ ! -f /required/file ]]; then
         echo "Error: Required file missing"
-        exit 200  # Custom error code
+        exit 200  # 自定义错误码
     fi
 
     if [[ -z "$CTID" ]]; then
         echo "Error: CTID not set"
-        exit 203  # Custom error code
+        exit 203  # 自定义错误码
     fi
 
     if [[ $CTID -lt 100 ]]; then
         echo "Error: Invalid CTID"
-        exit 205  # Custom error code
+        exit 205  # 自定义错误码
     fi
 }
 
 check_requirements
 ```
 
-## Signal Handling Examples
+## 信号处理示例
 
-### Interrupt Handling
+### 中断处理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Set up interrupt handler
+# 设置中断处理器
 trap on_interrupt INT
 
 echo "Script running... Press Ctrl+C to interrupt"
@@ -117,13 +117,13 @@ sleep 10
 echo "Script completed normally"
 ```
 
-### Termination Handling
+### 终止处理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Set up termination handler
+# 设置终止处理器
 trap on_terminate TERM
 
 echo "Script running... Send SIGTERM to terminate"
@@ -131,13 +131,13 @@ sleep 10
 echo "Script completed normally"
 ```
 
-### Complete Signal Handling
+### 完整信号处理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Set up all signal handlers
+# 设置所有信号处理器
 trap on_interrupt INT
 trap on_terminate TERM
 trap on_exit EXIT
@@ -147,19 +147,19 @@ sleep 10
 echo "Script completed normally"
 ```
 
-## Cleanup Examples
+## 清理示例
 
-### Lock File Cleanup
+### 锁文件清理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Set up lock file
+# 设置锁文件
 lockfile="/tmp/my_script.lock"
 touch "$lockfile"
 
-# Set up exit handler
+# 设置退出处理器
 trap on_exit EXIT
 
 echo "Script running with lock file..."
@@ -167,18 +167,18 @@ sleep 5
 echo "Script completed - lock file will be removed"
 ```
 
-### Temporary File Cleanup
+### 临时文件清理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Create temporary files
+# 创建临时文件
 temp_file1="/tmp/temp1.$$"
 temp_file2="/tmp/temp2.$$"
 touch "$temp_file1" "$temp_file2"
 
-# Set up cleanup
+# 设置清理
 cleanup() {
     rm -f "$temp_file1" "$temp_file2"
     echo "Temporary files cleaned up"
@@ -191,15 +191,15 @@ sleep 5
 echo "Script completed - temporary files will be cleaned up"
 ```
 
-## Debug Logging Examples
+## 调试日志示例
 
-### Basic Debug Logging
+### 基本调试日志
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Enable debug logging
+# 启用调试日志
 export DEBUG_LOGFILE="/tmp/debug.log"
 catch_errors
 
@@ -208,17 +208,17 @@ apt-get update
 apt-get install -y package
 ```
 
-### Debug Log Analysis
+### 调试日志分析
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Enable debug logging
+# 启用调试日志
 export DEBUG_LOGFILE="/tmp/debug.log"
 catch_errors
 
-# Function to analyze debug log
+# 分析调试日志的函数
 analyze_debug_log() {
     if [[ -f "$DEBUG_LOGFILE" ]]; then
         echo "Debug log analysis:"
@@ -230,24 +230,24 @@ analyze_debug_log() {
     fi
 }
 
-# Run script
+# 运行脚本
 echo "Running script..."
 apt-get update
 
-# Analyze results
+# 分析结果
 analyze_debug_log
 ```
 
-## Silent Execution Integration
+## 静默执行集成
 
-### With core.func Silent Execution
+### 与 core.func 静默执行集成
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 source error_handler.func
 
-# Silent execution with error handling
+# 带错误处理的静默执行
 echo "Installing packages..."
 silent apt-get update
 silent apt-get install -y nginx
@@ -259,14 +259,14 @@ silent systemctl start nginx
 echo "Installation completed"
 ```
 
-### Silent Execution Error Handling
+### 静默执行错误处理
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 source error_handler.func
 
-# Function with silent execution and error handling
+# 带静默执行和错误处理的函数
 install_package() {
     local package="$1"
 
@@ -280,7 +280,7 @@ install_package() {
     fi
 }
 
-# Install multiple packages
+# 安装多个包
 packages=("nginx" "apache2" "mysql-server")
 for package in "${packages[@]}"; do
     if ! install_package "$package"; then
@@ -290,15 +290,15 @@ for package in "${packages[@]}"; do
 done
 ```
 
-## Advanced Error Handling Examples
+## 高级错误处理示例
 
-### Conditional Error Handling
+### 条件错误处理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Conditional error handling based on environment
+# 基于环境的条件错误处理
 setup_error_handling() {
     if [[ "${STRICT_MODE:-0}" == "1" ]]; then
         echo "Enabling strict mode"
@@ -312,13 +312,13 @@ setup_error_handling() {
 setup_error_handling
 ```
 
-### Error Recovery
+### 错误恢复
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Error recovery pattern
+# 错误恢复模式
 retry_operation() {
     local max_attempts=3
     local attempt=1
@@ -344,18 +344,18 @@ retry_operation() {
     return 1
 }
 
-# Use retry pattern
+# 使用重试模式
 retry_operation apt-get update
 retry_operation apt-get install -y package
 ```
 
-### Custom Error Handler
+### 自定义错误处理器
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Custom error handler for specific operations
+# 针对特定操作的自定义错误处理器
 custom_error_handler() {
     local exit_code=${1:-$?}
     local command=${2:-${BASH_COMMAND:-unknown}}
@@ -376,90 +376,90 @@ custom_error_handler() {
             echo "3. Check if file is executable"
             ;;
         *)
-            # Use default error handler
+            # 使用默认错误处理器
             error_handler "$exit_code" "$command"
             ;;
     esac
 }
 
-# Set up custom error handler
+# 设置自定义错误处理器
 trap 'custom_error_handler' ERR
 
-# Test custom error handling
+# 测试自定义错误处理
 nonexistent_command
 ```
 
-## Integration Examples
+## 集成示例
 
-### With build.func
+### 与 build.func 集成
 
 ```bash
 #!/usr/bin/env bash
-# Integration with build.func
+# 与 build.func 集成
 
 source core.func
 source error_handler.func
 source build.func
 
-# Container creation with error handling
+# 带错误处理的容器创建
 export APP="plex"
 export CTID="100"
 
-# Errors will be caught and explained
-# Silent execution will use error_handler for explanations
+# 错误将被捕获并说明
+# 静默执行将使用 error_handler 进行说明
 ```
 
-### With tools.func
+### 与 tools.func 集成
 
 ```bash
 #!/usr/bin/env bash
-# Integration with tools.func
+# 与 tools.func 集成
 
 source core.func
 source error_handler.func
 source tools.func
 
-# Tool operations with error handling
-# All errors are properly handled and explained
+# 带错误处理的工具操作
+# 所有错误都被正确处理和说明
 ```
 
-### With api.func
+### 与 api.func 集成
 
 ```bash
 #!/usr/bin/env bash
-# Integration with api.func
+# 与 api.func 集成
 
 source core.func
 source error_handler.func
 source api.func
 
-# API operations with error handling
-# Network errors and API errors are properly handled
+# 带错误处理的 API 操作
+# 网络错误和 API 错误都被正确处理
 ```
 
-## Best Practices Examples
+## 最佳实践示例
 
-### Comprehensive Error Handling
+### 综合错误处理
 
 ```bash
 #!/usr/bin/env bash
-# Comprehensive error handling example
+# 综合错误处理示例
 
 source error_handler.func
 
-# Set up comprehensive error handling
+# 设置综合错误处理
 setup_comprehensive_error_handling() {
-    # Enable debug logging
+    # 启用调试日志
     export DEBUG_LOGFILE="/tmp/script_debug.log"
 
-    # Set up lock file
+    # 设置锁文件
     lockfile="/tmp/script.lock"
     touch "$lockfile"
 
-    # Initialize error handling
+    # 初始化错误处理
     catch_errors
 
-    # Set up signal handlers
+    # 设置信号处理器
     trap on_interrupt INT
     trap on_terminate TERM
     trap on_exit EXIT
@@ -469,19 +469,19 @@ setup_comprehensive_error_handling() {
 
 setup_comprehensive_error_handling
 
-# Script operations
+# 脚本操作
 echo "Starting script operations..."
-# ... script code ...
+# ... 脚本代码 ...
 echo "Script operations completed"
 ```
 
-### Error Handling for Different Scenarios
+### 不同场景的错误处理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Different error handling for different scenarios
+# 针对不同场景的不同错误处理
 handle_package_errors() {
     local exit_code=$1
     case "$exit_code" in
@@ -512,7 +512,7 @@ handle_network_errors() {
     esac
 }
 
-# Use appropriate error handler
+# 使用适当的错误处理器
 if [[ "$1" == "package" ]]; then
     trap 'handle_package_errors $?' ERR
 elif [[ "$1" == "network" ]]; then
@@ -522,24 +522,24 @@ else
 fi
 ```
 
-### Error Handling with Logging
+### 带日志的错误处理
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Error handling with detailed logging
+# 带详细日志的错误处理
 setup_logging_error_handling() {
-    # Create log directory
+    # 创建日志目录
     mkdir -p /var/log/script_errors
 
-    # Set up debug logging
+    # 设置调试日志
     export DEBUG_LOGFILE="/var/log/script_errors/debug.log"
 
-    # Set up silent logging
+    # 设置静默日志
     export SILENT_LOGFILE="/var/log/script_errors/silent.log"
 
-    # Initialize error handling
+    # 初始化错误处理
     catch_errors
 
     echo "Logging error handling configured"
@@ -547,37 +547,37 @@ setup_logging_error_handling() {
 
 setup_logging_error_handling
 
-# Script operations with logging
+# 带日志的脚本操作
 echo "Starting logged operations..."
-# ... script code ...
+# ... 脚本代码 ...
 echo "Logged operations completed"
 ```
 
-## Troubleshooting Examples
+## 故障排除示例
 
-### Debug Mode
+### 调试模式
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Enable debug mode
+# 启用调试模式
 export DEBUG_LOGFILE="/tmp/debug.log"
 export STRICT_UNSET=1
 
 catch_errors
 
 echo "Debug mode enabled"
-# Script operations
+# 脚本操作
 ```
 
-### Error Analysis
+### 错误分析
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Function to analyze errors
+# 分析错误的函数
 analyze_errors() {
     local log_file="${1:-$DEBUG_LOGFILE}"
 
@@ -593,17 +593,17 @@ analyze_errors() {
     fi
 }
 
-# Run script with error analysis
+# 运行带错误分析的脚本
 analyze_errors
 ```
 
-### Error Recovery Testing
+### 错误恢复测试
 
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Test error recovery
+# 测试错误恢复
 test_error_recovery() {
     local test_cases=(
         "nonexistent_command"

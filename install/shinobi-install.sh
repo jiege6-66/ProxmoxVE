@@ -15,18 +15,18 @@ update_os
 
 setup_hwaccel
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y make zip net-tools git
 $STD apt-get install -y gcc g++ cmake
 $STD apt-get install -y ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 setup_mariadb
 
-msg_info "Installing FFMPEG"
+msg_info "正在安装 FFMPEG"
 $STD apt-get install -y ffmpeg
-msg_ok "Installed FFMPEG"
+msg_ok "已安装 FFMPEG"
 
 msg_info "Cloning Shinobi"
 cd /opt
@@ -39,16 +39,16 @@ chmod 777 version.json
 echo '{"Product" : "'"Shinobi"'" , "Branch" : "'"master"'" , "Version" : "'"$gitVersionNumber"'" , "Date" : "'"$theDateRightNow"'" , "Repository" : "'"https://gitlab.com/Shinobi-Systems/Shinobi.git"'"}' >version.json
 msg_ok "Cloned Shinobi"
 
-msg_info "Installing Database"
+msg_info "正在安装 Database"
 sqluser="root"
 sqlpass="root"
 echo "mariadb-server mariadb-server/root_password password $sqlpass" | debconf-set-selections
 echo "mariadb-server mariadb-server/root_password_again password $sqlpass" | debconf-set-selections
 service mysql start
 $STD mariadb -u "$sqluser" -p"$sqlpass" -e "source sql/user.sql" || true
-msg_ok "Installed Database"
+msg_ok "已安装 Database"
 
-msg_info "Installing Shinobi"
+msg_info "正在安装 Shinobi"
 cp conf.sample.json conf.json
 cronKey=$(head -c 1024 </dev/urandom | sha256sum | awk '{print substr($1,1,29)}')
 sed -i -e 's/Shinobi/'"$cronKey"'/g' conf.json
@@ -65,7 +65,7 @@ $STD pm2 start cron.js
 $STD pm2 startup
 $STD pm2 save
 $STD pm2 list
-msg_ok "Installed Shinobi"
+msg_ok "已安装 Shinobi"
 
 motd_ssh
 customize

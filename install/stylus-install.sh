@@ -15,11 +15,11 @@ update_os
 
 fetch_and_deploy_gh_release "stylus" "mmastrac/stylus" "singlefile" "latest" "/usr/bin/" "*_linux_amd64"
 
-msg_info "Configuring Stylus"
+msg_info "正在配置 Stylus"
 $STD stylus init /opt/stylus/
-msg_ok "Configured Stylus"
+msg_ok "已配置 Stylus"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/stylus.service
 [Unit]
 Description=Stylus Service
@@ -35,7 +35,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now stylus
-msg_ok "Created service"
+msg_ok "已创建 service"
 
 motd_ssh
 customize

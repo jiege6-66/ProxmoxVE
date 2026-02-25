@@ -13,7 +13,7 @@
   "config_path": null,
   "website": "https://livebook.dev",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/livebook.webp",
-  "description": "Elixir Livebook is an interactive, web-based notebook platform for Elixir that combines code, documentation, and visualizations in a single document. Similar to Jupyter notebooks, it allows developers to write and execute Elixir code in real-time, making it ideal for data exploration, prototyping, learning, and collaborative development. Livebook features rich markdown support, built-in charting capabilities, and seamless integration with the Elixir ecosystem.",
+  "description": "Elixir Livebook 是一个交互式的、基于 Web 的 Elixir 笔记本平台,将代码、文档和可视化组合在单个文档中。类似于 Jupyter 笔记本,它允许开发人员实时编写和执行 Elixir 代码,非常适合数据探索、原型设计、学习和协作开发。Livebook 具有丰富的 Markdown 支持、内置图表功能以及与 Elixir 生态系统的无缝集成。",
   "install_methods": [
     {
       "type": "default",

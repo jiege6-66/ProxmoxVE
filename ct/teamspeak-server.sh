@@ -24,17 +24,17 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/teamspeak-server ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   RELEASE=$(curl -fsSL https://teamspeak.com/en/downloads/#server | grep -oP 'teamspeak3-server_linux_amd64-\K[0-9]+\.[0-9]+\.[0-9]+' | head -1)
   if [[ "${RELEASE}" != "$(cat ~/.teamspeak-server 2>/dev/null)" ]] || [[ ! -f ~/.teamspeak-server ]]; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop teamspeak-server
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating Teamspeak Server"
+    msg_info "正在更新 Teamspeak Server"
     curl -fsSL "https://files.teamspeak-services.com/releases/server/${RELEASE}/teamspeak3-server_linux_amd64-${RELEASE}.tar.bz2" -o ts3server.tar.bz2
     tar -xf ./ts3server.tar.bz2
     cp -ru teamspeak3-server_linux_amd64/* /opt/teamspeak-server/
@@ -42,10 +42,10 @@ function update_script() {
     echo "${RELEASE}" >~/.teamspeak-server
     msg_ok "Updated Teamspeak Server"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start teamspeak-server
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   else
     msg_ok "Already up to date"
   fi
@@ -56,7 +56,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}${IP}:9987${CL}"

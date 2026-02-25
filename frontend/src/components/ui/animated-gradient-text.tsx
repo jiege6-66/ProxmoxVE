@@ -24,3 +24,5 @@ export default function AnimatedGradientText({
     </div>
   );
 }
+
+这个组件中没有用户可见的 UI 文本需要翻译。代码只包含样式类名和组件结构，没有显示给用户的文字内容。所有文本都是通过 `children` 属性从外部传入的。

@@ -19,17 +19,17 @@ setup_deb822_repo \
   "http://phoscon.de/apt/deconz.pub.key" \
   "http://phoscon.de/apt/deconz" \
   "generic"
-msg_ok "Setup Phoscon Repository"
+msg_ok "设置 Phoscon Repository"
 
-msg_info "Installing deConz"
+msg_info "正在安装 deConz"
 libssl=$(curl -fsSL "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/" | grep -o 'libssl1\.1_1\.1\.1f-1ubuntu2\.2[^"]*amd64\.deb' | head -n1)
 curl -fsSL "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/$libssl" -o "$libssl"
 $STD dpkg -i "$libssl"
 $STD apt install -y deconz
 rm -rf "$libssl"
-msg_ok "Installed deConz"
+msg_ok "已安装 deConz"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/lib/systemd/system/deconz.service
 [Unit]
 Description=deCONZ: ZigBee gateway -- REST API
@@ -47,7 +47,7 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_KILL CAP_SYS_BOOT CAP_SYS_TIME
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now deconz
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

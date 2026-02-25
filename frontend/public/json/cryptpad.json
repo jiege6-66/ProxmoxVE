@@ -13,7 +13,7 @@
   "website": "https://cryptpad.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cryptpad.webp",
   "config_path": "/opt/cryptpad/config/config.js",
-  "description": "CryptPad is a collaboration suite that is end-to-end encrypted and open-source. It is designed to facilitate collaboration by synchronizing changes to documents in real time. Since all the user data is encrypted, in the event of a breach, attackers have no way of accessing the stored content",
+  "description": "CryptPad 是一个端到端加密的开源协作套件。它旨在通过实时同步文档更改来促进协作。由于所有用户数据都经过加密，即使发生数据泄露，攻击者也无法访问存储的内容。",
   "install_methods": [
     {
       "type": "default",

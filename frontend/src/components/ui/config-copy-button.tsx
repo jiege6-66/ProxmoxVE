@@ -27,7 +27,7 @@ export default function CodeCopyButton({
 
     setHasCopied(true);
 
-    // toast.success(`copied ${type} to clipboard`, {
+    // toast.success(`已复制 ${type} 到剪贴板`, {
     //   icon: <ClipboardCheck className="h-4 w-4" />,
     // });
   };
@@ -36,11 +36,11 @@ export default function CodeCopyButton({
     <div className="mt-4 flex">
       <Card className="flex items-center overflow-x-auto bg-primary-foreground pl-4">
         <div className="overflow-x-auto whitespace-pre-wrap text-nowrap break-all pr-4 text-sm">
-          {!isMobile && children ? children : "Copy Config File Path"}
+          {!isMobile && children ? children : "复制配置文件路径"}
         </div>
         <div
           className={cn(" right-0 cursor-pointer bg-muted px-3 py-4")}
-          onClick={() => handleCopy("install command", children)}
+          onClick={() => handleCopy("安装命令", children)}
         >
           {hasCopied
             ? (
@@ -49,7 +49,7 @@ export default function CodeCopyButton({
             : (
                 <ClipboardIcon className="h-4 w-4" />
               )}
-          <span className="sr-only">Copy</span>
+          <span className="sr-only">复制</span>
         </div>
       </Card>
     </div>

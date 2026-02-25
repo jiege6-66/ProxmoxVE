@@ -15,15 +15,15 @@ update_os
 
 fetch_and_deploy_gh_release "hev-socks5-server" "heiher/hev-socks5-server" "singlefile" "latest" "/opt" "hev-socks5-server-linux-x86_64"
 
-msg_info "Setup hev-socks5-server"
+msg_info "设置 hev-socks5-server"
 mkdir -p /etc/hev-socks5-server
 download_file "https://raw.githubusercontent.com/heiher/hev-socks5-server/refs/heads/main/conf/main.yml" "/etc/hev-socks5-server/main.yml"
 sed -i 's/^#auth:/auth:/; s/^# file: conf\/auth.txt/  file: \/root\/hev.creds/'  /etc/hev-socks5-server/main.yml
 PASSWORD=$(openssl rand -base64 16)
 echo "admin $PASSWORD 0" >/root/hev.creds
-msg_ok "Setup hev-socks5-server"
+msg_ok "设置 hev-socks5-server"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/hev-socks5-server.service
 [Unit]
 Description=hev-socks5-server Service
@@ -37,7 +37,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now hev-socks5-server
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

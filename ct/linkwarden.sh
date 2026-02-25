@@ -23,26 +23,26 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/linkwarden ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "linkwarden" "linkwarden/linkwarden"; then
     NODE_VERSION="22" NODE_MODULE="yarn@latest" setup_nodejs
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop linkwarden
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     RUST_CRATES="monolith" setup_rust
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     mv /opt/linkwarden/.env /opt/.env
     [ -d /opt/linkwarden/data ] && mv /opt/linkwarden/data /opt/data.bak
     rm -rf /opt/linkwarden
-    msg_ok "Backed up data"
+    msg_ok "已备份 data"
 
     fetch_and_deploy_gh_release "linkwarden" "linkwarden/linkwarden" "tarball"
 
-    msg_info "Updating Linkwarden"
+    msg_info "正在更新 Linkwarden"
     cd /opt/linkwarden
     yarn_ver="4.12.0"
     if [[ -f package.json ]]; then
@@ -69,10 +69,10 @@ function update_script() {
     rm -rf /opt/linkwarden/.next/cache
     msg_ok "Updated Linkwarden"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start linkwarden
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -81,7 +81,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

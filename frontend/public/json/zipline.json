@@ -13,7 +13,7 @@
   "website": "https://zipline.diced.sh/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/zipline.webp",
   "config_path": "/opt/zipline/.env",
-  "description": "Zipline is a file-sharing and URL-shortening server designed for easy setup and extensive features. It allows users to upload files, organize them into folders, create shortened URLs, and manage uploads through a user-friendly dashboard. Additional features include image compression, video thumbnails, password protection, 2FA, OAuth2 registration, and API access for custom control. It supports integrations with platforms like Discord.",
+  "description": "Zipline 是一个文件共享和 URL 缩短服务器,设计易于设置且功能丰富。它允许用户上传文件、将其组织到文件夹中、创建缩短的 URL,并通过用户友好的仪表板管理上传。其他功能包括图像压缩、视频缩略图、密码保护、双因素认证、OAuth2 注册和 API 访问以实现自定义控制。它支持与 Discord 等平台集成。",
   "install_methods": [
     {
       "type": "default",

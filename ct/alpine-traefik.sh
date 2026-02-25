@@ -21,14 +21,14 @@ catch_errors
 
 function update_script() {
   header_info
-  msg_info "Updating Alpine Packages"
+  msg_info "正在更新 Alpine Packages"
   $STD apk -U upgrade
   msg_ok "Updated Alpine Packages"
 
-  msg_info "Updating traefik from edge"
+  msg_info "正在更新 traefik from edge"
   $STD apk add traefik --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
   msg_ok "Updated traefik"
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit 0
 }
 
@@ -36,7 +36,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} WebUI Access (if configured) - using the following URL:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080/dashboard${CL}"

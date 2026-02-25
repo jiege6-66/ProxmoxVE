@@ -1,40 +1,40 @@
-# error_handler.func Functions Reference
+# error_handler.func 函数参考
 
-## Overview
+## 概述
 
-This document provides a comprehensive alphabetical reference of all functions in `error_handler.func`, including parameters, dependencies, usage examples, and error handling.
+本文档提供 `error_handler.func` 中所有函数的全面字母顺序参考，包括参数、依赖关系、使用示例和错误处理。
 
-## Function Categories
+## 函数分类
 
-### Error Explanation Functions
+### 错误解释函数
 
 #### `explain_exit_code()`
-**Purpose**: Convert numeric exit codes to human-readable explanations
-**Parameters**:
-- `$1` - Exit code to explain
-**Returns**: Human-readable error explanation string
-**Side Effects**: None
-**Dependencies**: None
-**Environment Variables Used**: None
+**用途**：将数字退出码转换为人类可读的解释
+**参数**：
+- `$1` - 要解释的退出码
+**返回值**：人类可读的错误解释字符串
+**副作用**：无
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Supported Exit Codes**:
-- **Generic/Shell**: 1, 2, 126, 127, 128, 130, 137, 139, 143
-- **Package Manager**: 100, 101, 255
-- **Node.js**: 243, 245, 246, 247, 248, 249, 254
-- **Python**: 210, 211, 212
-- **PostgreSQL**: 231, 232, 233, 234
-- **MySQL/MariaDB**: 241, 242, 243, 244
-- **MongoDB**: 251, 252, 253, 254
-- **Proxmox Custom**: 200, 203, 204, 205, 209, 210, 214, 215, 216, 217, 220, 222, 223, 231
+**支持的退出码**：
+- **通用/Shell**：1, 2, 126, 127, 128, 130, 137, 139, 143
+- **包管理器**：100, 101, 255
+- **Node.js**：243, 245, 246, 247, 248, 249, 254
+- **Python**：210, 211, 212
+- **PostgreSQL**：231, 232, 233, 234
+- **MySQL/MariaDB**：241, 242, 243, 244
+- **MongoDB**：251, 252, 253, 254
+- **Proxmox 自定义**：200, 203, 204, 205, 209, 210, 214, 215, 216, 217, 220, 222, 223, 231
 
-**Usage Example**:
+**使用示例**：
 ```bash
 explanation=$(explain_exit_code 127)
 echo "Error 127: $explanation"
-# Output: Error 127: Command not found
+# 输出：Error 127: Command not found
 ```
 
-**Error Code Examples**:
+**错误码示例**：
 ```bash
 explain_exit_code 1    # "General error / Operation not permitted"
 explain_exit_code 126  # "Command invoked cannot execute (permission problem?)"
@@ -44,381 +44,381 @@ explain_exit_code 200  # "Custom: Failed to create lock file"
 explain_exit_code 999  # "Unknown error"
 ```
 
-### Error Handling Functions
+### 错误处理函数
 
 #### `error_handler()`
-**Purpose**: Main error handler triggered by ERR trap or manual call
-**Parameters**:
-- `$1` - Exit code (optional, defaults to $?)
-- `$2` - Command that failed (optional, defaults to BASH_COMMAND)
-**Returns**: None (exits with error code)
-**Side Effects**:
-- Displays detailed error information
-- Logs error to debug file if enabled
-- Shows silent log content if available
-- Exits with original error code
-**Dependencies**: `explain_exit_code()`
-**Environment Variables Used**: `DEBUG_LOGFILE`, `SILENT_LOGFILE`
+**用途**：由 ERR trap 触发或手动调用的主错误处理器
+**参数**：
+- `$1` - 退出码（可选，默认为 $?）
+- `$2` - 失败的命令（可选，默认为 BASH_COMMAND）
+**返回值**：无（以错误码退出）
+**副作用**：
+- 显示详细的错误信息
+- 如果启用，将错误记录到调试文件
+- 如果可用，显示静默日志内容
+- 以原始错误码退出
+**依赖关系**：`explain_exit_code()`
+**使用的环境变量**：`DEBUG_LOGFILE`、`SILENT_LOGFILE`
 
-**Usage Example**:
+**使用示例**：
 ```bash
-# Automatic error handling via ERR trap
+# 通过 ERR trap 自动错误处理
 set -e
 trap 'error_handler' ERR
 
-# Manual error handling
+# 手动错误处理
 error_handler 127 "command_not_found"
 ```
 
-**Error Information Displayed**:
-- Error message with color coding
-- Line number where error occurred
-- Exit code with explanation
-- Command that failed
-- Silent log content (last 20 lines)
-- Debug log entry (if enabled)
+**显示的错误信息**：
+- 带颜色编码的错误消息
+- 发生错误的行号
+- 带解释的退出码
+- 失败的命令
+- 静默日志内容（最后 20 行）
+- 调试日志条目（如果启用）
 
-### Signal Handling Functions
+### 信号处理函数
 
 #### `on_interrupt()`
-**Purpose**: Handle SIGINT (Ctrl+C) signals gracefully
-**Parameters**: None
-**Returns**: None (exits with code 130)
-**Side Effects**:
-- Displays interruption message
-- Exits with SIGINT code (130)
-**Dependencies**: None
-**Environment Variables Used**: None
+**用途**：优雅地处理 SIGINT（Ctrl+C）信号
+**参数**：无
+**返回值**：无（以代码 130 退出）
+**副作用**：
+- 显示中断消息
+- 以 SIGINT 代码（130）退出
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
-# Set up interrupt handler
+# 设置中断处理器
 trap on_interrupt INT
 
-# User presses Ctrl+C
-# Handler displays: "Interrupted by user (SIGINT)"
-# Script exits with code 130
+# 用户按下 Ctrl+C
+# 处理器显示："Interrupted by user (SIGINT)"
+# 脚本以代码 130 退出
 ```
 
 #### `on_terminate()`
-**Purpose**: Handle SIGTERM signals gracefully
-**Parameters**: None
-**Returns**: None (exits with code 143)
-**Side Effects**:
-- Displays termination message
-- Exits with SIGTERM code (143)
-**Dependencies**: None
-**Environment Variables Used**: None
+**用途**：优雅地处理 SIGTERM 信号
+**参数**：无
+**返回值**：无（以代码 143 退出）
+**副作用**：
+- 显示终止消息
+- 以 SIGTERM 代码（143）退出
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
-# Set up termination handler
+# 设置终止处理器
 trap on_terminate TERM
 
-# System sends SIGTERM
-# Handler displays: "Terminated by signal (SIGTERM)"
-# Script exits with code 143
+# 系统发送 SIGTERM
+# 处理器显示："Terminated by signal (SIGTERM)"
+# 脚本以代码 143 退出
 ```
 
-### Cleanup Functions
+### 清理函数
 
 #### `on_exit()`
-**Purpose**: Handle script exit cleanup
-**Parameters**: None
-**Returns**: None (exits with original exit code)
-**Side Effects**:
-- Removes lock file if set
-- Exits with original exit code
-**Dependencies**: None
-**Environment Variables Used**: `lockfile`
+**用途**：处理脚本退出清理
+**参数**：无
+**返回值**：无（以原始退出码退出）
+**副作用**：
+- 如果设置了锁文件则删除
+- 以原始退出码退出
+**依赖关系**：无
+**使用的环境变量**：`lockfile`
 
-**Usage Example**:
+**使用示例**：
 ```bash
-# Set up exit handler
+# 设置退出处理器
 trap on_exit EXIT
 
-# Set lock file
+# 设置锁文件
 lockfile="/tmp/my_script.lock"
 
-# Script exits normally or with error
-# Handler removes lock file and exits
+# 脚本正常退出或出错退出
+# 处理器删除锁文件并退出
 ```
 
-### Initialization Functions
+### 初始化函数
 
 #### `catch_errors()`
-**Purpose**: Initialize error handling traps and strict mode
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
-- Sets strict error handling mode
-- Sets up error traps
-- Sets up signal traps
-- Sets up exit trap
-**Dependencies**: None
-**Environment Variables Used**: `STRICT_UNSET`
+**用途**：初始化错误处理 trap 和严格模式
+**参数**：无
+**返回值**：无
+**副作用**：
+- 设置严格错误处理模式
+- 设置错误 trap
+- 设置信号 trap
+- 设置退出 trap
+**依赖关系**：无
+**使用的环境变量**：`STRICT_UNSET`
 
-**Strict Mode Settings**:
-- `-E`: Exit on command failure
-- `-e`: Exit on any error
-- `-o pipefail`: Exit on pipe failure
-- `-u`: Exit on unset variables (if STRICT_UNSET=1)
+**严格模式设置**：
+- `-E`：命令失败时退出
+- `-e`：任何错误时退出
+- `-o pipefail`：管道失败时退出
+- `-u`：未设置变量时退出（如果 STRICT_UNSET=1）
 
-**Trap Setup**:
-- `ERR`: Calls `error_handler` on command failure
-- `EXIT`: Calls `on_exit` on script exit
-- `INT`: Calls `on_interrupt` on SIGINT
-- `TERM`: Calls `on_terminate` on SIGTERM
+**Trap 设置**：
+- `ERR`：命令失败时调用 `error_handler`
+- `EXIT`：脚本退出时调用 `on_exit`
+- `INT`：SIGINT 时调用 `on_interrupt`
+- `TERM`：SIGTERM 时调用 `on_terminate`
 
-**Usage Example**:
+**使用示例**：
 ```bash
-# Initialize error handling
+# 初始化错误处理
 catch_errors
 
-# Script now has full error handling
-# All errors will be caught and handled
+# 脚本现在具有完整的错误处理
+# 所有错误都将被捕获和处理
 ```
 
-## Function Call Hierarchy
+## 函数调用层次结构
 
-### Error Handling Flow
+### 错误处理流程
 ```
-Command Failure
-├── ERR trap triggered
-├── error_handler() called
-│   ├── Get exit code
-│   ├── Get command info
-│   ├── Get line number
+命令失败
+├── ERR trap 触发
+├── 调用 error_handler()
+│   ├── 获取退出码
+│   ├── 获取命令信息
+│   ├── 获取行号
 │   ├── explain_exit_code()
-│   ├── Display error info
-│   ├── Log to debug file
-│   ├── Show silent log
-│   └── Exit with error code
+│   ├── 显示错误信息
+│   ├── 记录到调试文件
+│   ├── 显示静默日志
+│   └── 以错误码退出
 ```
 
-### Signal Handling Flow
+### 信号处理流程
 ```
-Signal Received
-├── Signal trap triggered
-├── Appropriate handler called
-│   ├── on_interrupt() for SIGINT
-│   ├── on_terminate() for SIGTERM
-│   └── on_exit() for EXIT
-└── Exit with signal code
+接收到信号
+├── 信号 trap 触发
+├── 调用相应的处理器
+│   ├── SIGINT 调用 on_interrupt()
+│   ├── SIGTERM 调用 on_terminate()
+│   └── EXIT 调用 on_exit()
+└── 以信号代码退出
 ```
 
-### Initialization Flow
+### 初始化流程
 ```
 catch_errors()
-├── Set strict mode
-│   ├── -E (exit on failure)
-│   ├── -e (exit on error)
-│   ├── -o pipefail (pipe failure)
-│   └── -u (unset variables, if enabled)
-└── Set up traps
+├── 设置严格模式
+│   ├── -E（失败时退出）
+│   ├── -e（错误时退出）
+│   ├── -o pipefail（管道失败）
+│   └── -u（未设置变量，如果启用）
+└── 设置 trap
     ├── ERR → error_handler
     ├── EXIT → on_exit
     ├── INT → on_interrupt
     └── TERM → on_terminate
 ```
 
-## Error Code Reference
+## 错误码参考
 
-### Generic/Shell Errors
-| Code | Description |
+### 通用/Shell 错误
+| 代码 | 描述 |
 |------|-------------|
-| 1 | General error / Operation not permitted |
-| 2 | Misuse of shell builtins (e.g. syntax error) |
-| 126 | Command invoked cannot execute (permission problem?) |
-| 127 | Command not found |
-| 128 | Invalid argument to exit |
-| 130 | Terminated by Ctrl+C (SIGINT) |
-| 137 | Killed (SIGKILL / Out of memory?) |
-| 139 | Segmentation fault (core dumped) |
-| 143 | Terminated (SIGTERM) |
+| 1 | 一般错误 / 操作不允许 |
+| 2 | Shell 内置命令误用（例如语法错误）|
+| 126 | 调用的命令无法执行（权限问题？）|
+| 127 | 命令未找到 |
+| 128 | exit 的参数无效 |
+| 130 | 被 Ctrl+C 终止（SIGINT）|
+| 137 | 被杀死（SIGKILL / 内存不足？）|
+| 139 | 段错误（核心已转储）|
+| 143 | 被终止（SIGTERM）|
 
-### Package Manager Errors
-| Code | Description |
+### 包管理器错误
+| 代码 | 描述 |
 |------|-------------|
-| 100 | APT: Package manager error (broken packages / dependency problems) |
-| 101 | APT: Configuration error (bad sources.list, malformed config) |
-| 255 | DPKG: Fatal internal error |
+| 100 | APT：包管理器错误（损坏的包 / 依赖问题）|
+| 101 | APT：配置错误（错误的 sources.list，格式错误的配置）|
+| 255 | DPKG：致命内部错误 |
 
-### Node.js Errors
-| Code | Description |
+### Node.js 错误
+| 代码 | 描述 |
 |------|-------------|
-| 243 | Node.js: Out of memory (JavaScript heap out of memory) |
-| 245 | Node.js: Invalid command-line option |
-| 246 | Node.js: Internal JavaScript Parse Error |
-| 247 | Node.js: Fatal internal error |
-| 248 | Node.js: Invalid C++ addon / N-API failure |
-| 249 | Node.js: Inspector error |
-| 254 | npm/pnpm/yarn: Unknown fatal error |
+| 243 | Node.js：内存不足（JavaScript 堆内存不足）|
+| 245 | Node.js：无效的命令行选项 |
+| 246 | Node.js：内部 JavaScript 解析错误 |
+| 247 | Node.js：致命内部错误 |
+| 248 | Node.js：无效的 C++ 插件 / N-API 失败 |
+| 249 | Node.js：检查器错误 |
+| 254 | npm/pnpm/yarn：未知致命错误 |
 
-### Python Errors
-| Code | Description |
+### Python 错误
+| 代码 | 描述 |
 |------|-------------|
-| 210 | Python: Virtualenv / uv environment missing or broken |
-| 211 | Python: Dependency resolution failed |
-| 212 | Python: Installation aborted (permissions or EXTERNALLY-MANAGED) |
+| 210 | Python：虚拟环境 / uv 环境缺失或损坏 |
+| 211 | Python：依赖解析失败 |
+| 212 | Python：安装中止（权限或 EXTERNALLY-MANAGED）|
 
-### Database Errors
-| Code | Description |
+### 数据库错误
+| 代码 | 描述 |
 |------|-------------|
-| 231 | PostgreSQL: Connection failed (server not running / wrong socket) |
-| 232 | PostgreSQL: Authentication failed (bad user/password) |
-| 233 | PostgreSQL: Database does not exist |
-| 234 | PostgreSQL: Fatal error in query / syntax |
-| 241 | MySQL/MariaDB: Connection failed (server not running / wrong socket) |
-| 242 | MySQL/MariaDB: Authentication failed (bad user/password) |
-| 243 | MySQL/MariaDB: Database does not exist |
-| 244 | MySQL/MariaDB: Fatal error in query / syntax |
-| 251 | MongoDB: Connection failed (server not running) |
-| 252 | MongoDB: Authentication failed (bad user/password) |
-| 253 | MongoDB: Database not found |
-| 254 | MongoDB: Fatal query error |
+| 231 | PostgreSQL：连接失败（服务器未运行 / 错误的套接字）|
+| 232 | PostgreSQL：认证失败（错误的用户名/密码）|
+| 233 | PostgreSQL：数据库不存在 |
+| 234 | PostgreSQL：查询中的致命错误 / 语法错误 |
+| 241 | MySQL/MariaDB：连接失败（服务器未运行 / 错误的套接字）|
+| 242 | MySQL/MariaDB：认证失败（错误的用户名/密码）|
+| 243 | MySQL/MariaDB：数据库不存在 |
+| 244 | MySQL/MariaDB：查询中的致命错误 / 语法错误 |
+| 251 | MongoDB：连接失败（服务器未运行）|
+| 252 | MongoDB：认证失败（错误的用户名/密码）|
+| 253 | MongoDB：数据库未找到 |
+| 254 | MongoDB：致命查询错误 |
 
-### Proxmox Custom Errors
-| Code | Description |
+### Proxmox 自定义错误
+| 代码 | 描述 |
 |------|-------------|
-| 200 | Custom: Failed to create lock file |
-| 203 | Custom: Missing CTID variable |
-| 204 | Custom: Missing PCT_OSTYPE variable |
-| 205 | Custom: Invalid CTID (<100) |
-| 209 | Custom: Container creation failed |
-| 210 | Custom: Cluster not quorate |
-| 214 | Custom: Not enough storage space |
-| 215 | Custom: Container ID not listed |
-| 216 | Custom: RootFS entry missing in config |
-| 217 | Custom: Storage does not support rootdir |
-| 220 | Custom: Unable to resolve template path |
-| 222 | Custom: Template download failed after 3 attempts |
-| 223 | Custom: Template not available after download |
-| 231 | Custom: LXC stack upgrade/retry failed |
+| 200 | 自定义：创建锁文件失败 |
+| 203 | 自定义：缺少 CTID 变量 |
+| 204 | 自定义：缺少 PCT_OSTYPE 变量 |
+| 205 | 自定义：无效的 CTID（<100）|
+| 209 | 自定义：容器创建失败 |
+| 210 | 自定义：集群未达到法定人数 |
+| 214 | 自定义：存储空间不足 |
+| 215 | 自定义：容器 ID 未列出 |
+| 216 | 自定义：配置中缺少 RootFS 条目 |
+| 217 | 自定义：存储不支持 rootdir |
+| 220 | 自定义：无法解析模板路径 |
+| 222 | 自定义：3 次尝试后模板下载失败 |
+| 223 | 自定义：下载后模板不可用 |
+| 231 | 自定义：LXC 堆栈升级/重试失败 |
 
-## Environment Variable Dependencies
+## 环境变量依赖
 
-### Required Variables
-- **`lockfile`**: Lock file path for cleanup (set by calling script)
+### 必需变量
+- **`lockfile`**：用于清理的锁文件路径（由调用脚本设置）
 
-### Optional Variables
-- **`DEBUG_LOGFILE`**: Path to debug log file for error logging
-- **`SILENT_LOGFILE`**: Path to silent execution log file
-- **`STRICT_UNSET`**: Enable strict unset variable checking (0/1)
+### 可选变量
+- **`DEBUG_LOGFILE`**：用于错误记录的调试日志文件路径
+- **`SILENT_LOGFILE`**：静默执行日志文件路径
+- **`STRICT_UNSET`**：启用严格的未设置变量检查（0/1）
 
-### Internal Variables
-- **`exit_code`**: Current exit code
-- **`command`**: Failed command
-- **`line_number`**: Line number where error occurred
-- **`explanation`**: Error explanation text
+### 内部变量
+- **`exit_code`**：当前退出码
+- **`command`**：失败的命令
+- **`line_number`**：发生错误的行号
+- **`explanation`**：错误解释文本
 
-## Error Handling Patterns
+## 错误处理模式
 
-### Automatic Error Handling
+### 自动错误处理
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Initialize error handling
+# 初始化错误处理
 catch_errors
 
-# All commands are now monitored
-# Errors will be automatically caught and handled
+# 现在所有命令都被监控
+# 错误将被自动捕获和处理
 ```
 
-### Manual Error Handling
+### 手动错误处理
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Manual error handling
+# 手动错误处理
 if ! command -v required_tool >/dev/null 2>&1; then
     error_handler 127 "required_tool not found"
 fi
 ```
 
-### Custom Error Codes
+### 自定义错误码
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Use custom error codes
+# 使用自定义错误码
 if [[ ! -f /required/file ]]; then
-    echo "Error: Required file missing"
-    exit 200  # Custom error code
+    echo "错误：缺少必需文件"
+    exit 200  # 自定义错误码
 fi
 ```
 
-### Signal Handling
+### 信号处理
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Set up signal handling
+# 设置信号处理
 trap on_interrupt INT
 trap on_terminate TERM
 trap on_exit EXIT
 
-# Script handles signals gracefully
+# 脚本优雅地处理信号
 ```
 
-## Integration Examples
+## 集成示例
 
-### With core.func
+### 与 core.func 集成
 ```bash
 #!/usr/bin/env bash
 source core.func
 source error_handler.func
 
-# Silent execution uses error_handler for explanations
+# 静默执行使用 error_handler 进行解释
 silent apt-get install -y package
-# If command fails, error_handler provides explanation
+# 如果命令失败，error_handler 提供解释
 ```
 
-### With build.func
+### 与 build.func 集成
 ```bash
 #!/usr/bin/env bash
 source core.func
 source error_handler.func
 source build.func
 
-# Container creation with error handling
-# Errors are caught and explained
+# 带错误处理的容器创建
+# 错误被捕获并解释
 ```
 
-### With tools.func
+### 与 tools.func 集成
 ```bash
 #!/usr/bin/env bash
 source core.func
 source error_handler.func
 source tools.func
 
-# Tool operations with error handling
-# All errors are properly handled and explained
+# 带错误处理的工具操作
+# 所有错误都被正确处理和解释
 ```
 
-## Best Practices
+## 最佳实践
 
-### Error Handling Setup
-1. Source error_handler.func early in script
-2. Call catch_errors() to initialize traps
-3. Use appropriate exit codes for different error types
-4. Provide meaningful error messages
+### 错误处理设置
+1. 在脚本早期引入 error_handler.func
+2. 调用 catch_errors() 初始化 trap
+3. 为不同的错误类型使用适当的退出码
+4. 提供有意义的错误消息
 
-### Signal Handling
-1. Always set up signal traps
-2. Provide graceful cleanup on interruption
-3. Use appropriate exit codes for signals
-4. Clean up temporary files and processes
+### 信号处理
+1. 始终设置信号 trap
+2. 在中断时提供优雅的清理
+3. 为信号使用适当的退出码
+4. 清理临时文件和进程
 
-### Error Reporting
-1. Use explain_exit_code() for user-friendly messages
-2. Log errors to debug files when needed
-3. Provide context information (line numbers, commands)
-4. Integrate with silent execution logging
+### 错误报告
+1. 使用 explain_exit_code() 提供用户友好的消息
+2. 在需要时将错误记录到调试文件
+3. 提供上下文信息（行号、命令）
+4. 与静默执行日志集成
 
-### Custom Error Codes
-1. Use Proxmox custom error codes (200-231) for container/VM errors
-2. Use standard error codes for common operations
-3. Document custom error codes in script comments
-4. Provide clear error messages for custom codes
+### 自定义错误码
+1. 为容器/虚拟机错误使用 Proxmox 自定义错误码（200-231）
+2. 为常见操作使用标准错误码
+3. 在脚本注释中记录自定义错误码
+4. 为自定义代码提供清晰的错误消息

@@ -13,7 +13,7 @@
   "website": "https://wger.de",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wger.webp",
   "config_path": "/opt/wikijs/config.yml",
-  "description": "wger (ˈvɛɡɐ) Workout Manager is a free, open source web application that helps you manage your personal workouts, weight and diet plans and can also be used as a simple gym management utility. It offers a REST API as well, for easy integration with other projects and tools.",
+  "description": "wger (ˈvɛɡɐ) Workout Manager 是一个免费、开源的网页应用程序,帮助您管理个人锻炼、体重和饮食计划,也可用作简单的健身房管理工具。它还提供 REST API,便于与其他项目和工具集成。",
   "install_methods": [
     {
       "type": "default",

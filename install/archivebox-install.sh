@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y \
   git \
   expect \
@@ -24,24 +24,24 @@ $STD apt-get install -y \
   dnsutils \
   ripgrep \
   chromium
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 $STD apt-get install -y \
   python3-ldap \
   python3-msgpack \
   python3-regex
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
 NODE_VERSION="22" NODE_MODULE="@postlight/parser@latest,single-file-cli@latest" setup_nodejs
 PYTHON_VERSION="3.13" setup_uv
 
-msg_info "Installing Playwright"
+msg_info "正在安装 Playwright"
 $STD uv pip install playwright --system
 $STD playwright install-deps chromium
-msg_ok "Installed Playwright"
+msg_ok "已安装 Playwright"
 
-msg_info "Installing ArchiveBox"
+msg_info "正在安装 ArchiveBox"
 mkdir -p /opt/archivebox/{data,.npm,.cache,.local}
 $STD adduser --system --shell /bin/bash --gecos 'Archive Box User' --group --disabled-password --home /home/archivebox archivebox
 chown -R archivebox:archivebox /opt/archivebox/{data,.npm,.cache,.local}
@@ -69,9 +69,9 @@ send "helper-scripts.com\r"
 
 expect eof
 EOF
-msg_ok "Installed ArchiveBox"
+msg_ok "已安装 ArchiveBox"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/archivebox.service
 [Unit]
 Description=ArchiveBox Server
@@ -87,7 +87,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now archivebox
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

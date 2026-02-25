@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apt-transport-https \
   lsb-release
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 RELEASE=$(get_latest_github_release "bunkerity/bunkerweb")
 msg_warn "WARNING: This script will run an external installer from a third-party source (install-bunkerweb.sh)."
@@ -30,7 +30,7 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   msg_error "Aborted by user. No changes have been made."
   exit 10
 fi
-msg_info "Installing BunkerWeb (Patience)"
+msg_info "正在安装 BunkerWeb (Patience)"
 curl -fsSL -o install-bunkerweb.sh "https://github.com/bunkerity/bunkerweb/raw/v${RELEASE}/misc/install-bunkerweb.sh"
 chmod +x install-bunkerweb.sh
 $STD ./install-bunkerweb.sh --yes
@@ -41,7 +41,7 @@ Pin: version ${RELEASE}
 Pin-Priority: 1001
 EOF
 echo "${RELEASE}" >~/.bunkerweb
-msg_ok "Installed BunkerWeb"
+msg_ok "已安装 BunkerWeb"
 
 motd_ssh
 customize

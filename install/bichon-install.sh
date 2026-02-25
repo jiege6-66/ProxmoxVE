@@ -26,7 +26,7 @@ else
   msg_ok "Using provided URL: $BICHON_PUBLIC_URL\n"
 fi
 
-msg_info "Setting up Bichon"
+msg_info "正在设置 Bichon"
 mkdir -p /opt/bichon-data
 BICHON_ENC_PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
 
@@ -37,9 +37,9 @@ BICHON_ENCRYPT_PASSWORD=$BICHON_ENC_PASSWORD
 BICHON_PUBLIC_URL=$BICHON_PUBLIC_URL
 BICHON_CORS_ORIGINS=$BICHON_PUBLIC_URL
 EOF
-msg_ok "Setup Bichon"
+msg_ok "设置 Bichon"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/bichon.service
 [Unit]
 Description=Bichon service
@@ -58,7 +58,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now bichon
-msg_info "Created Service"
+msg_info "已创建 Service"
 
 motd_ssh
 customize

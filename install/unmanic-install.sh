@@ -13,19 +13,19 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y \
   ffmpeg \
   python3-pip
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_hwaccel
 
-msg_info "Installing Unmanic"
+msg_info "正在安装 Unmanic"
 $STD pip3 install unmanic
-msg_ok "Installed Unmanic"
+msg_ok "已安装 Unmanic"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/unmanic.service
 [Unit]
 Description=Unmanic - Library Optimiser
@@ -43,7 +43,7 @@ RestartSec=30
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q unmanic.service
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

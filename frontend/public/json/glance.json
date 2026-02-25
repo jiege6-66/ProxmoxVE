@@ -13,7 +13,7 @@
   "website": "https://github.com/glanceapp/glance",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/glance.webp",
   "config_path": "/opt/glance/glance.yml",
-  "description": "A self-hosted dashboard that puts all your feeds in one place",
+  "description": "一个自托管的仪表板，将你所有的信息流集中在一个地方",
   "install_methods": [
     {
       "type": "default",

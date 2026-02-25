@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   lsb-release \
   redis \
   apache2 \
   composer
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mariadb
 
-msg_info "Adding PHP Repository"
+msg_info "正在添加 PHP Repository"
 $STD curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
 $STD dpkg -i /tmp/debsuryorg-archive-keyring.deb
 cat <<EOF >/etc/apt/sources.list.d/php.sources
@@ -34,17 +34,17 @@ Components: main
 Signed-By: /usr/share/keyrings/deb.sury.org-php.gpg
 EOF
 $STD apt update
-msg_ok "Added PHP Repository"
+msg_ok "已添加 PHP Repository"
 
-msg_info "Installing PHP"
+msg_info "正在安装 PHP"
 $STD apt remove -y php8.2*
 $STD apt install -y \
   php8.4 \
   php8.4-{gd,mysql,mbstring,bcmath,xml,curl,zip,intl,fpm} \
   libapache2-mod-php8.4
-msg_ok "Installed PHP"
+msg_ok "已安装 PHP"
 
-msg_info "Setting up MariaDB"
+msg_info "正在设置 MariaDB"
 DB_NAME=panel
 DB_USER=pterodactyl
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -63,7 +63,7 @@ read -p "${TAB3}Provide an email address for admin login, this should be a valid
 read -p "${TAB3}Enter your First Name: " NAME_FIRST
 read -p "${TAB3}Enter your Last Name: " NAME_LAST
 
-msg_info "Installing pterodactyl Panel"
+msg_info "正在安装 pterodactyl Panel"
 RELEASE=$(curl -fsSL https://api.github.com/repos/pterodactyl/panel/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
 mkdir /opt/pterodactyl-panel
 cd /opt/pterodactyl-panel
@@ -90,9 +90,9 @@ ln -s /opt/pterodactyl-panel /var/www/pterodactyl
 rm -rf "/opt/pterodactyl-panel/panel.tar.gz"
 rm -rf "/tmp/debsuryorg-archive-keyring.deb"
 echo "${RELEASE}" >/opt/"${APPLICATION}"_version.txt
-msg_ok "Installed pterodactyl Panel"
+msg_ok "已安装 pterodactyl Panel"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/pteroq.service
 [Unit]
 Description=Pterodactyl Queue Worker
@@ -135,7 +135,7 @@ $STD a2ensite pterodactyl
 $STD a2enmod rewrite
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -26,7 +26,7 @@ function update_script() {
 
   TOMCAT_DIR=$(ls -d /opt/tomcat-* 2>/dev/null | head -n1)
   if [[ -z "$TOMCAT_DIR" || ! -d "$TOMCAT_DIR" ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -40,39 +40,39 @@ function update_script() {
   LATEST_VERSION=$(curl -fsSL "https://dlcdn.apache.org/tomcat/tomcat-${TOMCAT_MAJOR}/" | grep -oP 'v[0-9]+\.[0-9]+\.[0-9]+(-M[0-9]+)?/' | sort -V | tail -n1 | sed 's/\/$//; s/v//')
 
   if [[ -z "$LATEST_VERSION" ]]; then
-    msg_error "Failed to fetch latest version for Tomcat ${TOMCAT_MAJOR}"
+    msg_error "无法 fetch latest version for Tomcat ${TOMCAT_MAJOR}"
     exit
   fi
 
   if [[ "$CURRENT_VERSION" == "$LATEST_VERSION" ]]; then
-    msg_ok "${APP} ${CURRENT_VERSION} is already up to date"
+    msg_ok "${APP} ${CURRENT_VERSION} is 已是最新"
     exit
   fi
 
-  msg_info "Stopping Tomcat service"
+  msg_info "正在停止 Tomcat service"
   systemctl stop tomcat
-  msg_ok "Stopped Tomcat service"
+  msg_ok "已停止 Tomcat service"
 
-  msg_info "Backing up configuration and applications"
+  msg_info "正在备份 configuration and applications"
   BACKUP_DIR="/tmp/tomcat-backup-$$"
   mkdir -p "$BACKUP_DIR"
   cp -a "$TOMCAT_DIR/conf" "$BACKUP_DIR/conf"
   cp -a "$TOMCAT_DIR/webapps" "$BACKUP_DIR/webapps"
   [[ -d "$TOMCAT_DIR/lib" ]] && cp -a "$TOMCAT_DIR/lib" "$BACKUP_DIR/lib"
-  msg_ok "Backed up configuration and applications"
+  msg_ok "已备份 configuration and applications"
 
-  msg_info "Downloading Tomcat ${LATEST_VERSION}"
+  msg_info "正在下载 Tomcat ${LATEST_VERSION}"
   TOMCAT_URL="https://dlcdn.apache.org/tomcat/tomcat-${TOMCAT_MAJOR}/v${LATEST_VERSION}/bin/apache-tomcat-${LATEST_VERSION}.tar.gz"
   curl -fsSL "$TOMCAT_URL" -o /tmp/tomcat-update.tar.gz
-  msg_ok "Downloaded Tomcat ${LATEST_VERSION}"
+  msg_ok "已下载 Tomcat ${LATEST_VERSION}"
 
-  msg_info "Installing update"
+  msg_info "正在安装 update"
   rm -rf "${TOMCAT_DIR:?}"/*
   tar --strip-components=1 -xzf /tmp/tomcat-update.tar.gz -C "$TOMCAT_DIR"
   rm -f /tmp/tomcat-update.tar.gz
-  msg_ok "Installed update"
+  msg_ok "已安装 update"
 
-  msg_info "Restoring configuration and applications"
+  msg_info "正在恢复 configuration and applications"
   cp -a "$BACKUP_DIR/conf"/* "$TOMCAT_DIR/conf/"
   cp -a "$BACKUP_DIR/webapps"/* "$TOMCAT_DIR/webapps/" 2>/dev/null || true
   if [[ -d "$BACKUP_DIR/lib" ]]; then
@@ -86,12 +86,12 @@ function update_script() {
   fi
   rm -rf "$BACKUP_DIR"
   chown -R root:root "$TOMCAT_DIR"
-  msg_ok "Restored configuration and applications"
+  msg_ok "已恢复 configuration and applications"
 
-  msg_info "Starting Tomcat service"
+  msg_info "正在启动 Tomcat service"
   systemctl start tomcat
-  msg_ok "Started Tomcat service"
-  msg_ok "Updated successfully!"
+  msg_ok "已启动 Tomcat service"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -99,7 +99,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

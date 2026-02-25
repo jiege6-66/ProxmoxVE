@@ -67,10 +67,9 @@ export default function Page() {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Thank You!</DialogTitle>
+                  <DialogTitle>感谢您!</DialogTitle>
                   <DialogDescription>
-                    A big thank you to tteck and the many contributors who have made this project possible. Your hard
-                    work is truly appreciated by the entire Proxmox community!
+                    非常感谢 tteck 和众多贡献者让这个项目成为可能。您的辛勤工作得到了整个 Proxmox 社区的真诚赞赏!
                   </DialogDescription>
                 </DialogHeader>
                 <CardFooter className="flex flex-col gap-2">
@@ -83,7 +82,7 @@ export default function Page() {
                     >
                       <FaGithub className="mr-2 h-4 w-4" />
                       {" "}
-                      Tteck&apos;s GitHub
+                      Tteck 的 GitHub
                     </a>
                   </Button>
                   <Button className="w-full" asChild>
@@ -95,7 +94,7 @@ export default function Page() {
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />
                       {" "}
-                      Proxmox Helper Scripts
+                      Proxmox 辅助脚本
                     </a>
                   </Button>
                 </CardFooter>
@@ -104,18 +103,17 @@ export default function Page() {
 
             <div className="flex flex-col gap-4">
               <h1 className="max-w-2xl text-center text-3xl font-semibold tracking-tighter md:text-7xl">
-                Make managing your Homelab a breeze
+                让管理您的家庭实验室变得轻而易举
               </h1>
               <div className="max-w-2xl gap-2 flex flex-col text-center sm:text-lg text-sm leading-relaxed tracking-tight text-muted-foreground md:text-xl">
                 <p>
-                  We are a community-driven initiative that simplifies the setup of Proxmox Virtual Environment (VE).
+                  我们是一个社区驱动的项目,致力于简化 Proxmox 虚拟环境 (VE) 的设置。
                 </p>
                 <p>
-                  With 400+ scripts to help you manage your
+                  拥有 400 多个脚本来帮助您管理
                   {" "}
                   <b>Proxmox VE</b>
-                  , whether you&#39;re a seasoned user or a
-                  newcomer, we&#39;ve got you covered.
+                  ,无论您是经验丰富的用户还是新手,我们都能为您提供帮助。
                 </p>
               </div>
             </div>
@@ -128,7 +126,7 @@ export default function Page() {
                   iconPlacement="right"
                   className="hover:"
                 >
-                  View Scripts
+                  查看脚本
                 </Button>
               </Link>
             </div>
@@ -138,9 +136,9 @@ export default function Page() {
           <div className="py-20" id="faq">
             <div className="max-w-4xl mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-5xl mb-4">Frequently Asked Questions</h2>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-5xl mb-4">常见问题</h2>
                 <p className="text-muted-foreground text-lg">
-                  Find answers to common questions about our Proxmox VE scripts
+                  查找关于我们 Proxmox VE 脚本的常见问题解答
                 </p>
               </div>
               <FAQ />

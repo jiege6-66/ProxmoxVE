@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apache2-utils fuse3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "rclone" "rclone/rclone" "prebuild" "latest" "/opt/rclone" "rclone*linux-amd64.zip"
 
-msg_info "Installing rclone"
+msg_info "正在安装 rclone"
 cd /opt/rclone
 RCLONE_PASSWORD=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 $STD htpasswd -cb -B /opt/login.pwd admin "$RCLONE_PASSWORD"
@@ -28,9 +28,9 @@ $STD htpasswd -cb -B /opt/login.pwd admin "$RCLONE_PASSWORD"
   echo "rclone User Name: admin"
   echo "rclone Password: $RCLONE_PASSWORD"
 } >>~/rclone.creds
-msg_ok "Installed rclone"
+msg_ok "已安装 rclone"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/rclone-web.service
 [Unit]
 Description=Rclone Web GUI
@@ -47,7 +47,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now rclone-web
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

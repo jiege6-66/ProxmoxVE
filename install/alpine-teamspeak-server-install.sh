@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apk add --no-cache \
   ca-certificates \
   libstdc++ \
   libc6-compat
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 RELEASE=$(curl -fsSL https://teamspeak.com/en/downloads/#server | sed -n 's/.*teamspeak3-server_linux_amd64-\([0-9.]*[0-9]\).*/\1/p' | awk 'NR==1')
-msg_info "Installing Teamspeak Server v${RELEASE}"
+msg_info "正在安装 Teamspeak Server v${RELEASE}"
 mkdir -p /opt/teamspeak-server
 cd /opt/teamspeak-server
 curl -fsSL "https://files.teamspeak-services.com/releases/server/${RELEASE}/teamspeak3-server_linux_amd64-${RELEASE}.tar.bz2" -o ts3server.tar.bz2
@@ -30,9 +30,9 @@ mkdir -p logs data lib
 mv *.so lib
 touch data/ts3server.sqlitedb data/query_ip_blacklist.txt data/query_ip_whitelist.txt .ts3server_license_accepted
 echo "${RELEASE}" >~/.teamspeak-server
-msg_ok "Installed TeamSpeak Server v${RELEASE}"
+msg_ok "已安装 TeamSpeak Server v${RELEASE}"
 
-msg_info "Enabling TeamSpeak Server Service"
+msg_info "正在启用 TeamSpeak Server Service"
 cat <<EOF >/etc/init.d/teamspeak
 #!/sbin/openrc-run
 
@@ -53,16 +53,16 @@ depend() {
 EOF
 chmod +x /etc/init.d/teamspeak
 $STD rc-update add teamspeak default
-msg_ok "Enabled TeamSpeak Server Service"
+msg_ok "已启用 TeamSpeak Server Service"
 
-msg_info "Starting TeamSpeak Server"
+msg_info "正在启动 TeamSpeak Server"
 $STD service teamspeak start
-msg_ok "Started TeamSpeak Server"
+msg_ok "已启动 TeamSpeak Server"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 rm -r ts3server.tar.bz* LICENSE* CHANGELOG doc serverquerydocs tsdns redist
 $STD apk cache clean
-msg_ok "Cleaned"
+msg_ok "已清理"

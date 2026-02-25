@@ -13,7 +13,7 @@
   "website": "https://seerr.dev/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/seerr.webp",
   "config_path": "/etc/seerr/seerr.conf",
-  "description": "Open-source media request and discovery manager for Jellyfin, Plex, and Emby. Unified version of Overseerr and Jellyseerr.",
+  "description": "开源的媒体请求和发现管理器，适用于 Jellyfin、Plex 和 Emby。Overseerr 和 Jellyseerr 的统一版本。",
   "install_methods": [
     {
       "type": "default",

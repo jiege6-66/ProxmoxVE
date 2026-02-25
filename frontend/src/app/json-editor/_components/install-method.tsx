@@ -118,15 +118,15 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
 
   return (
     <>
-      <h3 className="text-xl font-semibold">Install Methods</h3>
+      <h3 className="text-xl font-semibold">安装方式</h3>
       {script.install_methods.map((method, index) => (
         <div key={index} className="space-y-2 border p-4 rounded">
           <Select value={method.type} onValueChange={value => updateInstallMethod(index, "type", value)}>
             <SelectTrigger>
-              <SelectValue placeholder="Type" />
+              <SelectValue placeholder="类型" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="default">Default</SelectItem>
+              <SelectItem value="default">默认</SelectItem>
               <SelectItem value="alpine">Alpine</SelectItem>
             </SelectContent>
           </Select>
@@ -135,7 +135,7 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               ref={(el) => {
                 cpuRefs.current[index] = el;
               }}
-              placeholder="CPU in Cores"
+              placeholder="CPU 核心数"
               type="number"
               value={method.resources.cpu || ""}
               onChange={e =>
@@ -148,7 +148,7 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               ref={(el) => {
                 ramRefs.current[index] = el;
               }}
-              placeholder="RAM in MB"
+              placeholder="内存 (MB)"
               type="number"
               value={method.resources.ram || ""}
               onChange={e =>
@@ -161,7 +161,7 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               ref={(el) => {
                 hddRefs.current[index] = el;
               }}
-              placeholder="HDD in GB"
+              placeholder="硬盘 (GB)"
               type="number"
               value={method.resources.hdd || ""}
               onChange={e =>
@@ -183,7 +183,7 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               disabled={method.type === "alpine"}
             >
               <SelectTrigger>
-                <SelectValue placeholder="OS" />
+                <SelectValue placeholder="操作系统" />
               </SelectTrigger>
               <SelectContent>
                 {OperatingSystems.map(os => (
@@ -203,7 +203,7 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
               disabled={method.type === "alpine"}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Version" />
+                <SelectValue placeholder="版本" />
               </SelectTrigger>
               <SelectContent>
                 {OperatingSystems.find(os => os.name === method.resources.os)?.versions.map(version => (
@@ -217,14 +217,14 @@ function InstallMethod({ script, setScript, setIsValid, setZodErrors }: InstallM
           <Button variant="destructive" size="sm" type="button" onClick={() => removeInstallMethod(index)}>
             <Trash2 className="mr-2 h-4 w-4" />
             {" "}
-            Remove Install Method
+            删除安装方式
           </Button>
         </div>
       ))}
       <Button type="button" size="sm" disabled={script.install_methods.length >= 2} onClick={addInstallMethod}>
         <PlusCircle className="mr-2 h-4 w-4" />
         {" "}
-        Add Install Method
+        添加安装方式
       </Button>
     </>
   );

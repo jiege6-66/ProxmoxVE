@@ -16,17 +16,17 @@ update_os
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "bytestash" "jordan-dalby/ByteStash" "tarball"
 
-msg_info "Installing ByteStash"
+msg_info "正在安装 ByteStash"
 JWT_SECRET=$(openssl rand -base64 32 | tr -d '/+=')
 cd /opt/bytestash/server
 $STD npm install
 cd /opt/bytestash/client
 $STD npm install
-msg_ok "Installed ByteStash"
+msg_ok "已安装 ByteStash"
 
 read -rp "${TAB3}Do you want to allow registration of multiple accounts? [y/n]: " allowreg
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/bytestash-backend.service
 [Unit]
 Description=ByteStash Backend Service
@@ -62,7 +62,7 @@ EOF
 
 systemctl enable -q --now bytestash-backend
 systemctl enable -q --now bytestash-frontend
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

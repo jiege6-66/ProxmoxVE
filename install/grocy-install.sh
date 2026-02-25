@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apt-transport-https
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.3" PHP_APACHE="YES" setup_php
 fetch_and_deploy_gh_release "grocy" "grocy/grocy" "prebuild" "latest" "/var/www/html" "grocy*.zip"
 
-msg_info "Configuring grocy"
+msg_info "正在配置 grocy"
 chown -R www-data:www-data /var/www/html
 cp /var/www/html/config-dist.php /var/www/html/data/config.php
 chmod +x /var/www/html/update.sh
@@ -42,7 +42,7 @@ $STD a2dissite 000-default.conf
 $STD a2ensite grocy.conf
 $STD a2enmod rewrite
 systemctl reload apache2
-msg_ok "Installed grocy"
+msg_ok "已安装 grocy"
 
 motd_ssh
 customize

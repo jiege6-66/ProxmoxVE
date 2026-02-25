@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing RustyPaste"
+msg_info "正在安装 RustyPaste"
 $STD apk add --no-cache rustypaste --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
-msg_ok "Installed RustyPaste"
+msg_ok "已安装 RustyPaste"
 
-msg_info "Configuring RustyPaste"
+msg_info "正在配置 RustyPaste"
 mkdir -p /var/lib/rustypaste
 sed -i 's|^address = ".*"|address = "0.0.0.0:8000"|' /etc/rustypaste/config.toml
-msg_ok "Configured RustyPaste"
+msg_ok "已配置 RustyPaste"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/etc/init.d/rustypaste
 #!/sbin/openrc-run
 
@@ -48,7 +48,7 @@ EOF
 chmod +x /etc/init.d/rustypaste
 $STD rc-update add rustypaste default
 $STD rc-service rustypaste start
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

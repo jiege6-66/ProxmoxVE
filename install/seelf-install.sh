@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   make \
   gcc
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_go
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "seelf" "YuukanOO/seelf" "tarball"
 
-msg_info "Setting up seelf. Patience"
+msg_info "正在设置 seelf. Patience"
 cd /opt/seelf
 $STD make build
 PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -37,7 +37,7 @@ sleep 5
 kill $!
 msg_ok "Done setting up seelf"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/seelf.service
 [Unit]
 Description=seelf Service
@@ -57,7 +57,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now seelf
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -18,7 +18,7 @@ PG_VERSION="17" setup_postgresql
 PG_DB_USER="snowshare" PG_DB_NAME="snowshare" setup_postgresql_db
 fetch_and_deploy_gh_release "snowshare" "TuroYT/snowshare" "tarball"
 
-msg_info "Installing SnowShare"
+msg_info "正在安装 SnowShare"
 cd /opt/snowshare
 $STD npm ci
 cat <<EOF >/opt/snowshare.env
@@ -52,9 +52,9 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now snowshare
-msg_ok "Installed SnowShare"
+msg_ok "已安装 SnowShare"
 
-msg_info "Setting up Cleanup Cron Job"
+msg_info "正在设置 Cleanup Cron Job"
 cat <<EOF >/etc/cron.d/snowshare-cleanup
 0 2 * * * root cd /opt/snowshare && /usr/bin/npm run cleanup:expired >> /var/log/snowshare-cleanup.log 2>&1
 EOF

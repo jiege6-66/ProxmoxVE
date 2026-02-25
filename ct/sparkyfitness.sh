@@ -25,18 +25,18 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/sparkyfitness ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   NODE_VERSION="25" setup_nodejs
 
   if check_for_gh_release "sparkyfitness" "CodeWithCJ/SparkyFitness"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop sparkyfitness-server nginx
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     mkdir -p /opt/sparkyfitness_backup
     if [[ -d /opt/sparkyfitness/SparkyFitnessServer/uploads ]]; then
       cp -r /opt/sparkyfitness/SparkyFitnessServer/uploads /opt/sparkyfitness_backup/
@@ -44,31 +44,31 @@ function update_script() {
     if [[ -d /opt/sparkyfitness/SparkyFitnessServer/backup ]]; then
       cp -r /opt/sparkyfitness/SparkyFitnessServer/backup /opt/sparkyfitness_backup/
     fi
-    msg_ok "Backed up data"
+    msg_ok "已备份 data"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "sparkyfitness" "CodeWithCJ/SparkyFitness" "tarball"
 
-    msg_info "Updating Sparky Fitness Backend"
+    msg_info "正在更新 Sparky Fitness Backend"
     cd /opt/sparkyfitness/SparkyFitnessServer
     $STD npm install
     msg_ok "Updated Sparky Fitness Backend"
 
-    msg_info "Updating Sparky Fitness Frontend (Patience)"
+    msg_info "正在更新 Sparky Fitness Frontend (Patience)"
     cd /opt/sparkyfitness/SparkyFitnessFrontend
     $STD npm install
     $STD npm run build
     cp -a /opt/sparkyfitness/SparkyFitnessFrontend/dist/. /var/www/sparkyfitness/
     msg_ok "Updated Sparky Fitness Frontend"
 
-    msg_info "Restoring data"
+    msg_info "正在恢复 data"
     cp -r /opt/sparkyfitness_backup/. /opt/sparkyfitness/SparkyFitnessServer/
     rm -rf /opt/sparkyfitness_backup
-    msg_ok "Restored data"
+    msg_ok "已恢复 data"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     $STD systemctl start sparkyfitness-server nginx
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -77,7 +77,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

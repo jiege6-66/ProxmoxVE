@@ -53,3 +53,5 @@ const TabsContent = React.forwardRef<
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
 export { Tabs, TabsContent, TabsList, TabsTrigger };
+
+这个代码文件中没有用户可见的 UI 文本字符串需要翻译。所有内容都是组件定义、样式类名和技术性的 displayName 属性，这些不应该被翻译。

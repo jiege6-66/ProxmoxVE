@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y \
   build-essential \
   openssl \
   caddy
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 NODE_VERSION="24" NODE_MODULE="pnpm" setup_nodejs
 fetch_and_deploy_gh_release "wishlist" "cmintey/wishlist" "tarball"
 LATEST_APP_VERSION=$(get_latest_github_release "cmintey/wishlist")
 
-msg_info "Installing Wishlist"
+msg_info "正在安装 Wishlist"
 cd /opt/wishlist
 cp .env.example .env
 sed -i "s|^ORIGIN=.*|ORIGIN=http://${LOCAL_IP}:3280|" /opt/wishlist/.env
@@ -41,9 +41,9 @@ $STD pnpm prune --prod
 chmod +x /opt/wishlist/entrypoint.sh
 mkdir -p /opt/wishlist/uploads
 mkdir -p /opt/wishlist/data
-msg_ok "Installed Wishlist"
+msg_ok "已安装 Wishlist"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/wishlist.service
 [Unit]
 Description=Wishlist Service
@@ -59,7 +59,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now wishlist
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

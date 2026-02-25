@@ -60,7 +60,7 @@ function ScriptContent() {
             ? (
                 <div className="flex w-full flex-col">
                   <div className="mb-3 flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold tracking-tight text-foreground/90">Selected Script</h2>
+                    <h2 className="text-2xl font-semibold tracking-tight text-foreground/90">已选脚本</h2>
                     <button
                       onClick={closeScript}
                       className="rounded-full p-2 text-muted-foreground hover:bg-card/50 transition-colors"

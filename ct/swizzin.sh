@@ -27,9 +27,9 @@ function update_script() {
     msg_error "No ${APP} installation found!"
     exit
   fi
-  msg_info "Running 'sudo box update' inside the container"
+  msg_info "正在运行 'sudo box update' inside the container"
   $STD sudo box update
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -37,7 +37,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW}If installed panel, access through the following URL:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

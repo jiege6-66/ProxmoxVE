@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /etc/systemd/system/changedetection.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -33,16 +33,16 @@ function update_script() {
 
   NODE_VERSION="24" setup_nodejs
 
-  msg_info "Updating ${APP}"
+  msg_info "正在更新 ${APP}"
   $STD pip3 install changedetection.io --upgrade
   msg_ok "Updated ${APP}"
 
-  msg_info "Updating Playwright"
+  msg_info "正在更新 Playwright"
   $STD pip3 install playwright --upgrade
   msg_ok "Updated Playwright"
 
   if [[ -f /etc/systemd/system/browserless.service ]]; then
-    msg_info "Updating Browserless (Patience)"
+    msg_info "正在更新 Browserless (Patience)"
     $STD git -C /opt/browserless/ fetch --all
     $STD git -C /opt/browserless/ reset --hard origin/main
     $STD npm update --prefix /opt/browserless
@@ -59,11 +59,11 @@ function update_script() {
     systemctl restart browserless
     msg_ok "Updated Browserless"
   else
-    msg_error "No Browserless Installation Found!"
+    msg_error "No Browserless 安装已找到！"
   fi
 
   systemctl restart changedetection
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -71,7 +71,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5000${CL}"

@@ -14,7 +14,7 @@
   "website": "https://filebrowser.org/index.html#features",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/file-browser.webp",
   "config_path": "",
-  "description": "File Browser offers a user-friendly web interface for managing files within a designated directory. It allows you to perform various actions such as uploading, deleting, previewing, renaming, and editing files.",
+  "description": "File Browser 提供了一个用户友好的 web 界面，用于管理指定目录中的文件。它允许你执行各种操作，如上传、删除、预览、重命名和编辑文件。",
   "install_methods": [
     {
       "type": "default",

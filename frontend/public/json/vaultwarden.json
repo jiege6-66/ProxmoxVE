@@ -13,7 +13,7 @@
   "website": "https://github.com/dani-garcia/vaultwarden/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/vaultwarden.webp",
   "config_path": "/opt/vaultwarden/.env",
-  "description": "Vaultwarden is a self-hosted password manager which provides secure and encrypted password storage. It uses client-side encryption and provides access to passwords through a web interface and mobile apps.",
+  "description": "Vaultwarden 是一个自托管的密码管理器，提供安全加密的密码存储。它使用客户端加密，并通过网页界面和移动应用提供密码访问。",
   "install_methods": [
     {
       "type": "default",

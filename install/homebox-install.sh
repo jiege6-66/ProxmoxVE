@@ -16,7 +16,7 @@ update_os
 
 fetch_and_deploy_gh_release "homebox" "sysadminsmedia/homebox" "prebuild" "latest" "/opt/homebox" "homebox_Linux_x86_64.tar.gz"
 
-msg_info "Configuring Homebox"
+msg_info "正在配置 Homebox"
 chmod +x /opt/homebox/homebox
 cat <<EOF >/opt/homebox/.env
 # For possible environment variables check here: https://homebox.software/en/configure-homebox
@@ -24,9 +24,9 @@ HBOX_MODE=production
 HBOX_WEB_PORT=7745
 HBOX_WEB_HOST=0.0.0.0
 EOF
-msg_ok "Configured Homebox"
+msg_ok "已配置 Homebox"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/homebox.service
 [Unit]
 Description=Start Homebox Service
@@ -42,7 +42,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now homebox
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

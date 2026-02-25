@@ -46,7 +46,7 @@ EOF
 fi
 msg_ok "Converted APT sources"
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   xz-utils \
   python3 \
@@ -87,7 +87,7 @@ $STD apt install -y \
   liblapack-dev \
   make \
   moreutils
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_hwaccel
 
@@ -105,25 +105,25 @@ export HAILORT_LOGGER_PATH=NONE
 
 fetch_and_deploy_gh_release "frigate" "blakeblackshear/frigate" "tarball" "v0.16.4" "/opt/frigate"
 
-msg_info "Building Nginx"
+msg_info "正在构建 Nginx"
 $STD bash /opt/frigate/docker/main/build_nginx.sh
 sed -e '/s6-notifyoncheck/ s/^#*/#/' -i /opt/frigate/docker/main/rootfs/etc/s6-overlay/s6-rc.d/nginx/run
 ln -sf /usr/local/nginx/sbin/nginx /usr/local/bin/nginx
-msg_ok "Built Nginx"
+msg_ok "已构建 Nginx"
 
-msg_info "Building SQLite Extensions"
+msg_info "正在构建 SQLite Extensions"
 $STD bash /opt/frigate/docker/main/build_sqlite_vec.sh
-msg_ok "Built SQLite Extensions"
+msg_ok "已构建 SQLite Extensions"
 
 fetch_and_deploy_gh_release "go2rtc" "AlexxIT/go2rtc" "singlefile" "latest" "/usr/local/go2rtc/bin" "go2rtc_linux_amd64"
 
-msg_info "Installing Tempio"
+msg_info "正在安装 Tempio"
 sed -i 's|/rootfs/usr/local|/usr/local|g' /opt/frigate/docker/main/install_tempio.sh
 $STD bash /opt/frigate/docker/main/install_tempio.sh
 ln -sf /usr/local/tempio/bin/tempio /usr/local/bin/tempio
-msg_ok "Installed Tempio"
+msg_ok "已安装 Tempio"
 
-msg_info "Building libUSB"
+msg_info "正在构建 libUSB"
 fetch_and_deploy_gh_release "libusb" "libusb/libusb" "tarball" "v1.0.26" "/opt/libusb"
 cd /opt/libusb
 $STD ./bootstrap.sh
@@ -136,13 +136,13 @@ install -c -m 644 libusb.h /usr/local/include/libusb-1.0
 cd /opt/libusb/
 install -c -m 644 libusb-1.0.pc /usr/local/lib/pkgconfig
 ldconfig
-msg_ok "Built libUSB"
+msg_ok "已构建 libUSB"
 
-msg_info "Installing Python Dependencies"
+msg_info "正在安装 Python 依赖"
 $STD pip3 install -r /opt/frigate/docker/main/requirements.txt
-msg_ok "Installed Python Dependencies"
+msg_ok "已安装 Python 依赖"
 
-msg_info "Building Python Wheels (Patience)"
+msg_info "正在构建 Python Wheels (Patience)"
 mkdir -p /wheels
 sed -i 's|^SQLITE3_VERSION=.*|SQLITE3_VERSION="version-3.46.0"|g' /opt/frigate/docker/main/build_pysqlite3.sh
 $STD bash /opt/frigate/docker/main/build_pysqlite3.sh
@@ -150,26 +150,26 @@ for i in {1..3}; do
   $STD pip3 wheel --wheel-dir=/wheels -r /opt/frigate/docker/main/requirements-wheels.txt --default-timeout=300 --retries=3 && break
   [[ $i -lt 3 ]] && sleep 10
 done
-msg_ok "Built Python Wheels"
+msg_ok "已构建 Python Wheels"
 
 NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
 
-msg_info "Downloading Inference Models"
+msg_info "正在下载 Inference Models"
 mkdir -p /models /openvino-model
 wget -q -O /edgetpu_model.tflite https://github.com/google-coral/test_data/raw/release-frogfish/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
 wget -q -O /models/cpu_model.tflite https://github.com/google-coral/test_data/raw/release-frogfish/ssdlite_mobiledet_coco_qat_postprocess.tflite
 cp /opt/frigate/labelmap.txt /labelmap.txt
-msg_ok "Downloaded Inference Models"
+msg_ok "已下载 Inference Models"
 
-msg_info "Downloading Audio Model"
+msg_info "正在下载 Audio Model"
 wget -q -O /tmp/yamnet.tar.gz https://www.kaggle.com/api/v1/models/google/yamnet/tfLite/classification-tflite/1/download
 $STD tar xzf /tmp/yamnet.tar.gz -C /
 mv /1.tflite /cpu_audio_model.tflite
 cp /opt/frigate/audio-labelmap.txt /audio-labelmap.txt
 rm -f /tmp/yamnet.tar.gz
-msg_ok "Downloaded Audio Model"
+msg_ok "已下载 Audio Model"
 
-msg_info "Installing HailoRT Runtime"
+msg_info "正在安装 HailoRT Runtime"
 $STD bash /opt/frigate/docker/main/install_hailort.sh
 cp -a /opt/frigate/docker/main/rootfs/. /
 sed -i '/^.*unset DEBIAN_FRONTEND.*$/d' /opt/frigate/docker/main/install_deps.sh
@@ -181,13 +181,13 @@ $STD bash /opt/frigate/docker/main/install_deps.sh
 rm -f /etc/dpkg/dpkg.cfg.d/force-overwrite
 $STD pip3 install -U /wheels/*.whl
 ldconfig
-msg_ok "Installed HailoRT Runtime"
+msg_ok "已安装 HailoRT Runtime"
 
-msg_info "Installing OpenVino"
+msg_info "正在安装 OpenVino"
 $STD pip3 install -r /opt/frigate/docker/main/requirements-ov.txt
-msg_ok "Installed OpenVino"
+msg_ok "已安装 OpenVino"
 
-msg_info "Building OpenVino Model"
+msg_info "正在构建 OpenVino Model"
 cd /models
 wget -q http://download.tensorflow.org/models/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09.tar.gz
 $STD tar -zxf ssdlite_mobilenet_v2_coco_2018_05_09.tar.gz --no-same-owner
@@ -196,12 +196,12 @@ if $STD python3 /opt/frigate/docker/main/build_ov_model.py; then
   cp /models/ssdlite_mobilenet_v2.bin /openvino-model/
   wget -q https://github.com/openvinotoolkit/open_model_zoo/raw/master/data/dataset_classes/coco_91cl_bkgr.txt -O /openvino-model/coco_91cl_bkgr.txt
   sed -i 's/truck/car/g' /openvino-model/coco_91cl_bkgr.txt
-  msg_ok "Built OpenVino Model"
+  msg_ok "已构建 OpenVino Model"
 else
   msg_warn "OpenVino build failed (CPU may not support required instructions). Frigate will use CPU model."
 fi
 
-msg_info "Building Frigate Application (Patience)"
+msg_info "正在构建 Frigate Application (Patience)"
 cd /opt/frigate
 $STD pip3 install -r /opt/frigate/docker/main/requirements-dev.txt
 $STD bash /opt/frigate/.devcontainer/initialize.sh
@@ -211,9 +211,9 @@ $STD npm install
 $STD npm run build
 cp -r /opt/frigate/web/dist/* /opt/frigate/web/
 sed -i '/^s6-svc -O \.$/s/^/#/' /opt/frigate/docker/main/rootfs/etc/s6-overlay/s6-rc.d/frigate/run
-msg_ok "Built Frigate Application"
+msg_ok "已构建 Frigate Application"
 
-msg_info "Configuring Frigate"
+msg_info "正在配置 Frigate"
 mkdir -p /config /media/frigate
 cp -r /opt/frigate/config/. /config
 
@@ -271,9 +271,9 @@ model:
   path: /cpu_model.tflite
 EOF
 fi
-msg_ok "Configured Frigate"
+msg_ok "已配置 Frigate"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 cat <<EOF >/etc/systemd/system/create_directories.service
 [Unit]
 Description=Create necessary directories for Frigate logs
@@ -357,11 +357,11 @@ sleep 2
 systemctl enable -q --now frigate
 sleep 2
 systemctl enable -q --now nginx
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
-msg_info "Cleaning Up"
+msg_info "正在清理 Up"
 rm -rf /opt/libusb /wheels /models/*.tar.gz
-msg_ok "Cleaned Up"
+msg_ok "已清理 Up"
 
 motd_ssh
 customize

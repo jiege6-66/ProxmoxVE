@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y python3-lxml wkhtmltopdf
 curl -fsSL "http://archive.ubuntu.com/ubuntu/pool/universe/l/lxml-html-clean/python3-lxml-html-clean_0.1.1-1_all.deb" -o /opt/python3-lxml-html-clean.deb
 $STD dpkg -i /opt/python3-lxml-html-clean.deb
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="18" setup_postgresql
 
@@ -28,12 +28,12 @@ LATEST_VERSION=$(curl -fsSL "https://nightly.odoo.com/${RELEASE}/nightly/deb/" |
   sort -V |
   tail -n1)
 
-msg_info "Setup Odoo $RELEASE"
+msg_info "设置 Odoo $RELEASE"
 curl -fsSL https://nightly.odoo.com/${RELEASE}/nightly/deb/odoo_${RELEASE}.latest_all.deb -o /opt/odoo.deb
 $STD apt install -y /opt/odoo.deb
-msg_ok "Setup Odoo $RELEASE"
+msg_ok "设置 Odoo $RELEASE"
 
-msg_info "Setup PostgreSQL Database"
+msg_info "设置 PostgreSQL Database"
 DB_NAME="odoo"
 DB_USER="odoo_usr"
 DB_PASS="$(openssl rand -base64 18 | cut -c1-13)"
@@ -48,9 +48,9 @@ $STD sudo -u postgres psql -c "ALTER USER $DB_USER WITH SUPERUSER;"
   echo -e "Odoo Database Password: $DB_PASS"
   echo -e "Odoo Database Name: $DB_NAME"
 } >>~/odoo.creds
-msg_ok "Setup PostgreSQL"
+msg_ok "设置 PostgreSQL"
 
-msg_info "Configuring Odoo"
+msg_info "正在配置 Odoo"
 sed -i \
   -e "s|^;*db_host *=.*|db_host = localhost|" \
   -e "s|^;*db_port *=.*|db_port = 5432|" \
@@ -61,11 +61,11 @@ $STD sudo -u odoo odoo -c /etc/odoo/odoo.conf -d odoo -i base --stop-after-init
 rm -f /opt/odoo.deb
 rm -f /opt/python3-lxml-html-clean.deb
 echo "${LATEST_VERSION}" >/opt/${APPLICATION}_version.txt
-msg_ok "Configured Odoo"
+msg_ok "已配置 Odoo"
 
-msg_info "Restarting Odoo"
+msg_info "正在重启 Odoo"
 systemctl restart odoo
-msg_ok "Restarted Odoo"
+msg_ok "已重启 Odoo"
 
 motd_ssh
 customize

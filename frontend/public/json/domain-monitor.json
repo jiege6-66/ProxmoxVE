@@ -13,7 +13,7 @@
   "config_path": "/opt/domain-monitor/.env",
   "website": "https://github.com/Hosteroid/domain-monitor",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons/png/domain-monitor.png",
-  "description": "A self-hosted PHP domain expiration monitoring tool that tracks domain expiry dates, RDAP/WHOIS data, and SSL certificate validity. Supports alerts, multi-user setup, and cron automation. Built for developers, hosting providers, and IT admins who want full control without third-party services.",
+  "description": "一个自托管的 PHP 域名过期监控工具,可追踪域名到期日期、RDAP/WHOIS 数据和 SSL 证书有效性。支持告警、多用户设置和 cron 自动化。专为希望完全掌控而不依赖第三方服务的开发者、托管服务商和 IT 管理员打造。",
   "install_methods": [
     {
       "type": "default",

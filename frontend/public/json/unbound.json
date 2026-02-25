@@ -13,7 +13,7 @@
   "website": "https://www.nlnetlabs.nl/projects/unbound/about/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/unbound.webp",
   "config_path": "/etc/unbound/unbound.conf.d/unbound.conf",
-  "description": "Unbound is a validating, recursive, caching DNS resolver. It is designed to be fast and lean and incorporates modern features based on open standards.",
+  "description": "Unbound 是一个验证型、递归、缓存 DNS 解析器。它设计快速且精简，并基于开放标准融合了现代功能。",
   "install_methods": [
     {
       "type": "default",

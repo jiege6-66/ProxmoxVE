@@ -13,7 +13,7 @@
   "website": "https://github.com/marcopiovanello/yt-dlp-web-ui",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/youtube-dl.webp",
   "config_path": "/opt/yt-dlp-webui/config.conf",
-  "description": "A not so terrible web ui for yt-dlp.\nHigh performance extendeable web ui and RPC server for yt-dlp with low impact on resources.\nCreated for the only purpose of fetching videos from my server/nas and monitor upcoming livestreams.",
+  "description": "一个还不错的 yt-dlp 网页界面。\n高性能可扩展的 yt-dlp 网页界面和 RPC 服务器,资源占用低。\n创建的唯一目的是从我的服务器/NAS 获取视频并监控即将到来的直播。",
   "install_methods": [
     {
       "type": "default",

@@ -24,31 +24,31 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/listmonk.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_gh_release "listmonk" "knadh/listmonk"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop listmonk
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     mv /opt/listmonk/ /opt/listmonk-backup
-    msg_ok "Backed up data"
+    msg_ok "已备份 data"
 
     fetch_and_deploy_gh_release "listmonk" "knadh/listmonk" "prebuild" "latest" "/opt/listmonk" "listmonk*linux_amd64.tar.gz"
 
-    msg_info "Configuring listmonk"
+    msg_info "正在配置 listmonk"
     mv /opt/listmonk-backup/config.toml /opt/listmonk/config.toml
     mv /opt/listmonk-backup/uploads /opt/listmonk/uploads
     $STD /opt/listmonk/listmonk --upgrade --yes --config /opt/listmonk/config.toml
     rm -rf /opt/listmonk-backup/
-    msg_ok "Configured listmonk"
+    msg_ok "已配置 listmonk"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start listmonk
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -57,7 +57,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:9000${CL}"

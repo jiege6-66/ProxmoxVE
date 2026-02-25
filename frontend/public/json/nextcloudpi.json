@@ -13,7 +13,7 @@
   "website": "https://github.com/nextcloud/nextcloudpi",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/nextcloud.webp",
   "config_path": "",
-  "description": "NextCloudPi is a popular self-hosted solution for file collaboration and data storage. It is built on the NextCloud software, which is an open-source platform for data management.",
+  "description": "NextCloudPi 是一个流行的自托管文件协作和数据存储解决方案。它基于 NextCloud 软件构建，这是一个用于数据管理的开源平台。",
   "install_methods": [
     {
       "type": "default",

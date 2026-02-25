@@ -13,7 +13,7 @@
   "website": "https://webmin.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/webmin.webp",
   "config_path": "",
-  "description": "Webmin provides a graphical user interface (GUI) for tasks such as user account management, package management, file system configuration, network configuration, and more.",
+  "description": "Webmin 为用户账户管理、软件包管理、文件系统配置、网络配置等任务提供图形用户界面。",
   "install_methods": [
     {
       "type": "default",

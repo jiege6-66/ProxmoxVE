@@ -16,7 +16,7 @@ update_os
 PHP_VERSION="8.3" PHP_APACHE="YES" PHP_FPM="YES" PHP_MODULE="imap,ldap" setup_php
 setup_mariadb
 
-msg_info "Configuring MariaDB Database"
+msg_info "正在配置 MariaDB Database"
 DB_NAME=limesurvey_db
 DB_USER=limesurvey
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -29,9 +29,9 @@ $STD mariadb -u root -e "GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUS
   echo "LimeSurvey Database Password: $DB_PASS"
   echo "LimeSurvey Database Name: $DB_NAME"
 } >>~/limesurvey.creds
-msg_ok "Configured MariaDB Database"
+msg_ok "已配置 MariaDB Database"
 
-msg_info "Setting up LimeSurvey"
+msg_info "正在设置 LimeSurvey"
 temp_file=$(mktemp)
 RELEASE=$(curl -s https://community.limesurvey.org/downloads/ | grep -oE 'https://download\.limesurvey\.org/latest-master/limesurvey[0-9.+]+\.zip' | head -n1)
 curl -fsSL "$RELEASE" -o "$temp_file"

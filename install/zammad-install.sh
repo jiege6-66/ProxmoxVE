@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   nginx \
   apt-transport-https
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setting up Elasticsearch"
+msg_info "正在设置 Elasticsearch"
 setup_deb822_repo \
   "elasticsearch" \
   "https://artifacts.elastic.co/GPG-KEY-elasticsearch" \
@@ -34,9 +34,9 @@ $STD /usr/share/elasticsearch/bin/elasticsearch-plugin install ingest-attachment
 systemctl daemon-reload
 systemctl enable -q elasticsearch
 systemctl restart -q elasticsearch
-msg_ok "Setup Elasticsearch"
+msg_ok "设置 Elasticsearch"
 
-msg_info "Installing Zammad"
+msg_info "正在安装 Zammad"
 setup_deb822_repo \
   "zammad" \
   "https://dl.packager.io/srv/zammad/zammad/key" \
@@ -46,15 +46,15 @@ setup_deb822_repo \
 $STD apt install -y zammad
 $STD zammad run rails r "Setting.set('es_url', 'http://localhost:9200')"
 $STD zammad run rake zammad:searchindex:rebuild
-msg_ok "Installed Zammad"
+msg_ok "已安装 Zammad"
 
-msg_info "Setup Services"
+msg_info "设置 Services"
 cp /opt/zammad/contrib/nginx/zammad.conf /etc/nginx/sites-available/zammad.conf
 sed -i "s/server_name localhost;/server_name $LOCAL_IP;/g" /etc/nginx/sites-available/zammad.conf
 ln -sf /etc/nginx/sites-available/zammad.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

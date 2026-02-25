@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "qbittorrent" "userdocs/qbittorrent-nox-static" "singlefile" "latest" "/opt/qbittorrent" "x86_64-qbittorrent-nox"
 
-msg_info "Setup qBittorrent-nox"
+msg_info "设置 qBittorrent-nox"
 mv /opt/qbittorrent/qbittorrent /opt/qbittorrent/qbittorrent-nox
 mkdir -p ~/.config/qBittorrent/
 cat <<EOF >~/.config/qBittorrent/qBittorrent.conf
@@ -28,9 +28,9 @@ WebUI\Port=8090
 WebUI\UseUPnP=false
 WebUI\Username=admin
 EOF
-msg_ok "Setup qBittorrent-nox"
+msg_ok "设置 qBittorrent-nox"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/qbittorrent-nox.service
 [Unit]
 Description=qBittorrent client
@@ -46,7 +46,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now qbittorrent-nox
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

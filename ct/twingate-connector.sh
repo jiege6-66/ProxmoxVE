@@ -25,14 +25,14 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /lib/systemd/system/twingate-connector.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Updating ${APP}"
+  msg_info "正在更新 ${APP}"
   ensure_dependencies twingate-connector
   $STD systemctl restart twingate-connector
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 

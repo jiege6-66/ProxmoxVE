@@ -12,7 +12,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   sshpass \
@@ -23,7 +23,7 @@ msg_ok "Dependencies installed."
 NODE_VERSION=24 setup_nodejs
 fetch_and_deploy_gh_release "ProxmoxVE-Local" "community-scripts/ProxmoxVE-Local" "tarball"
 
-msg_info "Installing PVE Scripts local"
+msg_info "正在安装 PVE Scripts local"
 cd /opt/ProxmoxVE-Local
 $STD npm install
 cp .env.example .env
@@ -34,9 +34,9 @@ $STD npx prisma generate
 $STD npx prisma migrate deploy
 
 $STD npm run build
-msg_ok "Installed PVE Scripts local"
+msg_ok "已安装 PVE Scripts local"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/pvescriptslocal.service
 [Unit]
 Description=PVEScriptslocal Service
@@ -55,7 +55,7 @@ WantedBy=multi-user.target
 EOF
 
 systemctl enable -q --now pvescriptslocal
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -26,11 +26,11 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/kasm/current ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Checking for new version"
+  msg_info "正在检查 for new version"
   CURRENT_VERSION=$(readlink -f /opt/kasm/current | awk -F'/' '{print $4}')
   KASM_URL=$(curl -fsSL "https://www.kasm.com/downloads" | tr '\n' ' ' | grep -oE 'https://kasm-static-content[^"]*kasm_release_[0-9]+\.[0-9]+\.[0-9]+\.[a-z0-9]+\.tar\.gz' | head -n 1)
   if [[ -z "$KASM_URL" ]]; then
@@ -47,14 +47,14 @@ function update_script() {
     msg_error "Unable to detect latest Kasm release URL."
     exit 1
   fi
-  msg_info "Checked for new version"
+  msg_info "已检查 for new version"
 
-  msg_info "Removing outdated docker-compose plugin"
+  msg_info "正在移除 outdated docker-compose plugin"
   [ -f ~/.docker/cli-plugins/docker-compose ] && rm -rf ~/.docker/cli-plugins/docker-compose
-  msg_ok "Removed outdated docker-compose plugin"
+  msg_ok "已移除 outdated docker-compose plugin"
   
   if [[ -z "$CURRENT_VERSION" ]] || [[ "$KASM_VERSION" != "$CURRENT_VERSION" ]]; then
-    msg_info "Updating Kasm"
+    msg_info "正在更新 Kasm"
     cd /tmp 
 
     msg_warn "WARNING: This script will run an external installer from a third-party source (https://www.kasmweb.com/)."
@@ -74,9 +74,9 @@ function update_script() {
   
     bash /tmp/kasm_release/upgrade.sh --proxy-port 443
     rm -rf /tmp/kasm_release
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. Kasm is already at v${KASM_VERSION}"
+    msg_ok "无需更新。 Kasm is already at v${KASM_VERSION}"
   
   fi
   exit
@@ -86,7 +86,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}${CL}"

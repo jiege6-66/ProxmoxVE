@@ -16,7 +16,7 @@ update_os
 NODE_VERSION="24" setup_nodejs
 fetch_and_deploy_gh_release "tracktor" "javedh-dev/tracktor" "tarball" "latest" "/opt/tracktor"
 
-msg_info "Configuring Tracktor"
+msg_info "正在配置 Tracktor"
 cd /opt/tracktor
 $STD npm install
 $STD npm run build
@@ -44,9 +44,9 @@ BODY_SIZE_LIMIT=Infinity
 # Force reseeding of data on every startup. Default - false
 #FORCE_DATA_SEED=false
 EOF
-msg_ok "Configured Tracktor"
+msg_ok "已配置 Tracktor"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/tracktor.service
 [Unit]
 Description=Tracktor Service
@@ -62,7 +62,7 @@ ExecStart=/usr/bin/npm start
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now tracktor
-msg_ok "Created service"
+msg_ok "已创建 service"
 
 motd_ssh
 customize

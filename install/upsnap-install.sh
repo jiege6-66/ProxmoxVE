@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nmap \
   samba \
@@ -21,12 +21,12 @@ $STD apt install -y \
   openssh-client \
   openssh-server \
   sshpass
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "upsnap" "seriousm4x/UpSnap" "prebuild" "latest" "/opt/upsnap" "UpSnap_*_linux_amd64.zip"
 setcap 'cap_net_raw=+ep' /opt/upsnap/upsnap
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/upsnap.service
 [Unit]
 Description=UpSnap Service
@@ -44,7 +44,7 @@ ExecStart=/opt/upsnap/upsnap serve --http=0.0.0.0:8090
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now upsnap
-msg_ok "Service Created"
+msg_ok "Service 已创建"
 
 motd_ssh
 customize

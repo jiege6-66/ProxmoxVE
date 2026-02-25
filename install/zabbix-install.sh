@@ -29,7 +29,7 @@ case "$ZABBIX_CHOICE" in
   ;;
 esac
 
-msg_info "Installing Zabbix $ZABBIX_VERSION"
+msg_info "正在安装 Zabbix $ZABBIX_VERSION"
 cd /tmp
 
 if [[ "$ZABBIX_VERSION" == "7.0" ]]; then
@@ -55,7 +55,7 @@ zcat "$ZABBIX_SQL" | sudo -u "$PG_DB_USER" psql "$PG_DB_NAME" &>/dev/null
 sed -i "s/^DBName=.*/DBName=$PG_DB_NAME/" /etc/zabbix/zabbix_server.conf
 sed -i "s/^DBUser=.*/DBUser=$PG_DB_USER/" /etc/zabbix/zabbix_server.conf
 sed -i "s/^# DBPassword=.*/DBPassword=$PG_DB_PASS/" /etc/zabbix/zabbix_server.conf
-msg_ok "Installed Zabbix $ZABBIX_VERSION"
+msg_ok "已安装 Zabbix $ZABBIX_VERSION"
 
 while true; do
   read -rp "Which agent do you want to install? [1=agent (classic), 2=agent2 (modern), default=1]: " AGENT_CHOICE
@@ -73,7 +73,7 @@ while true; do
     ;;
   esac
 done
-msg_ok "Selected $AGENT_PKG"
+msg_ok "已选择 $AGENT_PKG"
 
 if [ "$AGENT_PKG" = "zabbix-agent2" ]; then
   echo "Choose plugins for Zabbix Agent2:"
@@ -98,7 +98,7 @@ else
   $STD apt install -y zabbix-agent
 fi
 
-msg_info "Configuring Fping"
+msg_info "正在配置 Fping"
 if command -v fping >/dev/null 2>&1; then
   FPING_PATH=$(command -v fping)
   sed -i "s|^#\?FpingLocation=.*|FpingLocation=$FPING_PATH|" /etc/zabbix/zabbix_server.conf
@@ -108,9 +108,9 @@ if command -v fping6 >/dev/null 2>&1; then
   FPING6_PATH=$(command -v fping6)
   sed -i "s|^#\?Fping6Location=.*|Fping6Location=$FPING6_PATH|" /etc/zabbix/zabbix_server.conf
 fi
-msg_ok "Configured Fping"
+msg_ok "已配置 Fping"
 
-msg_info "Starting Services"
+msg_info "正在启动 Services"
 if [ "$AGENT_PKG" = "zabbix-agent2" ]; then
   AGENT_SERVICE="zabbix-agent2"
 else
@@ -120,7 +120,7 @@ fi
 systemctl restart zabbix-server apache2
 systemctl enable -q --now zabbix-server $AGENT_SERVICE apache2
 rm -rf /tmp/zabbix-release_*.deb
-msg_ok "Started Services"
+msg_ok "已启动 Services"
 
 motd_ssh
 customize

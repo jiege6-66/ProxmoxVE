@@ -19,7 +19,7 @@ export default function TextParseLinks(text: string) {
           {part}
           <ClipboardIcon
             className="size-3 cursor-pointer"
-            onClick={() => handleCopy("command", part)}
+            onClick={() => handleCopy("命令", part)}
           />
         </span>
       );

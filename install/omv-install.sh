@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing OpenMediaVault (Patience)"
+msg_info "正在安装 OpenMediaVault (Patience)"
 curl -fsSL "https://packages.openmediavault.org/public/archive.key" | gpg --dearmor >"/etc/apt/trusted.gpg.d/openmediavault-archive-keyring.gpg"
 cat <<EOF >/etc/apt/sources.list.d/openmediavault.list
 deb [signed-by=/etc/apt/trusted.gpg.d/openmediavault-archive-keyring.gpg] http://packages.openmediavault.org/public sandworm main
@@ -25,7 +25,7 @@ export APT_LISTCHANGES_FRONTEND=none
 $STD apt update
 apt -y --auto-remove --show-upgraded --allow-downgrades --allow-change-held-packages --no-install-recommends --option DPkg::Options::="--force-confdef" --option DPkg::Options::="--force-confold" install openmediavault-keyring openmediavault &>/dev/null
 omv-confdbadm populate &>/dev/null
-msg_ok "Installed OpenMediaVault"
+msg_ok "已安装 OpenMediaVault"
 
 motd_ssh
 customize

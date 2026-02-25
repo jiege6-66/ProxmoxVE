@@ -13,7 +13,7 @@
   "documentation": "https://help.resilio.com/",
   "website": "https://www.resilio.com/sync",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/resilio-sync.webp",
-  "description": "Fast, reliable, and simple file sync and share solution, powered by P2P technology. Sync files across all your devices without storing them in the cloud.",
+  "description": "快速、可靠且简单的文件同步和共享解决方案,由 P2P 技术驱动。在所有设备之间同步文件,无需将它们存储在云端。",
   "install_methods": [
     {
       "type": "default",

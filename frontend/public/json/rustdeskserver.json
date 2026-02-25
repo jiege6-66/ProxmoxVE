@@ -13,7 +13,7 @@
   "website": "https://rustdesk.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/rustdesk.webp",
   "config_path": "",
-  "description": "RustDesk is a full-featured open source remote control alternative for self-hosting and security with minimal configuration.",
+  "description": "RustDesk 是一个功能齐全的开源远程控制替代方案,用于自托管和安全,配置最少。",
   "install_methods": [
     {
       "type": "default",

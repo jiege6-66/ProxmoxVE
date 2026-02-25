@@ -14,32 +14,32 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   ffmpeg \
   imagemagick
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_hwaccel
 
-msg_info "Installing ASP.NET Core Runtime"
+msg_info "正在安装 ASP.NET Core Runtime"
 setup_deb822_repo \
   "microsoft" \
   "https://packages.microsoft.com/keys/microsoft-2025.asc" \
   "https://packages.microsoft.com/debian/13/prod/" \
   "trixie"
 $STD apt install -y aspnetcore-runtime-8.0
-msg_ok "Installed ASP.NET Core Runtime"
+msg_ok "已安装 ASP.NET Core Runtime"
 
 fetch_and_deploy_from_url "https://fileflows.com/downloads/zip" "/opt/fileflows"
 
-msg_info "Setup FileFlows"
+msg_info "设置 FileFlows"
 $STD ln -svf /usr/bin/ffmpeg /usr/local/bin/ffmpeg
 $STD ln -svf /usr/bin/ffprobe /usr/local/bin/ffprobe
 cd /opt/fileflows/Server
 dotnet FileFlows.Server.dll --systemd install --root true
 systemctl enable -q --now fileflows
-msg_ok "Setup FileFlows"
+msg_ok "设置 FileFlows"
 
 motd_ssh
 customize

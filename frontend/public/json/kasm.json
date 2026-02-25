@@ -13,7 +13,7 @@
   "documentation": "https://www.kasmweb.com/docs/",
   "website": "https://www.kasmweb.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/kasm-workspaces.webp",
-  "description": "Kasm Workspaces is a container streaming platform that delivers browser-based access to desktops, applications, and web services with enhanced security and scalability.",
+  "description": "Kasm Workspaces 是一个容器流平台，通过浏览器提供对桌面、应用程序和 Web 服务的访问，具有增强的安全性和可扩展性。",
   "install_methods": [
     {
       "type": "default",

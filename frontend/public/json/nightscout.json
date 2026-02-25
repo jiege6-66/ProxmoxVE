@@ -13,7 +13,7 @@
   "website": "http://www.nightscout.info/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/nightscout.webp",
   "config_path": "/opt/nightscout/my.env",
-  "description": "Nightscout is an open source, DIY project that allows real time access to a CGM data via personal website, smartwatch watchers, or apps and widgets available for smartphones.",
+  "description": "Nightscout 是一个开源的 DIY 项目，允许通过个人网站、智能手表监视器或智能手机可用的应用程序和小部件实时访问 CGM 数据。",
   "install_methods": [
     {
       "type": "default",

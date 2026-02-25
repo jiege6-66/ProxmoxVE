@@ -63,7 +63,7 @@ case $version in
   ;;
 esac
 
-msg_info "Installing Tomcat $TOMCAT_VERSION"
+msg_info "正在安装 Tomcat $TOMCAT_VERSION"
 LATEST_VERSION=$(curl -fsSL "https://dlcdn.apache.org/tomcat/tomcat-$TOMCAT_VERSION/" | grep -oP 'v[0-9]+\.[0-9]+\.[0-9]+(-M[0-9]+)?/' | sort -V | tail -n 1 | sed 's/\/$//; s/v//')
 TOMCAT_URL="https://dlcdn.apache.org/tomcat/tomcat-$TOMCAT_VERSION/v$LATEST_VERSION/bin/apache-tomcat-$LATEST_VERSION.tar.gz"
 curl -fsSL "$TOMCAT_URL" -o "/tmp/tomcat.tar.gz"

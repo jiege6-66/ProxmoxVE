@@ -32,7 +32,7 @@ const Alert = React.forwardRef<
     {...props}
   />
 ));
-Alert.displayName = "Alert";
+Alert.displayName = "警告";
 
 const AlertTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -44,7 +44,7 @@ const AlertTitle = React.forwardRef<
     {...props}
   />
 ));
-AlertTitle.displayName = "AlertTitle";
+AlertTitle.displayName = "警告标题";
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -56,6 +56,6 @@ const AlertDescription = React.forwardRef<
     {...props}
   />
 ));
-AlertDescription.displayName = "AlertDescription";
+AlertDescription.displayName = "警告描述";
 
 export { Alert, AlertDescription, AlertTitle };

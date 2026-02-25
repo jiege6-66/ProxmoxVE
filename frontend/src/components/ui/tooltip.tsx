@@ -28,3 +28,5 @@ const TooltipContent = React.forwardRef<
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };
+
+这个组件文件中没有用户可见的 UI 文本字符串需要翻译。代码只包含组件定义、样式类名和技术性的属性名称，这些都不应该被翻译。

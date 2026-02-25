@@ -13,7 +13,7 @@
   "website": "https://tdarr.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tdarr.webp",
   "config_path": "",
-  "description": "Tdarr is a media transcoding application designed to automate the transcode and remux management of a media library. It uses conditional-based processing to determine the required encoding and remux operations for each file in the library. The software integrates with popular media management tools, such as Sonarr and Radarr, to ensure that newly added media files are automatically processed and optimized for the user's desired playback device. Tdarr provides a web-based interface for monitoring and managing the transcoding process, and also supports real-time logging and reporting. The software is designed to be flexible and configurable, with a wide range of encoding and remux options available to users. Tdarr is an ideal solution for media enthusiasts who want to optimize their library for seamless playback on a variety of devices, while also streamlining the management and maintenance of their media library.",
+  "description": "Tdarr 是一个媒体转码应用程序,旨在自动化媒体库的转码和重新封装管理。它使用基于条件的处理来确定库中每个文件所需的编码和重新封装操作。该软件与流行的媒体管理工具(如 Sonarr 和 Radarr)集成,以确保新添加的媒体文件自动处理并针对用户所需的播放设备进行优化。Tdarr 提供基于 Web 的界面用于监控和管理转码过程,还支持实时日志记录和报告。该软件设计灵活且可配置,为用户提供广泛的编码和重新封装选项。Tdarr 是媒体爱好者的理想解决方案,他们希望优化其库以在各种设备上无缝播放,同时简化媒体库的管理和维护。",
   "install_methods": [
     {
       "type": "default",

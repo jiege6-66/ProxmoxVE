@@ -24,17 +24,17 @@ function update_script() {
   check_container_storage
   check_container_resources
 
-  msg_info "Updating base system"
+  msg_info "正在更新 base system"
   $STD apt update
   $STD apt upgrade -y 
   msg_ok "Base system updated"
 
-  msg_info "Updating Docker Engine"
+  msg_info "正在更新 Docker Engine"
   $STD apt install --only-upgrade -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-buildx-plugin
   msg_ok "Docker Engine updated"
 
   if docker ps -a --format '{{.Image}}' | grep -q '^portainer/portainer-ce:latest$'; then
-    msg_info "Updating Portainer"
+    msg_info "正在更新 Portainer"
     $STD docker pull portainer/portainer-ce:latest
     $STD docker stop portainer
     $STD docker rm portainer
@@ -51,7 +51,7 @@ function update_script() {
   fi
 
   if docker ps -a --format '{{.Names}}' | grep -q '^portainer_agent$'; then
-    msg_info "Updating Portainer Agent"
+    msg_info "正在更新 Portainer Agent"
     $STD docker pull portainer/agent:latest
     $STD docker stop portainer_agent
     $STD docker rm portainer_agent
@@ -64,7 +64,7 @@ function update_script() {
       portainer/agent
     msg_ok "Updated Portainer Agent"
   fi
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -72,7 +72,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} If you installed Portainer, access it at the following URL:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}:9443${CL}"

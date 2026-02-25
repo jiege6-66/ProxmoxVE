@@ -13,34 +13,34 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   pkg-config \
   libssl-dev \
   build-essential \
   libsqlite3-dev \
   argon2
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_rust
 NODE_MODULE="pnpm" setup_nodejs
 fetch_and_deploy_gh_release "wealthfolio" "afadil/wealthfolio" "tarball"
 
-msg_info "Building Frontend (patience)"
+msg_info "正在构建 Frontend (patience)"
 cd /opt/wealthfolio
 $STD pnpm install --frozen-lockfile
 $STD pnpm tsc
 $STD pnpm vite build
-msg_ok "Built Frontend"
+msg_ok "已构建 Frontend"
 
-msg_info "Building Backend (patience)"
+msg_info "正在构建 Backend (patience)"
 cd /opt/wealthfolio/src-server
 $STD cargo build --release --manifest-path Cargo.toml
 cp /opt/wealthfolio/src-server/target/release/wealthfolio-server /usr/local/bin/wealthfolio-server
 chmod +x /usr/local/bin/wealthfolio-server
-msg_ok "Built Backend"
+msg_ok "已构建 Backend"
 
-msg_info "Configuring Wealthfolio"
+msg_info "正在配置 Wealthfolio"
 mkdir -p /opt/wealthfolio_data
 SECRET_KEY=$(openssl rand -base64 32)
 WF_PASSWORD=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-16)
@@ -55,15 +55,15 @@ WF_CORS_ALLOW_ORIGINS=*
 WF_REQUEST_TIMEOUT_MS=30000
 EOF
 echo "WF_PASSWORD=${WF_PASSWORD}" >~/wealthfolio.creds
-msg_ok "Configured Wealthfolio"
+msg_ok "已配置 Wealthfolio"
 
-msg_info "Cleaning Up"
+msg_info "正在清理 Up"
 rm -rf /opt/wealthfolio/src-server/target
 rm -rf /root/.cargo/registry
 rm -rf /opt/wealthfolio/node_modules
-msg_ok "Cleaned Up"
+msg_ok "已清理 Up"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/wealthfolio.service
 [Unit]
 Description=Wealthfolio Investment Tracker
@@ -82,7 +82,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now wealthfolio
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

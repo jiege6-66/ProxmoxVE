@@ -19,7 +19,7 @@ fetch_and_deploy_gh_release "meilisearch" "meilisearch/meilisearch" "binary" "la
 mkdir -p /opt/wanderer/{source,data/pb_data,data/meili_data}
 fetch_and_deploy_gh_release "wanderer" "open-wanderer/wanderer" "tarball" "latest" "/opt/wanderer/source"
 
-msg_info "Installing wanderer (patience)"
+msg_info "正在安装 wanderer (patience)"
 cd /opt/wanderer/source/db
 $STD go mod tidy
 $STD go build
@@ -27,9 +27,9 @@ cd /opt/wanderer/source/web
 $STD npm ci -s vitest
 $STD npm ci --omit=dev
 $STD npm run build
-msg_ok "Installed wanderer"
+msg_ok "已安装 wanderer"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 MEILI_KEY=$(openssl rand -hex 32)
 POCKETBASE_KEY=$(openssl rand -hex 16)
 
@@ -79,7 +79,7 @@ WantedBy=multi-user.target
 EOF
 sleep 1
 systemctl enable -q --now wanderer-web
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

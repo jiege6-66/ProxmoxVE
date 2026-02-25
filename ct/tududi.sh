@@ -24,28 +24,28 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/tududi ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   NODE_VERSION="22" setup_nodejs
 
   if check_for_gh_release "tududi" "chrisvel/tududi"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop tududi
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up env file"
+    msg_info "正在备份 env file"
     if [[ -f /opt/tududi/backend/.env ]]; then
       cp /opt/tududi/backend/.env /opt/tududi.env
     else
       cp /opt/tududi/.env /opt/tududi.env
     fi
-    msg_ok "Backed up env file"
+    msg_ok "已备份 env file"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "tududi" "chrisvel/tududi" "tarball" "latest" "/opt/tududi"
 
-    msg_info "Updating Tududi"
+    msg_info "正在更新 Tududi"
     cd /opt/tududi
     $STD npm install
     export NODE_ENV=production
@@ -60,10 +60,10 @@ function update_script() {
     systemctl daemon-reload
     msg_ok "Updated Tududi"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start tududi
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -72,7 +72,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3002${CL}"

@@ -28,7 +28,7 @@ export async function GET() {
     return NextResponse.json({
       generated: "",
       versions: [],
-      error: err.message || "An unexpected error occurred",
+      error: err.message || "发生了意外错误",
     }, {
       status: 500,
     });

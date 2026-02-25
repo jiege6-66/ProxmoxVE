@@ -19,7 +19,7 @@ read -r -p "${TAB3}Would you like to add headscale-admin UI? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   fetch_and_deploy_gh_release "headscale-admin" "GoodiesHQ/headscale-admin" "prebuild" "latest" "/opt/headscale-admin" "admin.zip"
 
-  msg_info "Configuring headscale-admin"
+  msg_info "正在配置 headscale-admin"
   $STD apt install -y caddy
   $STD caddy stop
   rm /etc/caddy/Caddyfile
@@ -44,10 +44,10 @@ reverse_proxy localhost:8080
 EOF
   caddy fmt --overwrite /etc/caddy/Caddyfile
   systemctl start caddy
-  msg_ok "Configured headscale-admin"
+  msg_ok "已配置 headscale-admin"
 fi
 
-msg_info "Starting service"
+msg_info "正在启动 service"
 systemctl enable -q --now headscale
 msg_ok "Service started"
 

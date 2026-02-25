@@ -16,7 +16,7 @@ update_os
 fetch_and_deploy_gh_release "zoraxy" "tobychui/zoraxy" "singlefile" "latest" "/opt/zoraxy" "zoraxy_linux_amd64"
 ln -s /opt/zoraxy/zoraxy /usr/local/bin/zoraxy
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/zoraxy.service
 [Unit]
 Description=General purpose request proxy and forwarding tool
@@ -31,7 +31,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now zoraxy
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

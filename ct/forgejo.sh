@@ -24,30 +24,30 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/forgejo ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   if check_for_codeberg_release "forgejo" "forgejo/forgejo"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop forgejo
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     fetch_and_deploy_codeberg_release "forgejo" "forgejo/forgejo" "singlefile" "latest" "/opt/forgejo" "forgejo-*-linux-amd64"
     ln -sf /opt/forgejo/forgejo /usr/local/bin/forgejo
 
     if grep -q "GITEA_WORK_DIR" /etc/systemd/system/forgejo.service; then
-      msg_info "Updating Service File"
+      msg_info "正在更新 Service File"
       sed -i "s/GITEA_WORK_DIR/FORGEJO_WORK_DIR/g" /etc/systemd/system/forgejo.service
       systemctl daemon-reload
       msg_ok "Updated Service File"
     fi
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start forgejo
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at the latest version."
+    msg_ok "无需更新。 ${APP} is already at the latest version."
   fi
   exit
 }
@@ -56,7 +56,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

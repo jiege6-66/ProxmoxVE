@@ -15,13 +15,13 @@ update_os
 
 setup_hwaccel
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "owncast" "owncast/owncast" "prebuild" "latest" "/opt/owncast" "owncast*linux-64bit.zip"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/owncast.service
 [Unit]
 Description=Owncast
@@ -36,7 +36,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now owncast
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

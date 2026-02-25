@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /root/.node-red ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   UPD=$(msg_menu "Node-Red Update Options" \
@@ -33,18 +33,18 @@ function update_script() {
   if [ "$UPD" == "1" ]; then
     NODE_VERSION="22" setup_nodejs
 
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop nodered
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating Node-Red"
+    msg_info "正在更新 Node-Red"
     $STD npm install -g --unsafe-perm node-red
     msg_ok "Updated Node-Red"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start nodered
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
     exit
   fi
   if [ "$UPD" == "2" ]; then
@@ -74,13 +74,13 @@ function update_script() {
       "totallyinformation" "TotallyInformation" \
       "zenburn" "Zenburn")
     header_info
-    msg_info "Installing ${THEME} Theme"
+    msg_info "正在安装 ${THEME} Theme"
     cd /root/.node-red
     sed -i 's|// theme: ".*",|theme: "",|g' /root/.node-red/settings.js
     $STD npm install @node-red-contrib-themes/theme-collection
     sed -i "{s/theme: ".*"/theme: '${THEME}',/g}" /root/.node-red/settings.js
     systemctl restart nodered
-    msg_ok "Installed ${THEME} Theme"
+    msg_ok "已安装 ${THEME} Theme"
     exit
   fi
 }
@@ -89,7 +89,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:1880${CL}"

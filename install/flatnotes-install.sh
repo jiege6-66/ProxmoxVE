@@ -17,7 +17,7 @@ fetch_and_deploy_gh_release "flatnotes" "dullage/flatnotes" "tarball"
 USE_UVX="YES" setup_uv
 NODE_VERSION="22" setup_nodejs
 
-msg_info "Setting up Flatnotes"
+msg_info "正在设置 Flatnotes"
 cd /opt/flatnotes
 $STD /usr/local/bin/uvx migrate-to-uv
 $STD /usr/local/bin/uv sync
@@ -33,9 +33,9 @@ FLATNOTES_PATH='/opt/flatnotes/data/'
 #FLATNOTES_PASSWORD='password'
 #FLATNOTES_SECRET_KEY='secret-key'
 EOF
-msg_ok "Setup Flatnotes"
+msg_ok "设置 Flatnotes"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/flatnotes.service
 [Unit]
 Description=Flatnotes
@@ -53,7 +53,7 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now flatnotes
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

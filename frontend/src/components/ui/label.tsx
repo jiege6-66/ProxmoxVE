@@ -26,3 +26,5 @@ const Label = React.forwardRef<
 Label.displayName = LabelPrimitive.Root.displayName;
 
 export { Label };
+
+这个组件没有用户可见的 UI 文本需要翻译，它只是一个样式化的标签组件包装器。所有的文本内容都是通过 props 传入的，应该在使用这个组件的地方进行翻译。

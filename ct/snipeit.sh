@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/snipe-it ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
@@ -33,20 +33,20 @@ function update_script() {
   fi
 
   if check_for_gh_release "snipe-it" "grokability/snipe-it"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop nginx
-    msg_ok "Services Stopped"
+    msg_ok "Services 已停止"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     mv /opt/snipe-it /opt/snipe-it-backup
-    msg_ok "Created Backup"
+    msg_ok "已创建 Backup"
 
     fetch_and_deploy_gh_release "snipe-it" "grokability/snipe-it" "tarball"
     [[ "$(php -v 2>/dev/null)" == PHP\ 8.2* ]] && PHP_VERSION="8.3" PHP_FPM="YES" PHP_MODULE="ldap,soap,xsl" setup_php
     sed -i 's/php8.2/php8.3/g' /etc/nginx/conf.d/snipeit.conf
     setup_composer
 
-    msg_info "Updating Snipe-IT"
+    msg_info "正在更新 Snipe-IT"
     $STD apt update
     $STD apt -y upgrade
     cp /opt/snipe-it-backup/.env /opt/snipe-it/.env
@@ -66,10 +66,10 @@ function update_script() {
     rm -rf /opt/snipe-it-backup
     msg_ok "Updated Snipe-IT"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start nginx
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -78,7 +78,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

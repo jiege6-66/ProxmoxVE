@@ -13,7 +13,7 @@
   "website": "https://www.uhfapp.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/uhf.webp",
   "config_path": "/etc/uhf-server/",
-  "description": "UHF Server is a powerful companion app that lets you seamlessly schedule and record your favorite shows from the UHF app.",
+  "description": "UHF Server 是一款强大的配套应用，让您可以从 UHF 应用无缝安排和录制您喜爱的节目。",
   "install_methods": [
     {
       "type": "default",

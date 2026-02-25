@@ -13,7 +13,7 @@
   "website": "https://github.com/lissy93/web-check",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/web-check.webp",
   "config_path": "/opt/web-check/.env",
-  "description": "Get an insight into the inner-workings of a given website: uncover potential attack vectors, analyse server architecture, view security configurations, and learn what technologies a site is using.",
+  "description": "深入了解指定网站的内部运作:发现潜在攻击向量、分析服务器架构、查看安全配置,并了解网站使用的技术。",
   "install_methods": [
     {
       "type": "default",

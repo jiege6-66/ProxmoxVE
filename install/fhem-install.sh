@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y avahi-daemon
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_deb822_repo \
   "fhem" \
@@ -24,9 +24,9 @@ setup_deb822_repo \
   "/" \
   " "
 
-msg_info "Setting up FHEM"
+msg_info "正在设置 FHEM"
 $STD apt install -y fhem
-msg_ok "Setup FHEM"
+msg_ok "设置 FHEM"
 
 motd_ssh
 customize

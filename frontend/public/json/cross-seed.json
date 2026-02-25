@@ -13,7 +13,7 @@
   "website": "https://www.cross-seed.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cross-seed.webp",
   "config_path": "~/.cross-seed/config.js",
-  "description": "cross-seed is an app designed to help you download torrents that you can cross seed based on your existing torrents. It is designed to match conservatively to minimize manual intervention.",
+  "description": "cross-seed 是一个应用程序，旨在帮助你根据现有种子下载可以交叉做种的种子。它设计为保守匹配，以最大限度地减少手动干预。",
   "install_methods": [
     {
       "type": "default",

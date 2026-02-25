@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   git \
   apache2 \
   php8.4-{apcu,cli,common,curl,gd,ldap,mysql,xmlrpc,xml,mbstring,bcmath,intl,zip,redis,bz2,soap} \
   php-cas \
   libapache2-mod-php
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_mariadb
 
-msg_info "Setting up database"
+msg_info "正在设置 database"
 DB_NAME=glpi_db
 DB_USER=glpi
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -41,14 +41,14 @@ $STD mariadb -u root -e "GRANT SELECT ON \`mysql\`.\`time_zone_name\` TO '$DB_US
 } >>~/glpi_db.creds
 msg_ok "Set up database"
 
-msg_info "Installing GLPi"
+msg_info "正在安装 GLPi"
 cd /opt
 RELEASE=$(curl -fsSL https://api.github.com/repos/glpi-project/glpi/releases/latest | grep '"tag_name"' | sed -E 's/.*"tag_name": "([^"]+)".*/\1/')
 curl -fsSL "https://github.com/glpi-project/glpi/releases/download/${RELEASE}/glpi-${RELEASE}.tgz" -o $(basename "https://github.com/glpi-project/glpi/releases/download/${RELEASE}/glpi-${RELEASE}.tgz")
 $STD tar -xzvf glpi-${RELEASE}.tgz
 cd /opt/glpi
 echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
-msg_ok "Installed GLPi"
+msg_ok "已安装 GLPi"
 
 msg_info "Setting Downstream file"
 cat <<EOF >/opt/glpi/inc/downstream.php
@@ -80,9 +80,9 @@ define('GLPI_UPLOAD_DIR', GLPI_VAR_DIR . '/_uploads');
 define('GLPI_CACHE_DIR', GLPI_VAR_DIR . '/_cache');
 define('GLPI_LOG_DIR', '/var/log/glpi');
 EOF
-msg_ok "Configured Downstream file"
+msg_ok "已配置 Downstream file"
 
-msg_info "Configuring GLPI Database"
+msg_info "正在配置 GLPI Database"
 $STD /usr/bin/php /opt/glpi/bin/console db:install \
   --db-host=localhost \
   --db-name=$DB_NAME \
@@ -92,7 +92,7 @@ $STD /usr/bin/php /opt/glpi/bin/console db:install \
   --no-interaction \
   --allow-superuser \
   --force
-msg_ok "Configured GLPI Database"
+msg_ok "已配置 GLPI Database"
 
 msg_info "Setting Folder and File Permissions"
 chown root:root /opt/glpi/ -R
@@ -108,9 +108,9 @@ find /var/lib/glpi -type f -exec chmod 0644 {} \;
 find /var/lib/glpi -type d -exec chmod 0755 {} \;
 find /var/log/glpi -type f -exec chmod 0644 {} \;
 find /var/log/glpi -type d -exec chmod 0755 {} \;
-msg_ok "Configured Folder and File Permissions"
+msg_ok "已配置 Folder and File Permissions"
 
-msg_info "Setup Service"
+msg_info "设置 Service"
 cat <<EOF >/etc/apache2/sites-available/glpi.conf
 <VirtualHost *:80>
     ServerName localhost
@@ -134,11 +134,11 @@ $STD a2enmod rewrite
 $STD a2ensite glpi.conf
 rm -rf /opt/glpi/install/install.php
 rm -rf /opt/glpi-${RELEASE}.tgz
-msg_ok "Setup Service"
+msg_ok "设置 Service"
 
-msg_info "Setup Cronjob"
+msg_info "设置 Cronjob"
 echo "* * * * * php /opt/glpi/front/cron.php" | crontab -
-msg_ok "Setup Cronjob"
+msg_ok "设置 Cronjob"
 
 msg_info "Update PHP Params"
 PHP_VERSION=$(ls /etc/php/ | grep -E '^[0-9]+\.[0-9]+$' | head -n 1)

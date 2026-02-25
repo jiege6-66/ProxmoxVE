@@ -19,7 +19,7 @@ function header_info {
 EOF
 }
 header_info
-echo -e "Loading..."
+echo -e "正在加载..."
 GEN_MAC=$(echo '00 60 2f'$(od -An -N3 -t xC /dev/urandom) | sed -e 's/ /:/g' | tr '[:lower:]' '[:upper:]')
 RANDOM_UUID="$(cat /proc/sys/kernel/random/uuid)"
 METHOD=""
@@ -240,7 +240,7 @@ function default_settings() {
   echo -e "${VLANTAG}${BOLD}${DGN}VLAN: ${BGN}Default${CL}"
   echo -e "${DEFAULT}${BOLD}${DGN}Interface MTU Size: ${BGN}Default${CL}"
   echo -e "${GATEWAY}${BOLD}${DGN}Start VM when completed: ${BGN}yes${CL}"
-  echo -e "${CREATING}${BOLD}${DGN}Creating a Mikrotik RouterOS VM using the above default settings${CL}"
+  echo -e "${CREATING}${BOLD}${DGN}正在创建 a Mikrotik RouterOS VM using the above default settings${CL}"
 }
 
 function get_mikrotik_version() {
@@ -479,7 +479,7 @@ function advanced_settings() {
   fi
 
   if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "ADVANCED SETTINGS COMPLETE" --yesno "Ready to create a Mikrotik RouterOS CHR VM?" --no-button Do-Over 10 58); then
-    echo -e "${CREATING}${BOLD}${DGN}Creating a Mikrotik RouterOS CHR VM using the above advanced settings${CL}"
+    echo -e "${CREATING}${BOLD}${DGN}正在创建 a Mikrotik RouterOS CHR VM using the above advanced settings${CL}"
   else
     header_info
     echo -e "${ADVANCED}${BOLD}${RD}Using Advanced Settings${CL}"
@@ -550,12 +550,12 @@ fi
 URL=https://download.mikrotik.com/routeros/$MIK_VER/chr-$MIK_VER.img.zip
 
 sleep 2
-msg_ok "Downloading from URL: ${CL}${BL}${URL}${CL}"
+msg_ok "正在下载 from URL: ${CL}${BL}${URL}${CL}"
 curl -f#SL -o "$(basename "$URL")" "$URL"
 echo -en "\e[1A\e[0K"
 FILE=$(basename $URL)
-msg_ok "Downloaded ${CL}${BL}$FILE${CL}"
-msg_info "Extracting Mikrotik RouterOS CHR Disk Image"
+msg_ok "已下载 ${CL}${BL}$FILE${CL}"
+msg_info "正在解压 Mikrotik RouterOS CHR Disk Image"
 gunzip -f -S .zip $FILE
 STORAGE_TYPE=$(pvesm status -storage $STORAGE | awk 'NR>1 {print $2}')
 case $STORAGE_TYPE in
@@ -584,8 +584,8 @@ esac
 DISK_VAR="vm-${VMID}-disk-0${DISK_EXT:-}"
 DISK_REF="${STORAGE}:${DISK_REF:-}${DISK_VAR:-}"
 
-msg_ok "Extracted Mikrotik RouterOS CHR Disk Image"
-msg_info "Creating Mikrotik RouterOS CHR VM"
+msg_ok "已解压 Mikrotik RouterOS CHR Disk Image"
+msg_info "正在创建 Mikrotik RouterOS CHR VM"
 qm create $VMID -tablet 0 -localtime 1 -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
   -tags community-script -net0 virtio,bridge=$BRG,macaddr=$MAC$VLAN$MTU \
   -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
@@ -635,9 +635,9 @@ fi
 
 msg_ok "Mikrotik RouterOS CHR VM ${CL}${BL}(${HN})"
 if [ "$START_VM" == "yes" ]; then
-  msg_info "Starting Mikrotik RouterOS CHR VM"
+  msg_info "正在启动 Mikrotik RouterOS CHR VM"
   qm start $VMID
-  msg_ok "Started Mikrotik RouterOS CHR VM"
+  msg_ok "已启动 Mikrotik RouterOS CHR VM"
 fi
 post_update_to_api "done" "none"
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"

@@ -25,16 +25,16 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/bookstack ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
   if check_for_gh_release "bookstack" "BookStackApp/BookStack"; then
-    msg_info "Stopping Apache2"
+    msg_info "正在停止 Apache2"
     systemctl stop apache2
-    msg_ok "Services Stopped"
+    msg_ok "Services 已停止"
 
-    msg_info "Backing up data"
+    msg_info "正在备份 data"
     mv /opt/bookstack /opt/bookstack-backup
     msg_ok "Backup finished"
 
@@ -42,14 +42,14 @@ function update_script() {
     PHP_VERSION="8.3" PHP_APACHE="YES" PHP_FPM="YES" PHP_MODULE="ldap,tidy,mysqli" setup_php
     setup_composer
 
-    msg_info "Restoring backup"
+    msg_info "正在恢复 backup"
     cp /opt/bookstack-backup/.env /opt/bookstack/.env
     [[ -d /opt/bookstack-backup/public/uploads ]] && cp -a /opt/bookstack-backup/public/uploads/. /opt/bookstack/public/uploads/
     [[ -d /opt/bookstack-backup/storage/uploads ]] && cp -a /opt/bookstack-backup/storage/uploads/. /opt/bookstack/storage/uploads/
     [[ -d /opt/bookstack-backup/themes ]] && cp -a /opt/bookstack-backup/themes/. /opt/bookstack/themes/
     msg_ok "Backup restored"
 
-    msg_info "Configuring BookStack"
+    msg_info "正在配置 BookStack"
     cd /opt/bookstack
     export COMPOSER_ALLOW_SUPERUSER=1
     $STD /usr/local/bin/composer install --no-dev
@@ -59,12 +59,12 @@ function update_script() {
     chmod -R 775 /opt/bookstack/storage /opt/bookstack/bootstrap/cache /opt/bookstack/public/uploads
     chmod -R 640 /opt/bookstack/.env
     rm -rf /opt/bookstack-backup
-    msg_ok "Configured BookStack"
+    msg_ok "已配置 BookStack"
 
-    msg_info "Starting Apache2"
+    msg_info "正在启动 Apache2"
     systemctl start apache2
-    msg_ok "Started Apache2"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Apache2"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -72,7 +72,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

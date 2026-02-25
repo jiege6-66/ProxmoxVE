@@ -1,37 +1,37 @@
 export const FAQ_Items = [
   {
-    title: "Why do you use tarballs instead of git pull for installation?",
+    title: "为什么使用 tarball 而不是 git pull 来安装？",
     content:
-      "Our LXC scripts install applications using release tarballs. Tarballs contain stable code versions tested for release. Using `git pull` directly fetches the latest development code, which might be unstable or contain bugs. Tarballs offer a more reliable installation.",
+      "我们的 LXC 脚本使用发布 tarball 来安装应用程序。Tarball 包含经过测试的稳定代码版本。直接使用 `git pull` 会获取最新的开发代码，可能不稳定或包含错误。Tarball 提供更可靠的安装方式。",
   },
   {
-    title: "Why do the scripts install applications using HTTP by default?",
+    title: "为什么脚本默认使用 HTTP 安装应用程序？",
     content:
-      "Our LXC scripts install applications using HTTP by default. Setting up HTTPS often requires manual configuration specific to your setup, which our automated scripts cannot handle reliably. If an application requires HTTPS, the script will configure it. For others, you need to enable HTTPS yourself, often following the application's official documentation.",
+      "我们的 LXC 脚本默认使用 HTTP 安装应用程序。设置 HTTPS 通常需要针对您的环境进行手动配置，我们的自动化脚本无法可靠地处理这些配置。如果应用程序需要 HTTPS，脚本会进行配置。对于其他应用程序，您需要自行启用 HTTPS，通常需要遵循应用程序的官方文档。",
   },
   {
-    title: "Where can I find documentation for the installed application?",
+    title: "在哪里可以找到已安装应用程序的文档？",
     content:
-      "We link to the official documentation for each application whenever possible. You can usually find this link on the script's information page for the specific LXC script. If you notice a missing link for an application that has official docs, please report it so we can add it.",
+      "我们会尽可能链接到每个应用程序的官方文档。您通常可以在特定 LXC 脚本的信息页面上找到此链接。如果您发现某个有官方文档的应用程序缺少链接，请报告给我们，以便我们添加。",
   },
   {
-    title: "What should I do if I find a bug in an LXC script?",
+    title: "如果在 LXC 脚本中发现错误该怎么办？",
     content:
-      "Our LXC scripts are maintained by volunteers in their free time. Bugs can occur due to our errors or changes in the applications themselves. If you find a bug in one of our LXC scripts, please report it on our GitHub issues page. Your feedback helps us improve the scripts.",
+      "我们的 LXC 脚本由志愿者在业余时间维护。错误可能由于我们的失误或应用程序本身的变化而发生。如果您在我们的 LXC 脚本中发现错误，请在我们的 GitHub issues 页面上报告。您的反馈有助于我们改进脚本。",
   },
   {
-    title: "Why isn't the application updating to the very latest version?",
+    title: "为什么应用程序没有更新到最新版本？",
     content:
-      "Updates via our LXC scripts might not pull the absolute latest version for a few reasons:\n- A bug in the application's release naming on GitHub.\n- A bug in our update script.\n- We intentionally pinned the version. This happens if a newer version has breaking changes or serious bugs that could affect your data or LXC stability. We wait for fixes before allowing the update.",
+      "通过我们的 LXC 脚本更新可能无法获取最新版本，原因如下：\n- 应用程序在 GitHub 上的发布命名存在错误。\n- 我们的更新脚本存在错误。\n- 我们有意锁定了版本。如果新版本有破坏性变更或严重错误可能影响您的数据或 LXC 稳定性，就会发生这种情况。我们会等待修复后再允许更新。",
   },
   {
-    title: "Why am I getting a \"502 Bad Gateway\" error?",
+    title: "为什么会出现"502 Bad Gateway"错误？",
     content:
-      "A \"502 Bad Gateway\" error usually means the application inside the LXC is not running or responding correctly. Check the application's logs first. If you use a reverse proxy, check its logs too. If you still have problems after checking the logs, report the issue, providing details from the logs.",
+      ""502 Bad Gateway"错误通常意味着 LXC 内的应用程序未运行或响应不正确。首先检查应用程序的日志。如果您使用反向代理，也要检查其日志。如果检查日志后仍有问题，请报告问题并提供日志详细信息。",
   },
   {
-    title: "What should I do if a script fails during execution?",
+    title: "如果脚本在执行过程中失败该怎么办？",
     content:
-      "If an LXC script fails, run it again using Verbose mode. Standard mode hides detailed output for neatness, showing only progress. Verbose mode displays all messages, which helps you (and us) diagnose the error. Include this verbose output if you report the issue.",
+      "如果 LXC 脚本失败，请使用详细模式重新运行。标准模式为了整洁会隐藏详细输出，仅显示进度。详细模式会显示所有消息，这有助于您（和我们）诊断错误。如果您报告问题，请包含此详细输出。",
   },
 ];

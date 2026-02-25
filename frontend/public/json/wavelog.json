@@ -13,7 +13,7 @@
   "website": "https://www.wavelog.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wavelog.webp",
   "config_path": "/opt/wavelog/application/config/config.php",
-  "description": "Wavelog is a self-hosted PHP application that allows you to log your amateur radio contacts anywhere. All you need is a web browser and active internet connection.",
+  "description": "Wavelog 是一个自托管的 PHP 应用程序，允许您在任何地方记录业余无线电通联。您只需要一个网页浏览器和活跃的互联网连接。",
   "install_methods": [
     {
       "type": "default",

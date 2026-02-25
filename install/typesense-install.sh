@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing TypeSense"
+msg_info "正在安装 TypeSense"
 RELEASE=$(curl -fsSL https://api.github.com/repos/typesense/typesense/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
 cd /opt
 curl -fsSL "https://dl.typesense.org/releases/${RELEASE}/typesense-server-${RELEASE}-amd64.deb" -o "/opt/typesense-server-${RELEASE}-amd64.deb"
@@ -21,7 +21,7 @@ $STD apt install -y /opt/typesense-server-${RELEASE}-amd64.deb
 echo 'enable-cors = true' >>/etc/typesense/typesense-server.ini
 rm -rf /opt/typesense-server-${RELEASE}-amd64.deb
 echo "${RELEASE}" >"/opt/${APPLICATION}_version.txt"
-msg_ok "Installed TypeSense"
+msg_ok "已安装 TypeSense"
 
 motd_ssh
 customize

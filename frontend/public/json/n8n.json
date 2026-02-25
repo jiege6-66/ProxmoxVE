@@ -13,7 +13,7 @@
   "website": "https://n8n.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/n8n.webp",
   "config_path": "/opt/n8n.env",
-  "description": "n8n is a workflow automation tool that enables users to automate various tasks and processes by connecting various data sources, systems, and services. It provides a visual interface for building workflows, allowing users to easily define and automate complex sequences of actions, such as data processing, conditional branching, and API calls. n8n supports a wide range of integrations, making it a versatile tool for automating a variety of use cases, from simple data processing workflows to complex business processes. With its extendable architecture, n8n is designed to be easily customizable and can be adapted to meet the specific needs of different users and industries.",
+  "description": "n8n 是一个工作流自动化工具，使用户能够通过连接各种数据源、系统和服务来自动化各种任务和流程。它提供了一个可视化界面来构建工作流，允许用户轻松定义和自动化复杂的操作序列，例如数据处理、条件分支和 API 调用。n8n 支持广泛的集成，使其成为自动化各种用例的多功能工具，从简单的数据处理工作流到复杂的业务流程。凭借其可扩展的架构，n8n 设计为易于定制，可以适应不同用户和行业的特定需求。",
   "install_methods": [
     {
       "type": "default",

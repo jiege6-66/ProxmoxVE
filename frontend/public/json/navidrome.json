@@ -13,7 +13,7 @@
   "website": "https://www.navidrome.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/navidrome.webp",
   "config_path": "/etc/navidrome/navidrome.toml",
-  "description": "Navidrome is a music server solution that makes your music collection accessible from anywhere. It provides a modern web-based user interface and compatibility with a range of third-party mobile apps for both iOS and Android devices. With Navidrome, users can access their music collection from anywhere, whether at home or on the go. The software supports a variety of music formats, making it easy for users to play their favorite songs and albums. Navidrome provides a simple and user-friendly interface for managing and organizing music collections, making it a valuable tool for music lovers who want to access their music from anywhere. The software is designed to be easy to set up and use, making it a popular choice for those who want to host their own music server and enjoy their music collection from anywhere.",
+  "description": "Navidrome 是一个音乐服务器解决方案，可让您的音乐收藏随时随地访问。它提供了一个现代的基于网页的用户界面，并兼容一系列适用于 iOS 和 Android 设备的第三方移动应用。使用 Navidrome，用户可以随时随地访问他们的音乐收藏，无论是在家中还是在旅途中。该软件支持多种音乐格式，使用户可以轻松播放他们喜爱的歌曲和专辑。Navidrome 提供了一个简单易用的界面来管理和组织音乐收藏，使其成为想要随时随地访问音乐的音乐爱好者的宝贵工具。该软件设计为易于设置和使用，使其成为那些想要托管自己的音乐服务器并随时随地享受音乐收藏的人的热门选择。",
   "install_methods": [
     {
       "type": "default",

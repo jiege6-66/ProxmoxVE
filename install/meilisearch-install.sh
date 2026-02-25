@@ -20,7 +20,7 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   NODE_VERSION="22" NODE_MODULE="pnpm@latest" setup_nodejs
   fetch_and_deploy_gh_release "meilisearch-ui" "riccox/meilisearch-ui" "tarball"
 
-  msg_info "Configuring ${APPLICATION}-ui"
+  msg_info "正在配置 ${APPLICATION}-ui"
   cd /opt/meilisearch-ui
   sed -i 's|const hash = execSync("git rev-parse HEAD").toString().trim();|const hash = "unknown";|' /opt/meilisearch-ui/vite.config.ts
   $STD pnpm install
@@ -29,9 +29,9 @@ VITE_SINGLETON_MODE=true
 VITE_SINGLETON_HOST=http://${LOCAL_IP}:7700
 VITE_SINGLETON_API_KEY=${MEILISEARCH_MASTER_KEY}
 EOF
-  msg_ok "Configured ${APPLICATION}-ui"
+  msg_ok "已配置 ${APPLICATION}-ui"
 
-  msg_info "Creating Meilisearch-UI service"
+  msg_info "正在创建 Meilisearch-UI service"
   cat <<EOF >/etc/systemd/system/meilisearch-ui.service
 [Unit]
 Description=Meilisearch UI Service
@@ -52,7 +52,7 @@ SyslogIdentifier=meilisearch-ui
 WantedBy=multi-user.target
 EOF
   systemctl enable -q --now meilisearch-ui
-  msg_ok "Created Meilisearch-UI service"
+  msg_ok "已创建 Meilisearch-UI service"
 fi
 
 motd_ssh

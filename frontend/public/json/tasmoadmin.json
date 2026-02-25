@@ -13,7 +13,7 @@
   "website": "https://github.com/TasmoAdmin/TasmoAdmin#readme",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tasmoadmin.webp",
   "config_path": "",
-  "description": "TasmoAdmin is an administrative platform for devices flashed with Tasmota.",
+  "description": "TasmoAdmin 是一个用于刷入 Tasmota 固件设备的管理平台。",
   "install_methods": [
     {
       "type": "default",

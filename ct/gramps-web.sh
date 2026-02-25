@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/gramps-web-api ]] || [[ ! -d /opt/gramps-web/frontend ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -33,13 +33,13 @@ function update_script() {
   NODE_VERSION="22" setup_nodejs
 
   if check_for_gh_release "gramps-web-api" "gramps-project/gramps-web-api"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop gramps-web
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "gramps-web-api" "gramps-project/gramps-web-api" "tarball" "latest" "/opt/gramps-web-api"
 
-    msg_info "Updating Gramps Web API"
+    msg_info "正在更新 Gramps Web API"
     $STD uv venv -c -p python3.12 /opt/gramps-web/venv
     source /opt/gramps-web/venv/bin/activate
     $STD uv pip install --no-cache-dir --upgrade pip setuptools wheel
@@ -56,19 +56,19 @@ function update_script() {
       $STD /opt/gramps-web/venv/bin/python3 -m gramps_webapi user migrate
     msg_ok "Applied Database Migration"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start gramps-web
-    msg_ok "Started Service"
+    msg_ok "已启动 Service"
   fi
 
   if check_for_gh_release "gramps-web" "gramps-project/gramps-web"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop gramps-web
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "gramps-web" "gramps-project/gramps-web" "tarball" "latest" "/opt/gramps-web/frontend"
 
-    msg_info "Updating Gramps Web Frontend"
+    msg_info "正在更新 Gramps Web Frontend"
     cd /opt/gramps-web/frontend
     export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
     $STD corepack enable
@@ -76,9 +76,9 @@ function update_script() {
     $STD npm run build
     msg_ok "Updated Gramps Web Frontend"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start gramps-web
-    msg_ok "Started Service"
+    msg_ok "已启动 Service"
   fi
   exit
 }
@@ -87,7 +87,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:5000${CL}"

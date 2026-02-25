@@ -13,23 +13,23 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   ca-certificates \
   build-essential \
   python3 \
   python3-setuptools \
   graphicsmagick
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 
-msg_info "Installing n8n (Patience)"
+msg_info "正在安装 n8n (Patience)"
 $STD npm install --global patch-package
 $STD npm install --global n8n
-msg_ok "Installed n8n"
+msg_ok "已安装 n8n"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 mkdir -p /opt
 cat <<EOF >/opt/n8n.env
 N8N_SECURE_COOKIE=false
@@ -51,7 +51,7 @@ ExecStart=n8n start
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now n8n
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

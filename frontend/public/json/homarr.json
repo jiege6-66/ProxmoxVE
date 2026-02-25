@@ -13,7 +13,7 @@
   "website": "https://homarr.dev/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/homarr.webp",
   "config_path": "/opt/homarr.env",
-  "description": "Homarr is a sleek, modern dashboard that puts all of your apps and services at your fingertips.",
+  "description": "Homarr 是一个时尚、现代的仪表板，将你所有的应用程序和服务触手可及。",
   "install_methods": [
     {
       "type": "default",

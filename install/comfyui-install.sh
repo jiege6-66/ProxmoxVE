@@ -78,7 +78,7 @@ fi
 $STD uv pip install -r "/opt/ComfyUI/requirements.txt" --python="/opt/ComfyUI/venv/bin/python"
 msg_ok "Python dependencies"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/comfyui.service
 [Unit]
 Description=ComfyUI Service
@@ -95,7 +95,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now comfyui
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

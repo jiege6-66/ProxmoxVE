@@ -15,7 +15,7 @@ update_os
 
 MONGO_VERSION="8.0" setup_mongodb
 
-msg_info "Setup Graylog Data Node"
+msg_info "设置 Graylog Data Node"
 PASSWORD_SECRET=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c16)
 curl -fsSL "https://packages.graylog2.org/repo/packages/graylog-7.0-repository_latest.deb" -o "graylog-7.0-repository_latest.deb"
 $STD dpkg -i graylog-7.0-repository_latest.deb
@@ -23,9 +23,9 @@ $STD apt-get update
 $STD apt-get install graylog-datanode -y
 sed -i "s/password_secret =/password_secret = $PASSWORD_SECRET/g" /etc/graylog/datanode/datanode.conf
 systemctl enable -q --now graylog-datanode
-msg_ok "Setup Graylog Data Node"
+msg_ok "设置 Graylog Data Node"
 
-msg_info "Setup ${APPLICATION}"
+msg_info "设置 ${APPLICATION}"
 $STD apt-get install graylog-server
 ROOT_PASSWORD=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c16)
 {
@@ -38,7 +38,7 @@ sed -i "s/password_secret =/password_secret = $PASSWORD_SECRET/g" /etc/graylog/s
 sed -i "s/root_password_sha2 =/root_password_sha2 = $ROOT_PASSWORD/g" /etc/graylog/server/server.conf
 sed -i 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/g' /etc/graylog/server/server.conf
 systemctl enable -q --now graylog-server
-msg_ok "Setup ${APPLICATION}"
+msg_ok "设置 ${APPLICATION}"
 
 motd_ssh
 customize

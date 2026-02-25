@@ -24,9 +24,9 @@ if [[ ! "$CONFIRM" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   exit 10
 fi
 
-msg_info "Installing NextCloudPi (Patience)"
+msg_info "正在安装 NextCloudPi (Patience)"
 $STD bash <(curl -fsSL https://raw.githubusercontent.com/nextcloud/nextcloudpi/master/install.sh)
-msg_ok "Installed NextCloudPi"
+msg_ok "已安装 NextCloudPi"
 
 motd_ssh
 customize

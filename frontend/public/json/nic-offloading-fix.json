@@ -13,7 +13,7 @@
   "config_path": "",
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
-  "description": "This script automates the process of disabling network interface card (NIC) offloading features specifically for Intel e1000e network interfaces on Linux systems.",
+  "description": "此脚本自动化了在 Linux 系统上专门针对 Intel e1000e 网络接口禁用网络接口卡 (NIC) 卸载功能的过程。",
   "install_methods": [
     {
       "type": "default",

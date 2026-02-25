@@ -18,7 +18,7 @@ setup_mariadb
 MARIADB_DB_NAME="wordpress_db" MARIADB_DB_USER="wordpress" setup_mariadb_db
 fetch_and_deploy_from_url "https://wordpress.org/latest.zip" /var/www/html/wordpress
 
-msg_info "Installing Wordpress (Patience)"
+msg_info "正在安装 Wordpress (Patience)"
 chown -R www-data:www-data /var/www/html/wordpress
 cd /var/www/html/wordpress
 find . -type d -exec chmod 755 {} \;
@@ -28,9 +28,9 @@ sed -i -e "s|^define( 'DB_NAME', '.*' );|define( 'DB_NAME', '$MARIADB_DB_NAME' )
   -e "s|^define( 'DB_USER', '.*' );|define( 'DB_USER', '$MARIADB_DB_USER' );|" \
   -e "s|^define( 'DB_PASSWORD', '.*' );|define( 'DB_PASSWORD', '$MARIADB_DB_PASS' );|" \
   /var/www/html/wordpress/wp-config.php
-msg_ok "Installed Wordpress"
+msg_ok "已安装 Wordpress"
 
-msg_info "Setup Services"
+msg_info "设置 Services"
 cat <<EOF >/etc/apache2/sites-available/wordpress.conf
 <VirtualHost *:80>
     ServerName yourdomain.com
@@ -48,7 +48,7 @@ EOF
 $STD a2ensite wordpress.conf
 $STD a2dissite 000-default.conf
 systemctl reload apache2
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

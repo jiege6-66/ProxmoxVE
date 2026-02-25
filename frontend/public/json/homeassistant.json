@@ -13,7 +13,7 @@
   "website": "https://www.home-assistant.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/home-assistant.webp",
   "config_path": "/var/lib/docker/volumes/hass_config/_data",
-  "description": "A standalone container-based installation of Home Assistant Core means that the software is installed inside a Docker container, separate from the host operating system. This allows for flexibility and scalability, as well as improved security, as the container can be easily moved or isolated from other processes on the host.",
+  "description": "基于容器的独立安装 Home Assistant Core 意味着软件安装在 Docker 容器内，与主机操作系统分离。这提供了灵活性和可扩展性，以及改进的安全性，因为容器可以轻松移动或与主机上的其他进程隔离。",
   "install_methods": [
     {
       "type": "default",

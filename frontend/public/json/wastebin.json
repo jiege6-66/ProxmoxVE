@@ -13,7 +13,7 @@
   "website": "https://github.com/matze/wastebin",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/wastebin.webp",
   "config_path": "/opt/wastebin-data/.env",
-  "description": "Wastebin is a minimal pastebin with a design shamelessly copied from bin.",
+  "description": "Wastebin 是一个极简的粘贴板，设计风格毫不掩饰地借鉴自 bin。",
   "install_methods": [
     {
       "type": "default",

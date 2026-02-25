@@ -25,30 +25,30 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/wger ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "wger" "wger-project/wger"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop redis-server nginx celery celery-beat wger
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Backing up Data"
+    msg_info "正在备份 Data"
     cp -r /opt/wger/media /opt/wger_media_backup
     cp /opt/wger/.env /opt/wger_env_backup
-    msg_ok "Backed up Data"
+    msg_ok "已备份 Data"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "wger" "wger-project/wger" "tarball"
 
-    msg_info "Restoring Data"
+    msg_info "正在恢复 Data"
     cp -r /opt/wger_media_backup/. /opt/wger/media
     cp /opt/wger_env_backup /opt/wger/.env
     rm -rf /opt/wger_media_backup /opt/wger_env_backup
 
-    msg_ok "Restored Data"
+    msg_ok "已恢复 Data"
 
-    msg_info "Updating wger"
+    msg_info "正在更新 wger"
     cd /opt/wger
     set -a && source /opt/wger/.env && set +a
     export DJANGO_SETTINGS_MODULE=settings.main
@@ -57,10 +57,10 @@ function update_script() {
     $STD uv run python manage.py collectstatic --no-input
     msg_ok "Updated wger"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start redis-server nginx celery celery-beat wger
-    msg_ok "Started Services"
-    msg_ok "Updated Successfully"
+    msg_ok "已启动 Services"
+    msg_ok "更新成功"
   fi
   exit
 }
@@ -69,7 +69,7 @@ start
 build_container
 description
 
-msg_ok "Completed Successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

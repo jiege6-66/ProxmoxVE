@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/linuxcontainers.webp",
   "config_path": "",
-  "description": "This script updates repository links in LXC containers, replacing old links from the tteck repository with links to the new community-scripts repository to fix issues related to updating scripts.",
+  "description": "此脚本更新 LXC 容器中的仓库链接，将 tteck 仓库的旧链接替换为新的 community-scripts 仓库链接，以修复与更新脚本相关的问题。",
   "install_methods": [
     {
       "type": "default",

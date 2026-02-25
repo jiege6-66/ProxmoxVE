@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Valkey"
+msg_info "正在安装 Valkey"
 $STD apk add valkey valkey-openrc valkey-cli
 sed -i 's/^bind .*/bind 0.0.0.0/' /etc/valkey/valkey.conf
 
@@ -32,7 +32,7 @@ MAXMEMORY_MB=$((MEMTOTAL_MB * 75 / 100))
   echo "maxmemory-policy allkeys-lru"
   echo "maxmemory-samples 10"
 } >>/etc/valkey/valkey.conf
-msg_ok "Installed Valkey"
+msg_ok "已安装 Valkey"
 
 # Note: Alpine's valkey package is compiled without TLS support
 # For TLS, use the Debian-based valkey script instead

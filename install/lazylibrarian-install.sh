@@ -14,16 +14,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     git \
     libpng-dev \
     libjpeg-dev \
     libtiff-dev \
     imagemagick
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Setup Python3"
+msg_info "设置 Python3"
 $STD apt install -y \
     pip \
     python3-irc
@@ -31,15 +31,15 @@ $STD pip install jaraco.stream
 $STD pip install python-Levenshtein
 $STD pip install soupsieve
 $STD pip install pypdf
-msg_ok "Setup Python3"
+msg_ok "设置 Python3"
 
-msg_info "Installing LazyLibrarian"
+msg_info "正在安装 LazyLibrarian"
 $STD git clone https://gitlab.com/LazyLibrarian/LazyLibrarian /opt/LazyLibrarian
 cd /opt/LazyLibrarian
 $STD pip install .
-msg_ok "Installed LazyLibrarian"
+msg_ok "已安装 LazyLibrarian"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/lazylibrarian.service
 [Unit]
 Description=LazyLibrarian Daemon
@@ -55,7 +55,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q lazylibrarian
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

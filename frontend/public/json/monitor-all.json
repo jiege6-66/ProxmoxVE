@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "This script will add Monitor-All to Proxmox VE, which will monitor the status of all your instances, both containers and virtual machines, excluding templates and user-defined ones, and automatically restart or reset them if they become unresponsive. This is particularly useful if you're experiencing problems with Home Assistant becoming non-responsive every few days/weeks. Monitor-All also maintains a log of the entire process, which can be helpful for troubleshooting and monitoring purposes.\r\n\r\n\ud83d\udec8 Virtual machines without the QEMU guest agent installed must be excluded.\r\n\ud83d\udec8 Prior to generating any new CT/VM not found in this repository, it's necessary to halt Proxmox VE Monitor-All by running systemctl stop ping-instances.",
+  "description": "此脚本将向 Proxmox VE 添加 Monitor-All，它将监控所有实例的状态，包括容器和虚拟机，不包括模板和用户定义的实例，如果它们无响应，将自动重启或重置它们。如果您遇到 Home Assistant 每隔几天/几周变得无响应的问题，这特别有用。Monitor-All 还维护整个过程的日志，这对故障排除和监控目的很有帮助。\r\n\r\n🛈 未安装 QEMU guest agent 的虚拟机必须被排除。\r\n🛈 在生成此存储库中未找到的任何新 CT/VM 之前，需要通过运行 systemctl stop ping-instances 停止 Proxmox VE Monitor-All。",
   "install_methods": [
     {
       "type": "default",

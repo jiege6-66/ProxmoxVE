@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y \
   apt-transport-https \
   python3-certbot-nginx \
   debconf-utils
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 setup_mariadb
 MARIADB_DB_NAME="passboltdb" MARIADB_DB_USER="passbolt" setup_mariadb_db
@@ -31,7 +31,7 @@ setup_deb822_repo \
   "buster" \
   "stable"
 
-msg_info "Setting up Passbolt (Patience)"
+msg_info "正在设置 Passbolt (Patience)"
 export DEBIAN_FRONTEND=noninteractive
 echo passbolt-ce-server passbolt/mysql-configuration boolean true | debconf-set-selections
 echo passbolt-ce-server passbolt/mysql-passbolt-username string $MARIADB_DB_USER | debconf-set-selections
@@ -44,7 +44,7 @@ echo passbolt-ce-server passbolt/nginx-domain string $LOCAL_IP | debconf-set-sel
 echo passbolt-ce-server passbolt/nginx-certificate-file string /etc/ssl/passbolt/passbolt.crt | debconf-set-selections
 echo passbolt-ce-server passbolt/nginx-certificate-key-file string /etc/ssl/passbolt/passbolt.key | debconf-set-selections
 $STD apt install -y --no-install-recommends passbolt-ce-server
-msg_ok "Setup Passbolt"
+msg_ok "设置 Passbolt"
 
 motd_ssh
 customize

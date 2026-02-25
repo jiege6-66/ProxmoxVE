@@ -13,7 +13,7 @@
   "documentation": "https://lyrion.org/",
   "website": "https://lyrion.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/lyrion-music-server.webp",
-  "description": "Lyrion Music Server is an open-source server software to stream local music collections, internet radio, and music services to Squeezebox and compatible audio players.",
+  "description": "Lyrion Music Server 是一个开源服务器软件,用于将本地音乐收藏、互联网广播和音乐服务流式传输到 Squeezebox 和兼容的音频播放器。",
   "install_methods": [
     {
       "type": "default",

@@ -14,7 +14,7 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y \
   pkg-config \
   build-essential \
@@ -24,19 +24,19 @@ $STD apt install -y \
   protobuf-compiler \
   libsentencepiece-dev \
   libicu-dev
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
-msg_info "Setup Python3"
+msg_info "设置 Python3"
 $STD apt install -y \
   python3-pip \
   python3-dev \
   python3-icu
-msg_ok "Setup Python3"
+msg_ok "设置 Python3"
 
 PYTHON_VERSION="3.12" setup_uv
 fetch_and_deploy_gh_release "libretranslate" "LibreTranslate/LibreTranslate" "tarball"
 
-msg_info "Setup LibreTranslate (Patience)"
+msg_info "设置 LibreTranslate (Patience)"
 cd /opt/libretranslate
 $STD uv venv --clear .venv --python 3.12
 $STD source .venv/bin/activate
@@ -52,9 +52,9 @@ $STD .venv/bin/python scripts/install_models.py
 cat <<EOF >/opt/libretranslate/.env
 LT_PORT=5000
 EOF
-msg_ok "Installed LibreTranslate"
+msg_ok "已安装 LibreTranslate"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/libretranslate.service
 [Unit]
 Description=LibreTranslate
@@ -75,7 +75,7 @@ TimeoutStopSec=1
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now libretranslate
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

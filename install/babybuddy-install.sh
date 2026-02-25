@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt-get install -y \
   uwsgi \
   uwsgi-plugin-python3 \
@@ -21,12 +21,12 @@ $STD apt-get install -y \
   libpq-dev \
   nginx \
   python3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_uv
 fetch_and_deploy_gh_release "babybuddy" "babybuddy/babybuddy" "tarball"
 
-msg_info "Installing Babybuddy"
+msg_info "正在安装 Babybuddy"
 mkdir -p /opt/data
 cd /opt/babybuddy
 $STD uv venv --clear .venv
@@ -45,9 +45,9 @@ $STD python manage.py migrate
 chown -R www-data:www-data /opt/data
 chmod 640 /opt/data/db.sqlite3
 chmod 750 /opt/data
-msg_ok "Installed Babybuddy"
+msg_ok "已安装 Babybuddy"
 
-msg_info "Configuring uWSGI"
+msg_info "正在配置 uWSGI"
 cat <<EOF >/etc/uwsgi/apps-available/babybuddy.ini
 [uwsgi]
 plugins = python3
@@ -66,9 +66,9 @@ gid = www-data
 EOF
 ln -sf /etc/uwsgi/apps-available/babybuddy.ini /etc/uwsgi/apps-enabled/babybuddy.ini
 service uwsgi restart
-msg_ok "Configured uWSGI"
+msg_ok "已配置 uWSGI"
 
-msg_info "Configuring NGINX"
+msg_info "正在配置 NGINX"
 cat <<EOF >/etc/nginx/sites-available/babybuddy
 upstream babybuddy {
     server unix:///var/run/uwsgi/app/babybuddy/socket;
@@ -93,7 +93,7 @@ ln -sf /etc/nginx/sites-available/babybuddy /etc/nginx/sites-enabled/babybuddy
 rm /etc/nginx/sites-enabled/default
 systemctl enable -q --now nginx
 service nginx reload
-msg_ok "Configured NGINX"
+msg_ok "已配置 NGINX"
 
 motd_ssh
 customize

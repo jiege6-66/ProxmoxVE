@@ -15,14 +15,14 @@ update_os
 
 setup_mariadb
 
-msg_info "Setup MariaDB"
+msg_info "设置 MariaDB"
 sed -i 's/^# *\(port *=.*\)/\1/' /etc/mysql/my.cnf
 sed -i 's/^bind-address/#bind-address/g' /etc/mysql/mariadb.conf.d/50-server.cnf
-msg_ok "Setup MariaDB"
+msg_ok "设置 MariaDB"
 
 read -r -p "${TAB3}Would you like to add PhpMyAdmin? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Installing phpMyAdmin"
+  msg_info "正在安装 phpMyAdmin"
   $STD apt install -y \
     apache2 \
     php \
@@ -42,7 +42,7 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   chmod 660 /var/www/html/phpMyAdmin/config.inc.php
   chown -R www-data:www-data /var/www/html/phpMyAdmin
   systemctl restart apache2
-  msg_ok "Installed phpMyAdmin"
+  msg_ok "已安装 phpMyAdmin"
 fi
 
 motd_ssh

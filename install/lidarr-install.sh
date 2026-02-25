@@ -13,22 +13,22 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   sqlite3 \
   libchromaprint-tools \
   mediainfo
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "lidarr" "Lidarr/Lidarr" "prebuild" "latest" "/opt/Lidarr" "Lidarr.master*linux-core-x64.tar.gz"
 
-msg_info "Configuring Lidarr"
+msg_info "正在配置 Lidarr"
 mkdir -p /var/lib/lidarr/
 chmod 775 /var/lib/lidarr/
 chmod 775 /opt/Lidarr
-msg_ok "Configured Lidarr"
+msg_ok "已配置 Lidarr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/lidarr.service
 [Unit]
 Description=Lidarr Daemon
@@ -46,7 +46,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now lidarr
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

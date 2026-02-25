@@ -13,7 +13,7 @@
   "website": "https://investbra.in",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/investbrain.webp",
   "config_path": "/opt/investbrain/.env",
-  "description": "Investbrain is a smart open-source investment tracker that helps you manage, track, and make informed decisions about your investments.",
+  "description": "Investbrain 是一个智能的开源投资追踪器，帮助你管理、追踪并做出明智的投资决策。",
   "install_methods": [
     {
       "type": "default",

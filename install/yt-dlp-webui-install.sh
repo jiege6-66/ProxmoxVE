@@ -13,14 +13,14 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "yt-dlp-webui" "marcopiovanello/yt-dlp-web-ui" "singlefile" "latest" "/usr/local/bin" "yt-dlp-webui_linux-amd64"
 fetch_and_deploy_gh_release "yt-dlp" "yt-dlp/yt-dlp" "singlefile" "latest" "/usr/local/bin" "yt-dlp"
 
-msg_info "Setting up YT-DLP-WEBUI"
+msg_info "正在设置 YT-DLP-WEBUI"
 mkdir -p /opt/yt-dlp-webui
 mkdir /downloads
 RPC_PASSWORD=$(openssl rand -base64 16)
@@ -68,7 +68,7 @@ downloaderPath: /usr/local/bin/yt-dlp
 EOF
 msg_ok "Set up YT-DLP-WEBUI"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/yt-dlp-webui.service
 [Unit]
 Description=yt-dlp-webui service file
@@ -81,7 +81,7 @@ ExecStart=/usr/local/bin/yt-dlp-webui --conf /opt/yt-dlp-webui/config.conf
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now yt-dlp-webui
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

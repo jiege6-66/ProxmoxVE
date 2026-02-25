@@ -29,7 +29,7 @@ function update_script() {
     fi
 
     if [[ ! -d /opt/sabnzbd ]]; then
-        msg_error "No ${APP} Installation Found!"
+        msg_error "未找到 ${APP} 安装！"
         exit
     fi
     if check_for_gh_release "sabnzbd-org" "sabnzbd/sabnzbd"; then
@@ -40,9 +40,9 @@ function update_script() {
 
         # Always ensure venv exists
         if [[ ! -d /opt/sabnzbd/venv ]]; then
-            msg_info "Migrating SABnzbd to uv virtual environment"
+            msg_info "正在迁移 SABnzbd to uv virtual environment"
             $STD uv venv --clear /opt/sabnzbd/venv
-            msg_ok "Created uv venv at /opt/sabnzbd/venv"
+            msg_ok "已创建 uv venv at /opt/sabnzbd/venv"
         fi
 
         # Always check and fix service file if needed
@@ -55,7 +55,7 @@ function update_script() {
         $STD uv pip install -r /opt/sabnzbd/requirements.txt --python=/opt/sabnzbd/venv/bin/python
 
         systemctl start sabnzbd
-        msg_ok "Updated successfully!"
+        msg_ok "已成功更新!"
     fi
     exit
 }
@@ -64,7 +64,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:7777${CL}"

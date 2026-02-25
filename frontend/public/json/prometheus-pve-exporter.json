@@ -14,7 +14,7 @@
   "website": "https://github.com/prometheus-pve/prometheus-pve-exporter",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "/opt/prometheus-pve-exporter/pve.yml",
-  "description": "An exporter that exposes information gathered from Proxmox VE node for use by the Prometheus monitoring system.",
+  "description": "该导出器公开从 Proxmox VE 节点收集的信息，供 Prometheus 监控系统使用。",
   "install_methods": [
     {
       "type": "default",

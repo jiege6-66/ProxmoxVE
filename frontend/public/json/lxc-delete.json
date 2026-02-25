@@ -13,7 +13,7 @@
   "website": null,
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/linuxcontainers.webp",
   "config_path": "",
-  "description": "This script helps manage and delete LXC containers on a Proxmox VE server. It lists all available containers, allowing the user to select one or more for deletion through an interactive menu. Running containers are automatically stopped before deletion, and the user is asked to confirm each action. The script ensures a controlled and efficient container management process.",
+  "description": "此脚本帮助管理和删除 Proxmox VE 服务器上的 LXC 容器。它列出所有可用的容器,允许用户通过交互式菜单选择一个或多个进行删除。正在运行的容器在删除前会自动停止,并要求用户确认每个操作。该脚本确保受控且高效的容器管理过程。",
   "install_methods": [
     {
       "type": "default",

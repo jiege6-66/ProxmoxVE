@@ -13,7 +13,7 @@
   "website": "https://owncast.online/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/owncast.webp",
   "config_path": "",
-  "description": "Owncast is a free and open source live video and web chat server for use with existing popular broadcasting software.",
+  "description": "Owncast 是一个免费开源的直播视频和网页聊天服务器,可与现有流行的广播软件配合使用。",
   "install_methods": [
     {
       "type": "default",

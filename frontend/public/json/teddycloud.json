@@ -13,7 +13,7 @@
   "website": "https://tonies-wiki.revvox.de/docs/tools/teddycloud/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/teddycloud.webp",
   "config_path": "",
-  "description": "TeddyCloud is an open source server replacement for the Boxine Cloud.",
+  "description": "TeddyCloud 是 Boxine Cloud 的开源服务器替代品。",
   "install_methods": [
     {
       "type": "default",

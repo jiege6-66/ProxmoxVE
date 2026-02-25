@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add --no-cache \
   nginx \
   python3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing IT-Tools"
+msg_info "正在安装 IT-Tools"
 RELEASE=$(curl -fsSL https://api.github.com/repos/sharevb/it-tools/releases/latest | grep '"tag_name":' | cut -d '"' -f4)
 curl -fsSL "https://github.com/sharevb/it-tools/releases/download/${RELEASE}/it-tools-${RELEASE#v}.zip" -o it-tools.zip
 mkdir -p /usr/share/nginx/html
@@ -40,13 +40,13 @@ EOF
 $STD rc-update add nginx default
 $STD rc-service nginx start
 echo "${RELEASE}" >/opt/"${APPLICATION}"_version.txt
-msg_ok "Installed IT-Tools"
+msg_ok "已安装 IT-Tools"
 
 motd_ssh
 customize
 
-msg_info "Cleaning up"
+msg_info "正在清理"
 rm -rf /tmp/dist
 rm -f it-tools.zip
 $STD apk cache clean
-msg_ok "Cleaned"
+msg_ok "已清理"

@@ -15,7 +15,7 @@ update_os
 
 JAVA_VERSION="11" setup_java
 
-msg_info "Installing Apache Cassandra"
+msg_info "正在安装 Apache Cassandra"
 setup_deb822_repo \
   "cassandra" \
   "https://downloads.apache.org/cassandra/KEYS" \
@@ -24,7 +24,7 @@ setup_deb822_repo \
   "main"
 $STD apt install -y cassandra cassandra-tools
 sed -i -e 's/^rpc_address: localhost/#rpc_address: localhost/g' -e 's/^# rpc_interface: eth1/rpc_interface: eth0/g' /etc/cassandra/cassandra.yaml
-msg_ok "Installed Apache Cassandra"
+msg_ok "已安装 Apache Cassandra"
 
 motd_ssh
 customize

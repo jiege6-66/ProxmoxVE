@@ -15,7 +15,7 @@ update_os
 
 fetch_and_deploy_gh_release "qdrant" "qdrant/qdrant" "binary" "latest" "/usr/bin/qdrant"
 
-msg_info "Creating Qdrant Configuration"
+msg_info "正在创建 Qdrant Configuration"
 mkdir -p /etc/qdrant
 mkdir -p /var/lib/qdrant/{storage,snapshots}
 chown -R root:root /var/lib/qdrant
@@ -34,9 +34,9 @@ service:
   grpc_port: 6334
   enable_cors: true
 EOF
-msg_ok "Created Qdrant Configuration"
+msg_ok "已创建 Qdrant Configuration"
 
-msg_info "Creating Qdrant Service"
+msg_info "正在创建 Qdrant Service"
 cat <<EOF >/etc/systemd/system/qdrant.service
 [Unit]
 Description=Qdrant Vector Search Engine
@@ -56,7 +56,7 @@ LimitNOFILE=1048576
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now qdrant
-msg_ok "Created Qdrant Service"
+msg_ok "已创建 Qdrant Service"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://pelican.dev/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/pelican-panel.webp",
   "config_path": "",
-  "description": "Pelican Wings is Pelican's server control plane, built for the rapidly changing gaming industry and designed to be highly performant and secure. Wings provides an HTTP API allowing you to interface directly with running server instances, fetch server logs, generate backups, and control all aspects of the server lifecycle.",
+  "description": "Pelican Wings 是 Pelican 的服务器控制平面，专为快速变化的游戏行业而构建，旨在实现高性能和安全性。Wings 提供 HTTP API，允许您直接与运行中的服务器实例交互、获取服务器日志、生成备份，并控制服务器生命周期的各个方面。",
   "install_methods": [
     {
       "type": "default",

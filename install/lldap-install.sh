@@ -14,7 +14,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing lldap"
+msg_info "正在安装 lldap"
 source /etc/os-release
 os=$ID
 if [ "$os" == "ubuntu" ]; then
@@ -32,7 +32,7 @@ EOF
 $STD apt update
 $STD apt install -y lldap
 systemctl enable -q --now lldap
-msg_ok "Installed lldap"
+msg_ok "已安装 lldap"
 
 motd_ssh
 customize

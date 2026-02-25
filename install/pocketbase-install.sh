@@ -15,11 +15,11 @@ update_os
 
 fetch_and_deploy_gh_release "pocketbase" "pocketbase/pocketbase" "prebuild" "latest" "/opt/pocketbase" "pocketbase*linux_amd64.zip"
 
-msg_info "Configuring Pocketbase"
+msg_info "正在配置 Pocketbase"
 mkdir -p /opt/pocketbase/{pb_public,pb_migrations,pb_hooks}
-msg_ok "Configured Pocketbase"
+msg_ok "已配置 Pocketbase"
 
-msg_info "Creating service"
+msg_info "正在创建 service"
 cat <<EOF >/etc/systemd/system/pocketbase.service
 [Unit]
 Description = pocketbase

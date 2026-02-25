@@ -13,7 +13,7 @@
   "website": "https://www.influxdata.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/influxdb.webp",
   "config_path": "",
-  "description": "InfluxDB is designed to handle high write and query loads, and is optimized for storing and analyzing time-stamped data, such as metrics, events, and logs. InfluxDB supports SQL-like query language and has a built-in HTTP API for data ingestion and retrieval. It's commonly used for IoT and industrial applications where time-series data is involved.\r\n\r\nTelegraf is a server agent that collects, processes, and aggregates metrics and events data from different sources, such as systems, databases, and APIs, and outputs the data to various outputs, such as InfluxDB, Prometheus, Elasticsearch, and many others.",
+  "description": "InfluxDB 旨在处理高写入和查询负载，并针对存储和分析带时间戳的数据（如指标、事件和日志）进行了优化。InfluxDB 支持类 SQL 查询语言，并具有用于数据摄取和检索的内置 HTTP API。它通常用于涉及时间序列数据的物联网和工业应用。\n\nTelegraf 是一个服务器代理，从不同来源（如系统、数据库和 API）收集、处理和聚合指标和事件数据，并将数据输出到各种输出，如 InfluxDB、Prometheus、Elasticsearch 等。",
   "install_methods": [
     {
       "type": "default",

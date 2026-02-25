@@ -13,7 +13,7 @@
   "website": "https://github.com/john30/ebusd",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/ebusd.webp",
   "config_path": "/etc/default/ebusd",
-  "description": "ebusd is a daemon for handling communication with eBUS devices connected to a 2-wire `energy bus` used by numerous heating systems.",
+  "description": "ebusd 是一个用于处理与连接到 2 线 `energy bus` 的 eBUS 设备通信的守护进程,该总线被众多供暖系统使用。",
   "install_methods": [
     {
       "type": "default",

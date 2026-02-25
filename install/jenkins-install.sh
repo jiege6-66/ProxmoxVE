@@ -20,9 +20,9 @@ setup_deb822_repo \
   "binary/" \
   " "
 
-msg_info "Setup Jenkins"
+msg_info "设置 Jenkins"
 $STD apt install -y jenkins
-msg_ok "Setup Jenkins"
+msg_ok "设置 Jenkins"
 
 motd_ssh
 customize

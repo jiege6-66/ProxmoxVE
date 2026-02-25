@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="mx-6 w-full flex justify-between text-xs sm:text-sm text-muted-foreground">
         <div className="flex items-center">
           <p>
-            Website built by the community. The source code is available on
+            网站由社区构建。源代码可在
             {" "}
             <Link
               href={`https://github.com/community-scripts/${basePath}/tree/main/frontend`}
@@ -23,7 +23,7 @@ export default function Footer() {
             >
               GitHub
             </Link>
-            .
+            上查看。
           </p>
         </div>
         <div className="sm:flex hidden">
@@ -33,7 +33,7 @@ export default function Footer() {
           >
             <FileJson className="h-4 w-4" />
             {" "}
-            JSON Editor
+            JSON 编辑器
           </Link>
           <Link
             href="/data"
@@ -41,7 +41,7 @@ export default function Footer() {
           >
             <Server className="h-4 w-4" />
             {" "}
-            API Data
+            API 数据
           </Link>
         </div>
       </div>

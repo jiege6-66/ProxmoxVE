@@ -327,7 +327,7 @@ function setup_cloud_init() {
     fi
   fi
 
-  _ci_msg_info "Configuring Cloud-Init"
+  _ci_msg_info "正在配置 Cloud-Init"
 
   # Create Cloud-Init drive (try ide2 first, then scsi1 as fallback)
   if ! qm set "$vmid" --ide2 "${storage}:cloudinit" >/dev/null 2>&1; then
@@ -375,7 +375,7 @@ Cloud-Init Credentials
 ────────────────────────────────────────
 VM ID:    ${vmid}
 Hostname: ${hostname}
-Created:  $(date)
+已创建:  $(date)
 
 Username: ${ciuser}
 Password: ${cipassword}
@@ -628,7 +628,7 @@ function wait_for_cloud_init() {
 
   local elapsed=0
   while [ $elapsed -lt $timeout ]; do
-    if timeout 10 ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+    if timeout 10 ssh -o ConnectTimeout=5 -o StrictHostKey正在检查=no -o UserKnownHostsFile=/dev/null \
       "${CLOUDINIT_USER:-root}@${vm_ip}" "cloud-init status --wait" 2>/dev/null; then
       _ci_msg_ok "Cloud-Init completed successfully"
       return 0

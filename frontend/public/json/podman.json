@@ -13,7 +13,7 @@
   "website": "https://podman.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/podman.webp",
   "config_path": "",
-  "description": "Podman is an open-source, daemonless, and portable container engine that allows users to manage containers on Linux systems without the need for a daemon or system service to be running in the background. It provides an API and a command-line interface that can be used to create, run, and manage containers and their associated networks, volumes, and images. It is built on top of the Open Container Initiative (OCI) runtime specification, making it compatible with other OCI-compliant container engines.",
+  "description": "Podman 是一个开源、无守护进程且可移植的容器引擎，允许用户在 Linux 系统上管理容器，无需在后台运行守护进程或系统服务。它提供了 API 和命令行界面，可用于创建、运行和管理容器及其关联的网络、卷和镜像。它基于 Open Container Initiative (OCI) 运行时规范构建，使其与其他符合 OCI 标准的容器引擎兼容。",
   "install_methods": [
     {
       "type": "default",

@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Downloading AdGuard Home"
+msg_info "正在下载 AdGuard Home"
 $STD curl -fsSL -o /tmp/AdGuardHome_linux_amd64.tar.gz \
   "https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_linux_amd64.tar.gz"
-msg_ok "Downloaded AdGuard Home"
+msg_ok "已下载 AdGuard Home"
 
-msg_info "Installing AdGuard Home"
+msg_info "正在安装 AdGuard Home"
 $STD tar -xzf /tmp/AdGuardHome_linux_amd64.tar.gz -C /opt
 $STD rm /tmp/AdGuardHome_linux_amd64.tar.gz
-msg_ok "Installed AdGuard Home"
+msg_ok "已安装 AdGuard Home"
 
-msg_info "Creating AdGuard Home Service"
+msg_info "正在创建 AdGuard Home Service"
 cat <<EOF >/etc/init.d/adguardhome
 #!/sbin/openrc-run
 name="AdGuardHome"
@@ -33,15 +33,15 @@ command_background="yes"
 pidfile="/run/adguardhome.pid"
 EOF
 $STD chmod +x /etc/init.d/adguardhome
-msg_ok "Created AdGuard Home Service"
+msg_ok "已创建 AdGuard Home Service"
 
-msg_info "Enabling AdGuard Home Service"
+msg_info "正在启用 AdGuard Home Service"
 $STD rc-update add adguardhome default
-msg_ok "Enabled AdGuard Home Service"
+msg_ok "已启用 AdGuard Home Service"
 
-msg_info "Starting AdGuard Home"
+msg_info "正在启动 AdGuard Home"
 $STD rc-service adguardhome start
-msg_ok "Started AdGuard Home"
+msg_ok "已启动 AdGuard Home"
 
 motd_ssh
 customize

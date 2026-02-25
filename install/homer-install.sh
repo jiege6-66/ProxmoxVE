@@ -16,7 +16,7 @@ update_os
 fetch_and_deploy_gh_release "homer" "bastienwirtz/homer" "prebuild" "latest" "/opt/homer" "homer.zip"
 cp /opt/homer/assets/config.yml.dist /opt/homer/assets/config.yml
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/homer.service
 [Unit]
 Description=Homer Dashboard
@@ -32,7 +32,7 @@ ExecStart=python3 -m http.server 8010
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now homer
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

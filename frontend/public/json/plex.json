@@ -13,7 +13,7 @@
   "website": "https://www.plex.tv/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/plex.webp",
   "config_path": "/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Preferences.xml",
-  "description": "Plex personal media server magically scans and organizes your files, sorting your media intuitively and beautifully.",
+  "description": "Plex 个人媒体服务器可以神奇地扫描和整理您的文件，以直观且美观的方式对您的媒体进行分类。",
   "install_methods": [
     {
       "type": "default",

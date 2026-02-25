@@ -13,7 +13,7 @@
   "website": "https://github.com/Part-DB/Part-DB-server",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/part-db.webp",
   "config_path": "/opt/partdb/.env.local",
-  "description": "Part-DB is an Open source inventory management system for your electronic components",
+  "description": "Part-DB 是一个用于电子元件的开源库存管理系统",
   "install_methods": [
     {
       "type": "default",

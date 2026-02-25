@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up InvenTree Repository"
+msg_info "正在设置 InvenTree Repository"
 setup_deb822_repo \
   "inventree" \
   "https://dl.packager.io/srv/inventree/InvenTree/key" \
@@ -22,17 +22,17 @@ setup_deb822_repo \
   "main"
 msg_ok "Set up InvenTree Repository"
 
-msg_info "Installing InvenTree (Patience)"
+msg_info "正在安装 InvenTree (Patience)"
 export SETUP_NO_CALLS=true
 $STD apt install -y inventree
-msg_ok "Installed InvenTree"
+msg_ok "已安装 InvenTree"
 
-msg_info "Configuring InvenTree"
+msg_info "正在配置 InvenTree"
 if [[ -f /etc/inventree/config.yaml ]]; then
   sed -i "s|site_url:.*|site_url: http://${LOCAL_IP}|" /etc/inventree/config.yaml
 fi
 $STD inventree run invoke update
-msg_ok "Configured InvenTree"
+msg_ok "已配置 InvenTree"
 
 motd_ssh
 customize

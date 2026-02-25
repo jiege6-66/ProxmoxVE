@@ -13,7 +13,7 @@
   "website": "https://onlyoffice.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/onlyoffice.webp",
   "config_path": "/etc/onlyoffice/documentserver/local.json",
-  "description": "ONLYOFFICE Docs is an open-source online office suite that provides collaborative editors for text documents, spreadsheets, and presentations, fully compatible with Microsoft Office formats (DOCX, XLSX, PPTX).",
+  "description": "ONLYOFFICE Docs 是一个开源的在线办公套件，提供文本文档、电子表格和演示文稿的协作编辑器，完全兼容 Microsoft Office 格式（DOCX、XLSX、PPTX）。",
   "install_methods": [
     {
       "type": "default",

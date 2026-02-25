@@ -25,21 +25,21 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/mediamtx/ ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "mediamtx" "bluenviron/mediamtx"; then
-    msg_info "Stopping service"
+    msg_info "正在停止 service"
     systemctl stop mediamtx
     msg_ok "Service stopped"
 
     fetch_and_deploy_gh_release "mediamtx" "bluenviron/mediamtx" "prebuild" "latest" "/opt/mediamtx" "mediamtx*linux_amd64.tar.gz"
 
-    msg_info "Starting service"
+    msg_info "正在启动 service"
     systemctl start mediamtx
     msg_ok "Service started"
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -48,5 +48,5 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"

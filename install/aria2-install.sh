@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Aria2"
+msg_info "正在安装 Aria2"
 $STD apt install -y aria2
-msg_ok "Installed Aria2"
+msg_ok "已安装 Aria2"
 
 read -r -p "${TAB3}Would you like to add AriaNG? <y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Dependencies"
+  msg_info "正在安装依赖"
   $STD apt install -y nginx
   systemctl disable -q --now nginx
   rm /etc/nginx/sites-enabled/*
-  msg_ok "Installed Dependencies"
+  msg_ok "已安装依赖"
 
   fetch_and_deploy_gh_release "ariang" "mayswind/ariang" "prebuild" "latest" "/var/www" "AriaNg-*-AllInOne.zip"
   
@@ -45,10 +45,10 @@ server {
 EOF
   cp /lib/systemd/system/nginx.service /lib/systemd/system/ariang.service
   systemctl enable -q --now ariang
-  msg_ok "Configured nginx"
+  msg_ok "已配置 nginx"
 fi
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 mkdir -p /root/downloads
 rpc_secret=$(openssl rand -base64 8)
 echo "rpc-secret: $rpc_secret" >>~/rpc.secret
@@ -83,7 +83,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now aria2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

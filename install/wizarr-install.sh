@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y sqlite3
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 setup_uv
 NODE_VERSION="22" setup_nodejs
@@ -51,7 +51,7 @@ EOF
 chmod u+x /opt/wizarr/start.sh
 msg_ok "Configure Wizarr"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/wizarr.service
 [Unit]
 Description=Wizarr Service
@@ -67,9 +67,9 @@ Restart=on-abnormal
 [Install]
 WantedBy=multi-user.target
 EOF
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
-msg_info "Running DB upgrade"
+msg_info "正在运行 DB upgrade"
 export FLASK_SKIP_SCHEDULER=true
 $STD /usr/local/bin/uv run --frozen flask db upgrade
 msg_ok "DB upgrade complete"

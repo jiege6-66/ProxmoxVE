@@ -25,29 +25,29 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/leantime ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
   setup_mariadb
   if check_for_gh_release "leantime" "Leantime/leantime"; then
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     mariadb-dump leantime >"/opt/leantime_db_backup_$(date +%F).sql"
     tar -czf "/opt/leantime_backup_$(date +%F).tar.gz" "/opt/leantime"
     mv /opt/leantime /opt/leantime_bak
-    msg_ok "Backup Created"
+    msg_ok "Backup 已创建"
 
     fetch_and_deploy_gh_release "leantime" "Leantime/leantime" "prebuild" "latest" "/opt/leantime" Leantime*.tar.gz
 
-    msg_info "Restoring Config & Permissions"
+    msg_info "正在恢复 Config & Permissions"
     mv /opt/leantime_bak/config/.env /opt/leantime/config/.env
     chown -R www-data:www-data "/opt/leantime"
     chmod -R 750 "/opt/leantime"
-    msg_ok "Restored Config & Permissions"
+    msg_ok "已恢复 Config & Permissions"
 
-    msg_info "Removing Backup"
+    msg_info "正在移除 Backup"
     rm -rf /opt/leantime_bak
-    msg_ok "Removed Backup"
-    msg_ok "Updated successfully!"
+    msg_ok "已移除 Backup"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -56,7 +56,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}/install${CL}"

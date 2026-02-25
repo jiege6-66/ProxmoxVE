@@ -13,7 +13,7 @@
   "website": "https://github.com/Donkie/Spoolman",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/spoolman.webp",
   "config_path": "/opt/spoolman/.env",
-  "description": "Spoolman is a self-hosted web service designed to help you efficiently manage your 3D printer filament spools and monitor their usage.",
+  "description": "Spoolman 是一个自托管的 Web 服务，旨在帮助您高效管理 3D 打印机耗材线轴并监控其使用情况。",
   "install_methods": [
     {
       "type": "default",

@@ -20,7 +20,7 @@ MARIADB_DB_NAME="monica" MARIADB_DB_USER="monica" setup_mariadb_db
 NODE_VERSION="22" NODE_MODULE="yarn@latest" setup_nodejs
 fetch_and_deploy_gh_release "monica" "monicahq/monica" "prebuild" "latest" "/opt/monica" "monica-v*.tar.bz2"
 
-msg_info "Configuring monica"
+msg_info "正在配置 monica"
 cd /opt/monica
 cp /opt/monica/.env.example /opt/monica/.env
 HASH_SALT=$(openssl rand -base64 32)
@@ -37,9 +37,9 @@ $STD php artisan setup:production --email=admin@helper-scripts.com --password=he
 chown -R www-data:www-data /opt/monica
 chmod -R 775 /opt/monica/storage
 echo "* * * * * root php /opt/monica/artisan schedule:run >> /dev/null 2>&1" >>/etc/crontab
-msg_ok "Configured monica"
+msg_ok "已配置 monica"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/monica.conf
 <VirtualHost *:80>
     ServerName monica
@@ -58,7 +58,7 @@ $STD a2ensite monica
 $STD a2enmod rewrite
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

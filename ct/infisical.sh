@@ -24,30 +24,30 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /etc/infisical ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Stopping service"
+  msg_info "正在停止 service"
   $STD infisical-ctl stop
   msg_ok "Service stopped"
 
-  msg_info "Creating backup"
+  msg_info "正在创建 backup"
   [[ -f /opt/infisical_backup.sql ]] && rm -f /opt/infisical_backup.sql
   DB_PASS=$(grep -Po '(?<=^Database Password:\s).*' ~/infisical.creds | head -n1)
   PGPASSWORD=$DB_PASS pg_dump -U infisical -h localhost -d infisical_db > /opt/infisical_backup.sql
-  msg_ok "Created backup"
+  msg_ok "已创建 backup"
 
-  msg_info "Updating Infisical"
+  msg_info "正在更新 Infisical"
   $STD apt update
   $STD apt install -y infisical-core
   $STD infisical-ctl reconfigure
   msg_ok "Updated Infisical"
 
-  msg_info "Starting service"
+  msg_info "正在启动 service"
   infisical-ctl start
-  msg_ok "Started service"
-  msg_ok "Updated successfully!"
+  msg_ok "已启动 service"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -55,7 +55,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

@@ -25,29 +25,29 @@ function update_script() {
   check_container_resources
 
   if [[ ! -f /etc/systemd/system/litellm.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
-  msg_info "Stopping Service"
+  msg_info "正在停止 Service"
   systemctl stop litellm
-  msg_ok "Stopped Service"
+  msg_ok "已停止 Service"
 
   VENV_PATH="/opt/litellm/.venv"
   PYTHON_VERSION="3.13" setup_uv
 
-  msg_info "Updating LiteLLM"
+  msg_info "正在更新 LiteLLM"
   $STD "$VENV_PATH/bin/python" -m pip install --upgrade litellm[proxy] prisma
   msg_ok "LiteLLM updated"
 
-  msg_info "Updating DB Schema"
+  msg_info "正在更新 DB Schema"
   $STD uv --directory=/opt/litellm run litellm --config /opt/litellm/litellm.yaml --use_prisma_db_push --skip_server_startup
   msg_ok "DB Schema Updated"
 
-  msg_info "Starting Service"
+  msg_info "正在启动 Service"
   systemctl start litellm
-  msg_ok "Started Service"
-  msg_ok "Updated successfully!"
+  msg_ok "已启动 Service"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -55,7 +55,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:4000${CL}"

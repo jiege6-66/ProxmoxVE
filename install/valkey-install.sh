@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Valkey"
+msg_info "正在安装 Valkey"
 $STD apt update
 $STD apt install -y valkey openssl
 sed -i 's/^bind .*/bind 0.0.0.0/' /etc/valkey/valkey.conf
@@ -32,13 +32,13 @@ echo "# Memory-optimized settings for small-scale deployments" >> /etc/valkey/va
 echo "maxmemory ${MAXMEMORY_MB}mb" >> /etc/valkey/valkey.conf
 echo "maxmemory-policy allkeys-lru" >> /etc/valkey/valkey.conf
 echo "maxmemory-samples 10" >> /etc/valkey/valkey.conf
-msg_ok "Installed Valkey"
+msg_ok "已安装 Valkey"
 
 echo
 read -r -p "${TAB3}Enable TLS for Valkey (Sentinel mode does not supported)? [y/N]: " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
     read -r -p "${TAB3}Use TLS-only mode (disable TCP port 6379)? [y/N]: " tls_only
-    msg_info "Configuring TLS for Valkey..."
+    msg_info "正在配置 TLS for Valkey..."
 
     create_self_signed_cert "Valkey"
     TLS_DIR="/etc/ssl/valkey"
@@ -56,7 +56,7 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
       echo "tls-key-file $TLS_DIR/valkey.key"
       echo "tls-auth-clients no"
     } >> /etc/valkey/valkey.conf
-    msg_ok "Enabled TLS-only mode on port 6379"
+    msg_ok "已启用 TLS-only mode on port 6379"
     else
     {
       echo ""
@@ -66,7 +66,7 @@ if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
       echo "tls-key-file $TLS_DIR/valkey.key"
       echo "tls-auth-clients no"
     } >> /etc/valkey/valkey.conf
-    msg_ok "Enabled TLS on port 6380 and TCP on 6379"
+    msg_ok "已启用 TLS on port 6380 and TCP on 6379"
     fi
 fi
 

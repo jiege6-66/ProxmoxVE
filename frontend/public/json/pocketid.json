@@ -13,7 +13,7 @@
   "website": "https://github.com/pocket-id/pocket-id",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/pocket-id.webp",
   "config_path": "/opt/pocket-id/.env",
-  "description": "Pocket ID is a simple OIDC provider that allows users to authenticate with their passkeys to your services.",
+  "description": "Pocket ID 是一个简单的 OIDC provider，允许用户使用他们的 passkey 对您的服务进行身份验证。",
   "install_methods": [
     {
       "type": "default",

@@ -29,9 +29,9 @@ function update_script() {
   fi
 
   if check_for_gh_release "paperless-gpt" "icereed/paperless-gpt"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop paperless-gpt
-    msg_ok "Service Stopped"
+    msg_ok "Service 已停止"
 
     if should_update_tool "node" "24"; then
       NODE_VERSION="24" setup_nodejs
@@ -39,7 +39,7 @@ function update_script() {
 
     fetch_and_deploy_gh_release "paperless-gpt" "icereed/paperless-gpt" "tarball"
 
-    msg_info "Updating Paperless-GPT"
+    msg_info "正在更新 Paperless-GPT"
     cd /opt/paperless-gpt/web-app
     $STD npm install
     $STD npm run build
@@ -50,10 +50,10 @@ function update_script() {
     CGO_ENABLED=1 go build -tags musl -o paperless-gpt .
     msg_ok "Updated Paperless-GPT"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start paperless-gpt
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -62,7 +62,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

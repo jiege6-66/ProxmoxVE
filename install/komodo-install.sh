@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setup Docker Repository"
+msg_info "设置 Docker Repository"
 setup_deb822_repo \
   "docker" \
   "https://download.docker.com/linux/$(get_os_info id)/gpg" \
@@ -21,16 +21,16 @@ setup_deb822_repo \
   "$(get_os_info codename)" \
   "stable" \
   "$(dpkg --print-architecture)"
-msg_ok "Setup Docker Repository"
+msg_ok "设置 Docker Repository"
 
-msg_info "Installing Docker"
+msg_info "正在安装 Docker"
 $STD apt install -y \
   docker-ce \
   docker-ce-cli \
   containerd.io \
   docker-buildx-plugin \
   docker-compose-plugin
-msg_ok "Installed Docker"
+msg_ok "已安装 Docker"
 
 echo "${TAB3}Choose the database for Komodo installation:"
 echo "${TAB3}1) MongoDB (recommended)"
@@ -54,7 +54,7 @@ mkdir -p /opt/komodo
 cd /opt/komodo
 curl -fsSL "https://raw.githubusercontent.com/moghtech/komodo/main/compose/$DB_COMPOSE_FILE" -o "/opt/komodo/$DB_COMPOSE_FILE"
 
-msg_info "Setup Komodo Environment"
+msg_info "设置 Komodo Environment"
 curl -fsSL "https://raw.githubusercontent.com/moghtech/komodo/main/compose/compose.env" -o "/opt/komodo/compose.env"
 DB_PASSWORD=$(openssl rand -base64 16 | tr -d '/+=')
 ADMIN_PASSWORD=$(openssl rand -base64 8 | tr -d '/+=')
@@ -74,11 +74,11 @@ sed -i "s/^KOMODO_JWT_SECRET=.*/KOMODO_JWT_SECRET=${JWT_SECRET}/" /opt/komodo/co
   echo "Admin User    : admin"
   echo "Admin Password: $ADMIN_PASSWORD"
 } >>~/komodo.creds
-msg_ok "Setup Komodo Environment"
+msg_ok "设置 Komodo Environment"
 
 msg_info "Initialize Komodo"
 $STD docker compose -p komodo -f /opt/komodo/$DB_COMPOSE_FILE --env-file /opt/komodo/compose.env up -d
-msg_ok "Initialized Komodo"
+msg_ok "已初始化 Komodo"
 
 motd_ssh
 customize

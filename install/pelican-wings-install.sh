@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Docker"
+msg_info "正在安装 Docker"
 DOCKER_CONFIG_PATH='/etc/docker/daemon.json'
 mkdir -p "$(dirname $DOCKER_CONFIG_PATH)"
 echo -e '{\n  "log-driver": "journald"\n}' >"$DOCKER_CONFIG_PATH"
 $STD sh <(curl -fsSL https://get.docker.com)
 systemctl enable -q --now docker
-msg_ok "Installed Docker"
+msg_ok "已安装 Docker"
 
 fetch_and_deploy_gh_release "wings" "pelican-dev/wings" "singlefile" "latest" "/usr/local/bin" "wings_linux_amd64"
 mkdir -p /etc/pelican /var/run/wings
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/wings.service
 [Unit]
 Description=Wings Daemon
@@ -47,7 +47,7 @@ RestartSec=5s
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now wings
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

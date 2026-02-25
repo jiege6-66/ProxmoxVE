@@ -13,7 +13,7 @@
   "config_path": "/opt/tracktor.env",
   "website": "https://github.com/javedh-dev/tracktor",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/tracktor.webp",
-  "description": "Tracktor is an open-source web application for comprehensive vehicle management.\nEasily track fuel consumption, maintenance, insurance, and regulatory documents for all your vehicles in one place.",
+  "description": "Tracktor 是一个用于全面车辆管理的开源 Web 应用程序。\n轻松跟踪所有车辆的燃油消耗、维护、保险和监管文件,集中在一个地方。",
   "install_methods": [
     {
       "type": "default",

@@ -13,18 +13,18 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 cd /tmp
 curl -fsSL https://dl.min.io/server/minio/release/linux-amd64/minio.deb -o minio.deb
 $STD dpkg -i minio.deb
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="16" setup_postgresql
 PG_DB_NAME="rxresume" PG_DB_USER="rxresume" PG_DB_GRANT_SUPERUSER="true" setup_postgresql_db
 NODE_VERSION="24" NODE_MODULE="pnpm@latest" setup_nodejs
 fetch_and_deploy_gh_release "Reactive-Resume" "lazy-media/Reactive-Resume" "tarball"
 
-msg_info "Setting up Reactive-Resume"
+msg_info "正在设置 Reactive-Resume"
 MINIO_PASS=$(openssl rand -base64 48)
 ACCESS_TOKEN=$(openssl rand -base64 48)
 REFRESH_TOKEN=$(openssl rand -base64 48)
@@ -38,9 +38,9 @@ export NEXT_TELEMETRY_DISABLED=1
 $STD pnpm install --frozen-lockfile
 $STD pnpm run build
 $STD pnpm run prisma:generate
-msg_ok "Setup Reactive-Resume"
+msg_ok "设置 Reactive-Resume"
 
-msg_info "Installing Browserless (Patience)"
+msg_info "正在安装 Browserless (Patience)"
 cd /tmp
 curl -fsSL https://github.com/browserless/browserless/archive/refs/tags/v"$TAG".zip -o v"$TAG".zip
 $STD unzip v"$TAG".zip
@@ -54,9 +54,9 @@ $STD npm install esbuild --save-dev
 $STD npm run build
 $STD npm run build:function
 $STD npm prune production
-msg_ok "Installed Browserless"
+msg_ok "已安装 Browserless"
 
-msg_info "Configuring applications"
+msg_info "正在配置 applications"
 mkdir -p /opt/minio
 cat <<EOF >/opt/minio/.env
 MINIO_ROOT_USER="storageadmin"
@@ -108,9 +108,9 @@ TOKEN=${CHROME_TOKEN}
 EOF
 rm -f /tmp/v"$TAG".zip
 rm -f /tmp/minio.deb
-msg_ok "Configured applications"
+msg_ok "已配置 applications"
 
-msg_info "Creating Services"
+msg_info "正在创建 Services"
 mkdir -p /etc/systemd/system/minio.service.d/
 cat <<EOF >/etc/systemd/system/minio.service.d/override.conf
 [Service]
@@ -152,7 +152,7 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl enable -q --now minio.service Reactive-Resume.service browserless.service
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

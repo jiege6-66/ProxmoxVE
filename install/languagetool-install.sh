@@ -13,20 +13,20 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y fasttext
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 JAVA_VERSION="21" setup_java
 
-msg_info "Setting up LanguageTool"
+msg_info "正在设置 LanguageTool"
 RELEASE=$(curl -fsSL https://languagetool.org/download/ | grep -oP 'LanguageTool-\K[0-9]+\.[0-9]+(\.[0-9]+)?(?=\.zip)' | sort -V | tail -n1)
 download_file "https://languagetool.org/download/LanguageTool-stable.zip" /tmp/LanguageTool-stable.zip
 unzip -q /tmp/LanguageTool-stable.zip -d /opt
 mv /opt/LanguageTool-*/ /opt/LanguageTool/
 download_file "https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin" /opt/lid.176.bin
 rm -f /tmp/LanguageTool-stable.zip
-msg_ok "Setup LanguageTool"
+msg_ok "设置 LanguageTool"
 
 ngram_dir=""
 lang_code=""
@@ -56,20 +56,20 @@ done
 
 if [[ -n "$lang_code" ]]; then
   if [[ "$lang_code" =~ ^(en|de|es|fr|nl)$ ]]; then
-    msg_info "Searching for $lang_code ngrams..."
+    msg_info "正在搜索 for $lang_code ngrams..."
     filename=$(curl -fsSL https://languagetool.org/download/ngram-data/ | grep -oP "ngrams-${lang_code}-[0-9]+\.zip" | sort -uV | tail -n1)
 
     if [[ -n "$filename" ]]; then
-      msg_info "Downloading $filename"
+      msg_info "正在下载 $filename"
       download_file "https://languagetool.org/download/ngram-data/${filename}" "/tmp/${filename}"
 
       mkdir -p /opt/ngrams
-      msg_info "Extracting $lang_code ngrams to /opt/ngrams"
+      msg_info "正在解压 $lang_code ngrams to /opt/ngrams"
       unzip -q "/tmp/${filename}" -d /opt/ngrams
       rm "/tmp/${filename}"
 
       ngram_dir="/opt/ngrams"
-      msg_ok "Installed $lang_code ngrams"
+      msg_ok "已安装 $lang_code ngrams"
     else
       msg_info "No ngram file found for ${lang_code}"
     fi
@@ -86,9 +86,9 @@ if [[ -n "$ngram_dir" ]]; then
   echo "languageModel=/opt/ngrams" >> /opt/LanguageTool/server.properties
 fi
 echo "${RELEASE}" >~/.languagetool
-msg_ok "Setup LanguageTool"
+msg_ok "设置 LanguageTool"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<'EOF' >/etc/systemd/system/language-tool.service
 [Unit]
 Description=LanguageTool Service
@@ -103,7 +103,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now language-tool
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

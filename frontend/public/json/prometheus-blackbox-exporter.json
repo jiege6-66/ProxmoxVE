@@ -14,7 +14,7 @@
   "website": "https://github.com/prometheus/blackbox_exporter",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/prometheus.webp",
   "config_path": "/opt/blackbox-exporter/blackbox.yml",
-  "description": "An exporter allows blackbox probing of endpoints over HTTP, HTTPS, DNS, TCP, ICMP and gRPC for use by the Prometheus monitoring system.",
+  "description": "该导出器允许通过 HTTP、HTTPS、DNS、TCP、ICMP 和 gRPC 对端点进行黑盒探测，供 Prometheus 监控系统使用。",
   "install_methods": [
     {
       "type": "default",

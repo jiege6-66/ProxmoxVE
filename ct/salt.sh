@@ -25,18 +25,18 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /etc/salt ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   RELEASE=$(get_latest_github_release "saltstack/salt")
   if check_for_gh_release "salt" "saltstack/salt"; then
-    msg_info "Updating Salt"
+    msg_info "正在更新 Salt"
     sed -i "s/^\(Pin: version \).*/\1${RELEASE}/" /etc/apt/preferences.d/salt-pin-1001
     $STD apt update
     $STD apt upgrade -y
     echo "${RELEASE}" >/~.salt
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -45,5 +45,5 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"

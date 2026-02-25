@@ -79,7 +79,7 @@ function MobileSidebar() {
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Open navigation menu"
+          aria-label="打开导航菜单"
           tabIndex={0}
           onKeyDown={(event) => {
             if (event.key === "Enter" || event.key === " ") {
@@ -91,14 +91,14 @@ function MobileSidebar() {
         </Button>
       </SheetTrigger>
       <SheetHeader className="border-b border-border px-6 pb-4 pt-2 sr-only">
-        <SheetTitle className="sr-only">Categories</SheetTitle>
+        <SheetTitle className="sr-only">分类</SheetTitle>
       </SheetHeader>
       <SheetContent side="left" className="flex w-full max-w-xs flex-col gap-4 overflow-hidden px-0 pb-6">
         <div className="flex h-full flex-col gap-4 overflow-y-auto">
           {isLoading && !hasLinks
             ? (
                 <div className="flex w-full flex-col items-center justify-center gap-2 px-6 py-4 text-sm text-muted-foreground">
-                  Loading categories...
+                  加载分类中...
                 </div>
               )
             : (
@@ -116,7 +116,7 @@ function MobileSidebar() {
           {currentSelectedScript && lastViewedScript
             ? (
                 <div className="flex flex-col gap-3 px-4">
-                  <p className="text-sm font-medium">Last Viewed</p>
+                  <p className="text-sm font-medium">最近查看</p>
                   <ScriptItem
                     item={lastViewedScript}
                   />
@@ -130,4 +130,3 @@ function MobileSidebar() {
 }
 
 export default MobileSidebar;
-

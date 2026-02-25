@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up InfluxDB Repository"
+msg_info "正在设置 InfluxDB Repository"
 setup_deb822_repo \
   "influxdata" \
   "https://repos.influxdata.com/influxdata-archive.key" \
@@ -30,7 +30,7 @@ else
   INFLUX="1"
 fi
 
-msg_info "Installing InfluxDB v${INFLUX}"
+msg_info "正在安装 InfluxDB v${INFLUX}"
 if [[ $INFLUX == "3" ]]; then
   $STD apt install -y influxdb3-core
   systemctl enable -q --now influxdb3-core
@@ -44,13 +44,13 @@ else
   rm -rf "${HOME}/chronograf_1.10.8_amd64.deb"
   systemctl enable -q --now influxdb
 fi
-msg_ok "Installed InfluxDB"
+msg_ok "已安装 InfluxDB"
 
 read -r -p "${TAB3}Would you like to add Telegraf? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Telegraf"
+  msg_info "正在安装 Telegraf"
   $STD apt install -y telegraf
-  msg_ok "Installed Telegraf"
+  msg_ok "已安装 Telegraf"
 fi
 
 motd_ssh

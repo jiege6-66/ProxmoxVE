@@ -13,7 +13,7 @@
   "website": "https://ubuntu.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/ubuntu.webp",
   "config_path": "",
-  "description": "Ubuntu is a distribution based on Debian, designed to have regular releases and a consistent user experience.",
+  "description": "Ubuntu 是基于 Debian 的发行版，旨在提供定期发布和一致的用户体验。",
   "install_methods": [
     {
       "type": "default",

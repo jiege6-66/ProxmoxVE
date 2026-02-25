@@ -14,7 +14,7 @@ const Table = React.forwardRef<
     />
   </div>
 ));
-Table.displayName = "Table";
+Table.displayName = "表格";
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
@@ -22,7 +22,7 @@ const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 ));
-TableHeader.displayName = "TableHeader";
+TableHeader.displayName = "表格头部";
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
@@ -34,7 +34,7 @@ const TableBody = React.forwardRef<
     {...props}
   />
 ));
-TableBody.displayName = "TableBody";
+TableBody.displayName = "表格主体";
 
 const TableFooter = React.forwardRef<
   HTMLTableSectionElement,
@@ -49,7 +49,7 @@ const TableFooter = React.forwardRef<
     {...props}
   />
 ));
-TableFooter.displayName = "TableFooter";
+TableFooter.displayName = "表格底部";
 
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
@@ -64,7 +64,7 @@ const TableRow = React.forwardRef<
     {...props}
   />
 ));
-TableRow.displayName = "TableRow";
+TableRow.displayName = "表格行";
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
@@ -79,7 +79,7 @@ const TableHead = React.forwardRef<
     {...props}
   />
 ));
-TableHead.displayName = "TableHead";
+TableHead.displayName = "表格表头单元格";
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
@@ -94,7 +94,7 @@ const TableCell = React.forwardRef<
     {...props}
   />
 ));
-TableCell.displayName = "TableCell";
+TableCell.displayName = "表格单元格";
 
 const TableCaption = React.forwardRef<
   HTMLTableCaptionElement,
@@ -106,7 +106,7 @@ const TableCaption = React.forwardRef<
     {...props}
   />
 ));
-TableCaption.displayName = "TableCaption";
+TableCaption.displayName = "表格标题";
 
 export {
   Table,

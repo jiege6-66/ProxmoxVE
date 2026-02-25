@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/shelfmark ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -33,21 +33,21 @@ function update_script() {
   PYTHON_VERSION="3.12" setup_uv
 
   if check_for_gh_release "shelfmark" "calibrain/shelfmark"; then
-    msg_info "Stopping Service(s)"
+    msg_info "正在停止 Service(s)"
     systemctl stop shelfmark
     [[ -f /etc/systemd/system/chromium.service ]] && systemctl stop chromium
-    msg_ok "Stopped Service(s)"
+    msg_ok "已停止 Service(s)"
 
     [[ -f /etc/systemd/system/flaresolverr.service ]] && if check_for_gh_release "flaresolverr" "Flaresolverr/Flaresolverr"; then
-      msg_info "Stopping FlareSolverr service"
+      msg_info "正在停止 FlareSolverr service"
       systemctl stop flaresolverr
-      msg_ok "Stopped FlareSolverr service"
+      msg_ok "已停止 FlareSolverr service"
 
       CLEAN_INSTALL=1 fetch_and_deploy_gh_release "flaresolverr" "FlareSolverr/FlareSolverr" "prebuild" "latest" "/opt/flaresolverr" "flaresolverr_linux_x64.tar.gz"
 
-      msg_info "Starting FlareSolverr Service"
+      msg_info "正在启动 FlareSolverr Service"
       systemctl start flaresolverr
-      msg_ok "Started FlareSolverr Service"
+      msg_ok "已启动 FlareSolverr Service"
       msg_ok "Updated FlareSolverr"
     fi
 
@@ -58,7 +58,7 @@ function update_script() {
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "shelfmark" "calibrain/shelfmark" "tarball" "latest" "/opt/shelfmark"
     RELEASE_VERSION=$(cat "$HOME/.shelfmark")
 
-    msg_info "Updating Shelfmark"
+    msg_info "正在更新 Shelfmark"
     sed -i "s/^RELEASE_VERSION=.*/RELEASE_VERSION=$RELEASE_VERSION/" /etc/shelfmark/.env
     cd /opt/shelfmark/src/frontend
     $STD npm ci
@@ -74,11 +74,11 @@ function update_script() {
     mv /opt/start.sh.bak /opt/shelfmark/start.sh
     msg_ok "Updated Shelfmark"
 
-    msg_info "Starting Service(s)"
+    msg_info "正在启动 Service(s)"
     systemctl start shelfmark
     [[ -f /etc/systemd/system/chromium.service ]] && systemctl start chromium
-    msg_ok "Started Service(s)"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service(s)"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -87,7 +87,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8084${CL}"

@@ -13,7 +13,7 @@
   "website": "https://www.emqx.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/emqx.webp",
   "config_path": "/etc/emqx",
-  "description": "EMQX is an open-source MQTT broker that features a high-performance, real-time message processing engine. It is designed to handle large-scale IoT deployments, providing fast and reliable message delivery for connected devices. EMQX is known for its scalability, reliability, and low latency, making it a popular choice for IoT and M2M applications. It also offers a wide range of features and plugins for enhanced security, monitoring, and management.",
+  "description": "EMQX 是一个开源的 MQTT broker,具有高性能、实时消息处理引擎。它旨在处理大规模 IoT 部署,为连接的设备提供快速可靠的消息传递。EMQX 以其可扩展性、可靠性和低延迟而闻名,使其成为 IoT 和 M2M 应用的热门选择。它还提供广泛的功能和插件,用于增强安全性、监控和管理。",
   "install_methods": [
     {
       "type": "default",

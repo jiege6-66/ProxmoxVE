@@ -14,7 +14,7 @@
   "website": "https://github.com/dotnetfactory/fluid-calendar",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/fluidcalendar.webp",
   "config_path": "/opt/fluid-calendar/.env",
-  "description": "The open-source intelligent calendar that adapts to your workflow. Experience seamless task scheduling powered by AI, designed to make your time management effortless.",
+  "description": "开源智能日历，适应你的工作流程。体验由 AI 驱动的无缝任务调度，旨在让你的时间管理变得轻松。",
   "install_methods": [
     {
       "type": "default",

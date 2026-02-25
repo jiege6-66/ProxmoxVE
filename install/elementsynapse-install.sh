@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apt-transport-https \
   debconf-utils
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="yarn" setup_nodejs
 
 read -p "${TAB3}Please enter the name for your server: " servername
 
-msg_info "Installing Element Synapse"
+msg_info "正在安装 Element Synapse"
 setup_deb822_repo "matrix-org" \
   "https://packages.matrix.org/debian/matrix-org-archive-keyring.gpg" \
   "https://packages.matrix.org/debian/" \
@@ -51,11 +51,11 @@ $STD register_new_matrix_user -a --user admin --password "$ADMIN_PASS" --config 
 systemctl stop matrix-synapse
 sed -i '34d' /etc/matrix-synapse/homeserver.yaml
 systemctl start matrix-synapse
-msg_ok "Installed Element Synapse"
+msg_ok "已安装 Element Synapse"
 
 fetch_and_deploy_gh_release "synapse-admin" "etkecc/synapse-admin" "tarball"
 
-msg_info "Installing Synapse-Admin"
+msg_info "正在安装 Synapse-Admin"
 cd /opt/synapse-admin
 $STD yarn global add serve
 $STD yarn install --ignore-engines
@@ -63,9 +63,9 @@ $STD yarn build
 mv ./dist ../ &&
   rm -rf * &&
   mv ../dist ./
-msg_ok "Installed Synapse-Admin"
+msg_ok "已安装 Synapse-Admin"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/synapse-admin.service
 [Unit]
 Description=Synapse-Admin Service
@@ -82,7 +82,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now synapse-admin
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   apt-transport-https \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 JAVA_VERSION="21" setup_java
 
-msg_info "Setting up ClickHouse"
+msg_info "正在设置 ClickHouse"
 curl -fsSL "https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key" | gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 cat <<EOF >/etc/apt/sources.list.d/clickhouse.sources
 Types: deb
@@ -34,9 +34,9 @@ EOF
 $STD apt update
 export DEBIAN_FRONTEND=noninteractive
 $STD apt install -y clickhouse-server clickhouse-client
-msg_ok "Setup ClickHouse"
+msg_ok "设置 ClickHouse"
 
-msg_info "Setting up Zookeeper"
+msg_info "正在设置 Zookeeper"
 ZOOURL=$(curl -fsSL https://dlcdn.apache.org/zookeeper/current/ | grep -o 'apache-zookeeper-[0-9.]\+-bin\.tar\.gz' | head -n1)
 curl -fsSL "https://dlcdn.apache.org/zookeeper/current/$ZOOURL" -o ~/zookeeper.tar.gz
 tar -xzf "$HOME/zookeeper.tar.gz" -C "$HOME"
@@ -75,9 +75,9 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now zookeeper
-msg_ok "Setup Zookeeper"
+msg_ok "设置 Zookeeper"
 
-msg_info "Configuring ClickHouse"
+msg_info "正在配置 ClickHouse"
 cat <<EOF >/etc/clickhouse-server/config.d/cluster.xml
 <clickhouse replace="true">
     <distributed_ddl>
@@ -106,11 +106,11 @@ cat <<EOF >/etc/clickhouse-server/config.d/cluster.xml
 </clickhouse>
 EOF
 systemctl enable -q --now clickhouse-server
-msg_ok "Configured ClickHouse"
+msg_ok "已配置 ClickHouse"
 
 fetch_and_deploy_gh_release "signoz-schema-migrator" "SigNoz/signoz-otel-collector" "prebuild" "latest" "/opt/signoz-schema-migrator" "signoz-schema-migrator_linux_amd64.tar.gz"
 
-msg_info "Running ClickHouse migrations"
+msg_info "正在运行 ClickHouse migrations"
 cd /opt/signoz-schema-migrator/bin
 $STD ./signoz-schema-migrator sync --dsn="tcp://localhost:9000?password=" --replication=true --up=
 $STD ./signoz-schema-migrator async --dsn="tcp://localhost:9000?password=" --replication=true --up=
@@ -118,7 +118,7 @@ msg_ok "ClickHouse Migrations Completed"
 
 fetch_and_deploy_gh_release "signoz" "SigNoz/signoz" "prebuild" "latest" "/opt/signoz" "signoz-community_linux_amd64.tar.gz"
 
-msg_info "Setting up SigNoz"
+msg_info "正在设置 SigNoz"
 mkdir -p /var/lib/signoz
 cat <<EOF >/opt/signoz/conf/systemd.env
 SIGNOZ_INSTRUMENTATION_LOGS_LEVEL=info
@@ -151,11 +151,11 @@ ExecStart=/opt/signoz/bin/signoz server
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now signoz
-msg_ok "Setup Signoz"
+msg_ok "设置 Signoz"
 
 fetch_and_deploy_gh_release "signoz-otel-collector" "SigNoz/signoz-otel-collector" "prebuild" "latest" "/opt/signoz-otel-collector" "signoz-otel-collector_linux_amd64.tar.gz"
 
-msg_info "Setting up SigNoz OTel Collector"
+msg_info "正在设置 SigNoz OTel Collector"
 mkdir -p /var/lib/signoz-otel-collector
 cat <<EOF >/opt/signoz-otel-collector/conf/config.yaml
 receivers:
@@ -260,7 +260,7 @@ EOF
 systemctl enable -q --now signoz-otel-collector
 rm -rf ~/zookeeper.tar.gz
 rm -rf ~/apache-zookeeper-*-bin
-msg_ok "Setup Signoz OTel Collector"
+msg_ok "设置 Signoz OTel Collector"
 
 motd_ssh
 customize

@@ -13,7 +13,7 @@
   "website": "https://pve.proxmox.com/wiki/Proxmox_Datacenter_Manager_Roadmap",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/proxmox.webp",
   "config_path": "",
-  "description": "The Proxmox Datacenter Manager project has been developed with the objective of providing a centralized overview of all your individual nodes and clusters. It also enables basic management like migrations of virtual guests without any cluster network requirements. ",
+  "description": "Proxmox Datacenter Manager 项目的开发目标是提供所有单个节点和集群的集中概览。它还支持基本管理，如虚拟客户机的迁移，无需任何集群网络要求。",
   "install_methods": [
     {
       "type": "default",

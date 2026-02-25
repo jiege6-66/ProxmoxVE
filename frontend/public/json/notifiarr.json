@@ -13,7 +13,7 @@
   "website": "https://notifiarr.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/notifiarr.webp",
   "config_path": "/etc/notifiarr/notifiarr.conf",
-  "description": "Notifiarr is a purpose built system to bring many applications together to manage and customize notifications via Discord. You can monitor many aspects of your network(s), be notified of downtime, be notified of health issues, etc",
+  "description": "Notifiarr 是一个专门构建的系统，用于将许多应用程序整合在一起，通过 Discord 管理和自定义通知。您可以监控网络的许多方面，接收停机通知、健康问题通知等",
   "install_methods": [
     {
       "type": "default",

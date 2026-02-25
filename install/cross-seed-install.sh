@@ -15,12 +15,12 @@ update_os
 
 NODE_VERSION="22" setup_nodejs
 
-msg_info "Setup Cross-Seed"
+msg_info "设置 Cross-Seed"
 $STD npm install cross-seed@latest -g
 $STD cross-seed gen-config
-msg_ok "Setup Cross-Seed"
+msg_ok "设置 Cross-Seed"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/cross-seed.service
 [Unit]
 Description=Cross-Seed daemon Service
@@ -36,7 +36,7 @@ User=root
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now cross-seed
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

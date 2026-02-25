@@ -9,16 +9,16 @@ export default function DefaultSettings({ item }: { item: Script }) {
       <div>
         <h2 className="text-md font-semibold">{title}</h2>
         <p className="text-sm text-muted-foreground">
-          CPU:
+          CPU：
           {cpu}
           vCPU
         </p>
         <p className="text-sm text-muted-foreground">
-          RAM:
+          内存：
           {getDisplayValueFromRAM(ram ?? 0)}
         </p>
         <p className="text-sm text-muted-foreground">
-          HDD:
+          硬盘：
           {hdd}
           GB
         </p>
@@ -33,8 +33,8 @@ export default function DefaultSettings({ item }: { item: Script }) {
 
   return (
     <div className="space-y-4 flex-col flex">
-      {hasDefaultSettings && <ResourceDisplay settings={defaultSettings} title="Default settings" />}
-      {defaultAlpineSettings && <ResourceDisplay settings={defaultAlpineSettings} title="Default Alpine settings" />}
+      {hasDefaultSettings && <ResourceDisplay settings={defaultSettings} title="默认设置" />}
+      {defaultAlpineSettings && <ResourceDisplay settings={defaultAlpineSettings} title="Alpine 默认设置" />}
     </div>
   );
 }

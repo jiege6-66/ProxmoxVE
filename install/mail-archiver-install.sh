@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 setup_deb822_repo \
   "microsoft" \
   "https://packages.microsoft.com/keys/microsoft-2025.asc" \
@@ -23,13 +23,13 @@ setup_deb822_repo \
 $STD apt install -y \
   dotnet-sdk-10.0 \
   aspnetcore-runtime-8.0
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="mailarchiver_db" PG_DB_USER="mailarchiver" setup_postgresql_db
 fetch_and_deploy_gh_release "mail-archiver" "s1t5/mail-archiver" "tarball"
 
-msg_info "Setting up Mail-Archiver"
+msg_info "正在设置 Mail-Archiver"
 mv /opt/mail-archiver /opt/mail-archiver-build
 cd /opt/mail-archiver-build
 $STD dotnet restore
@@ -43,9 +43,9 @@ ASPNETCORE_URLS=http://+:5000
 ASPNETCORE_ENVIRONMENT=Production
 TZ=UTC
 EOF
-msg_ok "Setup Mail-Archiver"
+msg_ok "设置 Mail-Archiver"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/mail-archiver.service
 [Unit]
 Description=Mail-Archiver Service
@@ -61,7 +61,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now mail-archiver
-msg_info "Created Service"
+msg_info "已创建 Service"
 
 motd_ssh
 customize

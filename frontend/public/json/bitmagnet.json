@@ -13,7 +13,7 @@
   "website": "https://bitmagnet.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/bitmagnet.webp",
   "config_path": "`/opt/bitmagnet/config.yml` or `/opt/bitmagnet/.env`",
-  "description": "A self-hosted BitTorrent indexer, DHT crawler, content classifier and torrent search engine with web UI, GraphQL API and Servarr stack integration.",
+  "description": "一个自托管的 BitTorrent 索引器、DHT 爬虫、内容分类器和种子搜索引擎，具有 Web UI、GraphQL API 和 Servarr 堆栈集成。",
   "install_methods": [
     {
       "type": "default",

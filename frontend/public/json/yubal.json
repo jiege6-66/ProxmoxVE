@@ -13,7 +13,7 @@
   "website": "https://github.com/guillevc/yubal",
   "config_path": "/opt/yubal.env",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/yubal.webp",
-  "description": "YouTube Music album downloader with Spotify metadata auto-tagging.",
+  "description": "YouTube Music 专辑下载器,支持 Spotify 元数据自动标记。",
   "install_methods": [
     {
       "type": "default",

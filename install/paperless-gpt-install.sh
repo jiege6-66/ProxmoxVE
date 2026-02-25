@@ -13,20 +13,20 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   gcc \
   musl-dev \
   mupdf \
   libc6-dev \
   musl-tools
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="24" setup_nodejs
 setup_go
 fetch_and_deploy_gh_release "paperless-gpt" "icereed/paperless-gpt" "tarball"
 
-msg_info "Setup Paperless-GPT"
+msg_info "设置 Paperless-GPT"
 cd /opt/paperless-gpt/web-app
 $STD npm install
 $STD npm run build
@@ -35,7 +35,7 @@ go mod download
 export CC=musl-gcc
 CGO_ENABLED=1 go build -tags musl -o /dev/null github.com/mattn/go-sqlite3
 CGO_ENABLED=1 go build -tags musl -o paperless-gpt .
-msg_ok "Setup Paperless-GPT"
+msg_ok "设置 Paperless-GPT"
 
 mkdir -p /opt/paperless-gpt-data
 read -rp "${TAB3}Do you want to enter the Paperless local URL now? (y/n) " input_url
@@ -52,7 +52,7 @@ else
   PAPERLESS_API_TOKEN="your_paperless_api_token"
 fi
 
-msg_info "Setup Environment"
+msg_info "设置 Environment"
 cat <<EOF >/opt/paperless-gpt-data/.env
 PAPERLESS_BASE_URL=$PAPERLESS_BASE_URL
 PAPERLESS_API_TOKEN=$PAPERLESS_API_TOKEN
@@ -75,9 +75,9 @@ AUTO_OCR_TAG=paperless-gpt-ocr-auto
 
 OCR_LIMIT_PAGES=5
 EOF
-msg_ok "Setup Environment"
+msg_ok "设置 Environment"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/paperless-gpt.service
 [Unit]
 Description=Paperless-GPT
@@ -97,7 +97,7 @@ StandardError=append:/var/log/paperless-gpt.log
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now paperless-gpt
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

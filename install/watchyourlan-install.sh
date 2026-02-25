@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   arp-scan \
   ieee-data \
   libwww-perl
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "watchyourlan" "aceberg/WatchYourLAN" "binary"
 
-msg_info "Configuring WatchYourLAN"
+msg_info "正在配置 WatchYourLAN"
 mkdir /data
 cat <<EOF >/data/config.yaml
 arp_timeout: "500"
@@ -42,12 +42,12 @@ shoutrrr_url: ""
 theme: solar
 timeout: 60
 EOF
-msg_ok "Configured WatchYourLAN"
+msg_ok "已配置 WatchYourLAN"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 sed -i 's|/etc/watchyourlan/config.yaml|/data/config.yaml|' /lib/systemd/system/watchyourlan.service
 systemctl enable -q --now watchyourlan
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

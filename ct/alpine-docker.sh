@@ -22,7 +22,7 @@ catch_errors
 function update_script() {
   header_info
   $STD apk -U upgrade
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit 0
 }
 
@@ -30,4 +30,4 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
+msg_ok "已成功完成！\n"

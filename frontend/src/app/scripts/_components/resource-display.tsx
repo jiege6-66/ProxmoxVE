@@ -34,7 +34,7 @@ export function ResourceDisplay({ title, cpu, ram, hdd }: ResourceDisplayProps) 
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-sm font-medium text-muted-foreground">{title}</span>
       <div className="flex flex-wrap gap-2">
-        {hasCPU && <IconText icon={<CPUIcon />} label={`${cpu} vCPU`} />}
+        {hasCPU && <IconText icon={<CPUIcon />} label={`${cpu} 虚拟CPU`} />}
         {hasRAM && <IconText icon={<RAMIcon />} label={getDisplayValueFromRAM(ram!)} />}
         {hasHDD && <IconText icon={<HDDIcon />} label={`${hdd} GB`} />}
       </div>

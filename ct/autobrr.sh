@@ -24,21 +24,21 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /root/.config/autobrr/config.toml ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "autobrr" "autobrr/autobrr"; then
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop autobrr
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
     fetch_and_deploy_gh_release "autobrr" "autobrr/autobrr" "prebuild" "latest" "/usr/local/bin" "autobrr_*_linux_x86_64.tar.gz"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start autobrr
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -47,7 +47,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:7474${CL}"

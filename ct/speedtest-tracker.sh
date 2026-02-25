@@ -25,7 +25,7 @@ function update_script() {
   check_container_resources
 
   if [[ ! -d /opt/speedtest-tracker ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -35,22 +35,22 @@ function update_script() {
     NODE_VERSION="22" setup_nodejs
     setcap cap_net_raw+ep /bin/ping
 
-    msg_info "Stopping Service"
+    msg_info "正在停止 Service"
     systemctl stop speedtest-tracker
-    msg_ok "Stopped Service"
+    msg_ok "已停止 Service"
 
-    msg_info "Updating Speedtest CLI"
+    msg_info "正在更新 Speedtest CLI"
     $STD apt update
     $STD apt --only-upgrade install -y speedtest
     msg_ok "Updated Speedtest CLI"
 
-    msg_info "Creating Backup"
+    msg_info "正在创建 Backup"
     cp -r /opt/speedtest-tracker /opt/speedtest-tracker-backup
-    msg_ok "Backup Created"
+    msg_ok "Backup 已创建"
 
     fetch_and_deploy_gh_release "speedtest-tracker" "alexjustesen/speedtest-tracker" "tarball" "latest" "/opt/speedtest-tracker"
 
-    msg_info "Updating Speedtest Tracker"
+    msg_info "正在更新 Speedtest Tracker"
     cp -r /opt/speedtest-tracker-backup/.env /opt/speedtest-tracker/.env
     cd /opt/speedtest-tracker
     export COMPOSER_ALLOW_SUPERUSER=1
@@ -66,10 +66,10 @@ function update_script() {
     chmod -R 755 /opt/speedtest-tracker/bootstrap/cache
     msg_ok "Updated Speedtest Tracker"
 
-    msg_info "Starting Service"
+    msg_info "正在启动 Service"
     systemctl start speedtest-tracker
-    msg_ok "Started Service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Service"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -78,7 +78,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}${CL}"

@@ -1,35 +1,35 @@
 {
-    "name": "DiscoPanel",
-    "slug": "discopanel",
-    "categories": [
-        24
-    ],
-    "date_created": "2025-12-10",
-    "type": "ct",
-    "updateable": true,
-    "privileged": false,
-    "interface_port": 8080,
-    "documentation": "https://discopanel.app/docs/",
-    "config_path": "",
-    "website": "https://discopanel.app/",
-    "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/discopanel.webp",
-    "description": "The Minecraft Server Manager That *Actually* Works\nBuilt by someone who was done with bloated panels, endless menus, and tools that break the moment you need them most.\nSpin up servers in minutes, configure your proxy without headaches, and link your own DNS name effortlessly.\nFast setup, clean controls, zero nonsense—just a manager that gets out of your way and lets you play.",
-    "install_methods": [
-        {
-            "type": "default",
-            "script": "ct/discopanel.sh",
-            "resources": {
-                "cpu": 4,
-                "ram": 4096,
-                "hdd": 15,
-                "os": "Debian",
-                "version": "13"
-            }
-        }
-    ],
-    "default_credentials": {
-        "username": null,
-        "password": null
-    },
-    "notes": []
+  "name": "DiscoPanel",
+  "slug": "discopanel",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-12-10",
+  "type": "ct",
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 8080,
+  "documentation": "https://discopanel.app/docs/",
+  "config_path": "",
+  "website": "https://discopanel.app/",
+  "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/discopanel.webp",
+  "description": "真正好用的 Minecraft 服务器管理器\n由一个厌倦了臃肿面板、无尽菜单和在最需要时就崩溃的工具的人打造。\n几分钟内启动服务器，轻松配置代理，毫不费力地链接你自己的 DNS 名称。\n快速设置、简洁控制、零废话——只是一个不碍事并让你尽情游戏的管理器。",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/discopanel.sh",
+      "resources": {
+        "cpu": 4,
+        "ram": 4096,
+        "hdd": 15,
+        "os": "Debian",
+        "version": "13"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": []
 }

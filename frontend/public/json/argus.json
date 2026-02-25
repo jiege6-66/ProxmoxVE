@@ -13,7 +13,7 @@
   "website": "https://release-argus.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/argus.webp",
   "config_path": "/opt/argus/config.yml",
-  "description": "Argus will query websites at a user defined interval for new software releases and then trigger Gotify/Slack/Other notification(s) and/or WebHook(s) when one has been found. For example, you could set it to monitor the Argus repo (release-argus/argus). This will query the GitHub API and track the tag_name variable. When this variable changes from what it was on a previous query, a GitHub-style WebHook could be sent that triggers something (like AWX) to update Argus on your server.",
+  "description": "Argus 将以用户定义的间隔查询网站以获取新的软件版本,然后在发现新版本时触发 Gotify/Slack/其他通知和/或 WebHook。例如,您可以将其设置为监控 Argus 仓库 (release-argus/argus)。这将查询 GitHub API 并跟踪 tag_name 变量。当此变量与之前查询时的值不同时,可以发送 GitHub 样式的 WebHook 来触发某些操作(如 AWX)以更新服务器上的 Argus。",
   "install_methods": [
     {
       "type": "default",

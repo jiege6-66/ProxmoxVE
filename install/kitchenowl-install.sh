@@ -13,7 +13,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   nginx \
   build-essential \
@@ -36,14 +36,14 @@ $STD apt install -y \
   libsqlite3-dev \
   libexpat1-dev \
   libicu-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PYTHON_VERSION="3.14" setup_uv
 fetch_and_deploy_gh_release "kitchenowl" "TomBursch/kitchenowl" "tarball" "latest" "/opt/kitchenowl"
 rm -rf /opt/kitchenowl/web
 fetch_and_deploy_gh_release "kitchenowl-web" "TomBursch/kitchenowl" "prebuild" "latest" "/opt/kitchenowl/web" "kitchenowl_Web.tar.gz"
 
-msg_info "Setting up KitchenOwl"
+msg_info "正在设置 KitchenOwl"
 cd /opt/kitchenowl/backend
 $STD uv sync --no-dev
 sed -i 's/default=True/default=False/' /opt/kitchenowl/backend/wsgi.py
@@ -65,7 +65,7 @@ set +a
 $STD uv run flask db upgrade
 msg_ok "Set up KitchenOwl"
 
-msg_info "Creating Systemd Service"
+msg_info "正在创建 Systemd Service"
 cat <<EOF >/etc/systemd/system/kitchenowl.service
 [Unit]
 Description=KitchenOwl Backend
@@ -84,9 +84,9 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now kitchenowl
-msg_ok "Created and Started Service"
+msg_ok "已创建 and 已启动 Service"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 rm -f /etc/nginx/sites-enabled/default
 cat <<'EOF' >/etc/nginx/sites-available/kitchenowl.conf
 server {
@@ -138,7 +138,7 @@ EOF
 ln -sf /etc/nginx/sites-available/kitchenowl.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 $STD systemctl reload nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
 motd_ssh
 customize

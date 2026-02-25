@@ -42,7 +42,7 @@ if ! declare -f explain_exit_code &>/dev/null; then
     4) echo "curl: Feature not supported or protocol error" ;;
     5) echo "curl: Could not resolve proxy" ;;
     6) echo "curl: DNS resolution failed (could not resolve host)" ;;
-    7) echo "curl: Failed to connect (network unreachable / host down)" ;;
+    7) echo "curl: 无法 connect (network unreachable / host down)" ;;
     8) echo "curl: Server reply error (FTP/SFTP or apk untrusted key)" ;;
     16) echo "curl: HTTP/2 framing layer error" ;;
     18) echo "curl: Partial file (transfer not completed)" ;;
@@ -74,15 +74,15 @@ if ! declare -f explain_exit_code &>/dev/null; then
     61) echo "curl: Bad/unrecognized transfer encoding" ;;
     63) echo "curl: Maximum file size exceeded" ;;
     75) echo "Temporary failure (retry later)" ;;
-    78) echo "curl: Remote file not found (404 on FTP/file)" ;;
+    78) echo "curl: Remote file 未找到 (404 on FTP/file)" ;;
     79) echo "curl: SSH session error (key exchange/auth failed)" ;;
     92) echo "curl: HTTP/2 stream error (protocol violation)" ;;
     95) echo "curl: HTTP/3 layer error" ;;
     64) echo "Usage error (wrong arguments)" ;;
     65) echo "Data format error (bad input data)" ;;
-    66) echo "Input file not found (cannot open input)" ;;
-    67) echo "User not found (addressee unknown)" ;;
-    68) echo "Host not found (hostname unknown)" ;;
+    66) echo "Input file 未找到 (cannot open input)" ;;
+    67) echo "User 未找到 (addressee unknown)" ;;
+    68) echo "Host 未找到 (hostname unknown)" ;;
     69) echo "Service unavailable" ;;
     70) echo "Internal software error" ;;
     71) echo "System error (OS-level failure)" ;;
@@ -97,7 +97,7 @@ if ! declare -f explain_exit_code &>/dev/null; then
     124) echo "Command timed out (timeout command)" ;;
     125) echo "Command failed to start (Docker daemon or execution error)" ;;
     126) echo "Command invoked cannot execute (permission problem?)" ;;
-    127) echo "Command not found" ;;
+    127) echo "Command 未找到" ;;
     128) echo "Invalid argument to exit" ;;
     129) echo "Killed by SIGHUP (terminal closed / hangup)" ;;
     130) echo "Aborted by user (SIGINT)" ;;
@@ -111,7 +111,7 @@ if ! declare -f explain_exit_code &>/dev/null; then
     144) echo "Killed by signal 16 (SIGUSR1 / SIGSTKFLT)" ;;
     146) echo "Killed by signal 18 (SIGTSTP)" ;;
     150) echo "Systemd: Service failed to start" ;;
-    151) echo "Systemd: Service unit not found" ;;
+    151) echo "Systemd: Service unit 未找到" ;;
     152) echo "Permission denied (EACCES)" ;;
     153) echo "Build/compile failed (make/gcc/cmake)" ;;
     154) echo "Node.js: Native addon build failed (node-gyp)" ;;
@@ -128,9 +128,9 @@ if ! declare -f explain_exit_code &>/dev/null; then
     183) echo "MySQL/MariaDB: Fatal error in query / syntax" ;;
     190) echo "MongoDB: Connection failed (server not running)" ;;
     191) echo "MongoDB: Authentication failed (bad user/password)" ;;
-    192) echo "MongoDB: Database not found" ;;
+    192) echo "MongoDB: Database 未找到" ;;
     193) echo "MongoDB: Fatal query error" ;;
-    200) echo "Proxmox: Failed to create lock file" ;;
+    200) echo "Proxmox: 无法 create lock file" ;;
     203) echo "Proxmox: Missing CTID variable" ;;
     204) echo "Proxmox: Missing PCT_OSTYPE variable" ;;
     205) echo "Proxmox: Invalid CTID (<100)" ;;
@@ -285,9 +285,9 @@ error_handler() {
         if [[ -z "$response" || "$response" =~ ^[Yy]$ ]]; then
           echo ""
           if declare -f msg_info >/dev/null 2>&1; then
-            msg_info "Removing container ${CTID}"
+            msg_info "正在移除 container ${CTID}"
           else
-            echo -e "${YW}Removing container ${CTID}${CL}"
+            echo -e "${YW}正在移除 container ${CTID}${CL}"
           fi
           pct stop "$CTID" &>/dev/null || true
           pct destroy "$CTID" &>/dev/null || true

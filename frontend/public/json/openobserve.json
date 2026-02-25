@@ -13,7 +13,7 @@
   "website": "https://openobserve.ai/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/openobserve.webp",
   "config_path": "/opt/openobserve/data/.env",
-  "description": "OpenObserve is a simple yet sophisticated log search, infrastructure monitoring, and APM solution.",
+  "description": "OpenObserve 是一个简单而精密的日志搜索、基础设施监控和 APM 解决方案。",
   "install_methods": [
     {
       "type": "default",

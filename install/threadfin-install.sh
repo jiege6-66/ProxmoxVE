@@ -14,17 +14,17 @@ network_check
 update_os
 setup_hwaccel
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   ffmpeg \
   vlc
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "threadfin" "threadfin/threadfin" "singlefile" "latest" "/opt/threadfin" "Threadfin_linux_amd64"
 mv /root/.threadfin /root/.threadfin_version
 mkdir -p /root/.threadfin
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/threadfin.service
 [Unit]
 Description=Threadfin: M3U Proxy for Plex DVR and Emby/Jellyfin Live TV
@@ -40,7 +40,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now threadfin
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

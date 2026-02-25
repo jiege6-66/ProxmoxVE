@@ -13,22 +13,22 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up TemurinJDK"
+msg_info "正在设置 TemurinJDK"
 setup_java
 $STD apt install -y temurin-{8,11,17,21}-jre
 sudo update-alternatives --set java /usr/lib/jvm/temurin-21-jre-amd64/bin/java
-msg_ok "Installed TemurinJDK"
+msg_ok "已安装 TemurinJDK"
 
-msg_info "Setup Python3"
+msg_info "设置 Python3"
 $STD apt install -y \
   python3 \
   python3-dev \
   python3-pip \
   python3-venv
 rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED
-msg_ok "Setup Python3"
+msg_ok "设置 Python3"
 
-msg_info "Installing Crafty-Controller (Patience)"
+msg_info "正在安装 Crafty-Controller (Patience)"
 useradd crafty -m -s /bin/bash
 cd /opt
 mkdir -p /opt/crafty-controller/crafty /opt/crafty-controller/server
@@ -47,9 +47,9 @@ $STD sudo -u crafty bash -c '
     cd /opt/crafty-controller/crafty/crafty-4
     pip3 install --no-cache-dir -r requirements.txt
 '
-msg_ok "Installed Craft-Controller and dependencies"
+msg_ok "已安装 Craft-Controller and dependencies"
 
-msg_info "Setting up service"
+msg_info "正在设置 service"
 cat <<EOF >/etc/systemd/system/crafty-controller.service
 [Unit]
 Description=Crafty 4

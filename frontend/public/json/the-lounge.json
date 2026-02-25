@@ -13,7 +13,7 @@
   "website": "https://thelounge.chat/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/the-lounge.webp",
   "config_path": "/etc/thelounge/config.js",
-  "description": "Modern web IRC client designed for self-hosting ",
+  "description": "专为自托管设计的现代 Web IRC 客户端",
   "install_methods": [
     {
       "type": "default",

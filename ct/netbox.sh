@@ -24,18 +24,18 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /etc/systemd/system/netbox.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   if check_for_gh_release "netbox" "netbox-community/netbox"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop netbox netbox-rq
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
-    msg_info "Backing up NetBox configurations"
+    msg_info "正在备份 NetBox configurations"
     mv /opt/netbox/ /opt/netbox-backup
-    msg_ok "Backed up NetBox configurations"
+    msg_ok "已备份 NetBox configurations"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "netbox" "netbox-community/netbox" "tarball"
 
@@ -48,10 +48,10 @@ function update_script() {
     $STD /opt/netbox/upgrade.sh
     rm -r /opt/netbox-backup
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start netbox netbox-rq
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -60,7 +60,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}https://${IP}${CL}"

@@ -13,7 +13,7 @@
   "website": "https://adguard.com/en/adguard-home/overview.html",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/adguard-home.webp",
   "config_path": "/opt/AdGuardHome/AdGuardHome.yaml",
-  "description": "AdGuard Home is an open-source, self-hosted network-wide ad blocker. It blocks advertisements, trackers, phishing and malware websites, and provides protection against online threats. AdGuard Home is a DNS-based solution, which means it blocks ads and malicious content at the network level, before it even reaches your device. It runs on your home network and can be easily configured and managed through a web-based interface. It provides detailed statistics and logs, allowing you to see which websites are being blocked, and why. AdGuard Home is designed to be fast, lightweight, and easy to use, making it an ideal solution for home users who want to block ads, protect their privacy, and improve the speed and security of their online experience.",
+  "description": "AdGuard Home 是一个开源的自托管网络级广告拦截器。它可以拦截广告、跟踪器、钓鱼网站和恶意软件网站,并提供针对在线威胁的保护。AdGuard Home 是基于 DNS 的解决方案,这意味着它在网络层面拦截广告和恶意内容,甚至在到达您的设备之前。它运行在您的家庭网络上,可以通过基于 Web 的界面轻松配置和管理。它提供详细的统计信息和日志,让您可以查看哪些网站被拦截以及原因。AdGuard Home 设计快速、轻量且易于使用,是希望拦截广告、保护隐私并提高在线体验速度和安全性的家庭用户的理想解决方案。",
   "install_methods": [
     {
       "type": "default",

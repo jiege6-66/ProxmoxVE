@@ -13,7 +13,7 @@
   "website": "https://romm.app/",
   "config_path": "/opt/romm/.env",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/romm.webp",
-  "description": "RomM (ROM Manager) allows you to scan, enrich, browse and play your game collection with a clean and responsive interface. Support for multiple platforms, various naming schemes, and custom tags.",
+  "description": "RomM (ROM Manager) 允许您使用简洁且响应式的界面扫描、丰富、浏览和玩您的游戏收藏。支持多个平台、各种命名方案和自定义标签。",
   "install_methods": [
     {
       "type": "default",

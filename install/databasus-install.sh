@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
     nginx \
     valkey
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PG_VERSION="17" setup_postgresql
 setup_go
@@ -25,7 +25,7 @@ NODE_VERSION="24" setup_nodejs
 
 fetch_and_deploy_gh_release "databasus" "databasus/databasus" "tarball" "latest" "/opt/databasus"
 
-msg_info "Building Databasus (Patience)"
+msg_info "正在构建 Databasus (Patience)"
 cd /opt/databasus/frontend
 $STD npm ci
 $STD npm run build
@@ -42,9 +42,9 @@ mkdir -p /opt/databasus/migrations
 cp -r /opt/databasus/frontend/dist/* /opt/databasus/ui/build/
 cp -r /opt/databasus/backend/migrations/* /opt/databasus/migrations/
 chown -R postgres:postgres /databasus-data
-msg_ok "Built Databasus"
+msg_ok "已构建 Databasus"
 
-msg_info "Configuring Databasus"
+msg_info "正在配置 Databasus"
 JWT_SECRET=$(openssl rand -hex 32)
 ENCRYPTION_KEY=$(openssl rand -hex 32)
 # Create PostgreSQL version symlinks for compatibility
@@ -86,9 +86,9 @@ LOG_DIR=/databasus-data/logs
 EOF
 chown postgres:postgres /opt/databasus/.env
 chmod 600 /opt/databasus/.env
-msg_ok "Configured Databasus"
+msg_ok "已配置 Databasus"
 
-msg_info "Configuring Valkey"
+msg_info "正在配置 Valkey"
 cat <<EOF >/etc/valkey/valkey.conf
 port 6379
 bind 127.0.0.1
@@ -99,9 +99,9 @@ maxmemory-policy allkeys-lru
 EOF
 systemctl enable -q --now valkey-server
 systemctl restart valkey-server
-msg_ok "Configured Valkey"
+msg_ok "已配置 Valkey"
 
-msg_info "Creating Database"
+msg_info "正在创建 Database"
 # Configure PostgreSQL to allow local password auth for databasus
 PG_HBA="/etc/postgresql/17/main/pg_hba.conf"
 if ! grep -q "databasus" "$PG_HBA"; then
@@ -111,9 +111,9 @@ if ! grep -q "databasus" "$PG_HBA"; then
 fi
 $STD sudo -u postgres psql -c "CREATE DATABASE databasus;" 2>/dev/null || true
 $STD sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER CREATEROLE CREATEDB;" 2>/dev/null || true
-msg_ok "Created Database"
+msg_ok "已创建 Database"
 
-msg_info "Creating Databasus Service"
+msg_info "正在创建 Databasus Service"
 cat <<EOF >/etc/systemd/system/databasus.service
 [Unit]
 Description=Databasus - Database Backup Management
@@ -135,9 +135,9 @@ WantedBy=multi-user.target
 EOF
 $STD systemctl daemon-reload
 $STD systemctl enable -q --now databasus
-msg_ok "Created Databasus Service"
+msg_ok "已创建 Databasus Service"
 
-msg_info "Configuring Nginx"
+msg_info "正在配置 Nginx"
 cat <<EOF >/etc/nginx/sites-available/databasus
 server {
     listen 80;
@@ -164,7 +164,7 @@ rm -f /etc/nginx/sites-enabled/default
 $STD nginx -t
 $STD systemctl enable -q --now nginx
 $STD systemctl reload nginx
-msg_ok "Configured Nginx"
+msg_ok "已配置 Nginx"
 
 motd_ssh
 customize

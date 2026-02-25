@@ -13,7 +13,7 @@
   "website": "https://mattermost.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/mattermost.webp",
   "config_path": "/opt/mattermost/config/config.json",
-  "description": "Mattermost is an open source platform for secure collaboration across the entire software development lifecycle. It's written in Go and React and runs as a single Linux binary with MySQL or PostgreSQL. It has a slimilar interface and features to Slack or Discord.",
+  "description": "Mattermost 是一个开源平台，用于在整个软件开发生命周期中进行安全协作。它用 Go 和 React 编写，作为单个 Linux 二进制文件运行，支持 MySQL 或 PostgreSQL。它具有与 Slack 或 Discord 类似的界面和功能。",
   "install_methods": [
     {
       "type": "default",

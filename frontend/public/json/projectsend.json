@@ -13,7 +13,7 @@
   "website": "https://projectsend.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/projectsend.webp",
   "config_path": "/opt/projectsend/includes/sys.config.php",
-  "description": "ProjectSend is a free, open source software that lets you share files with your clients, focused on ease of use and privacy. It supports clients groups, system users roles, statistics, multiple languages, detailed logs... and much more!",
+  "description": "ProjectSend 是一款免费的开源软件，让您可以与客户共享文件，专注于易用性和隐私保护。它支持客户分组、系统用户角色、统计信息、多语言、详细日志等更多功能！",
   "install_methods": [
     {
       "type": "default",

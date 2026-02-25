@@ -67,8 +67,7 @@ function handleCopy(type: string, value: string) {
         toast.info(
           <div className="flex flex-col gap-3">
             <p className="lg">
-              If you find these scripts useful, please consider starring the
-              repository on GitHub. It helps a lot!
+              如果您觉得这些脚本有用，请考虑在 GitHub 上为仓库加星。这对我们帮助很大！
             </p>
             <div>
               <Button className="text-white">

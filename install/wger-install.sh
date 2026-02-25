@@ -13,13 +13,13 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   build-essential \
   nginx \
   redis-server \
   libpq-dev
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="sass" setup_nodejs
 setup_uv
@@ -27,7 +27,7 @@ PG_VERSION="16" setup_postgresql
 PG_DB_NAME="wger" PG_DB_USER="wger" setup_postgresql_db
 fetch_and_deploy_gh_release "wger" "wger-project/wger" "tarball"
 
-msg_info "Setting up wger"
+msg_info "正在设置 wger"
 mkdir -p /opt/wger/{static,media}
 chmod o+w /opt/wger/media
 cd /opt/wger
@@ -91,7 +91,7 @@ if created:
     user.save()
 EOF
 msg_ok "Set up wger"
-msg_info "Creating Config and Services"
+msg_info "正在创建 Config and Services"
 cat <<EOF >/etc/systemd/system/wger.service
 [Unit]
 Description=wger Gunicorn
@@ -175,7 +175,7 @@ $STD rm -f /etc/nginx/sites-enabled/default
 $STD ln -sf /etc/nginx/sites-available/wger /etc/nginx/sites-enabled/wger
 systemctl enable -q --now redis-server nginx wger celery celery-beat
 systemctl restart nginx
-msg_ok "Created Config and Services"
+msg_ok "已创建 Config and Services"
 
 motd_ssh
 customize

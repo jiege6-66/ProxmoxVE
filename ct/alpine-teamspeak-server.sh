@@ -23,14 +23,14 @@ function update_script() {
   header_info
 
   if [[ ! -d /opt/teamspeak-server ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   RELEASE=$(curl -fsSL https://teamspeak.com/en/downloads/#server | sed -n 's/.*teamspeak3-server_linux_amd64-\([0-9.]*[0-9]\).*/\1/p' | awk 'NR==1')
 
   if [ "${RELEASE}" != "$(cat ~/.teamspeak-server)" ] || [ ! -f ~/.teamspeak-server ]; then
-    msg_info "Updating ${APP} LXC"
+    msg_info "正在更新 ${APP} LXC"
     $STD apk -U upgrade
     $STD service teamspeak stop
     curl -fsSL "https://files.teamspeak-services.com/releases/server/${RELEASE}/teamspeak3-server_linux_amd64-${RELEASE}.tar.bz2" -o ts3server.tar.bz2
@@ -40,9 +40,9 @@ function update_script() {
     rm -rf teamspeak3-server_linux_amd64
     echo "${RELEASE}" >~/.teamspeak-server
     $STD service teamspeak start
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   else
-    msg_ok "No update required. ${APP} is already at ${RELEASE}"
+    msg_ok "无需更新。 ${APP} is already at ${RELEASE}"
   fi
   exit 0
 }
@@ -51,7 +51,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
 echo -e "${INFO}${YW} Access it using the following IP:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}${IP}:9987${CL}"

@@ -56,7 +56,7 @@ export async function GET() {
   catch (error) {
     console.error(error as Error);
     return NextResponse.json(
-      { error: "Failed to fetch categories" },
+      { error: "获取分类失败" },
       { status: 500 },
     );
   }

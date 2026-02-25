@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Forgejo"
+msg_info "正在安装 Forgejo"
 $STD apk add --no-cache forgejo
-msg_ok "Installed Forgejo"
+msg_ok "已安装 Forgejo"
 
-msg_info "Enabling Forgejo Service"
+msg_info "正在启用 Forgejo Service"
 $STD rc-update add forgejo default
-msg_ok "Enabled Forgejo Service"
+msg_ok "已启用 Forgejo Service"
 
-msg_info "Starting Forgejo"
+msg_info "正在启动 Forgejo"
 $STD service forgejo start
-msg_ok "Started Forgejo"
+msg_ok "已启动 Forgejo"
 
 motd_ssh
 customize

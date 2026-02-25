@@ -29,21 +29,21 @@ function update_script() {
   fi
 
   if check_for_gh_release "zot" "project-zot/zot"; then
-    msg_info "Stopping Zot service"
+    msg_info "正在停止 Zot service"
     systemctl stop zot
-    msg_ok "Stopped Zot service"
+    msg_ok "已停止 Zot service"
 
     rm -f /usr/bin/zot
     fetch_and_deploy_gh_release "zot" "project-zot/zot" "singlefile" "latest" "/usr/bin" "zot-linux-amd64"
 
-    msg_info "Configuring Zot Registry"
+    msg_info "正在配置 Zot Registry"
     chown root:root /usr/bin/zot
-    msg_ok "Configured Zot Registry"
+    msg_ok "已配置 Zot Registry"
 
-    msg_info "Starting service"
+    msg_info "正在启动 service"
     systemctl start zot
     msg_ok "Service started"
-    msg_ok "Updated successfully!"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -52,7 +52,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

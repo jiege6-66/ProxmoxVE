@@ -13,7 +13,7 @@
   "website": "https://runtipi.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/runtipi.webp",
   "config_path": "opt/runtipi/state/settings.json",
-  "description": "Runtipi lets you install all your favorite self-hosted apps without the hassle of configuring and managing each service. One-click installs and updates for more than 180 popular apps.",
+  "description": "Runtipi 让您无需配置和管理每个服务的麻烦即可安装所有您喜欢的自托管应用程序。一键安装和更新超过 180 个流行应用程序。",
   "install_methods": [
     {
       "type": "default",

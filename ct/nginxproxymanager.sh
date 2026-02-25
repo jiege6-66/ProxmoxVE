@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /lib/systemd/system/npm.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -55,21 +55,21 @@ function update_script() {
 
   CLEAN_INSTALL=1 fetch_and_deploy_gh_release "nginxproxymanager" "NginxProxyManager/nginx-proxy-manager" "tarball" "v${RELEASE}" "/opt/nginxproxymanager"
   
-  msg_info "Stopping Services"
+  msg_info "正在停止 Services"
   systemctl stop openresty
   systemctl stop npm
-  msg_ok "Stopped Services"
+  msg_ok "已停止 Services"
 
-  msg_info "Cleaning old files"
+  msg_info "正在清理 old files"
   $STD rm -rf /app \
     /var/www/html \
     /etc/nginx \
     /var/log/nginx \
     /var/lib/nginx \
     /var/cache/nginx
-  msg_ok "Cleaned old files"
+  msg_ok "已清理 old files"
 
-  msg_info "Setting up Environment"
+  msg_info "正在设置 Environment"
   ln -sf /usr/bin/python3 /usr/bin/python
   ln -sf /usr/local/openresty/nginx/sbin/nginx /usr/sbin/nginx
   ln -sf /usr/local/openresty/nginx/ /etc/nginx
@@ -119,7 +119,7 @@ function update_script() {
   cp -r /opt/nginxproxymanager/backend/* /app
   msg_ok "Set up Environment"
 
-  msg_info "Building Frontend"
+  msg_info "正在构建 Frontend"
   export NODE_OPTIONS="--max_old_space_size=2048 --openssl-legacy-provider"
   cd /opt/nginxproxymanager/frontend
   # Replace node-sass with sass in package.json before installation
@@ -129,9 +129,9 @@ function update_script() {
   $STD yarn build
   cp -r /opt/nginxproxymanager/frontend/dist/* /app/frontend
   cp -r /opt/nginxproxymanager/frontend/public/images/* /app/frontend/images
-  msg_ok "Built Frontend"
+  msg_ok "已构建 Frontend"
 
-  msg_info "Initializing Backend"
+  msg_info "正在初始化 Backend"
   rm -rf /app/config/default.json
   if [ ! -f /app/config/production.json ]; then
     cat <<'EOF' >/app/config/production.json
@@ -152,9 +152,9 @@ EOF
   sed -i 's/"client": "sqlite3"/"client": "better-sqlite3"/' /app/config/production.json
   cd /app 
   $STD yarn install --network-timeout 600000
-  msg_ok "Initialized Backend"
+  msg_ok "已初始化 Backend"
 
-  msg_info "Updating Certbot"
+  msg_info "正在更新 Certbot"
   [ -f /etc/apt/trusted.gpg.d/openresty-archive-keyring.gpg ] && rm -f /etc/apt/trusted.gpg.d/openresty-archive-keyring.gpg
   [ -f /etc/apt/sources.list.d/openresty.list ] && rm -f /etc/apt/sources.list.d/openresty.list
   [ ! -f /etc/apt/trusted.gpg.d/openresty.gpg ] && curl -fsSL https://openresty.org/package/pubkey.gpg | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/openresty.gpg
@@ -173,15 +173,15 @@ EOF
   fi
   msg_ok "Updated Certbot"
 
-  msg_info "Starting Services"
+  msg_info "正在启动 Services"
   sed -i 's/user npm/user root/g; s/^pid/#pid/g' /usr/local/openresty/nginx/conf/nginx.conf
   sed -r -i 's/^([[:space:]]*)su npm npm/\1#su npm npm/g;' /etc/logrotate.d/nginx-proxy-manager
   systemctl enable -q --now openresty
   systemctl enable -q --now npm
   systemctl restart openresty
-  msg_ok "Started Services"
+  msg_ok "已启动 Services"
 
-  msg_ok "Updated successfully!"
+  msg_ok "已成功更新!"
   exit
 }
 
@@ -189,7 +189,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:81${CL}"

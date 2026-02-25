@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y zstd
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
-msg_info "Installing Wastebin"
+msg_info "正在安装 Wastebin"
 temp_file=$(mktemp)
 RELEASE=$(curl -fsSL https://api.github.com/repos/matze/wastebin/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
 curl -fsSL "https://github.com/matze/wastebin/releases/download/${RELEASE}/wastebin_${RELEASE}_x86_64-unknown-linux-musl.tar.zst" -o "$temp_file"
@@ -38,9 +38,9 @@ EOF
 rm -f "$temp_file"
 echo "${RELEASE}" >"/opt/${APPLICATION}_version.txt"
 
-msg_ok "Installed Wastebin"
+msg_ok "已安装 Wastebin"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/wastebin.service
 [Unit]
 Description=Start Wastebin Service
@@ -55,7 +55,7 @@ EnvironmentFile=/opt/wastebin-data/.env
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now wastebin
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

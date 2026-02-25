@@ -13,21 +13,21 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y apt-transport-https
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.4" PHP_FPM="YES" setup_php
 setup_composer
 fetch_and_deploy_gh_release "Heimdall" "linuxserver/Heimdall" "tarball"
 
-msg_info "Setting up Heimdall-Dashboard"
+msg_info "正在设置 Heimdall-Dashboard"
 cd /opt/Heimdall
 cp .env.example .env
 $STD php artisan key:generate
-msg_ok "Setup Heimdall-Dashboard"
+msg_ok "设置 Heimdall-Dashboard"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/heimdall.service
 [Unit]
 Description=Heimdall
@@ -50,7 +50,7 @@ cd /opt/Heimdall
 export COMPOSER_ALLOW_SUPERUSER=1
 $STD composer dump-autoload
 systemctl restart heimdall.service
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

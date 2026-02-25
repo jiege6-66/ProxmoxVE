@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up Telegraf repository"
+msg_info "正在设置 Telegraf repository"
 setup_deb822_repo \
   "telegraf" \
   "https://repos.influxdata.com/influxdata-archive.key" \
   "https://repos.influxdata.com/debian" \
   "stable"
-msg_ok "Setup Telegraf Repository"
+msg_ok "设置 Telegraf Repository"
 
-msg_info "Setting up Telegraf"
+msg_info "正在设置 Telegraf"
 $STD apt install -y telegraf
-msg_ok "Setup Telegraf"
+msg_ok "设置 Telegraf"
 
 motd_ssh
 customize

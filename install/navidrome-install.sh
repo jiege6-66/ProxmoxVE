@@ -13,15 +13,15 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies (Patience)"
+msg_info "正在安装依赖 (Patience)"
 $STD apt install -y ffmpeg
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 fetch_and_deploy_gh_release "navidrome" "navidrome/navidrome" "binary"
 
-msg_info "Starting Navidrome"
+msg_info "正在启动 Navidrome"
 systemctl enable -q --now navidrome
-msg_ok "Started Navidrome"
+msg_ok "已启动 Navidrome"
 
 read -p "${TAB3}Do you want to install filebrowser addon? (y/n) " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then

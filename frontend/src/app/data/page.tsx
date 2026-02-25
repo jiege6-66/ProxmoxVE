@@ -86,7 +86,7 @@ const CHART_COLORS = [
 
 const chartConfigApps = {
   count: {
-    label: "Installations",
+    label: "安装次数",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
@@ -112,7 +112,7 @@ export default function DataPage() {
       try {
         const summaryRes = await fetch("https://api.htl-braunau.at/data/summary");
         if (!summaryRes.ok) {
-          throw new Error(`Failed to fetch summary: ${summaryRes.statusText}`);
+          throw new Error(`获取摘要失败: ${summaryRes.statusText}`);
         }
         const summaryData: SummaryData = await summaryRes.json();
         setSummary(summaryData);
@@ -132,7 +132,7 @@ export default function DataPage() {
       try {
         const dataRes = await fetch(`https://api.htl-braunau.at/data/paginated?page=${currentPage}&limit=${itemsPerPage}`);
         if (!dataRes.ok) {
-          throw new Error(`Failed to fetch data: ${dataRes.statusText}`);
+          throw new Error(`获取数据失败: ${dataRes.statusText}`);
         }
         const pageData: DataModel[] = await dataRes.json();
         setData(pageData);
@@ -209,7 +209,7 @@ export default function DataPage() {
     return (
       <div className="p-6 text-center text-red-500">
         <p>
-          Error loading data:
+          加载数据时出错:
           {error}
         </p>
       </div>
@@ -222,54 +222,54 @@ export default function DataPage() {
         <div className="mx-4 w-full sm:mx-0 space-y-8">
           {/* Header */}
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
-            <p className="text-muted-foreground">Overview of container installations and system statistics.</p>
+            <h1 className="text-3xl font-bold tracking-tight">分析</h1>
+            <p className="text-muted-foreground">容器安装和系统统计概览。</p>
           </div>
 
           {/* Widgets */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Created</CardTitle>
+                <CardTitle className="text-sm font-medium">总创建数</CardTitle>
                 <Box className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{nf.format(totalCount)}</div>
-                <p className="text-xs text-muted-foreground">Total LXC/VM entries found</p>
+                <p className="text-xs text-muted-foreground">找到的 LXC/VM 条目总数</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+                <CardTitle className="text-sm font-medium">成功率</CardTitle>
                 <CheckCircle2 className="h-4 w-4 text-green-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{successRate.toFixed(1)}%</div>
-                <p className="text-xs text-muted-foreground">{nf.format(successCount)} successful installations</p>
+                <p className="text-xs text-muted-foreground">{nf.format(successCount)} 次成功安装</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Failures</CardTitle>
+                <CardTitle className="text-sm font-medium">失败数</CardTitle>
                 <XCircle className="h-4 w-4 text-red-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{nf.format(failureCount)}</div>
-                <p className="text-xs text-muted-foreground">Installations encountered errors</p>
+                <p className="text-xs text-muted-foreground">安装遇到错误</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Most Popular</CardTitle>
+                <CardTitle className="text-sm font-medium">最受欢迎</CardTitle>
                 <Trophy className="h-4 w-4 text-yellow-500" />
               </CardHeader>
               <CardContent>
-                <div className="truncate text-2xl font-bold">{mostPopularApp ? mostPopularApp[0] : "N/A"}</div>
+                <div className="truncate text-2xl font-bold">{mostPopularApp ? mostPopularApp[0] : "无"}</div>
                 <p className="text-xs text-muted-foreground">
-                  {mostPopularApp ? nf.format(mostPopularApp[1]) : 0} installations
+                  {mostPopularApp ? nf.format(mostPopularApp[1]) : 0} 次安装
                 </p>
               </CardContent>
             </Card>
@@ -279,20 +279,20 @@ export default function DataPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <div className="space-y-1.5">
-                <CardTitle>Top Applications</CardTitle>
-                <CardDescription>The most frequently installed applications.</CardDescription>
+                <CardTitle>热门应用</CardTitle>
+                <CardDescription>最常安装的应用程序。</CardDescription>
               </div>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" size="sm" className="ml-auto">
                     <List className="mr-2 h-4 w-4" />
-                    View All
+                    查看全部
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-h-[80vh] sm:max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Application Statistics</DialogTitle>
-                    <DialogDescription>Installation counts for all {allApps.length} applications.</DialogDescription>
+                    <DialogTitle>应用统计</DialogTitle>
+                    <DialogDescription>所有 {allApps.length} 个应用的安装次数。</DialogDescription>
                   </DialogHeader>
                   <ScrollArea className="h-[60vh] w-full rounded-md border p-4">
                     <div className="space-y-4">
@@ -351,13 +351,13 @@ export default function DataPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle>Installation Log</CardTitle>
-                <CardDescription>Detailed records of all container creation attempts.</CardDescription>
+                <CardTitle>安装日志</CardTitle>
+                <CardDescription>所有容器创建尝试的详细记录。</CardDescription>
               </div>
               <div className="flex items-center gap-2">
                 <Select value={String(itemsPerPage)} onValueChange={(val) => setItemsPerPage(Number(val))}>
                   <SelectTrigger className="w-[80px]">
-                    <SelectValue placeholder="Limit" />
+                    <SelectValue placeholder="限制" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="10">10</SelectItem>
@@ -374,44 +374,44 @@ export default function DataPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-[100px] cursor-pointer" onClick={() => requestSort("status")}>
-                        Status
+                        状态
                         {sortConfig?.key === "status" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                       <TableHead className="cursor-pointer" onClick={() => requestSort("type")}>
-                        Type
+                        类型
                         {sortConfig?.key === "type" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                       <TableHead className="cursor-pointer" onClick={() => requestSort("nsapp")}>
-                        Application
+                        应用
                         {sortConfig?.key === "nsapp" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                       <TableHead className="hidden cursor-pointer md:table-cell" onClick={() => requestSort("os_type")}>
-                        OS
+                        操作系统
                         {sortConfig?.key === "os_type" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                       <TableHead
                         className="hidden cursor-pointer md:table-cell"
                         onClick={() => requestSort("disk_size")}
                       >
-                        Disk Size
+                        磁盘大小
                         {sortConfig?.key === "disk_size" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                       <TableHead
                         className="hidden cursor-pointer lg:table-cell"
                         onClick={() => requestSort("core_count")}
                       >
-                        Core Count
+                        核心数
                         {sortConfig?.key === "core_count" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                       <TableHead
                         className="hidden cursor-pointer lg:table-cell"
                         onClick={() => requestSort("ram_size")}
                       >
-                        RAM Size
+                        内存大小
                         {sortConfig?.key === "ram_size" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                       <TableHead className="cursor-pointer text-right" onClick={() => requestSort("created_at")}>
-                        Created At
+                        创建时间
                         {sortConfig?.key === "created_at" && <ArrowUpDown className="ml-2 inline h-4 w-4" />}
                       </TableHead>
                     </TableRow>
@@ -421,7 +421,7 @@ export default function DataPage() {
                       <TableRow>
                         <TableCell colSpan={8} className="h-24 text-center">
                           <div className="flex items-center justify-center gap-2">
-                            <Loader2 className="h-4 w-4 animate-spin" /> Loading data...
+                            <Loader2 className="h-4 w-4 animate-spin" /> 加载数据中...
                           </div>
                         </TableCell>
                       </TableRow>
@@ -430,21 +430,21 @@ export default function DataPage() {
                         <TableRow key={`${item.id}-${idx}`}>
                           <TableCell>
                             {item.status === "done" ? (
-                              <Badge className="text-green-500/75 border-green-500/75">Success</Badge>
+                              <Badge className="text-green-500/75 border-green-500/75">成功</Badge>
                             ) : item.status === "failed" ? (
                               <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger asChild>
-                                    <Badge className="text-red-500/75 border-red-500/75 cursor-help">Failed</Badge>
+                                    <Badge className="text-red-500/75 border-red-500/75 cursor-help">失败</Badge>
                                   </TooltipTrigger>
                                   <TooltipContent className="max-w-xs">
-                                    <p className="font-semibold">Error:</p>
-                                    <p className="text-sm">{item.error || "Unknown error"}</p>
+                                    <p className="font-semibold">错误:</p>
+                                    <p className="text-sm">{item.error || "未知错误"}</p>
                                   </TooltipContent>
                                 </Tooltip>
                               </TooltipProvider>
                             ) : item.status === "installing" ? (
-                              <Badge className="text-blue-500/75 border-blue-500/75">Installing</Badge>
+                              <Badge className="text-blue-500/75 border-blue-500/75">安装中</Badge>
                             ) : (
                               <Badge variant="outline">{item.status}</Badge>
                             )}
@@ -471,7 +471,7 @@ export default function DataPage() {
                     ) : (
                       <TableRow>
                         <TableCell colSpan={8} className="h-24 text-center">
-                          No results found.
+                          未找到结果。
                         </TableCell>
                       </TableRow>
                     )}
@@ -487,16 +487,16 @@ export default function DataPage() {
                   disabled={currentPage === 1 || dataLoading}
                 >
                   <ChevronLeft className="mr-2 h-4 w-4" />
-                  Previous
+                  上一页
                 </Button>
-                <div className="text-sm text-muted-foreground">Page {currentPage}</div>
+                <div className="text-sm text-muted-foreground">第 {currentPage} 页</div>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setCurrentPage((prev) => prev + 1)}
                   disabled={dataLoading || sortedData.length < itemsPerPage}
                 >
-                  Next
+                  下一页
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>

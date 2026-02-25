@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Redis"
+msg_info "正在安装 Redis"
 $STD apk add redis
 $STD sed -i 's/^bind .*/bind 0.0.0.0/' /etc/redis.conf
 $STD rc-update add redis default
 $STD rc-service redis start
-msg_ok "Installed Redis"
+msg_ok "已安装 Redis"
 
 motd_ssh
 customize

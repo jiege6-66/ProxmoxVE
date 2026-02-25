@@ -13,7 +13,7 @@
   "website": "https://www.phoscon.de/en/conbee2/software#deconz",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/phoscon.webp",
   "config_path": "",
-  "description": "deCONZ is a software for managing and controlling Zigbee-based smart home devices. It allows for setting up, configuring and visualizing the status of connected devices, as well as for triggering actions and automations. It works as a bridge between the Zigbee network and other home automation systems and can be used as a standalone solution or integrated into existing setups.",
+  "description": "deCONZ 是一个用于管理和控制基于 Zigbee 的智能家居设备的软件。它允许设置、配置和可视化已连接设备的状态，以及触发操作和自动化。它充当 Zigbee 网络和其他家庭自动化系统之间的桥梁，可以作为独立解决方案使用或集成到现有设置中。",
   "install_methods": [
     {
       "type": "default",

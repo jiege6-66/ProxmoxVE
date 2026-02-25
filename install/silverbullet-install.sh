@@ -16,7 +16,7 @@ update_os
 fetch_and_deploy_gh_release "silverbullet" "silverbulletmd/silverbullet" "prebuild" "latest" "/opt/silverbullet/bin" "silverbullet-server-linux-x86_64.zip"
 mkdir -p /opt/silverbullet/space
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/silverbullet.service
 [Unit]
 Description=Silverbullet Daemon
@@ -33,7 +33,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 systemctl enable --now -q silverbullet
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

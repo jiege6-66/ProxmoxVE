@@ -19,21 +19,21 @@ PG_DB_NAME="freshrss" PG_DB_USER="freshrss_usr" setup_postgresql_db
 
 fetch_and_deploy_gh_release "freshrss" "FreshRSS/FreshRSS" "tarball"
 
-msg_info "Configuring FreshRSS"
+msg_info "正在配置 FreshRSS"
 cd /opt/freshrss
 chown -R www-data:www-data /opt/freshrss
 chmod -R g+rX /opt/freshrss
 chmod -R g+w /opt/freshrss/data/
-msg_ok "Configured FreshRSS"
+msg_ok "已配置 FreshRSS"
 
-msg_info "Setting up cron job for feed refresh"
+msg_info "正在设置 cron job for feed refresh"
 cat <<EOF >/etc/cron.d/freshrss-actualize
 */15 * * * * www-data /bin/php -f /opt/freshrss/app/actualize_script.php > /tmp/FreshRSS.log 2>&1
 EOF
 chmod 644 /etc/cron.d/freshrss-actualize
 msg_ok "Set up Cron - if you need to modify the timing edit file /etc/cron.d/freshrss-actualize"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/freshrss.conf
 <VirtualHost *:80>
     ServerName freshrss
@@ -55,7 +55,7 @@ $STD a2ensite freshrss
 $STD a2enmod rewrite deflate expires headers mime setenvif
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

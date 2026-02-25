@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -d /opt/Stirling-PDF ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
@@ -37,9 +37,9 @@ function update_script() {
     PYTHON_VERSION="3.12" setup_uv
     JAVA_VERSION="21" setup_java
 
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop stirlingpdf libreoffice-listener unoserver
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
     if [[ -f ~/.Stirling-PDF-login ]]; then
       USE_ORIGINAL_FILENAME=true fetch_and_deploy_gh_release "stirling-pdf" "Stirling-Tools/Stirling-PDF" "singlefile" "latest" "/opt/Stirling-PDF" "Stirling-PDF-with-login.jar"
@@ -52,10 +52,10 @@ function update_script() {
     $STD fc-cache -fv
     msg_ok "Font Cache Updated"
 
-    msg_info "Starting Services"
+    msg_info "正在启动 Services"
     systemctl start stirlingpdf libreoffice-listener unoserver
-    msg_ok "Started Services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 Services"
+    msg_ok "已成功更新!"
   fi
   exit
 }
@@ -63,7 +63,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"

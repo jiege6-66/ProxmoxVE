@@ -13,19 +13,19 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   libharfbuzz0b \
   fontconfig \
   fonts-dejavu-core
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 JAVA_VERSION="17" setup_java
 PG_VERSION="16" setup_postgresql
 PG_DB_NAME="thingsboard_db" PG_DB_USER="thingsboard" setup_postgresql_db
 fetch_and_deploy_gh_release "thingsboard" "thingsboard/thingsboard" "binary" "latest" "/tmp" "thingsboard-*.deb"
 
-msg_info "Configuring ThingsBoard"
+msg_info "正在配置 ThingsBoard"
 cat <<EOF >/etc/thingsboard/conf/thingsboard.conf
 # DB Configuration
 export DATABASE_TS_TYPE=sql
@@ -36,15 +36,15 @@ export SPRING_DATASOURCE_PASSWORD=${PG_DB_PASS}
 export SQL_POSTGRES_TS_KV_PARTITIONING=MONTHS
 EOF
 systemctl daemon-reload
-msg_ok "Configured ThingsBoard"
+msg_ok "已配置 ThingsBoard"
 
-msg_info "Running ThingsBoard Installation Script"
+msg_info "正在运行 ThingsBoard Installation Script"
 $STD /usr/share/thingsboard/bin/install/install.sh --loadDemo
 msg_ok "Ran Installation Script"
 
-msg_info "Starting ThingsBoard Service"
+msg_info "正在启动 ThingsBoard Service"
 systemctl enable -q --now thingsboard
-msg_ok "Started ThingsBoard Service"
+msg_ok "已启动 ThingsBoard Service"
 
 motd_ssh
 customize

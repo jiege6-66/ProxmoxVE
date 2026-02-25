@@ -14,7 +14,7 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Setting up evcc Repository"
+msg_info "正在设置 evcc Repository"
 setup_deb822_repo \
   "evcc-stable" \
   "https://dl.evcc.io/public/evcc/stable/gpg.EAD5D0E07B0EC0FD.key" \
@@ -24,10 +24,10 @@ setup_deb822_repo \
 $STD apt update
 msg_ok "evcc Repository setup sucessfully"
 
-msg_info "Installing evcc"
+msg_info "正在安装 evcc"
 $STD apt install -y evcc
 systemctl enable -q --now evcc
-msg_ok "Installed evcc"
+msg_ok "已安装 evcc"
 
 motd_ssh
 customize

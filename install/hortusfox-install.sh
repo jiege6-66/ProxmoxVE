@@ -19,7 +19,7 @@ PHP_VERSION="8.3" PHP_APACHE="YES" setup_php
 setup_composer
 fetch_and_deploy_gh_release "hortusfox" "danielbrendel/hortusfox-web" "tarball"
 
-msg_info "Configuring .env"
+msg_info "正在配置 .env"
 cp /opt/hortusfox/.env.example /opt/hortusfox/.env
 sed -i "s|^DB_HOST=.*|DB_HOST=localhost|" /opt/hortusfox/.env
 sed -i "s|^DB_USER=.*|DB_USER=$MARIADB_DB_USER|" /opt/hortusfox/.env
@@ -29,16 +29,16 @@ sed -i "s|^DB_ENABLE=.*|DB_ENABLE=true|" /opt/hortusfox/.env
 sed -i "s|^APP_TIMEZONE=.*|APP_TIMEZONE=Europe/Berlin|" /opt/hortusfox/.env
 msg_ok ".env configured"
 
-msg_info "Installing Composer dependencies"
+msg_info "正在安装 Composer dependencies"
 cd /opt/hortusfox
 $STD composer install --no-dev --optimize-autoloader
 msg_ok "Composer dependencies installed"
 
-msg_info "Running DB migration"
+msg_info "正在运行 DB migration"
 $STD php asatru migrate:fresh
 msg_ok "Migration finished"
 
-msg_info "Setting up HortusFox"
+msg_info "正在设置 HortusFox"
 $STD mariadb -u root -D $MARIADB_DB_NAME -e "INSERT IGNORE INTO AppModel (workspace, language, created_at) VALUES ('Default Workspace', 'en', NOW());"
 $STD php asatru plants:attributes
 $STD php asatru calendar:classes
@@ -55,7 +55,7 @@ $STD mariadb -u root -D $MARIADB_DB_NAME -e "INSERT IGNORE INTO UserModel (name,
 $STD mariadb -u root -D $MARIADB_DB_NAME -e "INSERT IGNORE INTO LocationsModel (name, active, created_at) VALUES ('Home', 1, NOW());"
 msg_ok "Set up HortusFox"
 
-msg_info "Configuring Apache vHost"
+msg_info "正在配置 Apache vHost"
 cat <<EOF >/etc/apache2/sites-available/hortusfox.conf
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost

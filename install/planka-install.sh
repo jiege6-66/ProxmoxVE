@@ -13,17 +13,17 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing dependencies"
+msg_info "正在安装 dependencies"
 $STD apt install -y \
   unzip \
   build-essential \
   python3-venv
-msg_ok "Installed dependencies"
+msg_ok "已安装 dependencies"
 
 NODE_VERSION="22" setup_nodejs
 PG_VERSION="16" setup_postgresql
 
-msg_info "Setting up PostgreSQL Database"
+msg_info "正在设置 PostgreSQL Database"
 DB_NAME=planka
 DB_USER=planka
 DB_PASS=$(openssl rand -base64 16 | tr -d '/+=')
@@ -42,7 +42,7 @@ msg_ok "Set up PostgreSQL Database"
 
 fetch_and_deploy_gh_release "planka" "plankanban/planka" "prebuild" "latest" "/opt/planka" "planka-prebuild.zip"
 
-msg_info "Configuring PLANKA"
+msg_info "正在配置 PLANKA"
 SECRET_KEY=$(openssl rand -hex 64)
 cd /opt/planka
 $STD npm install
@@ -52,9 +52,9 @@ sed -i "s#postgres@localhost#planka:$DB_PASS@localhost#g" /opt/planka/.env
 sed -i "s#notsecretkey#$SECRET_KEY#g" /opt/planka/.env
 mkdir -p /opt/planka/data/protected/{favicons,user-avatars,background-images} /opt/planka/data/private/attachments
 $STD npm run db:init
-msg_ok "Configured PLANKA"
+msg_ok "已配置 PLANKA"
 
-msg_info "Creating Admin User"
+msg_info "正在创建 Admin User"
 ADMIN_EMAIL="admin@planka.local"
 ADMIN_PASSWORD="$(openssl rand -base64 12)"
 ADMIN_NAME="Administrator"
@@ -75,9 +75,9 @@ sed -i '/# Temporary admin user creation settings/,$d' .env
   echo "Admin Name: $ADMIN_NAME"
   echo "Admin Username: $ADMIN_USERNAME"
 } >>~/planka.creds
-msg_ok "Created Admin User"
+msg_ok "已创建 Admin User"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/planka.service
 [Unit]
 Description=planka Service
@@ -92,7 +92,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now planka
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

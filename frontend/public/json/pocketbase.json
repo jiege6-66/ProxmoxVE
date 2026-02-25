@@ -13,7 +13,7 @@
   "website": "https://pocketbase.io/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/pocketbase.webp",
   "config_path": "",
-  "description": "PocketBase is an open source backend consisting of embedded database (SQLite) with realtime subscriptions, built-in auth management, convenient dashboard UI and simple REST-ish API.",
+  "description": "PocketBase 是一个开源后端，由嵌入式数据库 (SQLite) 组成，具有实时订阅功能、内置身份验证管理、便捷的仪表板 UI 和简单的 REST 风格 API。",
   "install_methods": [
     {
       "type": "default",

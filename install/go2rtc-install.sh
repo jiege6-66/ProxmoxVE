@@ -16,7 +16,7 @@ setup_hwaccel
 
 USE_ORIGINAL_FILENAME="true" fetch_and_deploy_gh_release "go2rtc" "AlexxIT/go2rtc" "singlefile" "latest" "/opt/go2rtc" "go2rtc_linux_amd64"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/go2rtc.service
 echo "[Unit]
 Description=go2rtc service
@@ -32,7 +32,7 @@ ExecStart=/opt/go2rtc/go2rtc_linux_amd64
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now go2rtc
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

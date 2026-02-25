@@ -24,13 +24,13 @@ function update_script() {
   check_container_storage
   check_container_resources
   if [[ ! -f /lib/systemd/system/tracearr.service ]]; then
-    msg_error "No ${APP} Installation Found!"
+    msg_error "未找到 ${APP} 安装！"
     exit
   fi
 
   NODE_VERSION="24" setup_nodejs
 
-  msg_info "Updating prestart script"
+  msg_info "正在更新 prestart script"
   cat <<EOF >/data/tracearr/prestart.sh
 #!/usr/bin/env bash
 # =============================================================================
@@ -80,11 +80,11 @@ EOF
   msg_ok "Updated prestart script"
 
   if check_for_gh_release "tracearr" "connorgallopo/Tracearr"; then
-    msg_info "Stopping Services"
+    msg_info "正在停止 Services"
     systemctl stop tracearr postgresql redis
-    msg_ok "Stopped Services"
+    msg_ok "已停止 Services"
 
-    msg_info "Updating pnpm"
+    msg_info "正在更新 pnpm"
     PNPM_VERSION="$(curl -fsSL "https://raw.githubusercontent.com/connorgallopo/Tracearr/refs/heads/main/package.json" | jq -r '.packageManager | split("@")[1]' | cut -d'+' -f1)"
     export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
     $STD corepack prepare pnpm@${PNPM_VERSION} --activate
@@ -92,7 +92,7 @@ EOF
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "tracearr" "connorgallopo/Tracearr" "tarball" "latest" "/opt/tracearr.build"
 
-    msg_info "Building Tracearr"
+    msg_info "正在构建 Tracearr"
     export TZ=$(cat /etc/timezone)
     cd /opt/tracearr.build
     $STD pnpm install --frozen-lockfile --force
@@ -116,23 +116,23 @@ EOF
     cd /opt/tracearr
     $STD pnpm install --prod --frozen-lockfile --ignore-scripts
     $STD chown -R tracearr:tracearr /opt/tracearr
-    msg_ok "Built Tracearr"
+    msg_ok "已构建 Tracearr"
 
-    msg_info "Configuring Tracearr"
+    msg_info "正在配置 Tracearr"
     sed -i "s/^APP_VERSION=.*/APP_VERSION=$(cat /root/.tracearr)/" /data/tracearr/.env
     chmod 600 /data/tracearr/.env
     chown -R tracearr:tracearr /data/tracearr
-    msg_ok "Configured Tracearr"
+    msg_ok "已配置 Tracearr"
 
-    msg_info "Starting services"
+    msg_info "正在启动 services"
     systemctl start postgresql redis tracearr
-    msg_ok "Started services"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动 services"
+    msg_ok "已成功更新!"
   else
     # no new release, just restart service to apply prestart changes
-    msg_info "Restarting service"
+    msg_info "正在重启 service"
     systemctl restart tracearr
-    msg_ok "Restarted service"
+    msg_ok "已重启 service"
   fi
   exit
 }
@@ -141,7 +141,7 @@ start
 build_container
 description
 
-msg_ok "Completed successfully!\n"
-echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
-echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+msg_ok "已成功完成！\n"
+echo -e "${CREATING}${GN}${APP} 设置已成功初始化！${CL}"
+echo -e "${INFO}${YW} 使用以下 URL 访问：${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:3000${CL}"

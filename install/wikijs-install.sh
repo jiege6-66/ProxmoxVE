@@ -13,22 +13,22 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y git
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="yarn,node-gyp" setup_nodejs
 PG_VERSION="17" setup_postgresql
 PG_DB_NAME="wiki" PG_DB_USER="wikijs_user" PG_DB_EXTENSIONS="pg_trgm" setup_postgresql_db
 fetch_and_deploy_gh_release "wikijs" "requarks/wiki" "prebuild" "latest" "/opt/wikijs" "wiki-js.tar.gz"
 
-msg_info "Configuring Wiki.js"
+msg_info "正在配置 Wiki.js"
 mv /opt/wikijs/config.sample.yml /opt/wikijs/config.yml
 sed -i -E 's|^( *user: ).*|\1'"$PG_DB_USER"'|' /opt/wikijs/config.yml
 sed -i -E 's|^( *pass: ).*|\1'"$PG_DB_PASS"'|' /opt/wikijs/config.yml
-msg_ok "Configured Wiki.js"
+msg_ok "已配置 Wiki.js"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/wikijs.service
 [Unit]
 Description=Wiki.js
@@ -46,7 +46,7 @@ WorkingDirectory=/opt/wikijs
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now wikijs
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

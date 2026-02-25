@@ -13,11 +13,11 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   make \
   build-essential
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" setup_nodejs
 PG_VERSION="16" setup_postgresql
@@ -31,7 +31,7 @@ fi
 
 fetch_and_deploy_gh_release "linkwarden" "linkwarden/linkwarden" "tarball"
 
-msg_info "Installing Linkwarden (Patience)"
+msg_info "正在安装 Linkwarden (Patience)"
 SECRET_KEY="$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)"
 echo "Linkwarden Secret: $SECRET_KEY" >>"${HOME}/linkwarden.creds"
 cd /opt/linkwarden
@@ -61,9 +61,9 @@ $STD yarn prisma:deploy
 rm -rf ~/.cargo/registry ~/.cargo/git ~/.cargo/.package-cache
 rm -rf /root/.cache/yarn
 rm -rf /opt/linkwarden/.next/cache
-msg_ok "Installed Linkwarden"
+msg_ok "已安装 Linkwarden"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/linkwarden.service
 [Unit]
 Description=Linkwarden Service
@@ -79,7 +79,7 @@ ExecStart=/usr/bin/yarn concurrently:start
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now linkwarden
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

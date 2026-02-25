@@ -13,7 +13,7 @@
   "website": "https://rclone.org/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/rclone.webp",
   "config_path": "~/.config/rclone/rclone.conf",
-  "description": "Rclone is a command-line program to manage files on cloud storage. It is a feature-rich alternative to cloud vendors' web storage interfaces",
+  "description": "Rclone 是一个用于管理云存储文件的命令行程序。它是云服务商网页存储界面的功能丰富的替代方案",
   "install_methods": [
     {
       "type": "default",

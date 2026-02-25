@@ -16,14 +16,14 @@ update_os
 NODE_VERSION="22" setup_nodejs
 fetch_and_deploy_gh_release "myip" "jason5ng32/MyIP" "tarball"
 
-msg_info "Configuring MyIP"
+msg_info "正在配置 MyIP"
 cd /opt/myip
 cp .env.example .env
 $STD npm install
 $STD npm run build
-msg_ok "Configured MyIP"
+msg_ok "已配置 MyIP"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/myip.service
 [Unit]
 Description=MyIP Service

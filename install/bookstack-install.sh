@@ -13,9 +13,9 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y make
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 PHP_VERSION="8.3" PHP_APACHE="YES" PHP_FPM="YES" PHP_MODULE="ldap,tidy,mysqli" setup_php
 setup_composer
@@ -24,7 +24,7 @@ MARIADB_DB_NAME="bookstack_db" MARIADB_DB_USER="bookstack_user" setup_mariadb_db
 
 fetch_and_deploy_gh_release "bookstack" "BookStackApp/BookStack" "tarball"
 
-msg_info "Configuring Bookstack (Patience)"
+msg_info "正在配置 Bookstack (Patience)"
 cd /opt/bookstack
 cp .env.example .env
 sudo sed -i "s|APP_URL=.*|APP_URL=http://$LOCAL_IP|g" /opt/bookstack/.env
@@ -40,9 +40,9 @@ chmod -R 775 /opt/bookstack/storage /opt/bookstack/bootstrap/cache /opt/bookstac
 chmod -R 640 /opt/bookstack/.env
 $STD a2enmod rewrite
 $STD a2enmod php8.3
-msg_ok "Configured Bookstack"
+msg_ok "已配置 Bookstack"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/apache2/sites-available/bookstack.conf
 <VirtualHost *:80>
   ServerAdmin webmaster@localhost
@@ -83,7 +83,7 @@ EOF
 $STD a2ensite bookstack.conf
 $STD a2dissite 000-default.conf
 $STD systemctl reload apache2
-msg_ok "Created Services"
+msg_ok "已创建 Services"
 
 motd_ssh
 customize

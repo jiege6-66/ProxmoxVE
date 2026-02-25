@@ -10,7 +10,7 @@ export default function NotFoundPage() {
           404
         </h1>
         <p className="text-muted-foreground md:text-xl">
-          Oops, the page you are looking for could not be found.
+          抱歉，您访问的页面未找到。
         </p>
       </div>
       <Button
@@ -24,7 +24,7 @@ export default function NotFoundPage() {
         }}
         variant="secondary"
       >
-        Go Back
+        返回
       </Button>
     </div>
   );

@@ -13,12 +13,12 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apk add openssl
 $STD apk add nginx
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
-msg_info "Installing PHP/Redis"
+msg_info "正在安装 PHP/Redis"
 $STD apk add php83-opcache
 $STD apk add php83-redis
 $STD apk add php83-apcu
@@ -32,9 +32,9 @@ $STD apk add php83-exif
 $STD apk add php83-sodium
 $STD apk add php83-bz2
 $STD apk add redis
-msg_ok "Installed PHP/Redis"
+msg_ok "已安装 PHP/Redis"
 
-msg_info "Installing MySQL Database"
+msg_info "正在安装 MySQL Database"
 DB_NAME=nextcloud
 DB_USER=nextcloud
 DB_PASS="$(openssl rand -base64 18 | cut -c1-13)"
@@ -50,9 +50,9 @@ $STD service mariadb start
 $STD rc-update add mariadb
 $STD mariadb -uroot -p"$ADMIN_PASS" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '$ADMIN_PASS' WITH GRANT OPTION; DELETE FROM mysql.user WHERE User=''; DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); DROP DATABASE test; DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'; CREATE DATABASE $DB_NAME; GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS'; GRANT ALL ON $DB_NAME.* TO '$DB_USER'@'localhost.localdomain' IDENTIFIED BY '$DB_PASS'; FLUSH PRIVILEGES;"
 $STD apk del mariadb-client
-msg_ok "Installed MySQL Database"
+msg_ok "已安装 MySQL Database"
 
-msg_info "Installing Nextcloud"
+msg_info "正在安装 Nextcloud"
 ADMIN_USER=ncAdmin
 echo "" >>~/nextcloud.creds
 echo -e "Nextcloud Admin Username: \e[32m$ADMIN_USER\e[0m" >>~/nextcloud.creds
@@ -136,9 +136,9 @@ EOF
 sed -i -e 's|memory_limit = 128M|memory_limit = 512M|; $aapc.enable_cli=1' /etc/php83/php.ini
 sed -i -e 's|upload_max_file_size = 2M|upload_max_file_size = 16G|' /etc/php83/php.ini
 sed -i -E '/^php_admin_(flag|value)\[opcache/s/^/;/' /etc/php83/php-fpm.d/nextcloud.conf
-msg_ok "Installed Nextcloud"
+msg_ok "已安装 Nextcloud"
 
-msg_info "Adding Additional Nextcloud Packages"
+msg_info "正在添加 Additional Nextcloud Packages"
 $STD apk add nextcloud-occ
 $STD apk add nextcloud-default-apps
 $STD apk add nextcloud-activity
@@ -159,9 +159,9 @@ $STD apk add nextcloud-support
 $STD apk add nextcloud-systemtags
 $STD apk add nextcloud-user_status
 $STD apk add nextcloud-weather_status
-msg_ok "Added Additional Nextcloud Packages"
+msg_ok "已添加 Additional Nextcloud Packages"
 
-msg_info "Starting Services"
+msg_info "正在启动 Services"
 $STD rc-service redis start
 $STD rc-update add redis default
 $STD rc-service php-fpm83 start
@@ -172,7 +172,7 @@ $STD rc-service nginx start
 $STD rc-service nextcloud start
 $STD rc-update add nginx default
 $STD rc-update add nextcloud default
-msg_ok "Started Services"
+msg_ok "已启动 Services"
 
 msg_info "Start Nextcloud Setup-Wizard"
 echo -e "export VISUAL=nano\nexport EDITOR=nano" >>/etc/profile

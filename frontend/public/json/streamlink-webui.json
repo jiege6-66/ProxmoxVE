@@ -13,7 +13,7 @@
   "config_path": "/opt/streamlink-webui.env",
   "website": "https://github.com/CrazyWolf13/streamlink-webui",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/streamlink.webp",
-  "description": "a simple web-ui to the well-known streamlink cli application, which allows you to save twitch streams to your local disk.",
+  "description": "一个简单的 Web UI，用于著名的 streamlink cli 应用程序，允许您将 twitch 直播保存到本地磁盘。",
   "install_methods": [
     {
       "type": "default",

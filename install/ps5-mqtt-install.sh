@@ -13,16 +13,16 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖"
 $STD apt install -y \
   jq \
   ca-certificates
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖"
 
 NODE_VERSION="22" NODE_MODULE="playactor" setup_nodejs
 fetch_and_deploy_gh_release "ps5-mqtt" "FunkeyFlo/ps5-mqtt" "tarball"
 
-msg_info "Configuring PS5-MQTT"
+msg_info "正在配置 PS5-MQTT"
 cd /opt/ps5-mqtt/ps5-mqtt/
 $STD npm install
 $STD npm run build
@@ -57,9 +57,9 @@ cat <<EOF >/opt/.config/ps5-mqtt/config.json
   "frontendPort": "8645"
 }
 EOF
-msg_ok "Configured PS5-MQTT"
+msg_ok "已配置 PS5-MQTT"
 
-msg_info "Creating Service"
+msg_info "正在创建 Service"
 cat <<EOF >/etc/systemd/system/ps5-mqtt.service
 [Unit]
 Description=PS5-MQTT Daemon
@@ -80,7 +80,7 @@ SyslogIdentifier=ps5-mqtt
 WantedBy=multi-user.target
 EOF
 systemctl enable -q --now ps5-mqtt
-msg_ok "Created Service"
+msg_ok "已创建 Service"
 
 motd_ssh
 customize

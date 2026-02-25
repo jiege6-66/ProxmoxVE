@@ -14,7 +14,7 @@
   "website": "https://oauth2-proxy.github.io/oauth2-proxy/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/oauth2-proxy.webp",
   "config_path": "/opt/oauth2-proxy/config.toml",
-  "description": "A reverse proxy that provides authentication with Google, Azure, OpenID Connect and many more identity providers.",
+  "description": "一个反向代理，提供 Google、Azure、OpenID Connect 和许多其他身份提供商的身份验证。",
   "install_methods": [
     {
       "type": "default",

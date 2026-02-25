@@ -13,7 +13,7 @@
   "website": "https://github.com/Luligu/matterbridge",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/matterbridge.webp",
   "config_path": "",
-  "description": "Matterbridge allows you to have all your Matter devices up and running in a couple of minutes without having to deal with the pairing process of each single device.",
+  "description": "Matterbridge 允许您在几分钟内让所有 Matter 设备启动并运行，无需处理每个单独设备的配对过程。",
   "install_methods": [
     {
       "type": "default",
