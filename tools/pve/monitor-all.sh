@@ -20,21 +20,21 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "monitor-all" "pve"
 
 add() {
-  echo -e "\n IMPORTANT: Tag-Based Monitoring Enabled"
-  echo "Only VMs and containers with the tag 'mon-restart' will be automatically restarted by this service."
+  echo -e "\n 重要：已启用基于标签的监控"
+  echo "只有带有 'mon-restart' 标签的 VM 和容器才会被此服务自动重启。"
   echo
-  echo "🔧 How to add the tag:"
-  echo "  → Proxmox Web UI: Go to VM/CT → Options → Tags → Add 'mon-restart'"
+  echo "🔧 如何添加标签："
+  echo "  → Proxmox Web UI: 转到 VM/CT → 选项 → 标签 → 添加 'mon-restart'"
   echo "  → CLI: qm set <vmid> -tags mon-restart"
   echo "         pct set <ctid> -tags mon-restart"
   echo
 
   while true; do
-    read -p "This script will add Monitor All to Proxmox VE. Proceed (y/n)? " yn
+    read -p "此脚本将向 Proxmox VE 添加 Monitor All。是否继续 (y/n)? " yn
     case $yn in
     [Yy]*) break ;;
     [Nn]*) exit ;;
-    *) echo "Please answer yes or no." ;;
+    *) echo "请回答 yes 或 no。" ;;
     esac
   done
 
@@ -155,9 +155,9 @@ EOF
   systemctl enable -q --now ping-instances.timer
   systemctl enable -q --now ping-instances.service
   clear
-  echo -e "\n Monitor All installed."
-  echo "📄 To view logs: cat /var/log/ping-instances.log"
-  echo "⚙️  Make sure your VMs or containers have the 'mon-restart' tag to be monitored."
+  echo -e "\n Monitor All 已安装。"
+  echo "📄 查看日志: cat /var/log/ping-instances.log"
+  echo "⚙️  确保您的 VM 或容器具有 'mon-restart' 标签才能被监控。"
 }
 
 remove() {
@@ -167,20 +167,20 @@ remove() {
   rm -f /etc/systemd/system/ping-instances.timer
   rm -f /usr/local/bin/ping-instances.sh
   rm -f /var/log/ping-instances.log
-  echo "Monitor All removed from Proxmox VE"
+  echo "已从 Proxmox VE 移除 Monitor All"
 }
 
-OPTIONS=(Add "Add Monitor-All to Proxmox VE"
-  Remove "Remove Monitor-All from Proxmox VE")
+OPTIONS=(Add "向 Proxmox VE 添加 Monitor-All"
+  Remove "从 Proxmox VE 移除 Monitor-All")
 
-CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Monitor-All for Proxmox VE" --menu "Select an option:" 10 58 2 \
+CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE 的 Monitor-All" --menu "选择一个选项:" 10 58 2 \
   "${OPTIONS[@]}" 3>&1 1>&2 2>&3)
 
 case $CHOICE in
 "Add") add ;;
 "Remove") remove ;;
 *)
-  echo "Exiting..."
+  echo "正在退出..."
   exit 0
   ;;
 esac

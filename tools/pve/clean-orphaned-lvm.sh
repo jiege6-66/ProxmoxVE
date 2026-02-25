@@ -22,7 +22,7 @@ declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "clean-orphane
 
 # Function to check for orphaned LVM volumes
 function find_orphaned_lvm {
-  echo -e "\n🔍 Scanning for orphaned LVM volumes...\n"
+  echo -e "\n🔍 正在扫描孤立的 LVM 卷...\n"
 
   orphaned_volumes=()
   while read -r lv vg size seg_type; do
@@ -46,8 +46,8 @@ function find_orphaned_lvm {
   done < <(lvs --noheadings -o lv_name,vg_name,lv_size,seg_type --separator ' ' 2>/dev/null | awk '{print $1, $2, $3, $4}')
 
   # Display orphaned volumes
-  echo -e "❗ The following orphaned LVM volumes were found:\n"
-  printf "%-25s %-10s %-10s\n" "LV Name" "VG" "Size"
+  echo -e "❗ 发现以下孤立的 LVM 卷:\n"
+  printf "%-25s %-10s %-10s\n" "LV 名称" "VG" "大小"
   printf "%-25s %-10s %-10s\n" "-------------------------" "----------" "----------"
 
   for ((i = 0; i < ${#orphaned_volumes[@]}; i += 3)); do
@@ -63,17 +63,17 @@ function delete_orphaned_lvm {
     vg="${orphaned_volumes[i + 1]}"
     size="${orphaned_volumes[i + 2]}"
 
-    read -p "❓ Do you want to delete $lv (VG: $vg, Size: $size)? [y/N]: " confirm
+    read -p "❓ 您想删除 $lv (VG: $vg, 大小: $size) 吗？[y/N]: " confirm
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
-      echo -e "🗑️  Deleting $lv from $vg..."
+      echo -e "🗑️  正在从 $vg 删除 $lv..."
       lvremove -f "$vg/$lv"
       if [ $? -eq 0 ]; then
-        echo -e "✅ Successfully deleted $lv.\n"
+        echo -e "✅ 成功删除 $lv。\n"
       else
-        echo -e "❌ Failed to delete $lv.\n"
+        echo -e "❌ 删除 $lv 失败。\n"
       fi
     else
-      echo -e "⚠️  Skipping $lv.\n"
+      echo -e "⚠️  跳过 $lv。\n"
     fi
   done
 }
@@ -83,4 +83,4 @@ header_info
 find_orphaned_lvm
 delete_orphaned_lvm
 
-echo -e "✅ Cleanup process completed!\n"
+echo -e "✅ 清理过程完成！\n"

@@ -1,185 +1,185 @@
-# api.func Documentation
+# api.func 文档
 
-## Overview
+## 概述
 
-The `api.func` file provides Proxmox API integration and diagnostic reporting functionality for the Community Scripts project. It handles API communication, error reporting, and status updates to the community-scripts.org API.
+`api.func` 文件为 Community Scripts 项目提供 Proxmox API 集成和诊断报告功能。它处理 API 通信、错误报告和向 community-scripts.org API 的状态更新。
 
-## Purpose and Use Cases
+## 用途和使用场景
 
-- **API Communication**: Send installation and status data to community-scripts.org API
-- **Diagnostic Reporting**: Report installation progress and errors for analytics
-- **Error Description**: Provide detailed error code explanations
-- **Status Updates**: Track installation success/failure status
-- **Analytics**: Contribute anonymous usage data for project improvement
+- **API 通信**：向 community-scripts.org API 发送安装和状态数据
+- **诊断报告**：报告安装进度和错误以进行分析
+- **错误描述**：提供详细的错误代码解释
+- **状态更新**：跟踪安装成功/失败状态
+- **分析**：贡献匿名使用数据以改进项目
 
-## Quick Reference
+## 快速参考
 
-### Key Function Groups
-- **Error Handling**: `get_error_description()` - Convert exit codes to human-readable messages
-- **API Communication**: `post_to_api()`, `post_to_api_vm()` - Send installation data
-- **Status Updates**: `post_update_to_api()` - Report installation completion status
+### 主要函数组
+- **错误处理**：`get_error_description()` - 将退出代码转换为人类可读的消息
+- **API 通信**：`post_to_api()`、`post_to_api_vm()` - 发送安装数据
+- **状态更新**：`post_update_to_api()` - 报告安装完成状态
 
-### Dependencies
-- **External**: `curl` command for HTTP requests
-- **Internal**: Uses environment variables from other scripts
+### 依赖项
+- **外部**：用于 HTTP 请求的 `curl` 命令
+- **内部**：使用来自其他脚本的环境变量
 
-### Integration Points
-- Used by: All installation scripts for diagnostic reporting
-- Uses: Environment variables from build.func and other scripts
-- Provides: API communication and error reporting services
+### 集成点
+- 被使用于：所有用于诊断报告的安装脚本
+- 使用：来自 build.func 和其他脚本的环境变量
+- 提供：API 通信和错误报告服务
 
-## Documentation Files
+## 文档文件
 
 ### 📊 [API_FLOWCHART.md](./API_FLOWCHART.md)
-Visual execution flows showing API communication processes and error handling.
+显示 API 通信过程和错误处理的可视化执行流程。
 
 ### 📚 [API_FUNCTIONS_REFERENCE.md](./API_FUNCTIONS_REFERENCE.md)
-Complete alphabetical reference of all functions with parameters, dependencies, and usage details.
+所有函数的完整字母顺序参考，包含参数、依赖项和使用详情。
 
 ### 💡 [API_USAGE_EXAMPLES.md](./API_USAGE_EXAMPLES.md)
-Practical examples showing how to use API functions and common patterns.
+展示如何使用 API 函数和常见模式的实用示例。
 
 ### 🔗 [API_INTEGRATION.md](./API_INTEGRATION.md)
-How api.func integrates with other components and provides API services.
+api.func 如何与其他组件集成并提供 API 服务。
 
-## Key Features
+## 主要特性
 
-### Error Code Descriptions
-- **Comprehensive Coverage**: 50+ error codes with detailed explanations
-- **LXC-Specific Errors**: Container creation and management errors
-- **System Errors**: General system and network errors
-- **Signal Errors**: Process termination and signal errors
+### 错误代码描述
+- **全面覆盖**：50+ 个错误代码及详细解释
+- **LXC 特定错误**：容器创建和管理错误
+- **系统错误**：一般系统和网络错误
+- **信号错误**：进程终止和信号错误
 
-### API Communication
-- **LXC Reporting**: Send LXC container installation data
-- **VM Reporting**: Send VM installation data
-- **Status Updates**: Report installation success/failure
-- **Diagnostic Data**: Anonymous usage analytics
+### API 通信
+- **LXC 报告**：发送 LXC 容器安装数据
+- **VM 报告**：发送 VM 安装数据
+- **状态更新**：报告安装成功/失败
+- **诊断数据**：匿名使用分析
 
-### Diagnostic Integration
-- **Optional Reporting**: Only sends data when diagnostics enabled
-- **Privacy Respect**: Respects user privacy settings
-- **Error Tracking**: Tracks installation errors for improvement
-- **Usage Analytics**: Contributes to project statistics
+### 诊断集成
+- **可选报告**：仅在启用诊断时发送数据
+- **尊重隐私**：尊重用户隐私设置
+- **错误跟踪**：跟踪安装错误以进行改进
+- **使用分析**：贡献项目统计数据
 
-## Common Usage Patterns
+## 常见使用模式
 
-### Basic API Setup
+### 基本 API 设置
 ```bash
 #!/usr/bin/env bash
-# Basic API setup
+# 基本 API 设置
 
 source api.func
 
-# Set up diagnostic reporting
+# 设置诊断报告
 export DIAGNOSTICS="yes"
 export RANDOM_UUID="$(uuidgen)"
 
-# Report installation start
+# 报告安装开始
 post_to_api
 ```
 
-### Error Reporting
+### 错误报告
 ```bash
 #!/usr/bin/env bash
 source api.func
 
-# Get error description
+# 获取错误描述
 error_msg=$(get_error_description 127)
-echo "Error 127: $error_msg"
-# Output: Error 127: Command not found: Incorrect path or missing dependency.
+echo "错误 127: $error_msg"
+# 输出：错误 127: Command not found: Incorrect path or missing dependency.
 ```
 
-### Status Updates
+### 状态更新
 ```bash
 #!/usr/bin/env bash
 source api.func
 
-# Report successful installation
+# 报告成功安装
 post_update_to_api "success" 0
 
-# Report failed installation
+# 报告失败安装
 post_update_to_api "failed" 127
 ```
 
-## Environment Variables
+## 环境变量
 
-### Required Variables
-- `DIAGNOSTICS`: Enable/disable diagnostic reporting ("yes"/"no")
-- `RANDOM_UUID`: Unique identifier for tracking
+### 必需变量
+- `DIAGNOSTICS`：启用/禁用诊断报告（"yes"/"no"）
+- `RANDOM_UUID`：用于跟踪的唯一标识符
 
-### Optional Variables
-- `CT_TYPE`: Container type (1 for LXC, 2 for VM)
-- `DISK_SIZE`: Disk size in GB
-- `CORE_COUNT`: Number of CPU cores
-- `RAM_SIZE`: RAM size in MB
-- `var_os`: Operating system type
-- `var_version`: OS version
-- `DISABLEIP6`: IPv6 disable setting
-- `NSAPP`: Namespace application name
-- `METHOD`: Installation method
+### 可选变量
+- `CT_TYPE`：容器类型（1 表示 LXC，2 表示 VM）
+- `DISK_SIZE`：磁盘大小（GB）
+- `CORE_COUNT`：CPU 核心数
+- `RAM_SIZE`：RAM 大小（MB）
+- `var_os`：操作系统类型
+- `var_version`：操作系统版本
+- `DISABLEIP6`：IPv6 禁用设置
+- `NSAPP`：命名空间应用程序名称
+- `METHOD`：安装方法
 
-### Internal Variables
-- `POST_UPDATE_DONE`: Prevents duplicate status updates
-- `API_URL`: Community scripts API endpoint
-- `JSON_PAYLOAD`: API request payload
-- `RESPONSE`: API response
+### 内部变量
+- `POST_UPDATE_DONE`：防止重复状态更新
+- `API_URL`：Community scripts API 端点
+- `JSON_PAYLOAD`：API 请求负载
+- `RESPONSE`：API 响应
 
-## Error Code Categories
+## 错误代码分类
 
-### General System Errors
-- **0-9**: Basic system errors
-- **18, 22, 28, 35**: Network and I/O errors
-- **56, 60**: TLS/SSL errors
-- **125-128**: Command execution errors
-- **129-143**: Signal errors
-- **152**: Resource limit errors
-- **255**: Unknown critical errors
+### 一般系统错误
+- **0-9**：基本系统错误
+- **18, 22, 28, 35**：网络和 I/O 错误
+- **56, 60**：TLS/SSL 错误
+- **125-128**：命令执行错误
+- **129-143**：信号错误
+- **152**：资源限制错误
+- **255**：未知严重错误
 
-### LXC-Specific Errors
-- **100-101**: LXC installation errors
-- **200-209**: LXC creation and management errors
+### LXC 特定错误
+- **100-101**：LXC 安装错误
+- **200-209**：LXC 创建和管理错误
 
-### Docker Errors
-- **125**: Docker container start errors
+### Docker 错误
+- **125**：Docker 容器启动错误
 
-## Best Practices
+## 最佳实践
 
-### Diagnostic Reporting
-1. Always check if diagnostics are enabled
-2. Respect user privacy settings
-3. Use unique identifiers for tracking
-4. Report both success and failure cases
+### 诊断报告
+1. 始终检查是否启用诊断
+2. 尊重用户隐私设置
+3. 使用唯一标识符进行跟踪
+4. 报告成功和失败情况
 
-### Error Handling
-1. Use appropriate error codes
-2. Provide meaningful error descriptions
-3. Handle API communication failures gracefully
-4. Don't block installation on API failures
+### 错误处理
+1. 使用适当的错误代码
+2. 提供有意义的错误描述
+3. 优雅地处理 API 通信失败
+4. 不要因 API 失败而阻止安装
 
-### API Usage
-1. Check for curl availability
-2. Handle network failures gracefully
-3. Use appropriate HTTP methods
-4. Include all required data
+### API 使用
+1. 检查 curl 可用性
+2. 优雅地处理网络故障
+3. 使用适当的 HTTP 方法
+4. 包含所有必需数据
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
-1. **API Communication Fails**: Check network connectivity and curl availability
-2. **Diagnostics Not Working**: Verify DIAGNOSTICS setting and RANDOM_UUID
-3. **Missing Error Descriptions**: Check error code coverage
-4. **Duplicate Updates**: POST_UPDATE_DONE prevents duplicates
+### 常见问题
+1. **API 通信失败**：检查网络连接和 curl 可用性
+2. **诊断不工作**：验证 DIAGNOSTICS 设置和 RANDOM_UUID
+3. **缺少错误描述**：检查错误代码覆盖范围
+4. **重复更新**：POST_UPDATE_DONE 防止重复
 
-### Debug Mode
-Enable diagnostic reporting for debugging:
+### 调试模式
+启用诊断报告进行调试：
 ```bash
 export DIAGNOSTICS="yes"
 export RANDOM_UUID="$(uuidgen)"
 ```
 
-### API Testing
-Test API communication:
+### API 测试
+测试 API 通信：
 ```bash
 source api.func
 export DIAGNOSTICS="yes"
@@ -187,13 +187,13 @@ export RANDOM_UUID="test-$(date +%s)"
 post_to_api
 ```
 
-## Related Documentation
+## 相关文档
 
-- [core.func](../core.func/) - Core utilities and error handling
-- [error_handler.func](../error_handler.func/) - Error handling utilities
-- [build.func](../build.func/) - Container creation with API integration
-- [tools.func](../tools.func/) - Extended utilities with API integration
+- [core.func](../core.func/) - 核心实用程序和错误处理
+- [error_handler.func](../error_handler.func/) - 错误处理实用程序
+- [build.func](../build.func/) - 带 API 集成的容器创建
+- [tools.func](../tools.func/) - 带 API 集成的扩展实用程序
 
 ---
 
-*This documentation covers the api.func file which provides API communication and diagnostic reporting for all Proxmox Community Scripts.*
+*本文档涵盖 api.func 文件，该文件为所有 Proxmox Community Scripts 提供 API 通信和诊断报告。*

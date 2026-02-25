@@ -1,33 +1,33 @@
-# install.func Functions Reference
+# install.func 函数参考
 
-Complete reference of all functions in install.func with detailed usage information.
+install.func 中所有函数的完整参考，包含详细的使用信息。
 
-## Function Index
+## 函数索引
 
-- `setting_up_container()` - Initialize container setup
-- `network_check()` - Verify network connectivity
-- `update_os()` - Update OS packages
-- `verb_ip6()` - Enable IPv6
-- `motd_ssh()` - Configure SSH and MOTD
-- `customize()` - Apply container customizations
-- `cleanup_lxc()` - Final container cleanup
+- `setting_up_container()` - 初始化容器设置
+- `network_check()` - 验证网络连接
+- `update_os()` - 更新操作系统软件包
+- `verb_ip6()` - 启用 IPv6
+- `motd_ssh()` - 配置 SSH 和 MOTD
+- `customize()` - 应用容器自定义设置
+- `cleanup_lxc()` - 最终容器清理
 
 ---
 
-## Core Functions
+## 核心函数
 
 ### setting_up_container()
 
-Display setup message and initialize container environment.
+显示设置消息并初始化容器环境。
 
-**Signature**:
+**函数签名**:
 ```bash
 setting_up_container
 ```
 
-**Purpose**: Announce container initialization and set initial environment
+**用途**: 宣告容器初始化并设置初始环境
 
-**Usage**:
+**使用方法**:
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
@@ -40,28 +40,28 @@ setting_up_container
 
 ### network_check()
 
-Verify network connectivity with automatic retry logic.
+验证网络连接，带有自动重试逻辑。
 
-**Signature**:
+**函数签名**:
 ```bash
 network_check
 ```
 
-**Purpose**: Ensure internet connectivity before critical operations
+**用途**: 在关键操作前确保互联网连接
 
-**Behavior**:
-- Pings 8.8.8.8 (Google DNS)
-- 3 attempts with 5-second delays
-- Exits with error if all attempts fail
+**行为**:
+- Ping 8.8.8.8 (Google DNS)
+- 3 次尝试，每次间隔 5 秒
+- 如果所有尝试都失败则退出并报错
 
-**Usage**:
+**使用方法**:
 ```bash
 network_check
 # If no internet: Exits with error message
 # If internet OK: Continues to next step
 ```
 
-**Error Handling**:
+**错误处理**:
 ```bash
 if ! network_check; then
   msg_error "No internet connection"
@@ -73,22 +73,22 @@ fi
 
 ### update_os()
 
-Update OS packages with error handling.
+更新操作系统软件包，带有错误处理。
 
-**Signature**:
+**函数签名**:
 ```bash
 update_os
 ```
 
-**Purpose**: Prepare container with latest packages
+**用途**: 使用最新软件包准备容器
 
-**On Debian/Ubuntu**:
-- Runs: `apt-get update && apt-get upgrade -y`
+**在 Debian/Ubuntu 上**:
+- 运行: `apt-get update && apt-get upgrade -y`
 
-**On Alpine**:
-- Runs: `apk update && apk upgrade`
+**在 Alpine 上**:
+- 运行: `apk update && apk upgrade`
 
-**Usage**:
+**使用方法**:
 ```bash
 update_os
 ```
@@ -97,16 +97,16 @@ update_os
 
 ### verb_ip6()
 
-Enable IPv6 support in container (optional).
+在容器中启用 IPv6 支持（可选）。
 
-**Signature**:
+**函数签名**:
 ```bash
 verb_ip6
 ```
 
-**Purpose**: Enable IPv6 if needed for application
+**用途**: 如果应用程序需要，启用 IPv6
 
-**Usage**:
+**使用方法**:
 ```bash
 verb_ip6              # Enable IPv6
 network_check         # Verify connectivity with IPv6
@@ -116,21 +116,21 @@ network_check         # Verify connectivity with IPv6
 
 ### motd_ssh()
 
-Configure SSH daemon and MOTD for container access.
+为容器访问配置 SSH 守护进程和 MOTD。
 
-**Signature**:
+**函数签名**:
 ```bash
 motd_ssh
 ```
 
-**Purpose**: Setup SSH and create login message
+**用途**: 设置 SSH 并创建登录消息
 
-**Configures**:
-- SSH daemon startup and keys
-- Custom MOTD displaying application access info
-- SSH port and security settings
+**配置内容**:
+- SSH 守护进程启动和密钥
+- 显示应用程序访问信息的自定义 MOTD
+- SSH 端口和安全设置
 
-**Usage**:
+**使用方法**:
 ```bash
 motd_ssh
 # SSH is now configured and application info is in MOTD
@@ -140,16 +140,16 @@ motd_ssh
 
 ### customize()
 
-Apply container customizations and final setup.
+应用容器自定义设置和最终设置。
 
-**Signature**:
+**函数签名**:
 ```bash
 customize
 ```
 
-**Purpose**: Apply any remaining customizations
+**用途**: 应用任何剩余的自定义设置
 
-**Usage**:
+**使用方法**:
 ```bash
 customize
 ```
@@ -158,21 +158,21 @@ customize
 
 ### cleanup_lxc()
 
-Final cleanup and completion of installation.
+最终清理并完成安装。
 
-**Signature**:
+**函数签名**:
 ```bash
 cleanup_lxc
 ```
 
-**Purpose**: Remove temporary files and finalize installation
+**用途**: 删除临时文件并完成安装
 
-**Cleans**:
-- Temporary installation files
-- Package manager cache
-- Log files from installation process
+**清理内容**:
+- 临时安装文件
+- 软件包管理器缓存
+- 安装过程中的日志文件
 
-**Usage**:
+**使用方法**:
 ```bash
 cleanup_lxc
 # Installation is now complete and ready
@@ -180,9 +180,9 @@ cleanup_lxc
 
 ---
 
-## Common Patterns
+## 常见模式
 
-### Basic Installation Pattern
+### 基本安装模式
 
 ```bash
 #!/usr/bin/env bash
@@ -199,7 +199,7 @@ customize
 cleanup_lxc
 ```
 
-### With IPv6 Support
+### 带 IPv6 支持
 
 ```bash
 #!/usr/bin/env bash
@@ -213,7 +213,7 @@ update_os
 # ... application installation ...
 ```
 
-### With Error Handling
+### 带错误处理
 
 ```bash
 #!/usr/bin/env bash
@@ -232,6 +232,6 @@ update_os
 
 ---
 
-**Last Updated**: December 2025
-**Total Functions**: 7
-**Maintained by**: community-scripts team
+**最后更新**: 2025年12月
+**函数总数**: 7
+**维护者**: community-scripts 团队

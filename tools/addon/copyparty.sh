@@ -48,7 +48,7 @@ elif grep -qE 'ID=debian|ID=ubuntu' /etc/os-release; then
   PKG_MANAGER="apt-get install -y"
   SERVICE_PATH="/etc/systemd/system/copyparty.service"
 else
-  msg_error "Unsupported OS detected. Exiting."
+  msg_error "检测到不支持的操作系统。正在退出。"
   exit 1
 fi
 
@@ -75,7 +75,7 @@ EOF
 # HELPER FUNCTIONS
 # ==============================================================================
 function setup_user_and_dirs() {
-  msg_info "Creating $SVC_USER user and directories"
+  msg_info "正在创建 $SVC_USER 用户和目录"
   if ! id "$SVC_USER" &>/dev/null; then
     if [[ "$OS" == "Debian" ]]; then
       useradd -r -s /sbin/nologin -d "$DATA_PATH" "$SVC_USER"
@@ -87,14 +87,14 @@ function setup_user_and_dirs() {
   mkdir -p "$DATA_PATH" "$LOG_PATH"
   chown -R "$SVC_USER:$SVC_GROUP" "$DATA_PATH" "$LOG_PATH"
   chmod 755 "$DATA_PATH" "$LOG_PATH"
-  msg_ok "User/Group/Dirs ready"
+  msg_ok "用户/组/目录已就绪"
 }
 
 # ==============================================================================
 # UNINSTALL
 # ==============================================================================
 function uninstall() {
-  msg_info "Uninstalling ${APP}"
+  msg_info "正在卸载 ${APP}"
   if [[ "$OS" == "Alpine" ]]; then
     rc-service copyparty stop &>/dev/null || true
     rc-update del copyparty &>/dev/null || true
@@ -109,7 +109,7 @@ function uninstall() {
   groupdel "$SVC_GROUP" 2>/dev/null || true
   rm -f "/usr/local/bin/update_copyparty"
   rm -f "$HOME/.copyparty"
-  msg_ok "${APP} has been uninstalled"
+  msg_ok "${APP} 已卸载"
 }
 
 # ==============================================================================
@@ -117,28 +117,28 @@ function uninstall() {
 # ==============================================================================
 function update() {
   if check_for_gh_release "copyparty-sfx.py" "9001/copyparty"; then
-    msg_info "Stopping service"
+    msg_info "正在停止服务"
     if [[ "$OS" == "Alpine" ]]; then
       rc-service copyparty stop &>/dev/null || true
     else
       systemctl stop copyparty.service &>/dev/null || true
     fi
-    msg_ok "Stopped service"
+    msg_ok "已停止服务"
 
-    msg_info "Updating ${APP}"
+    msg_info "正在更新 ${APP}"
     curl -fsSL "$SRC_URL" -o "$BIN_PATH"
     chmod +x "$BIN_PATH"
     chown "$SVC_USER:$SVC_GROUP" "$BIN_PATH"
-    msg_ok "Updated ${APP}"
+    msg_ok "已更新 ${APP}"
 
-    msg_info "Starting service"
+    msg_info "正在启动服务"
     if [[ "$OS" == "Alpine" ]]; then
       rc-service copyparty start
     else
       systemctl start copyparty.service
     fi
-    msg_ok "Started service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动服务"
+    msg_ok "更新成功！"
     exit
   fi
 }
@@ -156,28 +156,28 @@ function install() {
   read -rp "${TAB}Set data directory [${DATA_PATH}]: " data_path
   data_path=${data_path:-$DATA_PATH}
 
-  echo -n "${TAB}Enable authentication? (Y/n): "
+  echo -n "${TAB}启用身份验证？(Y/n): "
   read -r enable_auth
   if [[ "${enable_auth,,}" =~ ^(n|no)$ ]]; then
     admin_user=""
     admin_pass=""
-    msg_ok "Configured without authentication"
+    msg_ok "已配置为无身份验证"
   else
-    read -rp "${TAB}Set admin username [admin]: " admin_user
+    read -rp "${TAB}设置管理员用户名 [admin]: " admin_user
     admin_user=${admin_user:-admin}
-    read -rsp "${TAB}Set admin password [helper-scripts.com]: " admin_pass
+    read -rsp "${TAB}设置管理员密码 [helper-scripts.com]: " admin_pass
     echo ""
     admin_pass=${admin_pass:-helper-scripts.com}
-    msg_ok "Configured with admin user: ${admin_user}"
+    msg_ok "已配置管理员用户：${admin_user}"
   fi
 
-  msg_info "Installing dependencies"
+  msg_info "正在安装依赖项"
   if [[ "$OS" == "Debian" ]]; then
     $STD $PKG_MANAGER python3 python3-pil ffmpeg curl
   else
     $STD $PKG_MANAGER python3 py3-pillow ffmpeg curl
   fi
-  msg_ok "Dependencies installed (with thumbnail support)"
+  msg_ok "已安装依赖项（包含缩略图支持）"
 
   setup_user_and_dirs
 
@@ -188,13 +188,13 @@ function install() {
     chown "$SVC_USER:$SVC_GROUP" "$DATA_PATH"
   fi
 
-  msg_info "Downloading ${APP}"
+  msg_info "正在下载 ${APP}"
   curl -fsSL "$SRC_URL" -o "$BIN_PATH"
   chmod +x "$BIN_PATH"
   chown "$SVC_USER:$SVC_GROUP" "$BIN_PATH"
-  msg_ok "Downloaded to ${BIN_PATH}"
+  msg_ok "已下载到 ${BIN_PATH}"
 
-  msg_info "Creating configuration"
+  msg_info "正在创建配置"
   cat <<EOF >"$CONF_PATH"
 [global]
   p: ${port}
@@ -236,9 +236,9 @@ EOF
 
   chmod 640 "$CONF_PATH"
   chown "$SVC_USER:$SVC_GROUP" "$CONF_PATH"
-  msg_ok "Created configuration"
+  msg_ok "已创建配置"
 
-  msg_info "Creating service"
+  msg_info "正在创建服务"
   if [[ "$OS" == "Alpine" ]]; then
     cat <<'SERVICEEOF' >"$SERVICE_PATH"
 #!/sbin/openrc-run
@@ -281,10 +281,10 @@ SERVICEEOF
     systemctl daemon-reload
     systemctl enable --now copyparty.service &>/dev/null
   fi
-  msg_ok "Created and started service"
+  msg_ok "已创建并启动服务"
 
   # Create update script
-  msg_info "Creating update script"
+  msg_info "正在创建更新脚本"
   ensure_usr_local_bin_persist
   cat <<'UPDATEEOF' >/usr/local/bin/update_copyparty
 #!/usr/bin/env bash
@@ -292,16 +292,16 @@ SERVICEEOF
 type=update bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/addon/copyparty.sh)"
 UPDATEEOF
   chmod +x /usr/local/bin/update_copyparty
-  msg_ok "Created update script (/usr/local/bin/update_copyparty)"
+  msg_ok "已创建更新脚本 (/usr/local/bin/update_copyparty)"
 
   echo ""
-  msg_ok "${APP} installed successfully"
+  msg_ok "${APP} 安装成功"
   msg_ok "Web UI: ${BL}http://${LOCAL_IP}:${port}${CL}"
-  msg_ok "Storage: ${BL}${DATA_PATH}${CL}"
-  msg_ok "Config: ${BL}${CONF_PATH}${CL}"
+  msg_ok "存储位置: ${BL}${DATA_PATH}${CL}"
+  msg_ok "配置文件: ${BL}${CONF_PATH}${CL}"
   if [[ -n "$admin_user" ]]; then
     echo ""
-    msg_ok "Login: ${GN}${admin_user}${CL} / ${GN}${admin_pass}${CL}"
+    msg_ok "登录: ${GN}${admin_user}${CL} / ${GN}${admin_pass}${CL}"
   fi
 }
 
@@ -317,7 +317,7 @@ if [[ "${type:-}" == "update" ]]; then
   if [[ -f "$BIN_PATH" ]]; then
     update
   else
-    msg_error "${APP} is not installed. Nothing to update."
+    msg_error "${APP} 未安装。无需更新。"
     exit 1
   fi
   exit 0
@@ -325,41 +325,41 @@ fi
 
 # Check if already installed
 if [[ -f "$BIN_PATH" ]]; then
-  msg_warn "${APP} is already installed."
+  msg_warn "${APP} 已安装。"
   echo ""
 
-  echo -n "${TAB}Uninstall ${APP}? (y/N): "
+  echo -n "${TAB}卸载 ${APP}? (y/N): "
   read -r uninstall_prompt
   if [[ "${uninstall_prompt,,}" =~ ^(y|yes)$ ]]; then
     uninstall
     exit 0
   fi
 
-  echo -n "${TAB}Update ${APP}? (y/N): "
+  echo -n "${TAB}更新 ${APP}? (y/N): "
   read -r update_prompt
   if [[ "${update_prompt,,}" =~ ^(y|yes)$ ]]; then
     update
     exit 0
   fi
 
-  msg_warn "No action selected. Exiting."
+  msg_warn "未选择操作。正在退出。"
   exit 0
 fi
 
 # Fresh installation
-msg_warn "${APP} is not installed."
+msg_warn "${APP} 未安装。"
 echo ""
-echo -e "${TAB}${INFO} This will install:"
-echo -e "${TAB}  - CopyParty (Python file server)"
-echo -e "${TAB}  - Thumbnail support (Pillow, FFmpeg)"
-echo -e "${TAB}  - Systemd/OpenRC service"
+echo -e "${TAB}${INFO} 这将安装："
+echo -e "${TAB}  - CopyParty (Python 文件服务器)"
+echo -e "${TAB}  - 缩略图支持 (Pillow, FFmpeg)"
+echo -e "${TAB}  - Systemd/OpenRC 服务"
 echo ""
 
-echo -n "${TAB}Install ${APP}? (y/N): "
+echo -n "${TAB}安装 ${APP}? (y/N): "
 read -r install_prompt
 if [[ "${install_prompt,,}" =~ ^(y|yes)$ ]]; then
   install
 else
-  msg_warn "Installation cancelled. Exiting."
+  msg_warn "安装已取消。正在退出。"
   exit 0
 fi

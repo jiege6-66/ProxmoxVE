@@ -1,8 +1,8 @@
-# alpine-install.func Usage Examples
+# alpine-install.func 使用示例
 
-Basic examples for Alpine container installation.
+Alpine 容器安装的基本示例。
 
-### Example: Basic Alpine Setup
+### 示例：基本 Alpine 设置
 
 ```bash
 #!/usr/bin/env bash
@@ -11,7 +11,7 @@ source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 setting_up_container
 update_os
 
-# Install Alpine packages
+# 安装 Alpine 包
 apk add --no-cache curl wget git
 
 motd_ssh
@@ -21,4 +21,4 @@ cleanup_lxc
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

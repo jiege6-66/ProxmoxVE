@@ -1,79 +1,79 @@
-# Tools & Add-ons Documentation (/tools)
+# 工具和附加组件文档 (/tools)
 
-This directory contains comprehensive documentation for tools, utilities, and add-ons in the `/tools` directory.
+本目录包含 `/tools` 目录中工具、实用程序和附加组件的综合文档。
 
-## Overview
+## 概述
 
-The `/tools` directory contains:
-- **Proxmox management tools** - Helper scripts for Proxmox administration
-- **Proxmox VE add-ons** - Extensions and integrations
-- **Utility scripts** - General-purpose automation tools
+`/tools` 目录包含：
+- **Proxmox 管理工具** - Proxmox 管理的辅助脚本
+- **Proxmox VE 附加组件** - 扩展和集成
+- **实用脚本** - 通用自动化工具
 
-## Documentation Structure
+## 文档结构
 
-Tools documentation focuses on purpose, usage, and integration with the main ecosystem.
+工具文档专注于目的、用法以及与主生态系统的集成。
 
-## Available Tools
+## 可用工具
 
-The `/tools` directory structure includes:
+`/tools` 目录结构包括：
 
 ### `/tools/pve/`
-Proxmox VE management and administration tools:
-- Container management utilities
-- VM management helpers
-- Storage management tools
-- Network configuration tools
-- Backup and recovery utilities
+Proxmox VE 管理和管理工具：
+- 容器管理实用程序
+- VM 管理助手
+- 存储管理工具
+- 网络配置工具
+- 备份和恢复实用程序
 
 ### `/tools/addon/`
-Proxmox add-ons and extensions:
-- Web UI enhancements
-- API extensions
-- Integration modules
-- Custom scripts
+Proxmox 附加组件和扩展：
+- Web UI 增强
+- API 扩展
+- 集成模块
+- 自定义脚本
 
 ### `/tools/headers/`
-ASCII art headers and templates for scripts.
+脚本的 ASCII 艺术标题和模板。
 
-## Common Tools & Scripts
+## 常见工具和脚本
 
-Examples of tools available:
+可用工具示例：
 
-- **Container management** - Batch operations on containers
-- **VM provisioning** - Automated VM setup
-- **Backup automation** - Scheduled backups
-- **Monitoring integration** - Connect to monitoring systems
-- **Configuration management** - Infrastructure as code
-- **Reporting tools** - Generate reports and statistics
+- **容器管理** - 容器的批量操作
+- **VM 配置** - 自动化 VM 设置
+- **备份自动化** - 计划备份
+- **监控集成** - 连接到监控系统
+- **配置管理** - 基础设施即代码
+- **报告工具** - 生成报告和统计
 
-## Integration Points
+## 集成点
 
-Tools integrate with:
-- **build.func** - Main container orchestrator
-- **core.func** - Utility functions
-- **error_handler.func** - Error handling
-- **tools.func** - Package installation
+工具与以下集成：
+- **build.func** - 主容器编排器
+- **core.func** - 实用函数
+- **error_handler.func** - 错误处理
+- **tools.func** - 包安装
 
-## Contributing Tools
+## 贡献工具
 
-To contribute a new tool:
+要贡献新工具：
 
-1. Place script in appropriate `/tools/` subdirectory
-2. Follow project standards:
-   - Use `#!/usr/bin/env bash`
-   - Source build.func if needed
-   - Handle errors with error_handler.func
-3. Document usage in script header comments
-4. Submit PR
+1. 将脚本放在适当的 `/tools/` 子目录中
+2. 遵循项目标准：
+   - 使用 `#!/usr/bin/env bash`
+   - 如需要，source build.func
+   - 使用 error_handler.func 处理错误
+3. 在脚本标题注释中记录用法
+4. 提交 PR
 
-## Common Tasks
+## 常见任务
 
-- **Create Proxmox management tool** → Study existing tools
-- **Create add-on** → Follow add-on guidelines
-- **Integration** → Use build.func and core.func
-- **Error handling** → Use error_handler.func
+- **创建 Proxmox 管理工具** → 研究现有工具
+- **创建附加组件** → 遵循附加组件指南
+- **集成** → 使用 build.func 和 core.func
+- **错误处理** → 使用 error_handler.func
 
 ---
 
-**Last Updated**: December 2025
-**Maintainers**: community-scripts team
+**最后更新**：2025 年 12 月
+**维护者**：community-scripts 团队

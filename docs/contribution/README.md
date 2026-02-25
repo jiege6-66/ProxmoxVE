@@ -1,588 +1,590 @@
-# 🤝 Contributing to ProxmoxVE
+# 🤝 为 ProxmoxVE 做贡献
 
-Complete guide to contributing to the ProxmoxVE project - from your first fork to submitting your pull request.
-
----
-
-## 📋 Table of Contents
-
-- [Quick Start](#quick-start)
-- [Setting Up Your Fork](#setting-up-your-fork)
-- [Coding Standards](#coding-standards)
-- [Code Audit](#code-audit)
-- [Guides & Resources](#guides--resources)
-- [FAQ](#faq)
+从第一次分叉到提交拉取请求的完整贡献指南。
 
 ---
 
-## 🚀 Quick Start
+## 📋 目录
 
-### 60 Seconds to Contributing (Development)
+- [快速开始](#快速开始)
+- [设置您的分支](#设置您的分支)
+- [编码标准](#编码标准)
+- [代码审计](#代码审计)
+- [指南和资源](#指南和资源)
+- [常见问题](#常见问题)
 
-When developing and testing **in your fork**:
+---
+
+## 🚀 快速开始
+
+### 60 秒开始贡献（开发）
+
+在**您的分支**中开发和测试时：
 
 ```bash
-# 1. Fork on GitHub
-# Visit: https://github.com/community-scripts/ProxmoxVE → Fork (top right)
+# 1. 在 GitHub 上分叉
+# 访问：https://github.com/community-scripts/ProxmoxVE → Fork（右上角）
 
-# 2. Clone your fork
+# 2. 克隆您的分支
 git clone https://github.com/YOUR_USERNAME/ProxmoxVE.git
 cd ProxmoxVE
 
-# 3. Auto-configure your fork (IMPORTANT - updates all links!)
+# 3. 自动配置您的分支（重要 - 更新所有链接！）
 bash docs/contribution/setup-fork.sh --full
 
-# 4. Create a feature branch
+# 4. 创建功能分支
 git checkout -b feature/my-awesome-app
 
-# 5. Read the guides
-cat docs/README.md              # Documentation overview
-cat docs/ct/DETAILED_GUIDE.md   # For container scripts
-cat docs/install/DETAILED_GUIDE.md  # For install scripts
+# 5. 阅读指南
+cat docs/README.md              # 文档概述
+cat docs/ct/DETAILED_GUIDE.md   # 容器脚本
+cat docs/install/DETAILED_GUIDE.md  # 安装脚本
 
-# 6. Create your contribution
+# 6. 创建您的贡献
 cp docs/contribution/templates_ct/AppName.sh ct/myapp.sh
 cp docs/contribution/templates_install/AppName-install.sh install/myapp-install.sh
-# ... edit files ...
+# ... 编辑文件 ...
 
-# 7. Push to your fork and test via GitHub
+# 7. 推送到您的分支并通过 GitHub 测试
 git push origin feature/my-awesome-app
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/myapp.sh)"
-# ⏱️ GitHub may take 10-30 seconds to update files - be patient!
+# ⏱️ GitHub 可能需要 10-30 秒更新文件 - 请耐心等待！
 
-# 8. Create your JSON metadata file
+# 8. 创建您的 JSON 元数据文件
 cp docs/contribution/templates_json/AppName.json frontend/public/json/myapp.json
-# Edit metadata: name, slug, categories, description, resources, etc.
+# 编辑元数据：name、slug、categories、description、resources 等
 
-# 9. No direct install-script test
-# Install scripts are executed by the CT script inside the container
+# 9. 不要直接测试安装脚本
+# 安装脚本由 CT 脚本在容器内执行
 
-# 10. Commit ONLY your new files (see Cherry-Pick section below!)
+# 10. 仅提交您的新文件（见下面的 Cherry-Pick 部分！）
 git add ct/myapp.sh install/myapp-install.sh frontend/public/json/myapp.json
 git commit -m "feat: add MyApp container and install scripts"
 git push origin feature/my-awesome-app
 
-# 11. Create Pull Request on GitHub
+# 11. 在 GitHub 上创建拉取请求
 ```
 
-⚠️ **IMPORTANT: After setup-fork.sh, many files are modified!**
+⚠️ **重要：运行 setup-fork.sh 后，许多文件被修改！**
 
-See the **Cherry-Pick: Submitting Only Your Changes** section below to learn how to push ONLY your 3-4 files instead of 600+ modified files!
+查看下面的 **Cherry-Pick：仅提交您的更改** 部分，了解如何仅推送您的 3-4 个文件，而不是 600+ 个修改的文件！
 
-### How Users Run Scripts (After Merged)
+### 用户如何运行脚本（合并后）
 
-Once your script is merged to the main repository, users download and run it from GitHub like this:
+一旦您的脚本合并到主仓库，用户从 GitHub 下载并运行它，如下所示：
 
 ```bash
-# ✅ Users run from GitHub (normal usage after PR merged)
+# ✅ 用户从 GitHub 运行（PR 合并后的正常使用）
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/myapp.sh)"
 
-# Install scripts are called by the CT script and are not run directly by users
+# 安装脚本由 CT 脚本调用，用户不直接运行
 ```
 
-### Development vs. Production Execution
+### 开发与生产执行
 
-**During Development (you, in your fork):**
+**开发期间（您，在您的分支中）：**
 
 ```bash
-# You MUST test via curl from your GitHub fork (not local files!)
+# 您必须通过 GitHub 分支的 curl 测试（不是本地文件！）
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/myapp.sh)"
 
-# The script's curl commands are updated by setup-fork.sh to point to YOUR fork
-# This ensures you're testing your actual changes
-# ⏱️ Wait 10-30 seconds after pushing - GitHub updates slowly
+# 脚本的 curl 命令由 setup-fork.sh 更新为指向您的分支
+# 这确保您正在测试实际的更改
+# ⏱️ 推送后等待 10-30 秒 - GitHub 更新缓慢
 ```
 
-**After Merge (users, from GitHub):**
+**合并后（用户，从 GitHub）：**
 
 ```bash
-# Users download the script from upstream via curl
+# 用户通过 curl 从上游下载脚本
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/myapp.sh)"
 
-# The script's curl commands now point back to upstream (community-scripts)
-# This is the stable, tested version
+# 脚本的 curl 命令现在指向上游（community-scripts）
+# 这是稳定的、经过测试的版本
 ```
 
-**Summary:**
+**总结：**
 
-- **Development**: Push to fork, test via curl → setup-fork.sh changes curl URLs to your fork
-- **Production**: curl | bash from upstream → curl URLs point to community-scripts repo
+- **开发**：推送到分支，通过 curl 测试 → setup-fork.sh 将 curl URL 更改为您的分支
+- **生产**：从上游 curl | bash → curl URL 指向 community-scripts 仓库
 
 ---
 
-## 🍴 Setting Up Your Fork
+## 🍴 设置您的分支
 
-### Automatic Setup (Recommended)
+### 自动设置（推荐）
 
-When you clone your fork, run the setup script to automatically configure everything:
+克隆分支后，运行设置脚本自动配置所有内容：
 
 ```bash
 bash docs/contribution/setup-fork.sh --full
 ```
 
-**What it does:**
+**它做什么：**
 
-- Auto-detects your GitHub username from git config
-- Auto-detects your fork repository name
-- Updates **ALL** hardcoded links to point to your fork instead of the main repo (`--full`)
-- Creates `.git-setup-info` with your configuration
-- Allows you to develop and test independently in your fork
+- 从 git config 自动检测您的 GitHub 用户名
+- 自动检测您的分支仓库名称
+- 更新**所有**硬编码链接指向您的分支而不是主仓库（`--full`）
+- 创建包含您配置的 `.git-setup-info`
+- 允许您在分支中独立开发和测试
 
-**Why this matters:**
+**为什么这很重要：**
 
-Without running this script, all links in your fork will still point to the upstream repository (community-scripts). This is a problem when testing because:
+如果不运行此脚本，分支中的所有链接仍将指向上游仓库（community-scripts）。这在测试时是个问题，因为：
 
-- Installation links will pull from upstream, not your fork
-- Updates will target the wrong repository
-- Your contributions won't be properly tested
+- 安装链接将从上游拉取，而不是您的分支
+- 更新将针对错误的仓库
+- 您的贡献将无法正确测试
 
-**After running setup-fork.sh:**
+**运行 setup-fork.sh 后：**
 
-Your fork is fully configured and ready to develop. You can:
+您的分支已完全配置并准备好开发。您可以：
 
-- Push changes to your fork
-- Test via curl: `bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/myapp.sh)"`
-- All links will reference your fork for development
-- ⏱️ Wait 10-30 seconds after pushing - GitHub takes time to update
-- Commit and push with confidence
-- Create a PR to merge into upstream
+- 将更改推送到您的分支
+- 通过 curl 测试：`bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/myapp.sh)"`
+- 所有链接将引用您的分支进行开发
+- ⏱️ 推送后等待 10-30 秒 - GitHub 需要时间更新
+- 自信地提交和推送
+- 创建 PR 合并到上游
 
-**See**: [FORK_SETUP.md](FORK_SETUP.md) for detailed instructions
+**查看**：[FORK_SETUP.md](FORK_SETUP.md) 获取详细说明
 
-### Manual Setup
+### 手动设置
 
-If the script doesn't work, manually configure:
+如果脚本不起作用，手动配置：
 
 ```bash
-# Set git user
+# 设置 git 用户
 git config user.name "Your Name"
 git config user.email "your.email@example.com"
 
-# Add upstream remote for syncing with main repo
+# 添加上游远程以与主仓库同步
 git remote add upstream https://github.com/community-scripts/ProxmoxVE.git
 
-# Verify remotes
+# 验证远程
 git remote -v
-# Should show: origin (your fork) and upstream (main repo)
+# 应该显示：origin（您的分支）和 upstream（主仓库）
 ```
 
 ---
 
-## 📖 Coding Standards
+## 📖 编码标准
 
-All scripts and configurations must follow our coding standards to ensure consistency and quality.
+所有脚本和配置必须遵循我们的编码标准以确保一致性和质量。
 
-### Available Guides
+### 可用指南
 
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Essential coding standards and best practices
-- **[CODE_AUDIT.md](CODE_AUDIT.md)** - Code review checklist and audit procedures
-- **[GUIDE.md](GUIDE.md)** - Comprehensive contribution guide
-- **[HELPER_FUNCTIONS.md](HELPER_FUNCTIONS.md)** - Reference for all tools.func helper functions
-- **Container Scripts** - `/ct/` templates and guidelines
-- **Install Scripts** - `/install/` templates and guidelines
-- **JSON Configurations** - `frontend/public/json/` structure and format
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - 基本编码标准和最佳实践
+- **[CODE_AUDIT.md](CODE_AUDIT.md)** - 代码审查清单和审计程序
+- **[GUIDE.md](GUIDE.md)** - 综合贡献指南
+- **[HELPER_FUNCTIONS.md](HELPER_FUNCTIONS.md)** - 所有 tools.func 辅助函数的参考
+- **容器脚本** - `/ct/` 模板和指南
+- **安装脚本** - `/install/` 模板和指南
+- **JSON 配置** - `frontend/public/json/` 结构和格式
 
-### Quick Checklist
+### 快速清单
 
-- ✅ Use `/ct/example.sh` as template for container scripts
-- ✅ Use `/install/example-install.sh` as template for install scripts
-- ✅ Follow naming conventions: `appname.sh` and `appname-install.sh`
-- ✅ Include proper shebang: `#!/usr/bin/env bash`
-- ✅ Add copyright header with author
-- ✅ Handle errors properly with `msg_error`, `msg_ok`, etc.
-- ✅ Test before submitting PR (via curl from your fork, not local bash)
-- ✅ Update documentation if needed
-
----
-
-## 🔍 Code Audit
-
-Before submitting a pull request, ensure your code passes our audit:
-
-**See**: [CODE_AUDIT.md](CODE_AUDIT.md) for complete audit checklist
-
-Key points:
-
-- Code consistency with existing scripts
-- Proper error handling
-- Correct variable naming
-- Adequate comments and documentation
-- Security best practices
+- ✅ 使用 `/ct/example.sh` 作为容器脚本的模板
+- ✅ 使用 `/install/example-install.sh` 作为安装脚本的模板
+- ✅ 遵循命名约定：`appname.sh` 和 `appname-install.sh`
+- ✅ 包含正确的 shebang：`#!/usr/bin/env bash`
+- ✅ 添加带有作者的版权头
+- ✅ 使用 `msg_error`、`msg_ok` 等正确处理错误
+- ✅ 提交 PR 前测试（通过您分支的 curl，而不是本地 bash）
+- ✅ 如需要，更新文档
 
 ---
 
-## 🍒 Cherry-Pick: Submitting Only Your Changes
+## 🔍 代码审计
 
-**Problem**: `setup-fork.sh` modifies 600+ files to update links. You don't want to submit all of those changes - only your new 3-4 files!
+提交拉取请求之前，确保您的代码通过我们的审计：
 
-**Solution**: Use git cherry-pick to select only YOUR files.
+**查看**：[CODE_AUDIT.md](CODE_AUDIT.md) 获取完整的审计清单
 
-### Step-by-Step Cherry-Pick Guide
+关键点：
 
-#### 1. Check what changed
+- 代码与现有脚本的一致性
+- 正确的错误处理
+- 正确的变量命名
+- 充分的注释和文档
+- 安全最佳实践
+
+---
+
+## 🍒 Cherry-Pick：仅提交您的更改
+
+**问题**：`setup-fork.sh` 修改了 600+ 个文件以更新链接。您不想提交所有这些更改 - 只提交您的新 3-4 个文件！
+
+**解决方案**：使用 git cherry-pick 仅选择您的文件。
+
+### 分步 Cherry-Pick 指南
+
+#### 1. 检查更改了什么
 
 ```bash
-# See all modified files
+# 查看所有修改的文件
 git status
 
-# Verify your files are there
+# 验证您的文件在那里
 git status | grep -E "ct/myapp|install/myapp|json/myapp"
 ```
 
-#### 2. Create a clean feature branch for submission
+#### 2. 为提交创建干净的功能分支
 
 ```bash
-# Go back to upstream main (clean slate)
+# 回到上游 main（干净的起点）
 git fetch upstream
 git checkout -b submit/myapp upstream/main
 
-# Don't use your modified main branch!
+# 不要使用您修改的 main 分支！
 ```
 
-#### 3. Cherry-pick ONLY your files
+#### 3. 仅 Cherry-pick 您的文件
 
-Cherry-picking extracts specific changes from commits:
+Cherry-picking 从提交中提取特定更改：
 
 ```bash
-# Option A: Cherry-pick commits that added your files
-# (if you committed your files separately)
+# 选项 A：Cherry-pick 添加您文件的提交
+# （如果您单独提交了文件）
 git cherry-pick <commit-hash-of-your-files>
 
-# Option B: Manually copy and commit only your files
-# From your work branch, get the file contents
+# 选项 B：手动复制并仅提交您的文件
+# 从您的工作分支获取文件内容
 git show feature/my-awesome-app:ct/myapp.sh > /tmp/myapp.sh
 git show feature/my-awesome-app:install/myapp-install.sh > /tmp/myapp-install.sh
 git show feature/my-awesome-app:frontend/public/json/myapp.json > /tmp/myapp.json
 
-# Add them to the clean branch
+# 将它们添加到干净的分支
 cp /tmp/myapp.sh ct/myapp.sh
 cp /tmp/myapp-install.sh install/myapp-install.sh
 cp /tmp/myapp.json frontend/public/json/myapp.json
 
-# Commit
+# 提交
 git add ct/myapp.sh install/myapp-install.sh frontend/public/json/myapp.json
 git commit -m "feat: add MyApp"
 ```
 
-#### 4. Verify only your files are in the PR
+#### 4. 验证 PR 中仅有您的文件
 
 ```bash
-# Check git diff against upstream
+# 检查与上游的 git diff
 git diff upstream/main --name-only
-# Should show ONLY:
+# 应该仅显示：
 #   ct/myapp.sh
 #   install/myapp-install.sh
 #   frontend/public/json/myapp.json
 ```
 
-#### 5. Push and create PR
+#### 5. 推送并创建 PR
 
 ```bash
-# Push your clean submission branch
+# 推送您的干净提交分支
 git push origin submit/myapp
 
-# Create PR on GitHub from: submit/myapp → main
+# 在 GitHub 上创建 PR：submit/myapp → main
 ```
 
-### Why This Matters
+### 为什么这很重要
 
-- ✅ Clean PR with only your changes
-- ✅ Easier for maintainers to review
-- ✅ Faster merge without conflicts
-- ❌ Without cherry-pick: PR has 600+ file changes (won't merge!)
+- ✅ 仅包含您更改的干净 PR
+- ✅ 维护者更容易审查
+- ✅ 更快合并，无冲突
+- ❌ 没有 cherry-pick：PR 有 600+ 文件更改（不会合并！）
 
-### If You Made a Mistake
+### 如果您犯了错误
 
 ```bash
-# Delete the messy branch
+# 删除混乱的分支
 git branch -D submit/myapp
 
-# Go back to clean branch
+# 回到干净的分支
 git checkout -b submit/myapp upstream/main
 
-# Try cherry-picking again
+# 再次尝试 cherry-picking
 ```
 
 ---
 
-If you're using **Visual Studio Code** with an AI assistant, you can leverage our detailed guidelines to generate high-quality contributions automatically.
+## 🤖 使用 AI 助手
 
-### How to Use AI Assistance
+如果您使用带有 AI 助手的 **Visual Studio Code**，您可以利用我们的详细指南自动生成高质量的贡献。
 
-1. **Open the AI Guidelines**
+### 如何使用 AI 协助
+
+1. **打开 AI 指南**
 
    ```
    docs/contribution/AI.md
    ```
 
-   This file contains all requirements, patterns, and examples for writing proper scripts.
+   此文件包含编写正确脚本的所有要求、模式和示例。
 
-2. **Prepare Your Information**
+2. **准备您的信息**
 
-   Before asking the AI to generate code, gather:
-   - **Repository URL**: e.g., `https://github.com/owner/myapp`
-   - **Dockerfile/Script**: Paste the app's installation instructions (if available)
-   - **Dependencies**: What packages does it need? (Node, Python, Java, PostgreSQL, etc.)
-   - **Ports**: What port does it listen on? (e.g., 3000, 8080, 5000)
-   - **Configuration**: Any environment variables or config files?
+   在要求 AI 生成代码之前，收集：
+   - **仓库 URL**：例如，`https://github.com/owner/myapp`
+   - **Dockerfile/脚本**：粘贴应用的安装说明（如果可用）
+   - **依赖项**：它需要什么包？（Node、Python、Java、PostgreSQL 等）
+   - **端口**：它监听什么端口？（例如，3000、8080、5000）
+   - **配置**：任何环境变量或配置文件？
 
-3. **Tell the AI Assistant**
+3. **告诉 AI 助手**
 
-   Share with the AI:
-   - The repository URL
-   - The Dockerfile or install instructions
-   - Link to [docs/contribution/AI.md](AI.md) with instructions to follow
+   与 AI 分享：
+   - 仓库 URL
+   - Dockerfile 或安装说明
+   - 链接到 [docs/contribution/AI.md](AI.md) 并遵循说明
 
-   **Example prompt:**
+   **示例提示：**
 
    ```
-   I want to contribute a container script for MyApp to ProxmoxVE.
-   Repository: https://github.com/owner/myapp
+   我想为 ProxmoxVE 贡献 MyApp 的容器脚本。
+   仓库：https://github.com/owner/myapp
 
-   Here's the Dockerfile:
-   [paste Dockerfile content]
+   这是 Dockerfile：
+   [粘贴 Dockerfile 内容]
 
-   Please follow the guidelines in docs/contribution/AI.md to create:
-   1. ct/myapp.sh (container script)
-   2. install/myapp-install.sh (installation script)
-   3. frontend/public/json/myapp.json (metadata)
+   请遵循 docs/contribution/AI.md 中的指南创建：
+   1. ct/myapp.sh（容器脚本）
+   2. install/myapp-install.sh（安装脚本）
+   3. frontend/public/json/myapp.json（元数据）
    ```
 
-4. **AI Will Generate**
+4. **AI 将生成**
 
-   The AI will produce scripts that:
-   - Follow all ProxmoxVE patterns and conventions
-   - Use helper functions from `tools.func` correctly
-   - Include proper error handling and messages
-   - Have correct update mechanisms
-   - Are ready to submit as a PR
+   AI 将生成以下脚本：
+   - 遵循所有 ProxmoxVE 模式和约定
+   - 正确使用 `tools.func` 中的辅助函数
+   - 包含正确的错误处理和消息
+   - 具有正确的更新机制
+   - 准备好作为 PR 提交
 
-### Key Points for AI Assistants
+### AI 助手的关键点
 
-- **Templates Location**: `docs/contribution/templates_ct/AppName.sh`, `templates_install/`, `templates_json/`
-- **Guidelines**: Must follow `docs/contribution/AI.md` exactly
-- **Helper Functions**: Use only functions from `misc/tools.func` - never write custom ones
-- **Testing**: Always test before submission via curl from your fork
+- **模板位置**：`docs/contribution/templates_ct/AppName.sh`、`templates_install/`、`templates_json/`
+- **指南**：必须完全遵循 `docs/contribution/AI.md`
+- **辅助函数**：仅使用 `misc/tools.func` 中的函数 - 永远不要编写自定义函数
+- **测试**：提交前始终通过您分支的 curl 测试
   ```bash
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/myapp.sh)"
-  # Wait 10-30 seconds after pushing changes
+  # 推送更改后等待 10-30 秒
   ```
-- **No Docker**: Container scripts must be bare-metal, not Docker-based
+- **不使用 Docker**：容器脚本必须是裸机，而不是基于 Docker
 
-### Benefits
+### 好处
 
-- **Speed**: AI generates boilerplate in seconds
-- **Consistency**: Follows same patterns as 200+ existing scripts
-- **Quality**: Less bugs and more maintainable code
-- **Learning**: See how your app should be structured
+- **速度**：AI 在几秒钟内生成样板
+- **一致性**：遵循与 200+ 现有脚本相同的模式
+- **质量**：更少的错误和更易维护的代码
+- **学习**：了解您的应用应该如何构建
 
 ---
 
-### Documentation
+## 📚 文档
 
-- **[docs/README.md](../README.md)** - Main documentation hub
-- **[docs/ct/README.md](../ct/README.md)** - Container scripts overview
-- **[docs/install/README.md](../install/README.md)** - Installation scripts overview
-- **[docs/ct/DETAILED_GUIDE.md](../ct/DETAILED_GUIDE.md)** - Complete ct/ script reference
-- **[docs/install/DETAILED_GUIDE.md](../install/DETAILED_GUIDE.md)** - Complete install/ script reference
-- **[docs/TECHNICAL_REFERENCE.md](../TECHNICAL_REFERENCE.md)** - Architecture deep-dive
-- **[docs/EXIT_CODES.md](../EXIT_CODES.md)** - Exit codes reference
-- **[docs/DEV_MODE.md](../DEV_MODE.md)** - Debugging guide
+- **[docs/README.md](../README.md)** - 主文档中心
+- **[docs/ct/README.md](../ct/README.md)** - 容器脚本概述
+- **[docs/install/README.md](../install/README.md)** - 安装脚本概述
+- **[docs/ct/DETAILED_GUIDE.md](../ct/DETAILED_GUIDE.md)** - 完整的 ct/ 脚本参考
+- **[docs/install/DETAILED_GUIDE.md](../install/DETAILED_GUIDE.md)** - 完整的 install/ 脚本参考
+- **[docs/TECHNICAL_REFERENCE.md](../TECHNICAL_REFERENCE.md)** - 架构深入探讨
+- **[docs/EXIT_CODES.md](../EXIT_CODES.md)** - 退出代码参考
+- **[docs/DEV_MODE.md](../DEV_MODE.md)** - 调试指南
 
-### Community Guides
+### 社区指南
 
-See [USER_SUBMITTED_GUIDES.md](USER_SUBMITTED_GUIDES.md) for excellent community-written guides:
+查看 [USER_SUBMITTED_GUIDES.md](USER_SUBMITTED_GUIDES.md) 获取优秀的社区编写指南：
 
-- Home Assistant installation and configuration
-- Frigate setup on Proxmox
-- Docker and Portainer installation
-- Database setup and optimization
-- And many more!
+- Home Assistant 安装和配置
+- Proxmox 上的 Frigate 设置
+- Docker 和 Portainer 安装
+- 数据库设置和优化
+- 还有更多！
 
-### Templates
+### 模板
 
-Use these templates when creating new scripts:
+创建新脚本时使用这些模板：
 
 ```bash
-# Container script template
+# 容器脚本模板
 cp docs/contribution/templates_ct/AppName.sh ct/my-app.sh
 
-# Installation script template
+# 安装脚本模板
 cp docs/contribution/templates_install/AppName-install.sh install/my-app-install.sh
 
-# JSON configuration template
+# JSON 配置模板
 cp docs/contribution/templates_json/AppName.json frontend/public/json/my-app.json
 ```
 
-**Template Features:**
+**模板功能：**
 
-- Updated to match current codebase patterns
-- Includes all available helper functions from `tools.func`
-- Examples for Node.js, Python, PHP, Go applications
-- Database setup examples (MariaDB, PostgreSQL)
-- Proper service creation and cleanup
+- 更新以匹配当前代码库模式
+- 包含 `tools.func` 中所有可用的辅助函数
+- Node.js、Python、PHP、Go 应用的示例
+- 数据库设置示例（MariaDB、PostgreSQL）
+- 正确的服务创建和清理
 
 ---
 
-## 🔄 Git Workflow
+## 🔄 Git 工作流
 
-### Keep Your Fork Updated
+### 保持您的分支更新
 
 ```bash
-# Fetch latest from upstream
+# 从上游获取最新内容
 git fetch upstream
 
-# Rebase your work on latest main
+# 在最新 main 上 rebase 您的工作
 git rebase upstream/main
 
-# Push to your fork
+# 推送到您的分支
 git push -f origin main
 ```
 
-### Create Feature Branch
+### 创建功能分支
 
 ```bash
-# Create and switch to new branch
+# 创建并切换到新分支
 git checkout -b feature/my-feature
 
-# Make changes...
+# 进行更改...
 git add .
 git commit -m "feat: description of changes"
 
-# Push to your fork
+# 推送到您的分支
 git push origin feature/my-feature
 
-# Create Pull Request on GitHub
+# 在 GitHub 上创建拉取请求
 ```
 
-### Before Submitting PR
+### 提交 PR 之前
 
-1. **Sync with upstream**
+1. **与上游同步**
 
    ```bash
    git fetch upstream
    git rebase upstream/main
    ```
 
-2. **Test your changes** (via curl from your fork)
+2. **测试您的更改**（通过您分支的 curl）
 
    ```bash
    bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/my-app.sh)"
-   # Follow prompts and test the container
-   # ⏱️ Wait 10-30 seconds after pushing - GitHub takes time to update
+   # 按照提示测试容器
+   # ⏱️ 推送后等待 10-30 秒 - GitHub 需要时间更新
    ```
 
-3. **Check code standards**
-   - [ ] Follows template structure
-   - [ ] Proper error handling
-   - [ ] Documentation updated (if needed)
-   - [ ] No hardcoded values
-   - [ ] Version tracking implemented
+3. **检查代码标准**
+   - [ ] 遵循模板结构
+   - [ ] 正确的错误处理
+   - [ ] 文档已更新（如需要）
+   - [ ] 无硬编码值
+   - [ ] 实现版本跟踪
 
-4. **Push final changes**
+4. **推送最终更改**
    ```bash
    git push origin feature/my-feature
    ```
 
 ---
 
-## 📋 Pull Request Checklist
+## 📋 拉取请求清单
 
-Before opening a PR:
+打开 PR 之前：
 
-- [ ] Code follows coding standards (see CONTRIBUTING.md)
-- [ ] All templates used correctly
-- [ ] Tested on Proxmox VE
-- [ ] Error handling implemented
-- [ ] Documentation updated (if applicable)
-- [ ] No merge conflicts
-- [ ] Synced with upstream/main
-- [ ] Clear PR title and description
+- [ ] 代码遵循编码标准（见 CONTRIBUTING.md）
+- [ ] 所有模板正确使用
+- [ ] 在 Proxmox VE 上测试
+- [ ] 实现错误处理
+- [ ] 文档已更新（如适用）
+- [ ] 无合并冲突
+- [ ] 与 upstream/main 同步
+- [ ] 清晰的 PR 标题和描述
 
 ---
 
-## ❓ FAQ
+## ❓ 常见问题
 
-### ❌ Why can't I test with `bash ct/myapp.sh` locally?
+### ❌ 为什么我不能用 `bash ct/myapp.sh` 在本地测试？
 
-You might try:
+您可能会尝试：
 
 ```bash
-# ❌ WRONG - This won't test your actual changes!
+# ❌ 错误 - 这不会测试您的实际更改！
 bash ct/myapp.sh
 ./ct/myapp.sh
 sh ct/myapp.sh
 ```
 
-**Why this fails:**
+**为什么这会失败：**
 
-- `bash ct/myapp.sh` uses the LOCAL clone file
-- The LOCAL file doesn't execute the curl commands - it's already on disk
-- The curl URLs INSIDE the script are modified by setup-fork.sh, but they're not executed
-- So you can't verify if your curl URLs actually work
-- Users will get the curl URL version (which may be broken)
+- `bash ct/myapp.sh` 使用本地克隆文件
+- 本地文件不执行 curl 命令 - 它已经在磁盘上
+- 脚本内部的 curl URL 由 setup-fork.sh 修改，但它们不会被执行
+- 所以您无法验证 curl URL 是否实际工作
+- 用户将获得 curl URL 版本（可能已损坏）
 
-**Solution:** Always test via curl from GitHub:
+**解决方案：** 始终通过 GitHub 的 curl 测试：
 
 ```bash
-# ✅ CORRECT - Tests the actual GitHub URLs
+# ✅ 正确 - 测试实际的 GitHub URL
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/myapp.sh)"
 ```
 
-### ❓ How do I test my changes?
+### ❓ 如何测试我的更改？
 
-You **cannot** test locally with `bash ct/myapp.sh` from your cloned directory!
+您**不能**从克隆的目录使用 `bash ct/myapp.sh` 在本地测试！
 
-You **must** push to GitHub and test via curl from your fork:
+您**必须**推送到 GitHub 并通过您分支的 curl 测试：
 
 ```bash
-# 1. Push your changes to your fork
+# 1. 将更改推送到您的分支
 git push origin feature/my-awesome-app
 
-# 2. Test via curl (this loads the script from GitHub, not local files)
+# 2. 通过 curl 测试（这从 GitHub 加载脚本，而不是本地文件）
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/my-app.sh)"
 
-# 3. For verbose/debug output, pass environment variables
+# 3. 对于详细/调试输出，传递环境变量
 VERBOSE=yes bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/my-app.sh)"
 DEV_MODE_LOGS=true bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/my-app.sh)"
 ```
 
-**Why?**
+**为什么？**
 
-- Local `bash ct/myapp.sh` uses local files from your clone
-- But the script's INTERNAL curl commands have been modified by setup-fork.sh to point to your fork
-- This discrepancy means you're not actually testing the curl URLs
-- Testing via curl ensures the script downloads from YOUR fork GitHub URLs
-- ⏱️ **Important:** GitHub takes 10-30 seconds to recognize newly pushed files. Wait before testing!
+- 本地 `bash ct/myapp.sh` 使用克隆中的本地文件
+- 但脚本的内部 curl 命令已由 setup-fork.sh 修改为指向您的分支
+- 这种差异意味着您实际上没有测试 curl URL
+- 通过 curl 测试确保脚本从您的分支 GitHub URL 下载
+- ⏱️ **重要：** GitHub 需要 10-30 秒识别新推送的文件。测试前请等待！
 
-**What if local bash worked?**
+**如果本地 bash 有效会怎样？**
 
-You'd be testing local files only, not the actual GitHub URLs that users will download. This means broken curl links wouldn't be caught during testing.
+您只会测试本地文件，而不是用户将下载的实际 GitHub URL。这意味着损坏的 curl 链接在测试期间不会被发现。
 
-### What if my PR has conflicts?
+### 如果我的 PR 有冲突怎么办？
 
 ```bash
-# Sync with upstream main repository
+# 与上游主仓库同步
 git fetch upstream
 git rebase upstream/main
 
-# Resolve conflicts in your editor
+# 在编辑器中解决冲突
 git add .
 git rebase --continue
 git push -f origin your-branch
 ```
 
-### How do I keep my fork updated?
+### 如何保持我的分支更新？
 
-Two ways:
+两种方式：
 
-**Option 1: Run setup script again**
+**选项 1：再次运行设置脚本**
 
 ```bash
 bash docs/contribution/setup-fork.sh --full
 ```
 
-**Option 2: Manual sync**
+**选项 2：手动同步**
 
 ```bash
 git fetch upstream
@@ -590,67 +592,67 @@ git rebase upstream/main
 git push -f origin main
 ```
 
-### Where do I ask questions?
+### 我在哪里提问？
 
-- **GitHub Issues**: For bugs and feature requests
-- **GitHub Discussions**: For general questions and ideas
-- **Discord**: Community-scripts server for real-time chat
-
----
-
-## 🎓 Learning Resources
-
-### For First-Time Contributors
-
-1. Read: [docs/README.md](../README.md) - Documentation overview
-2. Read: [CONTRIBUTING.md](CONTRIBUTING.md) - Essential coding standards
-3. Choose your path:
-   - Containers → [docs/ct/DETAILED_GUIDE.md](../ct/DETAILED_GUIDE.md)
-   - Installation → [docs/install/DETAILED_GUIDE.md](../install/DETAILED_GUIDE.md)
-4. Study existing scripts in same category
-5. Create your contribution
-
-### For Experienced Developers
-
-1. Review [CONTRIBUTING.md](CONTRIBUTING.md) - Coding standards
-2. Review [CODE_AUDIT.md](CODE_AUDIT.md) - Audit checklist
-3. Check templates in `/docs/contribution/templates_*/`
-4. Use AI assistants with [AI.md](AI.md) for code generation
-5. Submit PR with confidence
-
-### For Using AI Assistants
-
-See "Using AI Assistants" section above for:
-
-- How to structure prompts
-- What information to provide
-- How to validate AI output
+- **GitHub Issues**：用于错误和功能请求
+- **GitHub Discussions**：用于一般问题和想法
+- **Discord**：Community-scripts 服务器用于实时聊天
 
 ---
 
-## 🚀 Ready to Contribute?
+## 🎓 学习资源
 
-1. **Fork** the repository
-2. **Clone** your fork and **setup** with `bash docs/contribution/setup-fork.sh --full`
-3. **Choose** your contribution type (container, installation, tools, etc.)
-4. **Read** the appropriate detailed guide
-5. **Create** your feature branch
-6. **Develop** and **test** your changes
-7. **Commit** with clear messages
-8. **Push** to your fork
-9. **Create** Pull Request
+### 对于首次贡献者
+
+1. 阅读：[docs/README.md](../README.md) - 文档概述
+2. 阅读：[CONTRIBUTING.md](CONTRIBUTING.md) - 基本编码标准
+3. 选择您的路径：
+   - 容器 → [docs/ct/DETAILED_GUIDE.md](../ct/DETAILED_GUIDE.md)
+   - 安装 → [docs/install/DETAILED_GUIDE.md](../install/DETAILED_GUIDE.md)
+4. 研究同类别中的现有脚本
+5. 创建您的贡献
+
+### 对于有经验的开发者
+
+1. 审查 [CONTRIBUTING.md](CONTRIBUTING.md) - 编码标准
+2. 审查 [CODE_AUDIT.md](CODE_AUDIT.md) - 审计清单
+3. 检查 `/docs/contribution/templates_*/` 中的模板
+4. 使用 AI 助手和 [AI.md](AI.md) 进行代码生成
+5. 自信地提交 PR
+
+### 对于使用 AI 助手
+
+查看上面的"使用 AI 助手"部分了解：
+
+- 如何构建提示
+- 提供什么信息
+- 如何验证 AI 输出
 
 ---
 
-## 📞 Contact & Support
+## 🚀 准备好贡献了吗？
 
-- **GitHub**: [community-scripts/ProxmoxVE](https://github.com/community-scripts/ProxmoxVE)
-- **Issues**: [GitHub Issues](https://github.com/community-scripts/ProxmoxVE/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/community-scripts/ProxmoxVE/discussions)
-- **Discord**: [Join Server](https://discord.gg/UHrpNWGwkH)
+1. **分叉**仓库
+2. **克隆**您的分支并使用 `bash docs/contribution/setup-fork.sh --full` **设置**
+3. **选择**您的贡献类型（容器、安装、工具等）
+4. **阅读**适当的详细指南
+5. **创建**您的功能分支
+6. **开发**和**测试**您的更改
+7. **提交**清晰的消息
+8. **推送**到您的分支
+9. **创建**拉取请求
 
 ---
 
-**Thank you for contributing to ProxmoxVE!** 🙏
+## 📞 联系和支持
 
-Your efforts help make Proxmox VE automation accessible to everyone. Happy coding! 🚀
+- **GitHub**：[community-scripts/ProxmoxVE](https://github.com/community-scripts/ProxmoxVE)
+- **Issues**：[GitHub Issues](https://github.com/community-scripts/ProxmoxVE/issues)
+- **Discussions**：[GitHub Discussions](https://github.com/community-scripts/ProxmoxVE/discussions)
+- **Discord**：[加入服务器](https://discord.gg/UHrpNWGwkH)
+
+---
+
+**感谢您为 ProxmoxVE 做贡献！** 🙏
+
+您的努力帮助使 Proxmox VE 自动化对每个人都可访问。祝编码愉快！🚀

@@ -1,31 +1,31 @@
-# alpine-tools.func Functions Reference
+# alpine-tools.func 函数参考
 
-Alpine-specific tool installation functions.
+Alpine 特定的工具安装函数。
 
-## Core Functions
+## 核心函数
 
 ### apk_update()
-Update Alpine package lists.
+更新 Alpine 包列表。
 
 ### apk_add(PACKAGES)
-Install Alpine packages.
+安装 Alpine 包。
 
 ### apk_del(PACKAGES)
-Remove Alpine packages.
+删除 Alpine 包。
 
 ### add_community_repo()
-Enable Alpine community repository.
+启用 Alpine community 仓库。
 
 ### add_testing_repo()
-Enable Alpine testing repository.
+启用 Alpine testing 仓库。
 
-### Alpine Tool Functions
+### Alpine 工具函数
 - `setup_nodejs()` - Alpine Node.js
 - `setup_php()` - Alpine PHP
 - `setup_mariadb()` - Alpine MariaDB
 - `setup_postgresql()` - Alpine PostgreSQL
-- (+ more Alpine-specific setups)
+- （+ 更多 Alpine 特定设置）
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

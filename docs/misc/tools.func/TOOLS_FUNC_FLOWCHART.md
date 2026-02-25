@@ -1,6 +1,6 @@
-# tools.func Flowchart
+# tools.func 流程图
 
-## Main Package Installation Flow
+## 主要软件包安装流程
 
 ```
 ┌──────────────────────────────────┐

@@ -51,13 +51,13 @@ EOF
 # OS DETECTION
 # ==============================================================================
 if [[ -f "/etc/alpine-release" ]]; then
-  msg_error "Alpine is not supported for ${APP}. Use Debian/Ubuntu."
+  msg_error "Alpine 不支持 ${APP}。请使用 Debian/Ubuntu。"
   exit 1
 elif [[ -f "/etc/debian_version" ]]; then
   OS="Debian"
   SERVICE_PATH="/etc/systemd/system/jellystat.service"
 else
-  echo -e "${CROSS} Unsupported OS detected. Exiting."
+  echo -e "${CROSS} 检测到不支持的操作系统。正在退出。"
   exit 1
 fi
 
@@ -65,29 +65,29 @@ fi
 # UNINSTALL
 # ==============================================================================
 function uninstall() {
-  msg_info "Uninstalling ${APP}"
+  msg_info "正在卸载 ${APP}"
   systemctl disable --now jellystat.service &>/dev/null || true
   rm -f "$SERVICE_PATH"
   rm -rf "$INSTALL_PATH"
   rm -f "/usr/local/bin/update_jellystat"
   rm -f "$HOME/.jellystat"
-  msg_ok "${APP} has been uninstalled"
+  msg_ok "${APP} 已卸载"
 
   # Ask about PostgreSQL database removal
   echo ""
-  echo -n "${TAB}Also remove PostgreSQL database 'jellystat'? (y/N): "
+  echo -n "${TAB}同时移除 PostgreSQL 数据库 'jellystat'？(y/N): "
   read -r db_prompt
   if [[ "${db_prompt,,}" =~ ^(y|yes)$ ]]; then
     if command -v psql &>/dev/null; then
-      msg_info "Removing PostgreSQL database and user"
+      msg_info "正在移除 PostgreSQL 数据库和用户"
       $STD sudo -u postgres psql -c "DROP DATABASE IF EXISTS jellystat;" &>/dev/null || true
       $STD sudo -u postgres psql -c "DROP USER IF EXISTS jellystat;" &>/dev/null || true
-      msg_ok "Removed PostgreSQL database 'jellystat' and user 'jellystat'"
+      msg_ok "已移除 PostgreSQL 数据库 'jellystat' 和用户 'jellystat'"
     else
-      msg_warn "PostgreSQL not found - database may have been removed already"
+      msg_warn "未找到 PostgreSQL - 数据库可能已被移除"
     fi
   else
-    msg_warn "PostgreSQL database was NOT removed. Remove manually if needed:"
+    msg_warn "PostgreSQL 数据库未移除。如需手动移除："
     echo -e "${TAB}  sudo -u postgres psql -c \"DROP DATABASE jellystat;\""
     echo -e "${TAB}  sudo -u postgres psql -c \"DROP USER jellystat;\""
   fi
@@ -98,34 +98,34 @@ function uninstall() {
 # ==============================================================================
 function update() {
   if check_for_gh_release "jellystat" "CyferShepard/Jellystat"; then
-    msg_info "Stopping service"
+    msg_info "正在停止服务"
     systemctl stop jellystat.service &>/dev/null || true
-    msg_ok "Stopped service"
+    msg_ok "已停止服务"
 
-    msg_info "Backing up configuration"
+    msg_info "正在备份配置"
     cp "$CONFIG_PATH" /tmp/jellystat.env.bak 2>/dev/null || true
-    msg_ok "Backed up configuration"
+    msg_ok "已备份配置"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "jellystat" "CyferShepard/Jellystat" "tarball" "latest" "$INSTALL_PATH"
 
-    msg_info "Restoring configuration"
+    msg_info "正在恢复配置"
     cp /tmp/jellystat.env.bak "$CONFIG_PATH" 2>/dev/null || true
     rm -f /tmp/jellystat.env.bak
-    msg_ok "Restored configuration"
+    msg_ok "已恢复配置"
 
-    msg_info "Installing dependencies"
+    msg_info "正在安装依赖项"
     cd "$INSTALL_PATH"
     $STD npm install
-    msg_ok "Installed dependencies"
+    msg_ok "已安装依赖项"
 
-    msg_info "Building ${APP}"
+    msg_info "正在构建 ${APP}"
     $STD npm run build
-    msg_ok "Built ${APP}"
+    msg_ok "已构建 ${APP}"
 
-    msg_info "Starting service"
+    msg_info "正在启动服务"
     systemctl start jellystat
-    msg_ok "Started service"
-    msg_ok "Updated successfully"
+    msg_ok "已启动服务"
+    msg_ok "更新成功"
     exit
   fi
 }
@@ -136,14 +136,14 @@ function update() {
 function install() {
   # Setup Node.js (only installs if not present or different version)
   if command -v node &>/dev/null; then
-    msg_ok "Node.js already installed ($(node -v))"
+    msg_ok "Node.js 已安装 ($(node -v))"
   else
     NODE_VERSION="22" setup_nodejs
   fi
 
   # Setup PostgreSQL (only installs if not present)
   if command -v psql &>/dev/null; then
-    msg_ok "PostgreSQL already installed"
+    msg_ok "PostgreSQL 已安装"
   else
     PG_VERSION="17" setup_postgresql
   fi
@@ -153,12 +153,12 @@ function install() {
   local DB_USER="jellystat"
   local DB_PASS
 
-  msg_info "Setting up PostgreSQL database"
+  msg_info "正在设置 PostgreSQL 数据库"
 
   # Check if database already exists
   if sudo -u postgres psql -lqt 2>/dev/null | cut -d \| -f 1 | grep -qw "$DB_NAME"; then
-    msg_warn "Database '${DB_NAME}' already exists - skipping creation"
-    echo -n "${TAB}Enter existing database password for '${DB_USER}': "
+    msg_warn "数据库 '${DB_NAME}' 已存在 - 跳过创建"
+    echo -n "${TAB}输入 '${DB_USER}' 的现有数据库密码: "
     read -rs DB_PASS
     echo ""
   else
@@ -167,25 +167,25 @@ function install() {
 
     # Check if user exists, create if not
     if sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='${DB_USER}'" 2>/dev/null | grep -q 1; then
-      msg_info "User '${DB_USER}' exists, updating password"
+      msg_info "用户 '${DB_USER}' 已存在，正在更新密码"
       $STD sudo -u postgres psql -c "ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASS}';" || {
-        msg_error "Failed to update PostgreSQL user"
+        msg_error "更新 PostgreSQL 用户失败"
         return 1
       }
     else
       $STD sudo -u postgres psql -c "CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASS}';" || {
-        msg_error "Failed to create PostgreSQL user"
+        msg_error "创建 PostgreSQL 用户失败"
         return 1
       }
     fi
 
     # Create database (use template0 for UTF8 encoding compatibility)
     $STD sudo -u postgres psql -c "CREATE DATABASE ${DB_NAME} WITH OWNER ${DB_USER} ENCODING 'UTF8' LC_COLLATE='C' LC_CTYPE='C' TEMPLATE template0;" || {
-      msg_error "Failed to create PostgreSQL database"
+      msg_error "创建 PostgreSQL 数据库失败"
       return 1
     }
     $STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};" || {
-      msg_error "Failed to grant privileges"
+      msg_error "授予权限失败"
       return 1
     }
 
@@ -198,17 +198,17 @@ function install() {
     if [[ -n "$PG_HBA" && -f "$PG_HBA" ]]; then
       # Check if md5/scram-sha-256 auth is already configured for local connections
       if ! grep -qE "^host\s+${DB_NAME}\s+${DB_USER}\s+127.0.0.1" "$PG_HBA"; then
-        msg_info "Configuring PostgreSQL authentication"
+        msg_info "正在配置 PostgreSQL 身份验证"
         # Add password auth for jellystat user on localhost (before the default rules)
         sed -i "/^# IPv4 local connections:/a host    ${DB_NAME}    ${DB_USER}    127.0.0.1/32    scram-sha-256" "$PG_HBA"
         sed -i "/^# IPv4 local connections:/a host    ${DB_NAME}    ${DB_USER}    ::1/128         scram-sha-256" "$PG_HBA"
         # Reload PostgreSQL to apply changes
         systemctl reload postgresql
-        msg_ok "Configured PostgreSQL authentication"
+        msg_ok "已配置 PostgreSQL 身份验证"
       fi
     fi
 
-    msg_ok "Created PostgreSQL database '${DB_NAME}'"
+    msg_ok "已创建 PostgreSQL 数据库 '${DB_NAME}'"
   fi
 
   # Generate JWT Secret
@@ -219,16 +219,16 @@ function install() {
   rm -f "$HOME/.jellystat"
   fetch_and_deploy_gh_release "jellystat" "CyferShepard/Jellystat" "tarball" "latest" "$INSTALL_PATH"
 
-  msg_info "Installing dependencies"
+  msg_info "正在安装依赖项"
   cd "$INSTALL_PATH"
   $STD npm install
-  msg_ok "Installed dependencies"
+  msg_ok "已安装依赖项"
 
-  msg_info "Building ${APP}"
+  msg_info "正在构建 ${APP}"
   $STD npm run build
-  msg_ok "Built ${APP}"
+  msg_ok "已构建 ${APP}"
 
-  msg_info "Creating configuration"
+  msg_info "正在创建配置"
   cat <<EOF >"$CONFIG_PATH"
 # Jellystat Configuration
 # Database
@@ -261,9 +261,9 @@ TZ=$(cat /etc/timezone 2>/dev/null || echo "UTC")
 REJECT_SELF_SIGNED_CERTIFICATES=true
 EOF
   chmod 600 "$CONFIG_PATH"
-  msg_ok "Created configuration"
+  msg_ok "已创建配置"
 
-  msg_info "Creating service"
+  msg_info "正在创建服务"
   cat <<EOF >"$SERVICE_PATH"
 [Unit]
 Description=Jellystat - Statistics for Jellyfin
@@ -282,37 +282,37 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
   systemctl enable --now jellystat &>/dev/null
-  msg_ok "Created and started service"
+  msg_ok "已创建并启动服务"
 
   # Create update script (simple wrapper that calls this addon with type=update)
-  msg_info "Creating update script"
+  msg_info "正在创建更新脚本"
   cat <<'UPDATEEOF' >/usr/local/bin/update_jellystat
 #!/usr/bin/env bash
 # Jellystat Update Script
 type=update bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/addon/jellystat.sh)"
 UPDATEEOF
   chmod +x /usr/local/bin/update_jellystat
-  msg_ok "Created update script (/usr/local/bin/update_jellystat)"
+  msg_ok "已创建更新脚本 (/usr/local/bin/update_jellystat)"
 
   # Save credentials
   local CREDS_FILE="/root/jellystat.creds"
   cat <<EOF >"$CREDS_FILE"
-Jellystat Credentials
+Jellystat 凭据
 =====================
-Database User: ${DB_USER}
-Database Password: ${DB_PASS}
-Database Name: ${DB_NAME}
-JWT Secret: ${JWT_SECRET}
+数据库用户: ${DB_USER}
+数据库密码: ${DB_PASS}
+数据库名称: ${DB_NAME}
+JWT 密钥: ${JWT_SECRET}
 
 Web UI: http://${LOCAL_IP}:${DEFAULT_PORT}
 EOF
   chmod 600 "$CREDS_FILE"
 
   echo ""
-  msg_ok "${APP} is reachable at: ${BL}http://${LOCAL_IP}:${DEFAULT_PORT}${CL}"
-  msg_ok "Credentials saved to: ${BL}${CREDS_FILE}${CL}"
+  msg_ok "${APP} 可通过以下地址访问: ${BL}http://${LOCAL_IP}:${DEFAULT_PORT}${CL}"
+  msg_ok "凭据已保存到: ${BL}${CREDS_FILE}${CL}"
   echo ""
-  msg_warn "On first access, you'll need to configure your Jellyfin server connection."
+  msg_warn "首次访问时，您需要配置 Jellyfin 服务器连接。"
 }
 
 # ==============================================================================
@@ -325,7 +325,7 @@ if [[ "${type:-}" == "update" ]]; then
   if [[ -d "$INSTALL_PATH" && -f "$INSTALL_PATH/package.json" ]]; then
     update
   else
-    msg_error "${APP} is not installed. Nothing to update."
+    msg_error "${APP} 未安装。无需更新。"
     exit 1
   fi
   exit 0
@@ -336,41 +336,41 @@ get_lxc_ip
 
 # Check if already installed
 if [[ -d "$INSTALL_PATH" && -f "$INSTALL_PATH/package.json" ]]; then
-  msg_warn "${APP} is already installed."
+  msg_warn "${APP} 已安装。"
   echo ""
 
-  echo -n "${TAB}Uninstall ${APP}? (y/N): "
+  echo -n "${TAB}卸载 ${APP}? (y/N): "
   read -r uninstall_prompt
   if [[ "${uninstall_prompt,,}" =~ ^(y|yes)$ ]]; then
     uninstall
     exit 0
   fi
 
-  echo -n "${TAB}Update ${APP}? (y/N): "
+  echo -n "${TAB}更新 ${APP}? (y/N): "
   read -r update_prompt
   if [[ "${update_prompt,,}" =~ ^(y|yes)$ ]]; then
     update
     exit 0
   fi
 
-  msg_warn "No action selected. Exiting."
+  msg_warn "未选择操作。正在退出。"
   exit 0
 fi
 
 # Fresh installation
-msg_warn "${APP} is not installed."
+msg_warn "${APP} 未安装。"
 echo ""
-echo -e "${TAB}${INFO} This will install:"
+echo -e "${TAB}${INFO} 这将安装："
 echo -e "${TAB}  - Node.js 22"
 echo -e "${TAB}  - PostgreSQL 17"
 echo -e "${TAB}  - Jellystat"
 echo ""
 
-echo -n "${TAB}Install ${APP}? (y/N): "
+echo -n "${TAB}安装 ${APP}? (y/N): "
 read -r install_prompt
 if [[ "${install_prompt,,}" =~ ^(y|yes)$ ]]; then
   install
 else
-  msg_warn "Installation cancelled. Exiting."
+  msg_warn "安装已取消。正在退出。"
   exit 0
 fi

@@ -1,184 +1,184 @@
-# Misc Documentation
+# Misc 文档
 
-This directory contains comprehensive documentation for all function libraries and components of the Proxmox Community Scripts project. Each section is organized as a dedicated subdirectory with detailed references, examples, and integration guides.
+本目录包含 Proxmox 社区脚本项目所有函数库和组件的综合文档。每个部分都组织为专用子目录，包含详细的参考、示例和集成指南。
 
 ---
 
-## 🏗️ **Core Function Libraries**
+## 🏗️ **核心函数库**
 
 ### 📁 [build.func/](./build.func/)
-**Core LXC Container Orchestration** - Main orchestrator for Proxmox LXC container creation
+**核心 LXC 容器编排** - Proxmox LXC 容器创建的主要编排器
 
-**Contents:**
-- BUILD_FUNC_FLOWCHART.md - Visual execution flows and decision trees
-- BUILD_FUNC_ARCHITECTURE.md - System architecture and design
-- BUILD_FUNC_ENVIRONMENT_VARIABLES.md - Complete environment variable reference
-- BUILD_FUNC_FUNCTIONS_REFERENCE.md - Alphabetical function reference
-- BUILD_FUNC_EXECUTION_FLOWS.md - Detailed execution flows
-- BUILD_FUNC_USAGE_EXAMPLES.md - Practical usage examples
-- README.md - Overview and quick reference
+**内容：**
+- BUILD_FUNC_FLOWCHART.md - 可视化执行流程和决策树
+- BUILD_FUNC_ARCHITECTURE.md - 系统架构和设计
+- BUILD_FUNC_ENVIRONMENT_VARIABLES.md - 完整的环境变量参考
+- BUILD_FUNC_FUNCTIONS_REFERENCE.md - 按字母顺序排列的函数参考
+- BUILD_FUNC_EXECUTION_FLOWS.md - 详细的执行流程
+- BUILD_FUNC_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `variables()`, `start()`, `build_container()`, `build_defaults()`, `advanced_settings()`
+**关键函数**：`variables()`、`start()`、`build_container()`、`build_defaults()`、`advanced_settings()`
 
 ---
 
 ### 📁 [core.func/](./core.func/)
-**System Utilities & Foundation** - Essential utility functions and system checks
+**系统实用程序和基础** - 基本实用函数和系统检查
 
-**Contents:**
-- CORE_FLOWCHART.md - Visual execution flows
-- CORE_FUNCTIONS_REFERENCE.md - Complete function reference
-- CORE_INTEGRATION.md - Integration points
-- CORE_USAGE_EXAMPLES.md - Practical examples
-- README.md - Overview and quick reference
+**内容：**
+- CORE_FLOWCHART.md - 可视化执行流程
+- CORE_FUNCTIONS_REFERENCE.md - 完整的函数参考
+- CORE_INTEGRATION.md - 集成点
+- CORE_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `color()`, `msg_info()`, `msg_ok()`, `msg_error()`, `root_check()`, `pve_check()`, `parse_dev_mode()`
+**关键函数**：`color()`、`msg_info()`、`msg_ok()`、`msg_error()`、`root_check()`、`pve_check()`、`parse_dev_mode()`
 
 ---
 
 ### 📁 [error_handler.func/](./error_handler.func/)
-**Error Handling & Signal Management** - Comprehensive error handling and signal trapping
+**错误处理和信号管理** - 全面的错误处理和信号捕获
 
-**Contents:**
-- ERROR_HANDLER_FLOWCHART.md - Visual error handling flows
-- ERROR_HANDLER_FUNCTIONS_REFERENCE.md - Function reference
-- ERROR_HANDLER_INTEGRATION.md - Integration with other components
-- ERROR_HANDLER_USAGE_EXAMPLES.md - Practical examples
-- README.md - Overview and quick reference
+**内容：**
+- ERROR_HANDLER_FLOWCHART.md - 可视化错误处理流程
+- ERROR_HANDLER_FUNCTIONS_REFERENCE.md - 函数参考
+- ERROR_HANDLER_INTEGRATION.md - 与其他组件的集成
+- ERROR_HANDLER_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `catch_errors()`, `error_handler()`, `explain_exit_code()`, `signal_handler()`
+**关键函数**：`catch_errors()`、`error_handler()`、`explain_exit_code()`、`signal_handler()`
 
 ---
 
 ### 📁 [api.func/](./api.func/)
-**Proxmox API Integration** - API communication and diagnostic reporting
+**Proxmox API 集成** - API 通信和诊断报告
 
-**Contents:**
-- API_FLOWCHART.md - API communication flows
-- API_FUNCTIONS_REFERENCE.md - Function reference
-- API_INTEGRATION.md - Integration points
-- API_USAGE_EXAMPLES.md - Practical examples
-- README.md - Overview and quick reference
+**内容：**
+- API_FLOWCHART.md - API 通信流程
+- API_FUNCTIONS_REFERENCE.md - 函数参考
+- API_INTEGRATION.md - 集成点
+- API_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `post_to_api()`, `post_update_to_api()`, `get_error_description()`
+**关键函数**：`post_to_api()`、`post_update_to_api()`、`get_error_description()`
 
 ---
 
-## 📦 **Installation & Setup Function Libraries**
+## 📦 **安装和设置函数库**
 
 ### 📁 [install.func/](./install.func/)
-**Container Installation Workflow** - Installation orchestration for container-internal setup
+**容器安装工作流** - 容器内部设置的安装编排
 
-**Contents:**
-- INSTALL_FUNC_FLOWCHART.md - Installation workflow diagrams
-- INSTALL_FUNC_FUNCTIONS_REFERENCE.md - Complete function reference
-- INSTALL_FUNC_INTEGRATION.md - Integration with build and tools
-- INSTALL_FUNC_USAGE_EXAMPLES.md - Practical examples
-- README.md - Overview and quick reference
+**内容：**
+- INSTALL_FUNC_FLOWCHART.md - 安装工作流图
+- INSTALL_FUNC_FUNCTIONS_REFERENCE.md - 完整的函数参考
+- INSTALL_FUNC_INTEGRATION.md - 与 build 和 tools 的集成
+- INSTALL_FUNC_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `setting_up_container()`, `network_check()`, `update_os()`, `motd_ssh()`, `cleanup_lxc()`
+**关键函数**：`setting_up_container()`、`network_check()`、`update_os()`、`motd_ssh()`、`cleanup_lxc()`
 
 ---
 
 ### 📁 [tools.func/](./tools.func/)
-**Package & Tool Installation** - Robust package management and 30+ tool installation functions
+**包和工具安装** - 强大的包管理和 30+ 工具安装函数
 
-**Contents:**
-- TOOLS_FUNC_FLOWCHART.md - Package management flows
-- TOOLS_FUNC_FUNCTIONS_REFERENCE.md - 30+ function reference
-- TOOLS_FUNC_INTEGRATION.md - Integration with install workflows
-- TOOLS_FUNC_USAGE_EXAMPLES.md - Practical examples
-- TOOLS_FUNC_ENVIRONMENT_VARIABLES.md - Configuration reference
-- README.md - Overview and quick reference
+**内容：**
+- TOOLS_FUNC_FLOWCHART.md - 包管理流程
+- TOOLS_FUNC_FUNCTIONS_REFERENCE.md - 30+ 函数参考
+- TOOLS_FUNC_INTEGRATION.md - 与安装工作流的集成
+- TOOLS_FUNC_USAGE_EXAMPLES.md - 实用示例
+- TOOLS_FUNC_ENVIRONMENT_VARIABLES.md - 配置参考
+- README.md - 概述和快速参考
 
-**Key Functions**: `setup_nodejs()`, `setup_php()`, `setup_mariadb()`, `setup_docker()`, `setup_deb822_repo()`, `pkg_install()`, `pkg_update()`
+**关键函数**：`setup_nodejs()`、`setup_php()`、`setup_mariadb()`、`setup_docker()`、`setup_deb822_repo()`、`pkg_install()`、`pkg_update()`
 
 ---
 
 ### 📁 [alpine-install.func/](./alpine-install.func/)
-**Alpine Container Setup** - Alpine Linux-specific installation functions
+**Alpine 容器设置** - Alpine Linux 特定的安装函数
 
-**Contents:**
-- ALPINE_INSTALL_FUNC_FLOWCHART.md - Alpine setup flows
-- ALPINE_INSTALL_FUNC_FUNCTIONS_REFERENCE.md - Function reference
-- ALPINE_INSTALL_FUNC_INTEGRATION.md - Integration points
-- ALPINE_INSTALL_FUNC_USAGE_EXAMPLES.md - Practical examples
-- README.md - Overview and quick reference
+**内容：**
+- ALPINE_INSTALL_FUNC_FLOWCHART.md - Alpine 设置流程
+- ALPINE_INSTALL_FUNC_FUNCTIONS_REFERENCE.md - 函数参考
+- ALPINE_INSTALL_FUNC_INTEGRATION.md - 集成点
+- ALPINE_INSTALL_FUNC_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `update_os()` (apk version), `verb_ip6()`, `motd_ssh()` (Alpine), `customize()`
+**关键函数**：`update_os()`（apk 版本）、`verb_ip6()`、`motd_ssh()`（Alpine）、`customize()`
 
 ---
 
 ### 📁 [alpine-tools.func/](./alpine-tools.func/)
-**Alpine Tool Installation** - Alpine-specific package and tool installation
+**Alpine 工具安装** - Alpine 特定的包和工具安装
 
-**Contents:**
-- ALPINE_TOOLS_FUNC_FLOWCHART.md - Alpine package flows
-- ALPINE_TOOLS_FUNC_FUNCTIONS_REFERENCE.md - Function reference
-- ALPINE_TOOLS_FUNC_INTEGRATION.md - Integration with Alpine workflows
-- ALPINE_TOOLS_FUNC_USAGE_EXAMPLES.md - Practical examples
-- README.md - Overview and quick reference
+**内容：**
+- ALPINE_TOOLS_FUNC_FLOWCHART.md - Alpine 包流程
+- ALPINE_TOOLS_FUNC_FUNCTIONS_REFERENCE.md - 函数参考
+- ALPINE_TOOLS_FUNC_INTEGRATION.md - 与 Alpine 工作流的集成
+- ALPINE_TOOLS_FUNC_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `apk_add()`, `apk_update()`, `apk_del()`, `add_community_repo()`, Alpine tool setup functions
+**关键函数**：`apk_add()`、`apk_update()`、`apk_del()`、`add_community_repo()`、Alpine 工具设置函数
 
 ---
 
 ### 📁 [cloud-init.func/](./cloud-init.func/)
-**VM Cloud-Init Configuration** - Cloud-init and VM provisioning functions
+**VM Cloud-Init 配置** - Cloud-init 和 VM 配置函数
 
-**Contents:**
-- CLOUD_INIT_FUNC_FLOWCHART.md - Cloud-init flows
-- CLOUD_INIT_FUNC_FUNCTIONS_REFERENCE.md - Function reference
-- CLOUD_INIT_FUNC_INTEGRATION.md - Integration points
-- CLOUD_INIT_FUNC_USAGE_EXAMPLES.md - Practical examples
-- README.md - Overview and quick reference
+**内容：**
+- CLOUD_INIT_FUNC_FLOWCHART.md - Cloud-init 流程
+- CLOUD_INIT_FUNC_FUNCTIONS_REFERENCE.md - 函数参考
+- CLOUD_INIT_FUNC_INTEGRATION.md - 集成点
+- CLOUD_INIT_FUNC_USAGE_EXAMPLES.md - 实用示例
+- README.md - 概述和快速参考
 
-**Key Functions**: `generate_cloud_init()`, `generate_user_data()`, `setup_ssh_keys()`, `setup_static_ip()`
+**关键函数**：`generate_cloud_init()`、`generate_user_data()`、`setup_ssh_keys()`、`setup_static_ip()`
 
 ---
 
-## 🔗 **Function Library Relationships**
+## 🔗 **函数库关系**
 
 ```
 ┌─────────────────────────────────────────────┐
-│       Container Creation Flow               │
+│       容器创建流程                           │
 ├─────────────────────────────────────────────┤
 │                                             │
 │  ct/AppName.sh                              │
-│      ↓ (sources)                            │
+│      ↓ (引用)                               │
 │  build.func                                 │
 │      ├─ variables()                         │
 │      ├─ build_container()                   │
 │      └─ advanced_settings()                 │
-│      ↓ (calls pct create with)              │
+│      ↓ (使用 pct create 调用)               │
 │  install/appname-install.sh                 │
-│      ↓ (sources)                            │
-│      ├─ core.func      (colors, messaging)  │
-│      ├─ error_handler.func (error trapping) │
-│      ├─ install.func   (setup/network)      │
-│      └─ tools.func     (packages/tools)     │
+│      ↓ (引用)                               │
+│      ├─ core.func      (颜色、消息)         │
+│      ├─ error_handler.func (错误捕获)       │
+│      ├─ install.func   (设置/网络)          │
+│      └─ tools.func     (包/工具)            │
 │                                             │
 └─────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────┐
-│       Alpine Container Flow                 │
+│       Alpine 容器流程                        │
 ├─────────────────────────────────────────────┤
 │                                             │
 │  install/appname-install.sh (Alpine)        │
-│      ↓ (sources)                            │
-│      ├─ core.func              (colors)     │
-│      ├─ error_handler.func     (errors)     │
-│      ├─ alpine-install.func    (apk setup)  │
-│      └─ alpine-tools.func      (apk tools)  │
+│      ↓ (引用)                               │
+│      ├─ core.func              (颜色)       │
+│      ├─ error_handler.func     (错误)       │
+│      ├─ alpine-install.func    (apk 设置)   │
+│      └─ alpine-tools.func      (apk 工具)   │
 │                                             │
 └─────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────┐
-│       VM Provisioning Flow                  │
+│       VM 配置流程                            │
 ├─────────────────────────────────────────────┤
 │                                             │
 │  vm/OsName-vm.sh                            │
-│      ↓ (uses)                               │
+│      ↓ (使用)                               │
 │  cloud-init.func                            │
 │      ├─ generate_cloud_init()               │
 │      ├─ setup_ssh_keys()                    │
@@ -189,95 +189,95 @@ This directory contains comprehensive documentation for all function libraries a
 
 ---
 
-## 📊 **Documentation Quick Stats**
+## 📊 **文档快速统计**
 
-| Library | Files | Functions | Status |
+| 库 | 文件 | 函数 | 状态 |
 |---------|:---:|:---:|:---:|
-| build.func | 7 | 50+ | ✅ Complete |
-| core.func | 5 | 20+ | ✅ Complete |
-| error_handler.func | 5 | 10+ | ✅ Complete |
-| api.func | 5 | 5+ | ✅ Complete |
-| install.func | 5 | 8+ | ✅ Complete |
-| tools.func | 6 | 30+ | ✅ Complete |
-| alpine-install.func | 5 | 6+ | ✅ Complete |
-| alpine-tools.func | 5 | 15+ | ✅ Complete |
-| cloud-init.func | 5 | 12+ | ✅ Complete |
+| build.func | 7 | 50+ | ✅ 完成 |
+| core.func | 5 | 20+ | ✅ 完成 |
+| error_handler.func | 5 | 10+ | ✅ 完成 |
+| api.func | 5 | 5+ | ✅ 完成 |
+| install.func | 5 | 8+ | ✅ 完成 |
+| tools.func | 6 | 30+ | ✅ 完成 |
+| alpine-install.func | 5 | 6+ | ✅ 完成 |
+| alpine-tools.func | 5 | 15+ | ✅ 完成 |
+| cloud-init.func | 5 | 12+ | ✅ 完成 |
 
-**Total**: 9 function libraries, 48 documentation files, 150+ functions
-
----
-
-## 🚀 **Getting Started**
-
-### For Container Creation Scripts
-Start with: **[build.func/](./build.func/)** → **[tools.func/](./tools.func/)** → **[install.func/](./install.func/)**
-
-### For Alpine Containers
-Start with: **[alpine-install.func/](./alpine-install.func/)** → **[alpine-tools.func/](./alpine-tools.func/)**
-
-### For VM Provisioning
-Start with: **[cloud-init.func/](./cloud-init.func/)**
-
-### For Troubleshooting
-Start with: **[error_handler.func/](./error_handler.func/)** → **[EXIT_CODES.md](../EXIT_CODES.md)**
+**总计**：9 个函数库，48 个文档文件，150+ 个函数
 
 ---
 
-## 📚 **Related Top-Level Documentation**
+## 🚀 **入门**
 
-- **[CONTRIBUTION_GUIDE.md](../CONTRIBUTION_GUIDE.md)** - How to contribute to ProxmoxVE
-- **[UPDATED_APP-ct.md](../UPDATED_APP-ct.md)** - Container script guide
-- **[UPDATED_APP-install.md](../UPDATED_APP-install.md)** - Installation script guide
-- **[DEFAULTS_SYSTEM_GUIDE.md](../DEFAULTS_SYSTEM_GUIDE.md)** - Configuration system
-- **[TECHNICAL_REFERENCE.md](../TECHNICAL_REFERENCE.md)** - Architecture reference
-- **[EXIT_CODES.md](../EXIT_CODES.md)** - Complete exit code reference
-- **[DEV_MODE.md](../DEV_MODE.md)** - Development debugging modes
-- **[CHANGELOG_MISC.md](../CHANGELOG_MISC.md)** - Change history
+### 对于容器创建脚本
+从这里开始：**[build.func/](./build.func/)** → **[tools.func/](./tools.func/)** → **[install.func/](./install.func/)**
+
+### 对于 Alpine 容器
+从这里开始：**[alpine-install.func/](./alpine-install.func/)** → **[alpine-tools.func/](./alpine-tools.func/)**
+
+### 对于 VM 配置
+从这里开始：**[cloud-init.func/](./cloud-init.func/)**
+
+### 对于故障排除
+从这里开始：**[error_handler.func/](./error_handler.func/)** → **[EXIT_CODES.md](../EXIT_CODES.md)**
 
 ---
 
-## 🔄 **Standardized Documentation Structure**
+## 📚 **相关顶级文档**
 
-Each function library follows the same documentation pattern:
+- **[CONTRIBUTION_GUIDE.md](../CONTRIBUTION_GUIDE.md)** - 如何为 ProxmoxVE 做贡献
+- **[UPDATED_APP-ct.md](../UPDATED_APP-ct.md)** - 容器脚本指南
+- **[UPDATED_APP-install.md](../UPDATED_APP-install.md)** - 安装脚本指南
+- **[DEFAULTS_SYSTEM_GUIDE.md](../DEFAULTS_SYSTEM_GUIDE.md)** - 配置系统
+- **[TECHNICAL_REFERENCE.md](../TECHNICAL_REFERENCE.md)** - 架构参考
+- **[EXIT_CODES.md](../EXIT_CODES.md)** - 完整的退出代码参考
+- **[DEV_MODE.md](../DEV_MODE.md)** - 开发调试模式
+- **[CHANGELOG_MISC.md](../CHANGELOG_MISC.md)** - 变更历史
+
+---
+
+## 🔄 **标准化文档结构**
+
+每个函数库遵循相同的文档模式：
 
 ```
 function-library/
-├── README.md                          # Quick reference & overview
-├── FUNCTION_LIBRARY_FLOWCHART.md      # Visual execution flows
-├── FUNCTION_LIBRARY_FUNCTIONS_REFERENCE.md  # Alphabetical reference
-├── FUNCTION_LIBRARY_INTEGRATION.md    # Integration points
-├── FUNCTION_LIBRARY_USAGE_EXAMPLES.md # Practical examples
-└── [FUNCTION_LIBRARY_ENVIRONMENT_VARIABLES.md]  # (if applicable)
+├── README.md                          # 快速参考和概述
+├── FUNCTION_LIBRARY_FLOWCHART.md      # 可视化执行流程
+├── FUNCTION_LIBRARY_FUNCTIONS_REFERENCE.md  # 按字母顺序排列的参考
+├── FUNCTION_LIBRARY_INTEGRATION.md    # 集成点
+├── FUNCTION_LIBRARY_USAGE_EXAMPLES.md # 实用示例
+└── [FUNCTION_LIBRARY_ENVIRONMENT_VARIABLES.md]  # (如果适用)
 ```
 
-**Advantages**:
-- ✅ Consistent navigation across all libraries
-- ✅ Quick reference sections in each README
-- ✅ Visual flowcharts for understanding
-- ✅ Complete function references
-- ✅ Real-world usage examples
-- ✅ Integration guides for connecting libraries
+**优势**：
+- ✅ 所有库之间的一致导航
+- ✅ 每个 README 中的快速参考部分
+- ✅ 用于理解的可视化流程图
+- ✅ 完整的函数参考
+- ✅ 真实世界的使用示例
+- ✅ 连接库的集成指南
 
 ---
 
-## 📝 **Documentation Standards**
+## 📝 **文档标准**
 
-All documentation follows these standards:
+所有文档遵循这些标准：
 
-1. **README.md** - Quick overview, key features, quick reference
-2. **FLOWCHART.md** - ASCII flowcharts and visual diagrams
-3. **FUNCTIONS_REFERENCE.md** - Every function with full details
-4. **INTEGRATION.md** - How this library connects to others
-5. **USAGE_EXAMPLES.md** - Copy-paste ready examples
-6. **ENVIRONMENT_VARIABLES.md** - (if applicable) Configuration reference
-
----
-
-## ✅ **Last Updated**: December 2025
-**Maintainers**: community-scripts team
-**License**: MIT
-**Status**: All 9 libraries fully documented and standardized
+1. **README.md** - 快速概述、关键功能、快速参考
+2. **FLOWCHART.md** - ASCII 流程图和可视化图表
+3. **FUNCTIONS_REFERENCE.md** - 每个函数的完整详细信息
+4. **INTEGRATION.md** - 此库如何连接到其他库
+5. **USAGE_EXAMPLES.md** - 可复制粘贴的示例
+6. **ENVIRONMENT_VARIABLES.md** - （如果适用）配置参考
 
 ---
 
-*This directory contains specialized documentation for specific components of the Proxmox Community Scripts project.*
+## ✅ **最后更新**：2025 年 12 月
+**维护者**：community-scripts 团队
+**许可证**：MIT
+**状态**：所有 9 个库已完全记录和标准化
+
+---
+
+*本目录包含 Proxmox 社区脚本项目特定组件的专门文档。*

@@ -34,10 +34,10 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "pyenv" "addon"
 
 if command -v pveversion >/dev/null 2>&1; then
-  msg_error "Can't Install on Proxmox "
+  msg_error "无法在 Proxmox 上安装 "
   exit
 fi
-msg_info "Installing pyenv"
+msg_info "正在安装 pyenv"
 apt-get install -y \
   make \
   build-essential \
@@ -69,16 +69,16 @@ set +e
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >>~/.bashrc
 echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >>~/.bashrc
 echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n eval "$(pyenv init --path)"\nfi' >>~/.bashrc
-msg_ok "Installed pyenv"
+msg_ok "已安装 pyenv"
 . ~/.bashrc
 set -e
-msg_info "Installing Python 3.11.1"
+msg_info "正在安装 Python 3.11.1"
 pyenv install 3.11.1 &>/dev/null
 pyenv global 3.11.1
-msg_ok "Installed Python 3.11.1"
-read -r -p "Would you like to install Home Assistant Beta? <y/N> " prompt
+msg_ok "已安装 Python 3.11.1"
+read -r -p "您想安装 Home Assistant Beta 吗？<y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Home Assistant Beta"
+  msg_info "正在安装 Home Assistant Beta"
   cat <<EOF >/etc/systemd/system/homeassistant.service
 [Unit]
 Description=Home Assistant
@@ -100,14 +100,14 @@ EOF
   pip3 install psycopg2-binary &>/dev/null
   pip3 install --pre homeassistant &>/dev/null
   systemctl enable homeassistant &>/dev/null
-  msg_ok "Installed Home Assistant Beta"
-  echo -e " Go to $(hostname -I | awk '{print $1}'):8123"
+  msg_ok "已安装 Home Assistant Beta"
+  echo -e " 访问 $(hostname -I | awk '{print $1}'):8123"
   hass
 fi
 
-read -r -p "Would you like to install ESPHome Beta? <y/N> " prompt
+read -r -p "您想安装 ESPHome Beta 吗？<y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing ESPHome Beta"
+  msg_info "正在安装 ESPHome Beta"
   mkdir /srv/esphome
   cd /srv/esphome
   python3 -m venv .
@@ -142,14 +142,14 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
   systemctl enable --now esphomedashboard &>/dev/null
-  msg_ok "Installed ESPHome Beta"
-  echo -e " Go to $(hostname -I | awk '{print $1}'):6052"
+  msg_ok "已安装 ESPHome Beta"
+  echo -e " 访问 $(hostname -I | awk '{print $1}'):6052"
   exec $SHELL
 fi
 
-read -r -p "Would you like to install Matter-Server (Beta)? <y/N> " prompt
+read -r -p "您想安装 Matter-Server (Beta) 吗？<y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing Matter Server"
+  msg_info "正在安装 Matter Server"
   apt-get install -y \
     libcairo2-dev \
     libjpeg62-turbo-dev \
@@ -160,8 +160,8 @@ if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
   python3 -m pip install wheel
   pip3 install --upgrade pip
   pip install python-matter-server[server]
-  msg_ok "Installed Matter Server"
-  echo -e "Start server > python -m matter_server.server"
+  msg_ok "已安装 Matter Server"
+  echo -e "启动服务器 > python -m matter_server.server"
 fi
-msg_ok "\nFinished\n"
+msg_ok "\n完成\n"
 exec $SHELL

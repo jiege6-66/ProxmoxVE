@@ -43,19 +43,19 @@ start_routines() {
     "yes" " " "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Backing up Proxmox Backup Server 3"
+    msg_info "正在备份 Proxmox Backup Server 3"
     tar czf "pbs3-etc-backup-$(date -I).tar.gz" -C "/etc" "proxmox-backup"
-    msg_ok "Backed up Proxmox Backup Server 3"
+    msg_ok "已备份 Proxmox Backup Server 3"
     ;;
-  no) msg_error "Selected no to Backup" ;;
+  no) msg_error "已选择不 Backup" ;;
   esac
 
-  # --- Debian 13 Sources ---
+  # --- Debian 13 源 ---
   CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "PBS 4 SOURCES" --menu \
     "Switch to Debian 13 (Trixie) sources for PBS 4?" 14 58 2 "yes" " " "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Switching to Debian 13 (Trixie) Sources"
+    msg_info "Switching to Debian 13 (Trixie) 源"
     rm -f /etc/apt/sources.list.d/*.list
     sed -i '/proxmox/d;/bookworm/d' /etc/apt/sources.list || true
     cat >/etc/apt/sources.list.d/debian.sources <<EOF
@@ -77,9 +77,9 @@ Suites: trixie-updates
 Components: main contrib
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
-    msg_ok "Configured Debian 13 (Trixie) Sources"
+    msg_ok "已配置 Debian 13 (Trixie) 源"
     ;;
-  no) msg_error "Selected no to Sources update" ;;
+  no) msg_error "已选择不 源 update" ;;
   esac
 
   # --- Enterprise Repo ---
@@ -88,7 +88,7 @@ EOF
     3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Adding 'pbs-enterprise' repository"
+    msg_info "正在添加 'pbs-enterprise' repository"
     cat >/etc/apt/sources.list.d/pbs-enterprise.sources <<EOF
 Types: deb
 URIs: https://enterprise.proxmox.com/debian/pbs
@@ -96,7 +96,7 @@ Suites: trixie
 Components: pbs-enterprise
 Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
 EOF
-    msg_ok "Added 'pbs-enterprise' repository"
+    msg_ok "已添加 'pbs-enterprise' repository"
     ;;
   no) msg_error "Skipped enterprise repo" ;;
   esac
@@ -107,7 +107,7 @@ EOF
     3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Adding 'pbs-no-subscription' repository"
+    msg_info "正在添加 'pbs-no-subscription' repository"
     cat >/etc/apt/sources.list.d/proxmox.sources <<EOF
 Types: deb
 URIs: http://download.proxmox.com/debian/pbs
@@ -115,7 +115,7 @@ Suites: trixie
 Components: pbs-no-subscription
 Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
 EOF
-    msg_ok "Added 'pbs-no-subscription' repository"
+    msg_ok "已添加 'pbs-no-subscription' repository"
     ;;
   no) msg_error "Skipped no-subscription repo" ;;
   esac
@@ -126,7 +126,7 @@ EOF
     3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Adding 'pbs-test' repository (disabled)"
+    msg_info "正在添加 'pbs-test' repository (disabled)"
     cat >/etc/apt/sources.list.d/pbs-test.sources <<EOF
 # Types: deb
 # URIs: http://download.proxmox.com/debian/pbs
@@ -134,7 +134,7 @@ EOF
 # Components: pbs-test
 # Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
 EOF
-    msg_ok "Added 'pbs-test' repository"
+    msg_ok "已添加 'pbs-test' repository"
     ;;
   no) msg_error "Skipped test repo" ;;
   esac
@@ -145,12 +145,12 @@ EOF
     3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Upgrading to Proxmox Backup Server 4 (Patience)"
+    msg_info "正在升级 to Proxmox Backup Server 4 (Patience)"
     apt update
     DEBIAN_FRONTEND=noninteractive apt -o Dpkg::Options::="--force-confold" dist-upgrade -y
     msg_ok "System upgraded to PBS 4"
     ;;
-  no) msg_error "Selected no to upgrade" ;;
+  no) msg_error "已选择不 upgrade" ;;
   esac
 
   # --- Reboot ---
@@ -165,7 +165,7 @@ EOF
     reboot
     ;;
   no)
-    msg_error "Selected no to Reboot (Reboot recommended)"
+    msg_error "已选择不 Reboot (Reboot recommended)"
     msg_ok "Upgrade Complete"
     ;;
   esac

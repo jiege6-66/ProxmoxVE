@@ -56,8 +56,8 @@ pve_check() {
   if [[ "$PVE_VER" =~ ^8\.([0-9]+) ]]; then
     local MINOR="${BASH_REMATCH[1]}"
     if ((MINOR < 0 || MINOR > 9)); then
-      msg_error "This version of Proxmox VE is not supported."
-      msg_error "Supported: Proxmox VE version 8.0 – 8.9"
+      msg_error "不支持此版本的 Proxmox VE。"
+      msg_error "支持的版本：Proxmox VE 8.0 – 8.9"
       exit 1
     fi
     return 0
@@ -67,28 +67,28 @@ pve_check() {
   if [[ "$PVE_VER" =~ ^9\.([0-9]+) ]]; then
     local MINOR="${BASH_REMATCH[1]}"
     if ((MINOR < 0 || MINOR > 1)); then
-      msg_error "This version of Proxmox VE is not yet supported."
-      msg_error "Supported: Proxmox VE version 9.0–9.1.x"
+      msg_error "尚不支持此版本的 Proxmox VE。"
+      msg_error "支持的版本：Proxmox VE 9.0–9.1.x"
       exit 1
     fi
     return 0
   fi
 
   # All other unsupported versions
-  msg_error "This version of Proxmox VE is not supported."
-  msg_error "Supported versions: Proxmox VE 8.0 – 8.9 or 9.0–9.1.x"
+  msg_error "不支持此版本的 Proxmox VE。"
+  msg_error "支持的版本：Proxmox VE 8.0 – 8.9 或 9.0–9.1.x"
   exit 1
 }
 
 detect_codename() {
   source /etc/os-release
   if [[ "$ID" != "debian" ]]; then
-    msg_error "Unsupported base OS: $ID (only Proxmox VE / Debian supported)."
+    msg_error "不支持的基础操作系统：$ID（仅支持 Proxmox VE / Debian）。"
     exit 1
   fi
   CODENAME="${VERSION_CODENAME:-}"
   if [[ -z "$CODENAME" ]]; then
-    msg_error "Could not detect Debian codename."
+    msg_error "无法检测 Debian 代号。"
     exit 1
   fi
   echo "$CODENAME"
@@ -105,46 +105,46 @@ get_latest_repo_pkg() {
 install() {
   header_info
   while true; do
-    read -p "Are you sure you want to install NetData on Proxmox VE host. Proceed(y/n)? " yn
+    read -p "您确定要在 Proxmox VE 主机上安装 NetData 吗？是否继续(y/n)? " yn
     case $yn in
     [Yy]*) break ;;
     [Nn]*) exit ;;
-    *) echo "Please answer yes or no." ;;
+    *) echo "请回答 yes 或 no。" ;;
     esac
   done
 
-  read -r -p "Verbose mode? <y/N> " prompt
+  read -r -p "详细模式？<y/N> " prompt
   [[ ${prompt,,} =~ ^(y|yes)$ ]] && STD="" || STD="silent"
 
   CODENAME=$(detect_codename)
   REPO_URL="https://repo.netdata.cloud/repos/repoconfig/debian/${CODENAME}/"
 
-  msg_info "Setting up repository"
+  msg_info "正在设置仓库"
   $STD apt-get install -y debian-keyring
   PKG=$(get_latest_repo_pkg "$REPO_URL")
   if [[ -z "$PKG" ]]; then
-    msg_error "Could not find netdata-repo package for Debian $CODENAME"
+    msg_error "无法找到 Debian $CODENAME 的 netdata-repo 包"
     exit 1
   fi
   curl -fsSL "${REPO_URL}${PKG}" -o "$PKG"
   $STD dpkg -i "$PKG"
   rm -f "$PKG"
-  msg_ok "Set up repository"
+  msg_ok "已设置仓库"
 
-  msg_info "Installing Netdata"
+  msg_info "正在安装 Netdata"
   $STD apt-get update
   $STD apt-get install -y netdata
-  msg_ok "Installed Netdata"
-  msg_ok "Completed successfully!\n"
-  echo -e "\n Netdata should be reachable at${BL} http://$(hostname -I | awk '{print $1}'):19999 ${CL}\n"
+  msg_ok "已安装 Netdata"
+  msg_ok "成功完成！\n"
+  echo -e "\n Netdata 应该可以通过以下地址访问${BL} http://$(hostname -I | awk '{print $1}'):19999 ${CL}\n"
 }
 
 uninstall() {
   header_info
-  read -r -p "Verbose mode? <y/N> " prompt
+  read -r -p "详细模式？<y/N> " prompt
   [[ ${prompt,,} =~ ^(y|yes)$ ]] && STD="" || STD="silent"
 
-  msg_info "Uninstalling Netdata"
+  msg_info "正在卸载 Netdata"
   systemctl stop netdata || true
   rm -rf /var/log/netdata /var/lib/netdata /var/cache/netdata /etc/netdata/go.d
   rm -rf /etc/apt/trusted.gpg.d/netdata-archive-keyring.gpg /etc/apt/sources.list.d/netdata.list
@@ -152,24 +152,24 @@ uninstall() {
   systemctl daemon-reload
   $STD apt autoremove -y
   $STD userdel netdata || true
-  msg_ok "Uninstalled Netdata"
-  msg_ok "Completed successfully!\n"
+  msg_ok "已卸载 Netdata"
+  msg_ok "成功完成！\n"
 }
 
 header_info
 pve_check
 
-OPTIONS=(Install "Install NetData on Proxmox VE"
-  Uninstall "Uninstall NetData from Proxmox VE")
+OPTIONS=(Install "在 Proxmox VE 上安装 NetData"
+  Uninstall "从 Proxmox VE 卸载 NetData")
 
 CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "NetData" \
-  --menu "Select an option:" 10 58 2 "${OPTIONS[@]}" 3>&1 1>&2 2>&3)
+  --menu "选择一个选项:" 10 58 2 "${OPTIONS[@]}" 3>&1 1>&2 2>&3)
 
 case $CHOICE in
 "Install") install ;;
 "Uninstall") uninstall ;;
 *)
-  echo "Exiting..."
+  echo "正在退出..."
   exit 0
   ;;
 esac

@@ -1,6 +1,6 @@
-# install.func Flowchart
+# install.func 流程图
 
-## Installation Workflow
+## 安装工作流程
 
 ```
 ┌──────────────────────────────────┐

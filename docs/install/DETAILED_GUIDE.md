@@ -1,96 +1,96 @@
-# 🛠️ **Application Installation Scripts (install/AppName-install.sh)**
+# 🛠️ **应用安装脚本 (install/AppName-install.sh)**
 
-**Modern Guide to Writing In-Container Installation Scripts**
+**编写容器内安装脚本的现代指南**
 
-> **Updated**: December 2025
-> **Context**: Integrated with tools.func, error_handler.func, and install.func
-> **Examples Used**: `/install/pihole-install.sh`, `/install/mealie-install.sh`
-
----
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Execution Context](#execution-context)
-- [File Structure](#file-structure)
-- [Complete Script Template](#complete-script-template)
-- [Installation Phases](#installation-phases)
-- [Function Reference](#function-reference)
-- [Best Practices](#best-practices)
-- [Real Examples](#real-examples)
-- [Troubleshooting](#troubleshooting)
-- [Contribution Checklist](#contribution-checklist)
+> **更新时间**: 2025年12月
+> **上下文**: 集成 tools.func、error_handler.func 和 install.func
+> **示例**: `/install/pihole-install.sh`、`/install/mealie-install.sh`
 
 ---
 
-## Overview
+## 📋 目录
 
-### Purpose
+- [概述](#概述)
+- [执行上下文](#执行上下文)
+- [文件结构](#文件结构)
+- [完整脚本模板](#完整脚本模板)
+- [安装阶段](#安装阶段)
+- [函数参考](#函数参考)
+- [最佳实践](#最佳实践)
+- [实际示例](#实际示例)
+- [故障排除](#故障排除)
+- [贡献检查清单](#贡献检查清单)
 
-Installation scripts (`install/AppName-install.sh`) **run inside the LXC container** and are responsible for:
+---
 
-1. Setting up the container OS (updates, packages)
-2. Installing application dependencies
-3. Downloading and configuring the application
-4. Setting up services and systemd units
-5. Creating version tracking files for updates
-6. Generating credentials/configurations
-7. Final cleanup and validation
+## 概述
 
-### Execution Flow
+### 目的
+
+安装脚本（`install/AppName-install.sh`）**在 LXC 容器内运行**，负责：
+
+1. 设置容器操作系统（更新、包）
+2. 安装应用程序依赖项
+3. 下载和配置应用程序
+4. 设置服务和 systemd 单元
+5. 创建用于更新的版本跟踪文件
+6. 生成凭据/配置
+7. 最终清理和验证
+
+### 执行流程
 
 ```
-ct/AppName.sh (Proxmox Host)
+ct/AppName.sh (Proxmox 主机)
        ↓
 build_container()
        ↓
 pct exec CTID bash -c "$(cat install/AppName-install.sh)"
        ↓
-install/AppName-install.sh (Inside Container)
+install/AppName-install.sh (容器内部)
        ↓
-Container Ready with App Installed
+容器就绪，应用已安装
 ```
 
 ---
 
-## Execution Context
+## 执行上下文
 
-### Environment Variables Available
+### 可用的环境变量
 
 ```bash
-# From Proxmox/Container
-CTID                    # Container ID (100, 101, etc.)
-PCT_OSTYPE             # OS type (alpine, debian, ubuntu)
-HOSTNAME               # Container hostname
+# 来自 Proxmox/容器
+CTID                    # 容器 ID（100、101 等）
+PCT_OSTYPE             # 操作系统类型（alpine、debian、ubuntu）
+HOSTNAME               # 容器主机名
 
-# From build.func
-FUNCTIONS_FILE_PATH    # Bash functions library (core.func + tools.func)
-VERBOSE                # Verbose mode (yes/no)
-STD                    # Standard redirection variable (silent/empty)
+# 来自 build.func
+FUNCTIONS_FILE_PATH    # Bash 函数库（core.func + tools.func）
+VERBOSE                # 详细模式（yes/no）
+STD                    # 标准重定向变量（静默/空）
 
-# From install.func
-APP                    # Application name
-NSAPP                  # Normalized app name (lowercase, no spaces)
-METHOD                 # Installation method (ct/install)
-RANDOM_UUID            # Session UUID for telemetry
+# 来自 install.func
+APP                    # 应用程序名称
+NSAPP                  # 规范化的应用名称（小写，无空格）
+METHOD                 # 安装方法（ct/install）
+RANDOM_UUID            # 用于遥测的会话 UUID
 ```
 
 ---
 
-## File Structure
+## 文件结构
 
-### Minimal install/AppName-install.sh Template
+### 最小 install/AppName-install.sh 模板
 
 ```bash
 #!/usr/bin/env bash                          # [1] Shebang
 
-# [2] Copyright/Metadata
+# [2] 版权/元数据
 # Copyright (c) 2021-2026 community-scripts ORG
 # Author: YourUsername
 # License: MIT
 # Source: https://example.com
 
-# [3] Load functions
+# [3] 加载函数
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
@@ -99,12 +99,12 @@ setting_up_container
 network_check
 update_os
 
-# [4] Installation steps
+# [4] 安装步骤
 msg_info "Installing Dependencies"
 $STD apt-get install -y package1 package2
 msg_ok "Installed Dependencies"
 
-# [5] Final setup
+# [5] 最终设置
 motd_ssh
 customize
 cleanup_lxc
@@ -112,9 +112,9 @@ cleanup_lxc
 
 ---
 
-## Complete Script Template
+## 完整脚本模板
 
-### Phase 1: Header & Initialization
+### 阶段 1: 头部和初始化
 
 ```bash
 #!/usr/bin/env bash
@@ -123,19 +123,19 @@ cleanup_lxc
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/application/repo
 
-# Load all available functions (from core.func + tools.func)
+# 加载所有可用函数（来自 core.func + tools.func）
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-# Initialize environment
-color                   # Setup ANSI colors and icons
-verb_ip6                # Configure IPv6 (if needed)
-catch_errors           # Setup error traps
-setting_up_container   # Verify OS is ready
-network_check          # Verify internet connectivity
-update_os              # Update packages (apk/apt)
+# 初始化环境
+color                   # 设置 ANSI 颜色和图标
+verb_ip6                # 配置 IPv6（如需要）
+catch_errors           # 设置错误陷阱
+setting_up_container   # 验证操作系统就绪
+network_check          # 验证互联网连接
+update_os              # 更新包（apk/apt）
 ```
 
-### Phase 2: Dependency Installation
+### 阶段 2: 依赖项安装
 
 ```bash
 msg_info "Installing Dependencies"
@@ -150,19 +150,19 @@ $STD apt-get install -y \
 msg_ok "Installed Dependencies"
 ```
 
-### Phase 3: Tool Setup (Using tools.func)
+### 阶段 3: 工具设置（使用 tools.func）
 
 ```bash
-# Setup specific tool versions
+# 设置特定工具版本
 NODE_VERSION="22" setup_nodejs
 PHP_VERSION="8.4" setup_php
 PYTHON_VERSION="3.12" setup_uv
 ```
 
-### Phase 4: Application Download & Setup
+### 阶段 4: 应用程序下载和设置
 
 ```bash
-# Download from GitHub
+# 从 GitHub 下载
 RELEASE=$(curl -fsSL https://api.github.com/repos/user/repo/releases/latest | \
   grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
 
@@ -172,10 +172,10 @@ tar -xzf app-${RELEASE}.tar.gz
 rm -f app-${RELEASE}.tar.gz
 ```
 
-### Phase 5: Configuration Files
+### 阶段 5: 配置文件
 
 ```bash
-# Using cat << EOF (multiline)
+# 使用 cat << EOF（多行）
 cat <<'EOF' >/etc/nginx/sites-available/appname
 server {
     listen 80;
@@ -185,13 +185,13 @@ server {
 }
 EOF
 
-# Using sed for replacements
+# 使用 sed 进行替换
 sed -i -e "s|^DB_HOST=.*|DB_HOST=localhost|" \
        -e "s|^DB_USER=.*|DB_USER=appuser|" \
        /opt/appname/.env
 ```
 
-### Phase 6: Database Setup (If Needed)
+### 阶段 6: 数据库设置（如需要）
 
 ```bash
 msg_info "Setting up Database"
@@ -200,7 +200,7 @@ DB_NAME="appname_db"
 DB_USER="appuser"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 
-# For MySQL/MariaDB
+# 对于 MySQL/MariaDB
 mysql -u root <<EOF
 CREATE DATABASE ${DB_NAME};
 CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';
@@ -211,12 +211,12 @@ EOF
 msg_ok "Database setup complete"
 ```
 
-### Phase 7: Permission & Ownership
+### 阶段 7: 权限和所有权
 
 ```bash
 msg_info "Setting permissions"
 
-# Web applications typically run as www-data
+# Web 应用程序通常以 www-data 运行
 chown -R www-data:www-data /opt/appname
 chmod -R 755 /opt/appname
 chmod -R 644 /opt/appname/*
@@ -225,17 +225,17 @@ chmod 755 /opt/appname/*/.*
 msg_ok "Permissions set"
 ```
 
-### Phase 8: Service Configuration
+### 阶段 8: 服务配置
 
 ```bash
-# Enable systemd service
+# 启用 systemd 服务
 systemctl enable -q --now appname
 
-# Or for OpenRC (Alpine)
+# 或对于 OpenRC（Alpine）
 rc-service appname start
 rc-update add appname default
 
-# Verify service is running
+# 验证服务正在运行
 if systemctl is-active --quiet appname; then
   msg_ok "Service running successfully"
 else
@@ -245,13 +245,13 @@ else
 fi
 ```
 
-### Phase 9: Version Tracking
+### 阶段 9: 版本跟踪
 
 ```bash
-# Essential for update detection
+# 对于更新检测至关重要
 echo "${RELEASE}" > /opt/${APP}_version.txt
 
-# Or with additional metadata
+# 或带有附加元数据
 cat > /opt/${APP}_version.txt <<EOF
 Version: ${RELEASE}
 InstallDate: $(date)
@@ -259,40 +259,40 @@ InstallMethod: ${METHOD}
 EOF
 ```
 
-### Phase 10: Final Setup & Cleanup
+### 阶段 10: 最终设置和清理
 
 ```bash
-# Display MOTD and enable autologin
+# 显示 MOTD 并启用自动登录
 motd_ssh
 
-# Final customization
+# 最终自定义
 customize
 
-# Clean up package manager cache
+# 清理包管理器缓存
 msg_info "Cleaning up"
 apt-get -y autoremove
 apt-get -y autoclean
 msg_ok "Cleaned"
 
-# Or for Alpine
+# 或对于 Alpine
 apk cache clean
 rm -rf /var/cache/apk/*
 
-# System cleanup
+# 系统清理
 cleanup_lxc
 ```
 
 ---
 
-## Installation Phases
+## 安装阶段
 
-### Phase 1: Container OS Setup
-- Network interface brought up and configured
-- Internet connectivity verified
-- Package lists updated
-- All OS packages upgraded to latest versions
+### 阶段 1: 容器操作系统设置
+- 网络接口启动并配置
+- 验证互联网连接
+- 更新包列表
+- 所有操作系统包升级到最新版本
 
-### Phase 2: Base Dependencies
+### 阶段 2: 基础依赖项
 ```bash
 msg_info "Installing Base Dependencies"
 $STD apt-get install -y \
@@ -300,83 +300,83 @@ $STD apt-get install -y \
 msg_ok "Installed Base Dependencies"
 ```
 
-### Phase 3: Tool Installation
+### 阶段 3: 工具安装
 ```bash
 NODE_VERSION="22" setup_nodejs
 PHP_VERSION="8.4" setup_php
 ```
 
-### Phase 4: Application Setup
+### 阶段 4: 应用程序设置
 ```bash
 RELEASE=$(curl -fsSL https://api.github.com/repos/user/repo/releases/latest | \
   grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
 wget -q "https://github.com/user/repo/releases/download/v${RELEASE}/app.tar.gz"
 ```
 
-### Phase 5: Configuration
-Application-specific configuration files and environment setup
+### 阶段 5: 配置
+应用程序特定的配置文件和环境设置
 
-### Phase 6: Service Registration
-Enable and verify systemd services are running
+### 阶段 6: 服务注册
+启用并验证 systemd 服务正在运行
 
 ---
 
-## Function Reference
+## 函数参考
 
-### Core Messaging Functions
+### 核心消息传递函数
 
 #### `msg_info(message)`
 
-Displays an info message with spinner animation
+显示带有旋转动画的信息消息
 
 ```bash
 msg_info "Installing application"
-# Output: ⏳ Installing application (with spinning animation)
+# 输出: ⏳ Installing application（带旋转动画）
 ```
 
 #### `msg_ok(message)`
 
-Displays success message with checkmark
+显示带有复选标记的成功消息
 
 ```bash
 msg_ok "Installation completed"
-# Output: ✔️ Installation completed
+# 输出: ✔️ Installation completed
 ```
 
 #### `msg_error(message)`
 
-Displays error message and exits
+显示错误消息并退出
 
 ```bash
 msg_error "Installation failed"
-# Output: ✖️ Installation failed
+# 输出: ✖️ Installation failed
 ```
 
-### Package Management
+### 包管理
 
-#### `$STD` Variable
+#### `$STD` 变量
 
-Controls output verbosity
+控制输出详细程度
 
 ```bash
-# Silent mode (respects VERBOSE setting)
+# 静默模式（遵守 VERBOSE 设置）
 $STD apt-get install -y nginx
 ```
 
 #### `update_os()`
 
-Updates OS packages
+更新操作系统包
 
 ```bash
 update_os
-# Runs: apt update && apt upgrade
+# 运行: apt update && apt upgrade
 ```
 
-### Tool Installation Functions
+### 工具安装函数
 
 #### `setup_nodejs()`
 
-Installs Node.js with optional global modules
+安装 Node.js 及可选的全局模块
 
 ```bash
 NODE_VERSION="22" setup_nodejs
@@ -385,17 +385,17 @@ NODE_VERSION="22" NODE_MODULE="yarn,@vue/cli" setup_nodejs
 
 #### `setup_php()`
 
-Installs PHP with optional extensions
+安装 PHP 及可选的扩展
 
 ```bash
 PHP_VERSION="8.4" PHP_MODULE="bcmath,curl,gd,intl,redis" setup_php
 ```
 
-#### Other Tools
+#### 其他工具
 
 ```bash
-setup_mariadb     # MariaDB database
-setup_mysql       # MySQL database
+setup_mariadb     # MariaDB 数据库
+setup_mysql       # MySQL 数据库
 setup_postgresql  # PostgreSQL
 setup_docker      # Docker Engine
 setup_composer    # PHP Composer
@@ -404,66 +404,66 @@ setup_ruby        # Ruby
 setup_rust        # Rust
 ```
 
-### Cleanup Functions
+### 清理函数
 
 #### `cleanup_lxc()`
 
-Comprehensive container cleanup
+全面的容器清理
 
-- Removes package manager caches
-- Cleans temporary files
-- Clears language package caches
-- Removes systemd journal logs
+- 删除包管理器缓存
+- 清理临时文件
+- 清除语言包缓存
+- 删除 systemd 日志
 
 ```bash
 cleanup_lxc
-# Output: ⏳ Cleaning up
-#         ✔️ Cleaned
+# 输出: ⏳ Cleaning up
+#       ✔️ Cleaned
 ```
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### ✅ DO:
+### ✅ 应该做的:
 
-1. **Always Use $STD for Commands**
+1. **始终对命令使用 $STD**
 ```bash
-# ✅ Good: Respects VERBOSE setting
+# ✅ 好: 遵守 VERBOSE 设置
 $STD apt-get install -y nginx
 ```
 
-2. **Generate Random Passwords Safely**
+2. **安全地生成随机密码**
 ```bash
-# ✅ Good: Alphanumeric only
+# ✅ 好: 仅字母数字
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 ```
 
-3. **Check Command Success**
+3. **检查命令成功**
 ```bash
-# ✅ Good: Verify success
+# ✅ 好: 验证成功
 if ! wget -q "https://example.com/file.tar.gz"; then
   msg_error "Download failed"
   exit 1
 fi
 ```
 
-4. **Set Proper Permissions**
+4. **设置适当的权限**
 ```bash
-# ✅ Good: Explicit permissions
+# ✅ 好: 明确的权限
 chown -R www-data:www-data /opt/appname
 chmod -R 755 /opt/appname
 ```
 
-5. **Save Version for Update Checks**
+5. **保存版本以进行更新检查**
 ```bash
-# ✅ Good: Version tracked
+# ✅ 好: 跟踪版本
 echo "${RELEASE}" > /opt/${APP}_version.txt
 ```
 
-6. **Handle Alpine vs Debian Differences**
+6. **处理 Alpine vs Debian 差异**
 ```bash
-# ✅ Good: Detect OS
+# ✅ 好: 检测操作系统
 if grep -qi 'alpine' /etc/os-release; then
   apk add package
 else
@@ -471,38 +471,38 @@ else
 fi
 ```
 
-### ❌ DON'T:
+### ❌ 不应该做的:
 
-1. **Hardcode Versions**
+1. **硬编码版本**
 ```bash
-# ❌ Bad: Won't auto-update
+# ❌ 坏: 不会自动更新
 wget https://example.com/app-1.2.3.tar.gz
 ```
 
-2. **Use Root Without Password**
+2. **使用无密码的 Root**
 ```bash
-# ❌ Bad: Security risk
+# ❌ 坏: 安全风险
 mysql -u root
 ```
 
-3. **Forget Error Handling**
+3. **忘记错误处理**
 ```bash
-# ❌ Bad: Silent failures
+# ❌ 坏: 静默失败
 wget https://example.com/file
 tar -xzf file
 ```
 
-4. **Leave Temporary Files**
+4. **留下临时文件**
 ```bash
-# ✅ Always cleanup
+# ✅ 始终清理
 rm -rf /opt/app-${RELEASE}.tar.gz
 ```
 
 ---
 
-## Real Examples
+## 实际示例
 
-### Example 1: Node.js Application
+### 示例 1: Node.js 应用程序
 
 ```bash
 #!/usr/bin/env bash
@@ -531,7 +531,7 @@ systemctl enable --now app
 cleanup_lxc
 ```
 
-### Example 2: PHP Application with Database
+### 示例 2: 带数据库的 PHP 应用程序
 
 ```bash
 #!/usr/bin/env bash
@@ -544,10 +544,10 @@ network_check
 update_os
 
 PHP_VERSION="8.4" PHP_MODULE="bcmath,curl,pdo_mysql" setup_php
-setup_mariadb  # Uses distribution packages (recommended)
-# Or for specific version: MARIADB_VERSION="11.4" setup_mariadb
+setup_mariadb  # 使用发行版包（推荐）
+# 或对于特定版本: MARIADB_VERSION="11.4" setup_mariadb
 
-# Database setup
+# 数据库设置
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 mysql -u root <<EOF
 CREATE DATABASE appdb;
@@ -556,12 +556,12 @@ GRANT ALL ON appdb.* TO 'appuser'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-# App installation
+# 应用安装
 cd /opt
 wget -q https://github.com/user/repo/releases/latest/download/app.tar.gz
 tar -xzf app.tar.gz
 
-# Configuration
+# 配置
 cat > /opt/app/.env <<EOF
 DB_HOST=localhost
 DB_NAME=appdb
@@ -576,32 +576,32 @@ cleanup_lxc
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Installation Hangs
+### 安装挂起
 
-**Check internet connectivity**:
+**检查互联网连接**:
 ```bash
 ping -c 1 8.8.8.8
 ```
 
-**Enable verbose mode**:
+**启用详细模式**:
 ```bash
-# In ct/AppName.sh, before running
+# 在 ct/AppName.sh 中，运行前
 VERBOSE="yes" bash install/AppName-install.sh
 ```
 
-### Package Not Found
+### 找不到包
 
-**Update package lists**:
+**更新包列表**:
 ```bash
 apt update
 apt-cache search package_name
 ```
 
-### Service Won't Start
+### 服务无法启动
 
-**Check logs**:
+**检查日志**:
 ```bash
 journalctl -u appname -n 50
 systemctl status appname
@@ -609,39 +609,39 @@ systemctl status appname
 
 ---
 
-## Contribution Checklist
+## 贡献检查清单
 
-Before submitting a PR:
+在提交 PR 之前：
 
-### Structure
-- [ ] Shebang is `#!/usr/bin/env bash`
-- [ ] Loads functions from `$FUNCTIONS_FILE_PATH`
-- [ ] Copyright header with author
-- [ ] Clear phase comments
+### 结构
+- [ ] Shebang 是 `#!/usr/bin/env bash`
+- [ ] 从 `$FUNCTIONS_FILE_PATH` 加载函数
+- [ ] 带有作者的版权标题
+- [ ] 清晰的阶段注释
 
-### Installation
-- [ ] `setting_up_container` called early
-- [ ] `network_check` before downloads
-- [ ] `update_os` before package installation
-- [ ] All errors checked properly
+### 安装
+- [ ] 早期调用 `setting_up_container`
+- [ ] 下载前调用 `network_check`
+- [ ] 包安装前调用 `update_os`
+- [ ] 正确检查所有错误
 
-### Functions
-- [ ] Uses `msg_info/msg_ok/msg_error` for status
-- [ ] Uses `$STD` for command output silencing
-- [ ] Version saved to `/opt/${APP}_version.txt`
-- [ ] Proper permissions set
+### 函数
+- [ ] 使用 `msg_info/msg_ok/msg_error` 显示状态
+- [ ] 使用 `$STD` 静默命令输出
+- [ ] 版本保存到 `/opt/${APP}_version.txt`
+- [ ] 设置适当的权限
 
-### Cleanup
-- [ ] `motd_ssh` called for final setup
-- [ ] `customize` called for options
-- [ ] `cleanup_lxc` called at end
+### 清理
+- [ ] 调用 `motd_ssh` 进行最终设置
+- [ ] 调用 `customize` 进行选项设置
+- [ ] 最后调用 `cleanup_lxc`
 
-### Testing
-- [ ] Tested with default settings
-- [ ] Tested with advanced (19-step) mode
-- [ ] Service starts and runs correctly
+### 测试
+- [ ] 使用默认设置测试
+- [ ] 使用高级（19步）模式测试
+- [ ] 服务启动并正确运行
 
 ---
 
-**Last Updated**: December 2025
-**Compatibility**: ProxmoxVE with install.func v3+
+**最后更新**: 2025年12月
+**兼容性**: ProxmoxVE with install.func v3+

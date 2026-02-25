@@ -7,15 +7,15 @@
 
 clear
 if ! command -v pveversion >/dev/null 2>&1; then
-  echo -e "⚠️  Run from the Proxmox Shell"
+  echo -e "⚠️  从 Proxmox Shell 运行"
   exit
 fi
 while true; do
-  read -p "Use to copy all data from a Home Assistant Core LXC to a Home Assistant Container LXC. Proceed(y/n)?" yn
+  read -p "用于将所有数据从 Home Assistant Core LXC 复制到 Home Assistant Container LXC。是否继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 set -o errexit
@@ -29,20 +29,20 @@ trap cleanup EXIT
 
 function error_exit() {
   trap - ERR
-  local DEFAULT='Unknown failure occured.'
+  local DEFAULT='发生未知故障。'
   local REASON="\e[97m${1:-$DEFAULT}\e[39m"
-  local FLAG="\e[91m[ERROR] \e[93m$EXIT@$LINE"
+  local FLAG="\e[91m[错误] \e[93m$EXIT@$LINE"
   msg "$FLAG $REASON"
   exit $EXIT
 }
 function warn() {
   local REASON="\e[97m$1\e[39m"
-  local FLAG="\e[93m[WARNING]\e[39m"
+  local FLAG="\e[93m[警告]\e[39m"
   msg "$FLAG $REASON"
 }
 function info() {
   local REASON="$1"
-  local FLAG="\e[36m[INFO]\e[39m"
+  local FLAG="\e[36m[信息]\e[39m"
   msg "$FLAG $REASON"
 }
 function msg() {
@@ -58,7 +58,7 @@ function cleanup() {
 TEMP_DIR=$(mktemp -d)
 pushd $TEMP_DIR >/dev/null
 
-TITLE="Home Assistant LXC Data Copy"
+TITLE="Home Assistant LXC 数据复制"
 while read -r line; do
   TAG=$(echo "$line" | awk '{print $1}')
   ITEM=$(echo "$line" | awk '{print substr($0,36)}')
@@ -70,13 +70,13 @@ while read -r line; do
 done < <(pct list | awk 'NR>1')
 while [ -z "${CTID_FROM:+x}" ]; do
   CTID_FROM=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "$TITLE" --radiolist \
-    "\nWhich HA Core LXC would you like to copy FROM?\n" \
+    "\n您想从哪个 HA Core LXC 复制？\n" \
     16 $(($MSG_MAX_LENGTH + 23)) 6 \
     "${CTID_MENU[@]}" 3>&1 1>&2 2>&3)
 done
 while [ -z "${CTID_TO:+x}" ]; do
   CTID_TO=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "$TITLE" --radiolist \
-    "\nWhich HA Container LXC would you like to copy TO?\n" \
+    "\n您想复制到哪个 HA Container LXC？\n" \
     16 $(($MSG_MAX_LENGTH + 23)) 6 \
     "${CTID_MENU[@]}" 3>&1 1>&2 2>&3)
 done
@@ -87,27 +87,27 @@ for i in ${!CTID_MENU[@]}; do
     CTID_TO_HOSTNAME=$(sed 's/[[:space:]]*$//' <<<${CTID_MENU[$i + 1]})
 done
 whiptail --backtitle "Proxmox VE Helper Scripts" --defaultno --title "$TITLE" --yesno \
-  "Are you sure you want to copy data between the following LXCs?
+  "您确定要在以下 LXC 之间复制数据吗？
 $CTID_FROM (${CTID_FROM_HOSTNAME}) -> $CTID_TO (${CTID_TO_HOSTNAME})
-Version: 2022.10.02" 13 50
-info "Home Assistant Data from '$CTID_FROM' to '$CTID_TO'"
+版本: 2022.10.02" 13 50
+info "Home Assistant 数据从 '$CTID_FROM' 到 '$CTID_TO'"
 if [ $(pct status $CTID_TO | sed 's/.* //') == 'running' ]; then
-  msg "Stopping '$CTID_TO'..."
+  msg "正在停止 '$CTID_TO'..."
   pct stop $CTID_TO
 fi
-msg "Mounting Container Disks..."
+msg "正在挂载容器磁盘..."
 DOCKER_PATH=/var/lib/docker/volumes/hass_config/_data
 CORE_PATH=/root/.homeassistant
 CTID_FROM_PATH=$(pct mount $CTID_FROM | sed -n "s/.*'\(.*\)'/\1/p") ||
-  die "There was a problem mounting the root disk of LXC '${CTID_FROM}'."
+  die "挂载 LXC '${CTID_FROM}' 的根磁盘时出现问题。"
 [ -d "${CTID_FROM_PATH}${CORE_PATH}" ] ||
-  die "Home Assistant directories in '$CTID_FROM' not found."
+  die "未找到 '$CTID_FROM' 中的 Home Assistant 目录。"
 CTID_TO_PATH=$(pct mount $CTID_TO | sed -n "s/.*'\(.*\)'/\1/p") ||
-  die "There was a problem mounting the root disk of LXC '${CTID_TO}'."
+  die "挂载 LXC '${CTID_TO}' 的根磁盘时出现问题。"
 [ -d "${CTID_TO_PATH}${DOCKER_PATH}" ] ||
-  die "Home Assistant directories in '$CTID_TO' not found."
+  die "未找到 '$CTID_TO' 中的 Home Assistant 目录。"
 
-msg "Copying Data..."
+msg "正在复制数据..."
 RSYNC_OPTIONS=(
   --archive
   --hard-links
@@ -116,11 +116,11 @@ RSYNC_OPTIONS=(
   --no-inc-recursive
   --info=progress2
 )
-msg "<======== Docker Data ========>"
+msg "<======== Docker 数据 ========>"
 rsync ${RSYNC_OPTIONS[*]} ${CTID_FROM_PATH}${CORE_PATH} ${CTID_TO_PATH}${DOCKER_PATH}
 echo -en "\e[1A\e[0K\e[1A\e[0K"
 
-info "Successfully Transferred Data."
+info "成功传输数据。"
 
 # Use to copy all data from a Home Assistant Core LXC to a Home Assistant Container LXC
 # run from the Proxmox Shell

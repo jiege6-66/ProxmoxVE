@@ -1,21 +1,21 @@
-# JSON Metadata Files - Quick Reference
+# JSON 元数据文件 - 快速参考
 
-The metadata file (`frontend/public/json/myapp.json`) tells the web interface how to display your application.
+元数据文件（`frontend/public/json/myapp.json`）告诉 Web 界面如何显示您的应用程序。
 
 ---
 
-## Quick Start
+## 快速开始
 
-**Use the JSON Generator Tool:**
+**使用 JSON 生成器工具：**
 [https://community-scripts.github.io/ProxmoxVE/json-editor](https://community-scripts.github.io/ProxmoxVE/json-editor)
 
-1. Enter application details
-2. Generator creates `frontend/public/json/myapp.json`
-3. Copy the output to your contribution
+1. 输入应用程序详细信息
+2. 生成器创建 `frontend/public/json/myapp.json`
+3. 将输出复制到您的贡献中
 
 ---
 
-## File Structure
+## 文件结构
 
 ```json
 {
@@ -31,7 +31,7 @@ The metadata file (`frontend/public/json/myapp.json`) tells the web interface ho
   "website": "https://example.com/",
   "logo": "https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/myapp.webp",
   "config_path": "/opt/myapp/.env",
-  "description": "Brief description of what MyApp does",
+  "description": "MyApp 功能的简要描述",
   "install_methods": [
     {
       "type": "default",
@@ -51,7 +51,7 @@ The metadata file (`frontend/public/json/myapp.json`) tells the web interface ho
   },
   "notes": [
     {
-      "text": "Change the default password after first login!",
+      "text": "首次登录后更改默认密码！",
       "type": "warning"
     }
   ]
@@ -60,28 +60,28 @@ The metadata file (`frontend/public/json/myapp.json`) tells the web interface ho
 
 ---
 
-## Field Reference
+## 字段参考
 
-| Field                 | Required | Example           | Notes                                          |
+| 字段 | 必需 | 示例 | 说明 |
 | --------------------- | -------- | ----------------- | ---------------------------------------------- |
-| `name`                | Yes      | "MyApp"           | Display name                                   |
-| `slug`                | Yes      | "myapp"           | URL-friendly identifier (lowercase, no spaces) |
-| `categories`          | Yes      | [1]               | One or more category IDs                       |
-| `date_created`        | Yes      | "2026-01-18"      | Format: YYYY-MM-DD                             |
-| `type`                | Yes      | "ct"              | Container type: "ct" or "vm"                   |
-| `interface_port`      | Yes      | 3000              | Default web interface port                     |
-| `logo`                | No       | "https://..."     | Logo URL (64px x 64px PNG)                     |
-| `config_path`         | Yes      | "/opt/myapp/.env" | Main config file location                      |
-| `description`         | Yes      | "App description" | Brief description (100 chars)                  |
-| `install_methods`     | Yes      | See below         | Installation resources (array)                 |
-| `default_credentials` | No       | See below         | Optional default login                         |
-| `notes`               | No       | See below         | Additional notes (array)                       |
+| `name` | 是 | "MyApp" | 显示名称 |
+| `slug` | 是 | "myapp" | URL 友好标识符（小写，无空格） |
+| `categories` | 是 | [1] | 一个或多个类别 ID |
+| `date_created` | 是 | "2026-01-18" | 格式：YYYY-MM-DD |
+| `type` | 是 | "ct" | 容器类型："ct" 或 "vm" |
+| `interface_port` | 是 | 3000 | 默认 Web 界面端口 |
+| `logo` | 否 | "https://..." | Logo URL（64px x 64px PNG） |
+| `config_path` | 是 | "/opt/myapp/.env" | 主配置文件位置 |
+| `description` | 是 | "应用描述" | 简要描述（100 字符） |
+| `install_methods` | 是 | 见下文 | 安装资源（数组） |
+| `default_credentials` | 否 | 见下文 | 可选的默认登录 |
+| `notes` | 否 | 见下文 | 附加说明（数组） |
 
 ---
 
-## Install Methods
+## 安装方法
 
-Each installation method specifies resource requirements:
+每个安装方法指定资源要求：
 
 ```json
 "install_methods": [
@@ -99,58 +99,58 @@ Each installation method specifies resource requirements:
 ]
 ```
 
-**Resource Defaults:**
+**资源默认值：**
 
-- CPU: Cores (1-8)
-- RAM: Megabytes (256-4096)
-- Disk: Gigabytes (4-50)
-
----
-
-## Common Categories
-
-- `0` Miscellaneous
-- `1` Proxmox & Virtualization
-- `2` Operating Systems
-- `3` Containers & Docker
-- `4` Network & Firewall
-- `5` Adblock & DNS
-- `6` Authentication & Security
-- `7` Backup & Recovery
-- `8` Databases
-- `9` Monitoring & Analytics
-- `10` Dashboards & Frontends
-- `11` Files & Downloads
-- `12` Documents & Notes
-- `13` Media & Streaming
-- `14` \*Arr Suite
-- `15` NVR & Cameras
-- `16` IoT & Smart Home
-- `17` ZigBee, Z-Wave & Matter
-- `18` MQTT & Messaging
-- `19` Automation & Scheduling
-- `20` AI / Coding & Dev-Tools
-- `21` Webservers & Proxies
-- `22` Bots & ChatOps
-- `23` Finance & Budgeting
-- `24` Gaming & Leisure
-- `25` Business & ERP
+- CPU：核心数（1-8）
+- RAM：兆字节（256-4096）
+- 磁盘：千兆字节（4-50）
 
 ---
 
-## Best Practices
+## 常见类别
 
-1. **Use the JSON Generator** - It validates structure
-2. **Keep descriptions short** - 100 characters max
-3. **Use real resource requirements** - Based on your testing
-4. **Include sensible defaults** - Pre-filled in install_methods
-5. **Slug must be lowercase** - No spaces, use hyphens
+- `0` 杂项
+- `1` Proxmox 和虚拟化
+- `2` 操作系统
+- `3` 容器和 Docker
+- `4` 网络和防火墙
+- `5` 广告拦截和 DNS
+- `6` 身份验证和安全
+- `7` 备份和恢复
+- `8` 数据库
+- `9` 监控和分析
+- `10` 仪表板和前端
+- `11` 文件和下载
+- `12` 文档和笔记
+- `13` 媒体和流媒体
+- `14` \*Arr 套件
+- `15` NVR 和摄像头
+- `16` 物联网和智能家居
+- `17` ZigBee、Z-Wave 和 Matter
+- `18` MQTT 和消息传递
+- `19` 自动化和调度
+- `20` AI / 编码和开发工具
+- `21` Web 服务器和代理
+- `22` 机器人和 ChatOps
+- `23` 财务和预算
+- `24` 游戏和休闲
+- `25` 商业和 ERP
 
 ---
 
-## Reference Examples
+## 最佳实践
 
-See actual examples in the repo:
+1. **使用 JSON 生成器** - 它验证结构
+2. **保持描述简短** - 最多 100 个字符
+3. **使用真实的资源要求** - 基于您的测试
+4. **包含合理的默认值** - 在 install_methods 中预填充
+5. **Slug 必须小写** - 无空格，使用连字符
+
+---
+
+## 参考示例
+
+查看仓库中的实际示例：
 
 - [frontend/public/json/trip.json](https://github.com/community-scripts/ProxmoxVE/blob/main/frontend/public/json/trip.json)
 - [frontend/public/json/thingsboard.json](https://github.com/community-scripts/ProxmoxVE/blob/main/frontend/public/json/thingsboard.json)
@@ -158,8 +158,8 @@ See actual examples in the repo:
 
 ---
 
-## Need Help?
+## 需要帮助？
 
-- **[JSON Generator](https://community-scripts.github.io/ProxmoxVE/json-editor)** - Interactive tool
-- **[README.md](../README.md)** - Full contribution workflow
-- **[Quick Start](../README.md)** - Step-by-step guide
+- **[JSON 生成器](https://community-scripts.github.io/ProxmoxVE/json-editor)** - 交互式工具
+- **[README.md](../README.md)** - 完整的贡献工作流
+- **[快速开始](../README.md)** - 分步指南

@@ -1,88 +1,88 @@
-# VM Scripts Documentation (/vm)
+# 虚拟机脚本文档 (/vm)
 
-This directory contains comprehensive documentation for virtual machine creation scripts in the `/vm` directory.
+本目录包含 `/vm` 目录中虚拟机创建脚本的综合文档。
 
-## Overview
+## 概述
 
-VM scripts (`vm/*.sh`) create full virtual machines (not containers) in Proxmox VE with complete operating systems and cloud-init provisioning.
+VM 脚本（`vm/*.sh`）在 Proxmox VE 中创建完整的虚拟机（而非容器），具有完整的操作系统和 cloud-init 配置。
 
-## Documentation Structure
+## 文档结构
 
-VM documentation parallels container documentation but focuses on VM-specific features.
+VM 文档与容器文档并行，但专注于 VM 特定功能。
 
-## Key Resources
+## 关键资源
 
-- **[misc/cloud-init.func/](../misc/cloud-init.func/)** - Cloud-init provisioning documentation
-- **[CONTRIBUTION_GUIDE.md](../CONTRIBUTION_GUIDE.md)** - Contribution workflow
-- **[EXIT_CODES.md](../EXIT_CODES.md)** - Exit code reference
+- **[misc/cloud-init.func/](../misc/cloud-init.func/)** - Cloud-init 配置文档
+- **[CONTRIBUTION_GUIDE.md](../CONTRIBUTION_GUIDE.md)** - 贡献工作流
+- **[EXIT_CODES.md](../EXIT_CODES.md)** - 退出代码参考
 
-## VM Creation Flow
+## VM 创建流程
 
 ```
-vm/OsName-vm.sh (host-side)
+vm/OsName-vm.sh (主机端)
     │
-    ├─ Calls: build.func (orchestrator)
+    ├─ 调用：build.func（编排器）
     │
-    ├─ Variables: var_cpu, var_ram, var_disk, var_os
+    ├─ 变量：var_cpu、var_ram、var_disk、var_os
     │
-    ├─ Uses: cloud-init.func (provisioning)
+    ├─ 使用：cloud-init.func（配置）
     │
-    └─ Creates: KVM/QEMU VM
+    └─ 创建：KVM/QEMU VM
                 │
-                └─ Boots with: Cloud-init config
+                └─ 使用以下启动：Cloud-init 配置
                                │
-                               ├─ System phase
-                               ├─ Config phase
-                               └─ Final phase
+                               ├─ 系统阶段
+                               ├─ 配置阶段
+                               └─ 最终阶段
 ```
 
-## Available VM Scripts
+## 可用 VM 脚本
 
-See `/vm` directory for all VM creation scripts. Examples:
+查看 `/vm` 目录以获取所有 VM 创建脚本。示例：
 
-- `ubuntu2504-vm.sh` - Ubuntu 25.04 VM (Latest)
-- `ubuntu2404-vm.sh` - Ubuntu 24.04 VM (LTS)
-- `debian-13-vm.sh` - Debian 13 VM (Trixie)
+- `ubuntu2504-vm.sh` - Ubuntu 25.04 VM（最新）
+- `ubuntu2404-vm.sh` - Ubuntu 24.04 VM（LTS）
+- `debian-13-vm.sh` - Debian 13 VM（Trixie）
 - `archlinux-vm.sh` - Arch Linux VM
 - `haos-vm.sh` - Home Assistant OS
 - `mikrotik-routeros.sh` - MikroTik RouterOS
 - `openwrt-vm.sh` - OpenWrt VM
-- `opnsense-vm.sh` - OPNsense firewall
+- `opnsense-vm.sh` - OPNsense 防火墙
 - `umbrel-os-vm.sh` - Umbrel OS VM
-- And 10+ more...
+- 以及 10+ 个更多...
 
-## VM vs Container
+## VM vs 容器
 
-| Feature | VM | Container |
+| 功能 | VM | 容器 |
 |---------|:---:|:---:|
-| Isolation | Full | Lightweight |
-| Boot Time | Slower | Instant |
-| Resource Use | Higher | Lower |
-| Use Case | Full OS | Single app |
-| Init System | systemd/etc | cloud-init |
-| Storage | Disk image | Filesystem |
+| 隔离 | 完全 | 轻量级 |
+| 启动时间 | 较慢 | 即时 |
+| 资源使用 | 较高 | 较低 |
+| 使用场景 | 完整操作系统 | 单个应用 |
+| 初始化系统 | systemd/等 | cloud-init |
+| 存储 | 磁盘镜像 | 文件系统 |
 
-## Quick Start
+## 快速开始
 
-To understand VM creation:
+要了解 VM 创建：
 
-1. Read: [misc/cloud-init.func/README.md](../misc/cloud-init.func/README.md)
-2. Study: A similar existing script in `/vm`
-3. Understand cloud-init configuration
-4. Test locally
-5. Submit PR
+1. 阅读：[misc/cloud-init.func/README.md](../misc/cloud-init.func/README.md)
+2. 研究：`/vm` 中类似的现有脚本
+3. 理解 cloud-init 配置
+4. 本地测试
+5. 提交 PR
 
-## Contributing a New VM
+## 贡献新 VM
 
-1. Create `vm/osname-vm.sh`
-2. Use cloud-init for provisioning
-3. Follow VM script template
-4. Test VM creation and boot
-5. Submit PR
+1. 创建 `vm/osname-vm.sh`
+2. 使用 cloud-init 进行配置
+3. 遵循 VM 脚本模板
+4. 测试 VM 创建和启动
+5. 提交 PR
 
-## Cloud-Init Provisioning
+## Cloud-Init 配置
 
-VMs are provisioned using cloud-init:
+VM 使用 cloud-init 进行配置：
 
 ```yaml
 #cloud-config
@@ -99,32 +99,32 @@ users:
       - ssh-rsa AAAAB3...
 
 bootcmd:
-  - echo "VM starting..."
+  - echo "VM 启动中..."
 
 runcmd:
   - apt-get update
   - apt-get upgrade -y
 ```
 
-## Common VM Operations
+## 常见 VM 操作
 
-- **Create VM with cloud-init** → [misc/cloud-init.func/](../misc/cloud-init.func/)
-- **Configure networking** → Cloud-init YAML documentation
-- **Setup SSH keys** → [misc/cloud-init.func/CLOUD_INIT_FUNC_USAGE_EXAMPLES.md](../misc/cloud-init.func/CLOUD_INIT_FUNC_USAGE_EXAMPLES.md)
-- **Debug VM creation** → [EXIT_CODES.md](../EXIT_CODES.md)
+- **使用 cloud-init 创建 VM** → [misc/cloud-init.func/](../misc/cloud-init.func/)
+- **配置网络** → Cloud-init YAML 文档
+- **设置 SSH 密钥** → [misc/cloud-init.func/CLOUD_INIT_FUNC_USAGE_EXAMPLES.md](../misc/cloud-init.func/CLOUD_INIT_FUNC_USAGE_EXAMPLES.md)
+- **调试 VM 创建** → [EXIT_CODES.md](../EXIT_CODES.md)
 
-## VM Templates
+## VM 模板
 
-Common VM templates available:
+可用的常见 VM 模板：
 
-- **Ubuntu LTS** - Latest stable Ubuntu
-- **Debian Stable** - Latest stable Debian
-- **OPNsense** - Network security platform
-- **Home Assistant** - Home automation
-- **Kubernetes** - K3s lightweight cluster
-- **Proxmox Backup** - Backup server
+- **Ubuntu LTS** - 最新稳定版 Ubuntu
+- **Debian Stable** - 最新稳定版 Debian
+- **OPNsense** - 网络安全平台
+- **Home Assistant** - 家庭自动化
+- **Kubernetes** - K3s 轻量级集群
+- **Proxmox Backup** - 备份服务器
 
 ---
 
-**Last Updated**: December 2025
-**Maintainers**: community-scripts team
+**最后更新**：2025 年 12 月
+**维护者**：community-scripts 团队

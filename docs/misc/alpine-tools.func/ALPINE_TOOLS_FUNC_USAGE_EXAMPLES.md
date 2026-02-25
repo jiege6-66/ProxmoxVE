@@ -1,8 +1,8 @@
-# alpine-tools.func Usage Examples
+# alpine-tools.func 使用示例
 
-Examples for Alpine tool installation.
+Alpine 工具安装示例。
 
-### Example: Alpine Setup with Tools
+### 示例：使用工具的 Alpine 设置
 
 ```bash
 #!/usr/bin/env bash
@@ -16,4 +16,4 @@ setup_mariadb "11"
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

@@ -1,84 +1,84 @@
-# 📚 ProxmoxVE Documentation
+# 📚 ProxmoxVE 文档
 
-Complete guide to all ProxmoxVE documentation - quickly find what you need.
-
----
-
-## 🎯 **Quick Navigation by Goal**
-
-### 👤 **I want to...**
-
-**Contribute a new application**
-→ Start with: [contribution/README.md](contribution/README.md)
-→ Then: [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md) + [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
-
-**Understand the architecture**
-→ Read: [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
-→ Then: [misc/README.md](misc/README.md)
-
-**Debug a failed installation**
-→ Check: [EXIT_CODES.md](EXIT_CODES.md)
-→ Then: [DEV_MODE.md](DEV_MODE.md)
-→ See also: [misc/error_handler.func/](misc/error_handler.func/)
-
-**Configure system defaults**
-→ Read: [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md)
-
-**Deploy containers automatically**
-→ Read: [guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md)
-
-**Develop a function library**
-→ Study: [misc/](misc/) documentation
+所有 ProxmoxVE 文档的完整指南 - 快速找到您需要的内容。
 
 ---
 
-## 👤 **Quick Start by Role**
+## 🎯 **按目标快速导航**
 
-### **I'm a...**
+### 👤 **我想要...**
 
-**New Contributor**
-→ Start: [contribution/README.md](contribution/README.md)
-→ Then: Choose your path below
+**贡献新应用程序**
+→ 从这里开始：[contribution/README.md](contribution/README.md)
+→ 然后：[ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md) + [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
 
-**Container Creator**
-→ Read: [ct/README.md](ct/README.md)
-→ Deep Dive: [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md)
-→ Reference: [misc/build.func/](misc/build.func/)
+**理解架构**
+→ 阅读：[TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
+→ 然后：[misc/README.md](misc/README.md)
 
-**Installation Script Developer**
-→ Read: [install/README.md](install/README.md)
-→ Deep Dive: [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
-→ Reference: [misc/tools.func/](misc/tools.func/)
+**调试失败的安装**
+→ 检查：[EXIT_CODES.md](EXIT_CODES.md)
+→ 然后：[DEV_MODE.md](DEV_MODE.md)
+→ 另见：[misc/error_handler.func/](misc/error_handler.func/)
 
-**VM Provisioner**
-→ Read: [vm/README.md](vm/README.md)
-→ Reference: [misc/cloud-init.func/](misc/cloud-init.func/)
+**配置系统默认值**
+→ 阅读：[guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md)
 
-**Tools Developer**
-→ Read: [tools/README.md](tools/README.md)
-→ Reference: [misc/build.func/](misc/build.func/)
+**自动部署容器**
+→ 阅读：[guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md)
 
-**API Integrator**
-→ Read: [api/README.md](api/README.md)
-→ Reference: [misc/api.func/](misc/api.func/)
-
-**System Operator**
-→ Start: [EXIT_CODES.md](EXIT_CODES.md)
-→ Then: [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md)
-→ Automate: [guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md)
-→ Debug: [DEV_MODE.md](DEV_MODE.md)
-
-**Architect**
-→ Read: [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
-→ Deep Dive: [misc/README.md](misc/README.md)
+**开发函数库**
+→ 研究：[misc/](misc/) 文档
 
 ---
 
-## 📂 **Documentation Structure**
+## 👤 **按角色快速开始**
 
-### Project-Mirrored Directories
+### **我是...**
 
-Each major project directory has documentation:
+**新贡献者**
+→ 开始：[contribution/README.md](contribution/README.md)
+→ 然后：选择下面的路径
+
+**容器创建者**
+→ 阅读：[ct/README.md](ct/README.md)
+→ 深入：[ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md)
+→ 参考：[misc/build.func/](misc/build.func/)
+
+**安装脚本开发者**
+→ 阅读：[install/README.md](install/README.md)
+→ 深入：[install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
+→ 参考：[misc/tools.func/](misc/tools.func/)
+
+**VM 配置者**
+→ 阅读：[vm/README.md](vm/README.md)
+→ 参考：[misc/cloud-init.func/](misc/cloud-init.func/)
+
+**工具开发者**
+→ 阅读：[tools/README.md](tools/README.md)
+→ 参考：[misc/build.func/](misc/build.func/)
+
+**API 集成者**
+→ 阅读：[api/README.md](api/README.md)
+→ 参考：[misc/api.func/](misc/api.func/)
+
+**系统运维人员**
+→ 开始：[EXIT_CODES.md](EXIT_CODES.md)
+→ 然后：[guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md)
+→ 自动化：[guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md)
+→ 调试：[DEV_MODE.md](DEV_MODE.md)
+
+**架构师**
+→ 阅读：[TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
+→ 深入：[misc/README.md](misc/README.md)
+
+---
+
+## 📂 **文档结构**
+
+### 项目镜像目录
+
+每个主要项目目录都有文档：
 
 ```
 ProxmoxVE/
@@ -87,212 +87,212 @@ ProxmoxVE/
 ├─ vm/                ↔ docs/vm/ (README.md)
 ├─ tools/            ↔ docs/tools/ (README.md)
 ├─ api/              ↔ docs/api/ (README.md)
-├─ misc/             ↔ docs/misc/ (9 function libraries)
-└─ [system-wide]     ↔ docs/guides/ (configuration & deployment guides)
+├─ misc/             ↔ docs/misc/ (9 个函数库)
+└─ [系统级]          ↔ docs/guides/ (配置和部署指南)
 ```
 
-### Core Documentation
+### 核心文档
 
-| Document | Purpose | Audience |
+| 文档 | 目的 | 受众 |
 |----------|---------|----------|
-| [contribution/README.md](contribution/README.md) | How to contribute | Contributors |
-| [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md) | Create ct scripts | Container developers |
-| [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md) | Create install scripts | Installation developers |
-| [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md) | Architecture deep-dive | Architects, advanced users |
-| [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md) | Configuration system | Operators, power users |
-| [guides/CONFIGURATION_REFERENCE.md](guides/CONFIGURATION_REFERENCE.md) | Configuration options reference | Advanced users |
-| [guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md) | Automated deployments | DevOps, automation |
-| [EXIT_CODES.md](EXIT_CODES.md) | Exit code reference | Troubleshooters |
-| [DEV_MODE.md](DEV_MODE.md) | Debugging tools | Developers |
+| [contribution/README.md](contribution/README.md) | 如何贡献 | 贡献者 |
+| [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md) | 创建 ct 脚本 | 容器开发者 |
+| [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md) | 创建安装脚本 | 安装开发者 |
+| [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md) | 架构深入探讨 | 架构师，高级用户 |
+| [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md) | 配置系统 | 运维人员，高级用户 |
+| [guides/CONFIGURATION_REFERENCE.md](guides/CONFIGURATION_REFERENCE.md) | 配置选项参考 | 高级用户 |
+| [guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md) | 自动化部署 | DevOps，自动化 |
+| [EXIT_CODES.md](EXIT_CODES.md) | 退出代码参考 | 故障排除者 |
+| [DEV_MODE.md](DEV_MODE.md) | 调试工具 | 开发者 |
 
 ---
 
-## 📂 **Directory Guide**
+## 📂 **目录指南**
 
-### [ct/](ct/) - Container Scripts
-Documentation for `/ct` - Container creation scripts that run on the Proxmox host.
+### [ct/](ct/) - 容器脚本
+`/ct` 的文档 - 在 Proxmox 主机上运行的容器创建脚本。
 
-**Includes**:
-- Overview of container creation process
-- Deep dive: [DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md) - Complete reference with examples
-- Reference to [misc/build.func/](misc/build.func/)
-- Quick start for creating new containers
+**包括**：
+- 容器创建过程概述
+- 深入：[DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md) - 带示例的完整参考
+- 参考 [misc/build.func/](misc/build.func/)
+- 创建新容器的快速开始
 
-### [install/](install/) - Installation Scripts
-Documentation for `/install` - Scripts that run inside containers to install applications.
+### [install/](install/) - 安装脚本
+`/install` 的文档 - 在容器内运行以安装应用程序的脚本。
 
-**Includes**:
-- Overview of 10-phase installation pattern
-- Deep dive: [DETAILED_GUIDE.md](install/DETAILED_GUIDE.md) - Complete reference with examples
-- Reference to [misc/tools.func/](misc/tools.func/)
-- Alpine vs Debian differences
+**包括**：
+- 10 阶段安装模式概述
+- 深入：[DETAILED_GUIDE.md](install/DETAILED_GUIDE.md) - 带示例的完整参考
+- 参考 [misc/tools.func/](misc/tools.func/)
+- Alpine vs Debian 差异
 
-### [vm/](vm/) - Virtual Machine Scripts
-Documentation for `/vm` - VM creation scripts using cloud-init provisioning.
+### [vm/](vm/) - 虚拟机脚本
+`/vm` 的文档 - 使用 cloud-init 配置的 VM 创建脚本。
 
-**Includes**:
-- Overview of VM provisioning
-- Link to [misc/cloud-init.func/](misc/cloud-init.func/)
-- VM vs Container comparison
-- Cloud-init examples
+**包括**：
+- VM 配置概述
+- 链接到 [misc/cloud-init.func/](misc/cloud-init.func/)
+- VM vs 容器比较
+- Cloud-init 示例
 
-### [tools/](tools/) - Tools & Utilities
-Documentation for `/tools` - Management tools and add-ons.
+### [tools/](tools/) - 工具和实用程序
+`/tools` 的文档 - 管理工具和附加组件。
 
-**Includes**:
-- Overview of tools structure
-- Integration points
-- Contributing new tools
-- Common operations
+**包括**：
+- 工具结构概述
+- 集成点
+- 贡献新工具
+- 常见操作
 
-### [api/](api/) - API Integration
-Documentation for `/api` - Telemetry and API backend.
+### [api/](api/) - API 集成
+`/api` 的文档 - 遥测和 API 后端。
 
-**Includes**:
-- API overview
-- Integration methods
-- API endpoints
-- Privacy information
+**包括**：
+- API 概述
+- 集成方法
+- API 端点
+- 隐私信息
 
-### [misc/](misc/) - Function Libraries
-Documentation for `/misc` - 9 core function libraries with complete references.
+### [misc/](misc/) - 函数库
+`/misc` 的文档 - 9 个核心函数库的完整参考。
 
-**Contains**:
-- **build.func/** - Container orchestration (7 files)
-- **core.func/** - Utilities and messaging (5 files)
-- **error_handler.func/** - Error handling (5 files)
-- **api.func/** - API integration (5 files)
-- **install.func/** - Container setup (5 files)
-- **tools.func/** - Package installation (6 files)
-- **alpine-install.func/** - Alpine setup (5 files)
-- **alpine-tools.func/** - Alpine tools (5 files)
-- **cloud-init.func/** - VM provisioning (5 files)
+**包含**：
+- **build.func/** - 容器编排（7 个文件）
+- **core.func/** - 实用程序和消息传递（5 个文件）
+- **error_handler.func/** - 错误处理（5 个文件）
+- **api.func/** - API 集成（5 个文件）
+- **install.func/** - 容器设置（5 个文件）
+- **tools.func/** - 包安装（6 个文件）
+- **alpine-install.func/** - Alpine 设置（5 个文件）
+- **alpine-tools.func/** - Alpine 工具（5 个文件）
+- **cloud-init.func/** - VM 配置（5 个文件）
 
 ---
 
-## 🎓 **Learning Paths**
+## 🎓 **学习路径**
 
-### Path 1: First-Time Contributor (2-3 hours)
+### 路径 1：首次贡献者（2-3 小时）
 
-1. [contribution/README.md](contribution/README.md) - Quick Start
-2. Pick your area:
-   - Containers → [ct/README.md](ct/README.md) + [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md)
-   - Installation → [install/README.md](install/README.md) + [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
-   - VMs → [vm/README.md](vm/README.md)
-3. Study existing similar script
-4. Create your contribution
-5. Submit PR
+1. [contribution/README.md](contribution/README.md) - 快速开始
+2. 选择您的领域：
+   - 容器 → [ct/README.md](ct/README.md) + [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md)
+   - 安装 → [install/README.md](install/README.md) + [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
+   - VM → [vm/README.md](vm/README.md)
+3. 研究现有的类似脚本
+4. 创建您的贡献
+5. 提交 PR
 
-### Path 2: Intermediate Developer (4-6 hours)
+### 路径 2：中级开发者（4-6 小时）
 
 1. [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
-2. Dive into function libraries:
+2. 深入函数库：
    - [misc/build.func/README.md](misc/build.func/README.md)
    - [misc/tools.func/README.md](misc/tools.func/README.md)
    - [misc/install.func/README.md](misc/install.func/README.md)
-3. Study advanced examples
-4. Create complex applications
+3. 研究高级示例
+4. 创建复杂应用程序
 
-### Path 3: Advanced Architect (8+ hours)
+### 路径 3：高级架构师（8+ 小时）
 
-1. All of Intermediate Path
-2. Study all 9 function libraries in depth
-3. [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md) - Configuration system
-4. [DEV_MODE.md](DEV_MODE.md) - Debugging and development
-5. Design new features or function libraries
+1. 中级路径的所有内容
+2. 深入研究所有 9 个函数库
+3. [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md) - 配置系统
+4. [DEV_MODE.md](DEV_MODE.md) - 调试和开发
+5. 设计新功能或函数库
 
-### Path 4: Troubleshooter (30 minutes - 1 hour)
+### 路径 4：故障排除者（30 分钟 - 1 小时）
 
-1. [EXIT_CODES.md](EXIT_CODES.md) - Find error code
-2. [DEV_MODE.md](DEV_MODE.md) - Run with debugging
-3. Check relevant function library docs
-4. Review logs and fix
+1. [EXIT_CODES.md](EXIT_CODES.md) - 查找错误代码
+2. [DEV_MODE.md](DEV_MODE.md) - 使用调试运行
+3. 检查相关函数库文档
+4. 查看日志并修复
 
 ---
 
-## 📊 **By the Numbers**
+## 📊 **数据统计**
 
-| Metric | Count |
+| 指标 | 数量 |
 |--------|:---:|
-| **Documentation Files** | 63 |
-| **Total Lines** | 15,000+ |
-| **Function Libraries** | 9 |
-| **Functions Documented** | 150+ |
-| **Code Examples** | 50+ |
-| **Flowcharts** | 15+ |
-| **Do/Don't Sections** | 20+ |
-| **Real-World Examples** | 30+ |
+| **文档文件** | 63 |
+| **总行数** | 15,000+ |
+| **函数库** | 9 |
+| **已记录的函数** | 150+ |
+| **代码示例** | 50+ |
+| **流程图** | 15+ |
+| **应该做/不应该做的部分** | 20+ |
+| **实际示例** | 30+ |
 
 ---
 
-## 🔍 **Find It Fast**
+## 🔍 **快速查找**
 
-### By Feature
-- **How do I create a container?** → [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md)
-- **How do I create an install script?** → [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
-- **How do I create a VM?** → [vm/README.md](vm/README.md)
-- **How do I install Node.js?** → [misc/tools.func/](misc/tools.func/)
-- **How do I debug?** → [DEV_MODE.md](DEV_MODE.md)
+### 按功能
+- **如何创建容器？** → [ct/DETAILED_GUIDE.md](ct/DETAILED_GUIDE.md)
+- **如何创建安装脚本？** → [install/DETAILED_GUIDE.md](install/DETAILED_GUIDE.md)
+- **如何创建 VM？** → [vm/README.md](vm/README.md)
+- **如何安装 Node.js？** → [misc/tools.func/](misc/tools.func/)
+- **如何调试？** → [DEV_MODE.md](DEV_MODE.md)
 
-### By Error
-- **Exit code 206?** → [EXIT_CODES.md](EXIT_CODES.md)
-- **Network failed?** → [misc/install.func/](misc/install.func/)
-- **Package error?** → [misc/tools.func/](misc/tools.func/)
+### 按错误
+- **退出代码 206？** → [EXIT_CODES.md](EXIT_CODES.md)
+- **网络失败？** → [misc/install.func/](misc/install.func/)
+- **包错误？** → [misc/tools.func/](misc/tools.func/)
 
-### By Role
-- **Contributor** → [contribution/README.md](contribution/README.md)
-- **Operator** → [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md)
-- **Automation** → [guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md)
-- **Developer** → [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
-- **Architect** → [misc/README.md](misc/README.md)
-
----
-
-## ✅ **Documentation Features**
-
-- ✅ **Project-mirrored structure** - Organized like the actual project
-- ✅ **Complete function references** - Every function documented
-- ✅ **Real-world examples** - Copy-paste ready code
-- ✅ **Visual flowcharts** - ASCII diagrams of workflows
-- ✅ **Integration guides** - How components connect
-- ✅ **Troubleshooting** - Common issues and solutions
-- ✅ **Best practices** - DO/DON'T sections throughout
-- ✅ **Learning paths** - Structured curriculum by role
-- ✅ **Quick references** - Fast lookup by error code
-- ✅ **Comprehensive navigation** - This page
+### 按角色
+- **贡献者** → [contribution/README.md](contribution/README.md)
+- **运维人员** → [guides/DEFAULTS_SYSTEM_GUIDE.md](guides/DEFAULTS_SYSTEM_GUIDE.md)
+- **自动化** → [guides/UNATTENDED_DEPLOYMENTS.md](guides/UNATTENDED_DEPLOYMENTS.md)
+- **开发者** → [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
+- **架构师** → [misc/README.md](misc/README.md)
 
 ---
 
-## 🚀 **Start Here**
+## ✅ **文档特性**
 
-**New to ProxmoxVE?** → [contribution/README.md](contribution/README.md)
-
-**Looking for something specific?** → Choose your role above or browse by directory
-
-**Need to debug?** → [EXIT_CODES.md](EXIT_CODES.md)
-
-**Want to understand architecture?** → [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
-
----
-
-## 🤝 **Contributing Documentation**
-
-Found an error? Want to improve docs?
-
-1. See: [contribution/README.md](contribution/README.md) for full contribution guide
-2. Open issue: [GitHub Issues](https://github.com/community-scripts/ProxmoxVE/issues)
-3. Or submit PR with improvements
+- ✅ **项目镜像结构** - 像实际项目一样组织
+- ✅ **完整的函数参考** - 每个函数都有文档
+- ✅ **实际示例** - 可复制粘贴的代码
+- ✅ **可视化流程图** - 工作流的 ASCII 图表
+- ✅ **集成指南** - 组件如何连接
+- ✅ **故障排除** - 常见问题和解决方案
+- ✅ **最佳实践** - 贯穿始终的应该做/不应该做部分
+- ✅ **学习路径** - 按角色的结构化课程
+- ✅ **快速参考** - 按错误代码快速查找
+- ✅ **全面导航** - 本页面
 
 ---
 
-## 📝 **Status**
+## 🚀 **从这里开始**
 
-- **Last Updated**: December 2025
-- **Version**: 2.3 (Consolidated & Reorganized)
-- **Completeness**: ✅ 100% - All components documented
-- **Quality**: ✅ Production-ready
-- **Structure**: ✅ Clean and organized
+**ProxmoxVE 新手？** → [contribution/README.md](contribution/README.md)
+
+**寻找特定内容？** → 选择上面的角色或按目录浏览
+
+**需要调试？** → [EXIT_CODES.md](EXIT_CODES.md)
+
+**想要理解架构？** → [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md)
 
 ---
 
-**Welcome to ProxmoxVE! Start with [CONTRIBUTION_GUIDE.md](CONTRIBUTION_GUIDE.md) or choose your role above.** 🚀
+## 🤝 **贡献文档**
+
+发现错误？想要改进文档？
+
+1. 参见：[contribution/README.md](contribution/README.md) 获取完整的贡献指南
+2. 开启问题：[GitHub Issues](https://github.com/community-scripts/ProxmoxVE/issues)
+3. 或提交带有改进的 PR
+
+---
+
+## 📝 **状态**
+
+- **最后更新**：2025 年 12 月
+- **版本**：2.3（整合和重组）
+- **完整性**：✅ 100% - 所有组件已记录
+- **质量**：✅ 生产就绪
+- **结构**：✅ 清晰有序
+
+---
+
+**欢迎来到 ProxmoxVE！从 [CONTRIBUTION_GUIDE.md](CONTRIBUTION_GUIDE.md) 开始或选择上面的角色。** 🚀

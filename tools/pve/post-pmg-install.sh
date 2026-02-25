@@ -83,15 +83,15 @@ start_routines() {
     "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Correcting Debian Sources"
+    msg_info "正在修正 Debian 源"
     cat <<EOF >/etc/apt/sources.list
 deb http://deb.debian.org/debian ${VERSION} main contrib
 deb http://deb.debian.org/debian ${VERSION}-updates main contrib
 deb http://security.debian.org/debian-security ${VERSION}-security main contrib
 EOF
-    msg_ok "Corrected Debian Sources"
+    msg_ok "已修正 Debian 源"
     ;;
-  no) msg_error "Selected no to Correcting Debian Sources" ;;
+  no) msg_error "已选择不 正在修正 Debian 源" ;;
   esac
 
   # ---- PMG-ENTERPRISE ----
@@ -107,9 +107,9 @@ EOF
     case $CHOICE in
     keep) msg_ok "Kept 'pmg-enterprise' repository" ;;
     disable)
-      msg_info "Disabling 'pmg-enterprise' repository"
+      msg_info "正在禁用 'pmg-enterprise' repository"
       sed -i "s/^[^#].*pmg-enterprise/# &/" "$file"
-      msg_ok "Disabled 'pmg-enterprise' repository"
+      msg_ok "已禁用 'pmg-enterprise' repository"
       ;;
     delete)
       msg_info "Deleting 'pmg-enterprise' repository file"
@@ -127,9 +127,9 @@ EOF
       3>&2 2>&1 1>&3)
     case $CHOICE in
     enable)
-      msg_info "Enabling 'pmg-enterprise' repository"
+      msg_info "正在启用 'pmg-enterprise' repository"
       sed -i "s/^#.*pmg-enterprise/deb/" "$file"
-      msg_ok "Enabled 'pmg-enterprise' repository"
+      msg_ok "已启用 'pmg-enterprise' repository"
       ;;
     keep) msg_ok "Kept 'pmg-enterprise' repository disabled" ;;
     delete)
@@ -141,20 +141,20 @@ EOF
     ;;
   missing)
     CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "PMG-ENTERPRISE" \
-      --menu "Add 'pmg-enterprise' repository?\n\nOnly for subscription customers." 14 58 2 \
+      --menu "Add 'pmg-enterprise' repository?\n\n仅 for subscription customers." 14 58 2 \
       "no" " " \
       "yes" " " \
       --default-item "no" \
       3>&2 2>&1 1>&3)
     case $CHOICE in
     yes)
-      msg_info "Adding 'pmg-enterprise' repository"
+      msg_info "正在添加 'pmg-enterprise' repository"
       cat >/etc/apt/sources.list.d/pmg-enterprise.list <<EOF
 deb https://enterprise.proxmox.com/debian/pmg ${VERSION} pmg-enterprise
 EOF
-      msg_ok "Added 'pmg-enterprise' repository"
+      msg_ok "已添加 'pmg-enterprise' repository"
       ;;
-    no) msg_error "Selected no to Adding 'pmg-enterprise' repository" ;;
+    no) msg_error "已选择不 正在添加 'pmg-enterprise' repository" ;;
     esac
     ;;
   esac
@@ -172,9 +172,9 @@ EOF
     case $CHOICE in
     keep) msg_ok "Kept 'pmg-no-subscription' repository" ;;
     disable)
-      msg_info "Disabling 'pmg-no-subscription' repository"
+      msg_info "正在禁用 'pmg-no-subscription' repository"
       sed -i "s/^[^#].*pmg-no-subscription/# &/" "$file"
-      msg_ok "Disabled 'pmg-no-subscription' repository"
+      msg_ok "已禁用 'pmg-no-subscription' repository"
       ;;
     delete)
       msg_info "Deleting 'pmg-no-subscription' repository file"
@@ -192,9 +192,9 @@ EOF
       3>&2 2>&1 1>&3)
     case $CHOICE in
     enable)
-      msg_info "Enabling 'pmg-no-subscription' repository"
+      msg_info "正在启用 'pmg-no-subscription' repository"
       sed -i "s/^#.*pmg-no-subscription/deb/" "$file"
-      msg_ok "Enabled 'pmg-no-subscription' repository"
+      msg_ok "已启用 'pmg-no-subscription' repository"
       ;;
     keep) msg_ok "Kept 'pmg-no-subscription' repository disabled" ;;
     delete)
@@ -212,13 +212,13 @@ EOF
       3>&2 2>&1 1>&3)
     case $CHOICE in
     yes)
-      msg_info "Adding 'pmg-no-subscription' repository"
+      msg_info "正在添加 'pmg-no-subscription' repository"
       cat >/etc/apt/sources.list.d/pmg-install-repo.list <<EOF
 deb http://download.proxmox.com/debian/pmg ${VERSION} pmg-no-subscription
 EOF
-      msg_ok "Added 'pmg-no-subscription' repository"
+      msg_ok "已添加 'pmg-no-subscription' repository"
       ;;
-    no) msg_error "Selected no to Adding 'pmg-no-subscription' repository" ;;
+    no) msg_error "已选择不 正在添加 'pmg-no-subscription' repository" ;;
     esac
     ;;
   esac
@@ -235,13 +235,13 @@ EOF
       "no" " " 3>&2 2>&1 1>&3)
     case $CHOICE in
     yes)
-      msg_info "Adding 'pmgtest' repository (disabled)"
+      msg_info "正在添加 'pmgtest' repository (disabled)"
       cat >/etc/apt/sources.list.d/pmgtest-for-beta.list <<EOF
 # deb http://download.proxmox.com/debian/pmg ${VERSION} pmgtest
 EOF
-      msg_ok "Added 'pmgtest' repository"
+      msg_ok "已添加 'pmgtest' repository"
       ;;
-    no) msg_error "Selected no to Adding 'pmgtest' repository" ;;
+    no) msg_error "已选择不 正在添加 'pmgtest' repository" ;;
     esac
     ;;
   esac
@@ -253,7 +253,7 @@ EOF
   yes)
     whiptail --backtitle "Proxmox VE Helper Scripts" --msgbox --title "Support Subscriptions" \
       "Supporting the software's development team is essential.\nPlease consider buying a subscription." 10 58
-    msg_info "Disabling subscription nag"
+    msg_info "正在禁用 subscription nag"
     cat >/etc/apt/apt.conf.d/no-nag-script <<'EOF'
 DPkg::Post-Invoke { "if [ -s /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js ] && ! grep -q -F 'NoMoreNagging' /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js; then sed -i '/data\.status/{s/\!//;s/active/NoMoreNagging/}' /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js; fi"; };
 EOF
@@ -261,10 +261,10 @@ EOF
     cat >/etc/apt/apt.conf.d/no-nag-script-pmgmanagerlib-mobile <<'EOF'
 DPkg::Post-Invoke { "if [ -s /usr/share/javascript/pmg-gui/js/pmgmanagerlib-mobile.js ] && ! grep -q -F 'NoMoreNagging' /usr/share/javascript/pmg-gui/js/pmgmanagerlib-mobile.js; then sed -i '/data\.status/{s/\!//;s/active/NoMoreNagging/}' /usr/share/javascript/pmg-gui/js/pmgmanagerlib-mobile.js; fi"; };
 EOF
-    msg_ok "Disabled subscription nag (clear browser cache!)"
+    msg_ok "已禁用 subscription nag (clear browser cache!)"
     ;;
   no)
-    msg_error "Selected no to Disabling subscription nag"
+    msg_error "已选择不 正在禁用 subscription nag"
     rm -f /etc/apt/apt.conf.d/no-nag-script 2>/dev/null
     ;;
   esac
@@ -275,12 +275,12 @@ EOF
     "Update Proxmox Mail Gateway now?" 11 58 2 "yes" " " "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Updating Proxmox Mail Gateway (Patience)"
+    msg_info "正在更新 Proxmox Mail Gateway (Patience)"
     apt update &>/dev/null || msg_error "apt update failed"
     apt -y dist-upgrade &>/dev/null || msg_error "apt dist-upgrade failed"
-    msg_ok "Updated Proxmox Mail Gateway"
+    msg_ok "已更新 Proxmox Mail Gateway"
     ;;
-  no) msg_error "Selected no to updating Proxmox Mail Gateway" ;;
+  no) msg_error "已选择不 updating Proxmox Mail Gateway" ;;
   esac
 
   # ---- REMINDER ----
@@ -291,7 +291,7 @@ Please run this script on every PMG node individually if you have multiple nodes
 
 After completing these steps, it is strongly recommended to REBOOT your node.
 
-After the upgrade or post-install routines, always clear your browser cache or perform a hard reload (Ctrl+Shift+R) before using the PMG Web UI to avoid UI display issues." 20 80
+After the upgrade or post-install routines, always clear your browser cache or perform a hard reload (Ctrl+Shift+R) before using the PMG Web UI 到void UI display issues." 20 80
 
   # ---- REBOOT ----
   CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "REBOOT" --menu \
@@ -300,18 +300,18 @@ After the upgrade or post-install routines, always clear your browser cache or p
   yes)
     msg_info "Rebooting Proxmox Mail Gateway"
     sleep 2
-    msg_ok "Completed Post Install Routines"
+    msg_ok "已完成 Post Install Routines"
     reboot
     ;;
   no)
-    msg_error "Selected no to reboot (Reboot recommended)"
-    msg_ok "Completed Post Install Routines"
+    msg_error "已选择不 reboot (Reboot recommended)"
+    msg_ok "已完成 Post Install Routines"
     ;;
   esac
 }
 
 header_info
-echo -e "\nThis script will Perform Post Install Routines.\n"
+echo -e "\n此脚本将 执行安装后例行程序.\n"
 while true; do
   read -rp "Start the Proxmox Mail Gateway Post Install Script (y/n)? " yn
   case $yn in

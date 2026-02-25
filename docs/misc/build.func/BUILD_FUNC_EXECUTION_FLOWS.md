@@ -1,413 +1,413 @@
-# build.func Execution Flows
+# build.func 执行流程
 
-## Overview
+## 概述
 
-This document details the execution flows for different installation modes and scenarios in `build.func`, including variable precedence, decision trees, and workflow patterns.
+本文档详细介绍 `build.func` 中不同安装模式和场景的执行流程，包括变量优先级、决策树和工作流模式。
 
-## Installation Modes
+## 安装模式
 
-### 1. Default Install Flow
+### 1. 默认安装流程
 
-**Purpose**: Uses built-in defaults with minimal user interaction
-**Use Case**: Quick container creation with standard settings
+**目的**：使用内置默认值，最少用户交互
+**用例**：使用标准设置快速创建容器
 
 ```
-Default Install Flow:
+默认安装流程：
 ├── start()
-│   ├── Detect execution context
-│   ├── Capture hard environment variables
-│   └── Set CT_TYPE="install"
+│   ├── 检测执行上下文
+│   ├── 捕获硬环境变量
+│   └── 设置 CT_TYPE="install"
 ├── install_script()
-│   ├── Display installation mode menu
-│   ├── User selects "Default Install"
-│   └── Proceed with defaults
+│   ├── 显示安装模式菜单
+│   ├── 用户选择 "Default Install"
+│   └── 使用默认值继续
 ├── variables()
-│   ├── base_settings()  # Set built-in defaults
-│   ├── Load app.vars (if exists)
-│   ├── Load default.vars (if exists)
-│   └── Apply variable precedence
+│   ├── base_settings()  # 设置内置默认值
+│   ├── 加载 app.vars（如果存在）
+│   ├── 加载 default.vars（如果存在）
+│   └── 应用变量优先级
 ├── build_container()
 │   ├── validate_settings()
 │   ├── check_conflicts()
 │   └── create_lxc_container()
 └── default_var_settings()
-    └── Offer to save as defaults
+    └── 提供保存为默认值
 ```
 
-**Key Characteristics**:
-- Minimal user prompts
-- Uses built-in defaults
-- Fast execution
-- Suitable for standard deployments
+**主要特点**：
+- 最少用户提示
+- 使用内置默认值
+- 快速执行
+- 适合标准部署
 
-### 2. Advanced Install Flow
+### 2. 高级安装流程
 
-**Purpose**: Full interactive configuration via whiptail menus
-**Use Case**: Custom container configuration with full control
+**目的**：通过 whiptail 菜单进行完整交互式配置
+**用例**：完全控制的自定义容器配置
 
 ```
-Advanced Install Flow:
+高级安装流程：
 ├── start()
-│   ├── Detect execution context
-│   ├── Capture hard environment variables
-│   └── Set CT_TYPE="install"
+│   ├── 检测执行上下文
+│   ├── 捕获硬环境变量
+│   └── 设置 CT_TYPE="install"
 ├── install_script()
-│   ├── Display installation mode menu
-│   ├── User selects "Advanced Install"
-│   └── Proceed with advanced configuration
+│   ├── 显示安装模式菜单
+│   ├── 用户选择 "Advanced Install"
+│   └── 继续高级配置
 ├── variables()
-│   ├── base_settings()  # Set built-in defaults
-│   ├── Load app.vars (if exists)
-│   ├── Load default.vars (if exists)
-│   └── Apply variable precedence
+│   ├── base_settings()  # 设置内置默认值
+│   ├── 加载 app.vars（如果存在）
+│   ├── 加载 default.vars（如果存在）
+│   └── 应用变量优先级
 ├── advanced_settings()
-│   ├── OS Selection Menu
-│   ├── Resource Configuration Menu
-│   ├── Network Configuration Menu
+│   ├── OS 选择菜单
+│   ├── 资源配置菜单
+│   ├── 网络配置菜单
 │   ├── select_storage()
 │   │   ├── resolve_storage_preselect()
 │   │   └── choose_and_set_storage_for_file()
-│   ├── GPU Configuration Menu
+│   ├── GPU 配置菜单
 │   │   └── detect_gpu_devices()
-│   └── Feature Flags Menu
+│   └── 功能标志菜单
 ├── build_container()
 │   ├── validate_settings()
 │   ├── check_conflicts()
 │   └── create_lxc_container()
 └── default_var_settings()
-    └── Offer to save as defaults
+    └── 提供保存为默认值
 ```
 
-**Key Characteristics**:
-- Full interactive configuration
-- Whiptail menus for all options
-- Complete control over settings
-- Suitable for custom deployments
+**主要特点**：
+- 完整交互式配置
+- 所有选项的 Whiptail 菜单
+- 完全控制设置
+- 适合自定义部署
 
-### 3. My Defaults Flow
+### 3. 我的默认值流程
 
-**Purpose**: Loads settings from global default.vars file
-**Use Case**: Using previously saved global defaults
+**目的**：从全局 default.vars 文件加载设置
+**用例**：使用之前保存的全局默认值
 
 ```
-My Defaults Flow:
+我的默认值流程：
 ├── start()
-│   ├── Detect execution context
-│   ├── Capture hard environment variables
-│   └── Set CT_TYPE="install"
+│   ├── 检测执行上下文
+│   ├── 捕获硬环境变量
+│   └── 设置 CT_TYPE="install"
 ├── install_script()
-│   ├── Display installation mode menu
-│   ├── User selects "My Defaults"
-│   └── Proceed with loaded defaults
+│   ├── 显示安装模式菜单
+│   ├── 用户选择 "My Defaults"
+│   └── 使用加载的默认值继续
 ├── variables()
-│   ├── base_settings()  # Set built-in defaults
-│   ├── Load app.vars (if exists)
-│   ├── Load default.vars  # Load global defaults
-│   └── Apply variable precedence
+│   ├── base_settings()  # 设置内置默认值
+│   ├── 加载 app.vars（如果存在）
+│   ├── 加载 default.vars  # 加载全局默认值
+│   └── 应用变量优先级
 ├── build_container()
 │   ├── validate_settings()
 │   ├── check_conflicts()
 │   └── create_lxc_container()
 └── default_var_settings()
-    └── Offer to save as defaults
+    └── 提供保存为默认值
 ```
 
-**Key Characteristics**:
-- Uses global default.vars file
-- Minimal user interaction
-- Consistent with previous settings
-- Suitable for repeated deployments
+**主要特点**：
+- 使用全局 default.vars 文件
+- 最少用户交互
+- 与之前设置一致
+- 适合重复部署
 
-### 4. App Defaults Flow
+### 4. 应用默认值流程
 
-**Purpose**: Loads settings from app-specific .vars file
-**Use Case**: Using previously saved app-specific defaults
+**目的**：从应用特定的 .vars 文件加载设置
+**用例**：使用之前保存的应用特定默认值
 
 ```
-App Defaults Flow:
+应用默认值流程：
 ├── start()
-│   ├── Detect execution context
-│   ├── Capture hard environment variables
-│   └── Set CT_TYPE="install"
+│   ├── 检测执行上下文
+│   ├── 捕获硬环境变量
+│   └── 设置 CT_TYPE="install"
 ├── install_script()
-│   ├── Display installation mode menu
-│   ├── User selects "App Defaults"
-│   └── Proceed with app-specific defaults
+│   ├── 显示安装模式菜单
+│   ├── 用户选择 "App Defaults"
+│   └── 继续应用特定默认值
 ├── variables()
-│   ├── base_settings()  # Set built-in defaults
-│   ├── Load app.vars  # Load app-specific defaults
-│   ├── Load default.vars (if exists)
-│   └── Apply variable precedence
+│   ├── base_settings()  # 设置内置默认值
+│   ├── 加载 app.vars  # 加载应用特定默认值
+│   ├── 加载 default.vars（如果存在）
+│   └── 应用变量优先级
 ├── build_container()
 │   ├── validate_settings()
 │   ├── check_conflicts()
 │   └── create_lxc_container()
 └── default_var_settings()
-    └── Offer to save as defaults
+    └── 提供保存为默认值
 ```
 
-**Key Characteristics**:
-- Uses app-specific .vars file
-- Minimal user interaction
-- App-optimized settings
-- Suitable for app-specific deployments
+**主要特点**：
+- 使用应用特定的 .vars 文件
+- 最少用户交互
+- 应用优化设置
+- 适合应用特定部署
 
-## Variable Precedence Chain
+## 变量优先级链
 
-### Precedence Order (Highest to Lowest)
+### 优先级顺序（从高到低）
 
-1. **Hard Environment Variables**: Set before script execution
-2. **App-specific .vars file**: `/usr/local/community-scripts/defaults/<app>.vars`
-3. **Global default.vars file**: `/usr/local/community-scripts/default.vars`
-4. **Built-in defaults**: Set in `base_settings()` function
+1. **硬环境变量**：脚本执行前设置
+2. **应用特定的 .vars 文件**：`/usr/local/community-scripts/defaults/<app>.vars`
+3. **全局 default.vars 文件**：`/usr/local/community-scripts/default.vars`
+4. **内置默认值**：在 `base_settings()` 函数中设置
 
-### Variable Resolution Process
-
-```
-Variable Resolution:
-├── Capture hard environment variables at start()
-├── Load built-in defaults in base_settings()
-├── Load global default.vars (if exists)
-├── Load app-specific .vars (if exists)
-└── Apply precedence chain
-    ├── Hard env vars override all
-    ├── App.vars override default.vars and built-ins
-    ├── Default.vars override built-ins
-    └── Built-ins are fallback defaults
-```
-
-## Storage Selection Logic
-
-### Storage Resolution Flow
+### 变量解析过程
 
 ```
-Storage Selection:
-├── Check if storage is preselected
-│   ├── var_template_storage set? → Validate and use
-│   └── var_container_storage set? → Validate and use
-├── Count available storage options
-│   ├── Only 1 option → Auto-select
-│   └── Multiple options → Prompt user
-├── User selection via whiptail
-│   ├── Template storage selection
-│   └── Container storage selection
-└── Validate selected storage
-    ├── Check availability
-    ├── Check content type support
-    └── Proceed with selection
+变量解析：
+├── 在 start() 捕获硬环境变量
+├── 在 base_settings() 加载内置默认值
+├── 加载全局 default.vars（如果存在）
+├── 加载应用特定的 .vars（如果存在）
+└── 应用优先级链
+    ├── 硬环境变量覆盖所有
+    ├── App.vars 覆盖 default.vars 和内置值
+    ├── Default.vars 覆盖内置值
+    └── 内置值是后备默认值
 ```
 
-### Storage Validation
+## 存储选择逻辑
+
+### 存储解析流程
 
 ```
-Storage Validation:
-├── Check storage exists
-├── Check storage is online
-├── Check content type support
-│   ├── Template storage: vztmpl support
-│   └── Container storage: rootdir support
-├── Check available space
-└── Validate permissions
+存储选择：
+├── 检查存储是否预选
+│   ├── var_template_storage 已设置？→ 验证并使用
+│   └── var_container_storage 已设置？→ 验证并使用
+├── 计算可用存储选项数量
+│   ├── 只有 1 个选项 → 自动选择
+│   └── 多个选项 → 提示用户
+├── 通过 whiptail 用户选择
+│   ├── 模板存储选择
+│   └── 容器存储选择
+└── 验证选定的存储
+    ├── 检查可用性
+    ├── 检查内容类型支持
+    └── 继续选择
 ```
 
-## GPU Passthrough Flow
-
-### GPU Detection and Configuration
+### 存储验证
 
 ```
-GPU Passthrough Flow:
+存储验证：
+├── 检查存储是否存在
+├── 检查存储是否在线
+├── 检查内容类型支持
+│   ├── 模板存储：vztmpl 支持
+│   └── 容器存储：rootdir 支持
+├── 检查可用空间
+└── 验证权限
+```
+
+## GPU 直通流程
+
+### GPU 检测和配置
+
+```
+GPU 直通流程：
 ├── detect_gpu_devices()
-│   ├── Scan for Intel GPUs
-│   │   ├── Check i915 driver
-│   │   └── Detect devices
-│   ├── Scan for AMD GPUs
-│   │   ├── Check AMDGPU driver
-│   │   └── Detect devices
-│   └── Scan for NVIDIA GPUs
-│       ├── Check NVIDIA driver
-│       ├── Detect devices
-│       └── Check CUDA support
-├── Check GPU passthrough eligibility
-│   ├── Is app in GPU_APPS list?
-│   ├── Is container privileged?
-│   └── Proceed if eligible
-├── GPU selection logic
-│   ├── Single GPU type → Auto-select
-│   └── Multiple GPU types → Prompt user
+│   ├── 扫描 Intel GPU
+│   │   ├── 检查 i915 驱动
+│   │   └── 检测设备
+│   ├── 扫描 AMD GPU
+│   │   ├── 检查 AMDGPU 驱动
+│   │   └── 检测设备
+│   └── 扫描 NVIDIA GPU
+│       ├── 检查 NVIDIA 驱动
+│       ├── 检测设备
+│       └── 检查 CUDA 支持
+├── 检查 GPU 直通资格
+│   ├── 应用是否在 GPU_APPS 列表中？
+│   ├── 容器是否为特权模式？
+│   └── 如果符合条件则继续
+├── GPU 选择逻辑
+│   ├── 单个 GPU 类型 → 自动选择
+│   └── 多个 GPU 类型 → 提示用户
 ├── configure_gpu_passthrough()
-│   ├── Add GPU device entries
-│   ├── Configure permissions
-│   └── Update container config
+│   ├── 添加 GPU 设备条目
+│   ├── 配置权限
+│   └── 更新容器配置
 └── fix_gpu_gids()
-    ├── Update GPU group IDs
-    └── Configure access permissions
+    ├── 更新 GPU 组 ID
+    └── 配置访问权限
 ```
 
-### GPU Eligibility Check
+### GPU 资格检查
 
 ```
-GPU Eligibility:
-├── Check app support
-│   ├── Is APP in GPU_APPS list?
-│   └── Proceed if supported
-├── Check container privileges
-│   ├── Is ENABLE_PRIVILEGED="true"?
-│   └── Proceed if privileged
-└── Check hardware availability
-    ├── Are GPUs detected?
-    └── Proceed if available
+GPU 资格：
+├── 检查应用支持
+│   ├── APP 是否在 GPU_APPS 列表中？
+│   └── 如果支持则继续
+├── 检查容器权限
+│   ├── ENABLE_PRIVILEGED="true"？
+│   └── 如果为特权则继续
+└── 检查硬件可用性
+    ├── 是否检测到 GPU？
+    └── 如果可用则继续
 ```
 
-## Network Configuration Flow
+## 网络配置流程
 
-### Network Setup Process
-
-```
-Network Configuration:
-├── Basic network settings
-│   ├── var_net (network interface)
-│   ├── var_bridge (bridge interface)
-│   └── var_gateway (gateway IP)
-├── IP configuration
-│   ├── var_ip (IPv4 address)
-│   ├── var_ipv6 (IPv6 address)
-│   └── IPV6_METHOD (IPv6 method)
-├── Advanced network settings
-│   ├── var_vlan (VLAN ID)
-│   ├── var_mtu (MTU size)
-│   └── var_mac (MAC address)
-└── Network validation
-    ├── Check IP format
-    ├── Check gateway reachability
-    └── Validate network configuration
-```
-
-## Container Creation Flow
-
-### LXC Container Creation Process
+### 网络设置过程
 
 ```
-Container Creation:
+网络配置：
+├── 基本网络设置
+│   ├── var_net（网络接口）
+│   ├── var_bridge（桥接接口）
+│   └── var_gateway（网关 IP）
+├── IP 配置
+│   ├── var_ip（IPv4 地址）
+│   ├── var_ipv6（IPv6 地址）
+│   └── IPV6_METHOD（IPv6 方法）
+├── 高级网络设置
+│   ├── var_vlan（VLAN ID）
+│   ├── var_mtu（MTU 大小）
+│   └── var_mac（MAC 地址）
+└── 网络验证
+    ├── 检查 IP 格式
+    ├── 检查网关可达性
+    └── 验证网络配置
+```
+
+## 容器创建流程
+
+### LXC 容器创建过程
+
+```
+容器创建：
 ├── create_lxc_container()
-│   ├── Create basic container
-│   ├── Configure network
-│   ├── Set up storage
-│   ├── Configure features
-│   ├── Set resource limits
-│   ├── Configure startup
-│   └── Start container
-├── Post-creation configuration
-│   ├── Wait for network
-│   ├── Configure GPU (if enabled)
-│   ├── Set up SSH keys
-│   └── Run post-install scripts
-└── Finalization
-    ├── Display container info
-    ├── Show access details
-    └── Provide next steps
+│   ├── 创建基本容器
+│   ├── 配置网络
+│   ├── 设置存储
+│   ├── 配置功能
+│   ├── 设置资源限制
+│   ├── 配置启动
+│   └── 启动容器
+├── 创建后配置
+│   ├── 等待网络
+│   ├── 配置 GPU（如果启用）
+│   ├── 设置 SSH 密钥
+│   └── 运行安装后脚本
+└── 完成
+    ├── 显示容器信息
+    ├── 显示访问详情
+    └── 提供后续步骤
 ```
 
-## Error Handling Flows
+## 错误处理流程
 
-### Validation Error Flow
+### 验证错误流程
 
 ```
-Validation Error Flow:
+验证错误流程：
 ├── validate_settings()
-│   ├── Check configuration validity
-│   └── Return error if invalid
+│   ├── 检查配置有效性
+│   └── 如果无效则返回错误
 ├── check_conflicts()
-│   ├── Check for conflicts
-│   └── Return error if conflicts found
-├── Error handling
-│   ├── Display error message
+│   ├── 检查冲突
+│   └── 如果发现冲突则返回错误
+├── 错误处理
+│   ├── 显示错误消息
 │   ├── cleanup_on_error()
-│   └── Exit with error code
-└── User notification
-    ├── Show error details
-    └── Suggest fixes
+│   └── 以错误代码退出
+└── 用户通知
+    ├── 显示错误详情
+    └── 建议修复
 ```
 
-### Storage Error Flow
+### 存储错误流程
 
 ```
-Storage Error Flow:
-├── Storage selection fails
-├── Retry storage selection
-│   ├── Show available options
-│   └── Allow user to retry
-├── Storage validation fails
-│   ├── Show validation errors
-│   └── Allow user to fix
-└── Fallback to default storage
-    ├── Use fallback storage
-    └── Continue with creation
+存储错误流程：
+├── 存储选择失败
+├── 重试存储选择
+│   ├── 显示可用选项
+│   └── 允许用户重试
+├── 存储验证失败
+│   ├── 显示验证错误
+│   └── 允许用户修复
+└── 回退到默认存储
+    ├── 使用后备存储
+    └── 继续创建
 ```
 
-### GPU Error Flow
+### GPU 错误流程
 
 ```
-GPU Error Flow:
-├── GPU detection fails
-├── Fall back to no GPU
-│   ├── Disable GPU passthrough
-│   └── Continue without GPU
-├── GPU configuration fails
-│   ├── Show configuration errors
-│   └── Allow user to retry
-└── GPU permission errors
-    ├── Fix GPU permissions
-    └── Retry configuration
+GPU 错误流程：
+├── GPU 检测失败
+├── 回退到无 GPU
+│   ├── 禁用 GPU 直通
+│   └── 继续无 GPU
+├── GPU 配置失败
+│   ├── 显示配置错误
+│   └── 允许用户重试
+└── GPU 权限错误
+    ├── 修复 GPU 权限
+    └── 重试配置
 ```
 
-## Integration Flows
+## 集成流程
 
-### With Install Scripts
-
-```
-Install Script Integration:
-├── build.func creates container
-├── Container starts successfully
-├── Install script execution
-│   ├── Download and install app
-│   ├── Configure app settings
-│   └── Set up services
-└── Post-installation configuration
-    ├── Verify installation
-    ├── Configure access
-    └── Display completion info
-```
-
-### With Proxmox API
+### 与安装脚本集成
 
 ```
-Proxmox API Integration:
-├── API authentication
-├── Container creation via API
-├── Configuration updates via API
-├── Status monitoring via API
-└── Error handling via API
+安装脚本集成：
+├── build.func 创建容器
+├── 容器成功启动
+├── 安装脚本执行
+│   ├── 下载并安装应用
+│   ├── 配置应用设置
+│   └── 设置服务
+└── 安装后配置
+    ├── 验证安装
+    ├── 配置访问
+    └── 显示完成信息
 ```
 
-## Performance Considerations
-
-### Execution Time Optimization
+### 与 Proxmox API 集成
 
 ```
-Performance Optimization:
-├── Parallel operations where possible
-├── Minimal user interaction in default mode
-├── Efficient storage selection
-├── Optimized GPU detection
-└── Streamlined validation
+Proxmox API 集成：
+├── API 身份验证
+├── 通过 API 创建容器
+├── 通过 API 更新配置
+├── 通过 API 监控状态
+└── 通过 API 处理错误
 ```
 
-### Resource Usage
+## 性能考虑
+
+### 执行时间优化
 
 ```
-Resource Usage:
-├── Minimal memory footprint
-├── Efficient disk usage
-├── Optimized network usage
-└── Minimal CPU overhead
+性能优化：
+├── 尽可能并行操作
+├── 默认模式下最少用户交互
+├── 高效存储选择
+├── 优化 GPU 检测
+└── 简化验证
+```
+
+### 资源使用
+
+```
+资源使用：
+├── 最小内存占用
+├── 高效磁盘使用
+├── 优化网络使用
+└── 最小 CPU 开销
 ```

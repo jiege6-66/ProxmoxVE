@@ -1,235 +1,235 @@
-# tools.func Documentation
+# tools.func 文档
 
-## Overview
+## 概述
 
-The `tools.func` file provides a comprehensive collection of helper functions for robust package management, repository management, and tool installation in Debian/Ubuntu-based systems. It is the central hub for installing services, databases, programming languages, and development tools in containers.
+`tools.func` 文件为基于 Debian/Ubuntu 的系统提供了一套全面的辅助函数集合，用于强大的包管理、仓库管理和工具安装。它是在容器中安装服务、数据库、编程语言和开发工具的中心枢纽。
 
-## Purpose and Use Cases
+## 目的和用例
 
-- **Package Management**: Robust APT/DPKG operations with retry logic
-- **Repository Setup**: Prepare and configure package repositories safely
-- **Tool Installation**: Install 30+ tools (Node.js, PHP, databases, etc.)
-- **Dependency Handling**: Manage complex installation workflows
-- **Error Recovery**: Automatic recovery from network failures
+- **包管理**：带重试逻辑的强大 APT/DPKG 操作
+- **仓库设置**：安全地准备和配置包仓库
+- **工具安装**：安装 30+ 种工具（Node.js、PHP、数据库等）
+- **依赖处理**：管理复杂的安装工作流程
+- **错误恢复**：从网络故障中自动恢复
 
-## Quick Reference
+## 快速参考
 
-### Key Function Groups
-- **Package Helpers**: `pkg_install()`, `pkg_update()`, `pkg_remove()` - APT operations with retry
-- **Repository Setup**: `setup_deb822_repo()` - Modern repository configuration
-- **Tool Installation**: `setup_nodejs()`, `setup_php()`, `setup_mariadb()`, etc. - 30+ tool functions
-- **System Utilities**: `disable_wait_online()`, `customize()` - System optimization
-- **Container Setup**: `setting_up_container()`, `motd_ssh()` - Container initialization
+### 主要功能组
+- **包助手**：`pkg_install()`、`pkg_update()`、`pkg_remove()` - 带重试的 APT 操作
+- **仓库设置**：`setup_deb822_repo()` - 现代仓库配置
+- **工具安装**：`setup_nodejs()`、`setup_php()`、`setup_mariadb()` 等 - 30+ 种工具函数
+- **系统实用程序**：`disable_wait_online()`、`customize()` - 系统优化
+- **容器设置**：`setting_up_container()`、`motd_ssh()` - 容器初始化
 
-### Dependencies
-- **External**: `curl`, `wget`, `apt-get`, `gpg`
-- **Internal**: Uses functions from `core.func`, `install.func`, `error_handler.func`
+### 依赖项
+- **外部**：`curl`、`wget`、`apt-get`、`gpg`
+- **内部**：使用来自 `core.func`、`install.func`、`error_handler.func` 的函数
 
-### Integration Points
-- Used by: All install scripts for dependency installation
-- Uses: Environment variables from build.func and core.func
-- Provides: Tool installation, package management, and repository services
+### 集成点
+- 被使用于：所有用于依赖安装的安装脚本
+- 使用：来自 build.func 和 core.func 的环境变量
+- 提供：工具安装、包管理和仓库服务
 
-## Documentation Files
+## 文档文件
 
 ### 📊 [TOOLS_FUNC_FLOWCHART.md](./TOOLS_FUNC_FLOWCHART.md)
-Visual execution flows showing package management, tool installation, and repository setup workflows.
+显示包管理、工具安装和仓库设置工作流程的可视化执行流程。
 
 ### 📚 [TOOLS_FUNC_FUNCTIONS_REFERENCE.md](./TOOLS_FUNC_FUNCTIONS_REFERENCE.md)
-Complete alphabetical reference of all 30+ functions with parameters, dependencies, and usage details.
+所有 30+ 个函数的完整字母顺序参考，包含参数、依赖项和使用详情。
 
 ### 💡 [TOOLS_FUNC_USAGE_EXAMPLES.md](./TOOLS_FUNC_USAGE_EXAMPLES.md)
-Practical examples showing how to use tool installation functions and common patterns.
+展示如何使用工具安装函数和常见模式的实用示例。
 
 ### 🔗 [TOOLS_FUNC_INTEGRATION.md](./TOOLS_FUNC_INTEGRATION.md)
-How tools.func integrates with other components and provides package/tool services.
+tools.func 如何与其他组件集成并提供包/工具服务。
 
 ### 🔧 [TOOLS_FUNC_ENVIRONMENT_VARIABLES.md](./TOOLS_FUNC_ENVIRONMENT_VARIABLES.md)
-Complete reference of environment variables and configuration options.
+环境变量和配置选项的完整参考。
 
-## Key Features
+## 主要特性
 
-### Robust Package Management
-- **Automatic Retry Logic**: 3 attempts with backoff for transient failures
-- **Silent Mode**: Suppress output with `$STD` variable
-- **Error Recovery**: Automatic cleanup of broken packages
-- **Atomic Operations**: Ensure consistent state even on failure
+### 强大的包管理
+- **自动重试逻辑**：对临时故障进行 3 次尝试并退避
+- **静默模式**：使用 `$STD` 变量抑制输出
+- **错误恢复**：自动清理损坏的包
+- **原子操作**：即使失败也确保一致状态
 
-### Tool Installation Coverage
-- **Node.js Ecosystem**: Node.js, npm, yarn, pnpm
-- **PHP Stack**: PHP-FPM, PHP-CLI, Composer
-- **Databases**: MariaDB, PostgreSQL, MongoDB
-- **Development Tools**: Git, build-essential, Docker
-- **Monitoring**: Grafana, Prometheus, Telegraf
-- **And 20+ more...**
+### 工具安装覆盖
+- **Node.js 生态系统**：Node.js、npm、yarn、pnpm
+- **PHP 栈**：PHP-FPM、PHP-CLI、Composer
+- **数据库**：MariaDB、PostgreSQL、MongoDB
+- **开发工具**：Git、build-essential、Docker
+- **监控**：Grafana、Prometheus、Telegraf
+- **以及 20+ 种更多工具...**
 
-### Repository Management
-- **Deb822 Format**: Modern standardized repository format
-- **Keyring Handling**: Automatic GPG key management
-- **Cleanup**: Removes legacy repositories and keyrings
-- **Validation**: Verifies repository accessibility before use
+### 仓库管理
+- **Deb822 格式**：现代标准化仓库格式
+- **密钥环处理**：自动 GPG 密钥管理
+- **清理**：删除旧仓库和密钥环
+- **验证**：使用前验证仓库可访问性
 
-## Common Usage Patterns
+## 常见使用模式
 
-### Installing a Tool
+### 安装工具
 ```bash
-setup_nodejs "20"     # Install Node.js v20
-setup_php "8.2"       # Install PHP 8.2
-setup_mariadb         # Install MariaDB (distribution packages)
-# MARIADB_VERSION="11.4" setup_mariadb  # Specific version from official repo
+setup_nodejs "20"     # 安装 Node.js v20
+setup_php "8.2"       # 安装 PHP 8.2
+setup_mariadb         # 安装 MariaDB（发行版包）
+# MARIADB_VERSION="11.4" setup_mariadb  # 从官方仓库安装特定版本
 ```
 
-### Safe Package Operations
+### 安全的包操作
 ```bash
-pkg_update           # Update package lists with retry
-pkg_install curl wget  # Install packages safely
-pkg_remove old-tool   # Remove package cleanly
+pkg_update           # 带重试更新包列表
+pkg_install curl wget  # 安全安装包
+pkg_remove old-tool   # 干净地删除包
 ```
 
-### Setting Up Repositories
+### 设置仓库
 ```bash
 setup_deb822_repo "ppa:example/ppa" "example-app" "jammy" "http://example.com" "release"
 ```
 
-## Function Categories
+## 函数分类
 
-### 🔹 Core Package Functions
-- `pkg_install()` - Install packages with retry logic
-- `pkg_update()` - Update package lists safely
-- `pkg_remove()` - Remove packages completely
+### 🔹 核心包函数
+- `pkg_install()` - 带重试逻辑安装包
+- `pkg_update()` - 安全更新包列表
+- `pkg_remove()` - 完全删除包
 
-### 🔹 Repository Functions
-- `setup_deb822_repo()` - Add repository in deb822 format
-- `cleanup_repo_metadata()` - Clean GPG keys and old repos
-- `check_repository()` - Verify repository is accessible
+### 🔹 仓库函数
+- `setup_deb822_repo()` - 以 deb822 格式添加仓库
+- `cleanup_repo_metadata()` - 清理 GPG 密钥和旧仓库
+- `check_repository()` - 验证仓库可访问
 
-### 🔹 Tool Installation Functions (30+)
-**Programming Languages**:
-- `setup_nodejs()` - Node.js with npm
-- `setup_php()` - PHP-FPM and CLI
-- `setup_python()` - Python 3 with pip
-- `setup_ruby()` - Ruby with gem
-- `setup_golang()` - Go programming language
+### 🔹 工具安装函数（30+）
+**编程语言**：
+- `setup_nodejs()` - 带 npm 的 Node.js
+- `setup_php()` - PHP-FPM 和 CLI
+- `setup_python()` - 带 pip 的 Python 3
+- `setup_ruby()` - 带 gem 的 Ruby
+- `setup_golang()` - Go 编程语言
 
-**Databases**:
-- `setup_mariadb()` - MariaDB server
-- `setup_postgresql()` - PostgreSQL database
+**数据库**：
+- `setup_mariadb()` - MariaDB 服务器
+- `setup_postgresql()` - PostgreSQL 数据库
 - `setup_mongodb()` - MongoDB NoSQL
-- `setup_redis()` - Redis cache
+- `setup_redis()` - Redis 缓存
 
-**Web Servers & Proxies**:
-- `setup_nginx()` - Nginx web server
-- `setup_apache()` - Apache HTTP server
-- `setup_caddy()` - Caddy web server
-- `setup_traefik()` - Traefik reverse proxy
+**Web 服务器和代理**：
+- `setup_nginx()` - Nginx Web 服务器
+- `setup_apache()` - Apache HTTP 服务器
+- `setup_caddy()` - Caddy Web 服务器
+- `setup_traefik()` - Traefik 反向代理
 
-**Containers & Virtualization**:
-- `setup_docker()` - Docker container runtime
-- `setup_podman()` - Podman container runtime
+**容器和虚拟化**：
+- `setup_docker()` - Docker 容器运行时
+- `setup_podman()` - Podman 容器运行时
 
-**Development & System Tools**:
-- `setup_git()` - Git version control
+**开发和系统工具**：
+- `setup_git()` - Git 版本控制
 - `setup_docker_compose()` - Docker Compose
-- `setup_composer()` - PHP dependency manager
-- `setup_build_tools()` - C/C++ compilation tools
+- `setup_composer()` - PHP 依赖管理器
+- `setup_build_tools()` - C/C++ 编译工具
 
-**Monitoring & Logging**:
-- `setup_grafana()` - Grafana dashboards
-- `setup_prometheus()` - Prometheus monitoring
-- `setup_telegraf()` - Telegraf metrics collector
+**监控和日志**：
+- `setup_grafana()` - Grafana 仪表板
+- `setup_prometheus()` - Prometheus 监控
+- `setup_telegraf()` - Telegraf 指标收集器
 
-### 🔹 System Configuration Functions
-- `setting_up_container()` - Container initialization message
-- `network_check()` - Verify network connectivity
-- `update_os()` - Update OS packages safely
-- `customize()` - Apply container customizations
-- `motd_ssh()` - Configure SSH and MOTD
-- `cleanup_lxc()` - Final container cleanup
+### 🔹 系统配置函数
+- `setting_up_container()` - 容器初始化消息
+- `network_check()` - 验证网络连接性
+- `update_os()` - 安全更新 OS 包
+- `customize()` - 应用容器自定义
+- `motd_ssh()` - 配置 SSH 和 MOTD
+- `cleanup_lxc()` - 最终容器清理
 
-## Best Practices
+## 最佳实践
 
-### ✅ DO
-- Use `$STD` to suppress output in production scripts
-- Chain multiple tool installations together
-- Check for tool availability before using
-- Use version parameters when available
-- Test new repositories before production use
+### ✅ 应该做
+- 在生产脚本中使用 `$STD` 抑制输出
+- 将多个工具安装链接在一起
+- 使用前检查工具可用性
+- 在可用时使用版本参数
+- 在生产使用前测试新仓库
 
-### ❌ DON'T
-- Mix package managers (apt and apk in same script)
-- Hardcode tool versions directly
-- Skip error checking on package operations
-- Use `apt-get install -y` without `$STD`
-- Leave temporary files after installation
+### ❌ 不应该做
+- 混合包管理器（在同一脚本中使用 apt 和 apk）
+- 直接硬编码工具版本
+- 跳过包操作的错误检查
+- 不使用 `$STD` 而使用 `apt-get install -y`
+- 安装后留下临时文件
 
-## Recent Updates
+## 最近更新
 
-### Version 2.0 (Dec 2025)
-- ✅ Added `setup_deb822_repo()` for modern repository format
-- ✅ Improved error handling with automatic cleanup
-- ✅ Added 5 new tool installation functions
-- ✅ Enhanced package retry logic with backoff
-- ✅ Standardized tool version handling
+### 版本 2.0（2025 年 12 月）
+- ✅ 为现代仓库格式添加 `setup_deb822_repo()`
+- ✅ 改进带自动清理的错误处理
+- ✅ 添加 5 个新工具安装函数
+- ✅ 增强带退避的包重试逻辑
+- ✅ 标准化工具版本处理
 
-## Integration with Other Functions
+## 与其他函数的集成
 
 ```
 tools.func
-    ├── Uses: core.func (messaging, colors)
-    ├── Uses: error_handler.func (exit codes, trapping)
-    ├── Uses: install.func (network_check, update_os)
+    ├── 使用：core.func（消息、颜色）
+    ├── 使用：error_handler.func（退出代码、捕获）
+    ├── 使用：install.func（network_check、update_os）
     │
-    └── Used by: All install/*.sh scripts
-        ├── For: Package installation
-        ├── For: Tool setup
-        └── For: Repository management
+    └── 被使用于：所有 install/*.sh 脚本
+        ├── 用于：包安装
+        ├── 用于：工具设置
+        └── 用于：仓库管理
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Package manager is locked"
+### "包管理器被锁定"
 ```bash
-# Wait for apt lock to release
+# 等待 apt 锁释放
 sleep 10
 pkg_update
 ```
 
-### "GPG key not found"
+### "未找到 GPG 密钥"
 ```bash
-# Repository setup will handle this automatically
-# If manual fix needed:
+# 仓库设置将自动处理此问题
+# 如需手动修复：
 cleanup_repo_metadata
 setup_deb822_repo ...
 ```
 
-### "Tool installation failed"
+### "工具安装失败"
 ```bash
-# Enable verbose output
+# 启用详细输出
 export var_verbose="yes"
 setup_nodejs "20"
 ```
 
-## Contributing
+## 贡献
 
-When adding new tool installation functions:
+添加新工具安装函数时：
 
-1. Follow the `setup_TOOLNAME()` naming convention
-2. Accept version as first parameter
-3. Check if tool already installed
-4. Use `$STD` for output suppression
-5. Set version file: `/opt/TOOLNAME_version.txt`
-6. Document in TOOLS_FUNC_FUNCTIONS_REFERENCE.md
+1. 遵循 `setup_TOOLNAME()` 命名约定
+2. 接受版本作为第一个参数
+3. 检查工具是否已安装
+4. 使用 `$STD` 抑制输出
+5. 设置版本文件：`/opt/TOOLNAME_version.txt`
+6. 在 TOOLS_FUNC_FUNCTIONS_REFERENCE.md 中记录
 
-## Related Documentation
+## 相关文档
 
-- **[build.func/](../build.func/)** - Container creation orchestrator
-- **[core.func/](../core.func/)** - Utility functions and messaging
-- **[install.func/](../install.func/)** - Installation workflow management
-- **[error_handler.func/](../error_handler.func/)** - Error handling and recovery
-- **[UPDATED_APP-install.md](../../UPDATED_APP-install.md)** - Application script guide
+- **[build.func/](../build.func/)** - 容器创建编排器
+- **[core.func/](../core.func/)** - 实用函数和消息
+- **[install.func/](../install.func/)** - 安装工作流程管理
+- **[error_handler.func/](../error_handler.func/)** - 错误处理和恢复
+- **[UPDATED_APP-install.md](../../UPDATED_APP-install.md)** - 应用程序脚本指南
 
 ---
 
-**Last Updated**: December 2025
-**Maintainers**: community-scripts team
-**License**: MIT
+**最后更新**：2025 年 12 月
+**维护者**：community-scripts 团队
+**许可证**：MIT

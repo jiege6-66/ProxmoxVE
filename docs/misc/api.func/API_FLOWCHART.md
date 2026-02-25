@@ -1,28 +1,28 @@
-# api.func Execution Flowchart
+# api.func 执行流程图
 
-## Main API Communication Flow
+## 主要 API 通信流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        API Communication Initialization                        │
-│  Entry point when api.func functions are called by installation scripts        │
+│                        API 通信初始化                                           │
+│  安装脚本调用 api.func 函数时的入口点                                           │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Prerequisites Check                                      │
+│                        先决条件检查                                             │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    Prerequisites Validation                                │ │
+│  │                    先决条件验证                                             │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Check curl    │    │   Check         │    │   Check             │ │ │
-│  │  │   Availability  │    │   Diagnostics   │    │   Random UUID       │ │ │
-│  │  │                 │    │   Setting       │    │                     │ │
+│  │  │   检查 curl     │    │   检查          │    │   检查              │ │ │
+│  │  │   可用性        │    │   诊断设置      │    │   Random UUID       │ │ │
+│  │  │                 │    │                 │    │                     │ │
 │  │  │ • command -v    │    │ • DIAGNOSTICS   │    │ • RANDOM_UUID       │ │
-│  │  │   curl          │    │   = "yes"       │    │   not empty         │ │
-│  │  │ • Return if     │    │ • Return if     │    │ • Return if         │ │
-│  │  │   not found     │    │   disabled      │    │   not set          │ │
+│  │  │   curl          │    │   = "yes"       │    │   非空              │ │
+│  │  │ • 如果未找到    │    │ • 如果禁用      │    │ • 如果未设置        │ │
+│  │  │   则返回        │    │   则返回        │    │   则返回            │ │
 │  │  │                 │    │                 │    │                     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
@@ -30,72 +30,72 @@
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Data Collection                                          │
+│                        数据收集                                                 │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    System Information Gathering                            │ │
+│  │                    系统信息收集                                             │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Get PVE       │    │   Collect       │    │   Prepare JSON      │ │ │
-│  │  │   Version        │    │   Environment   │    │   Payload           │ │
-│  │  │                 │    │   Variables     │    │                     │ │
-│  │  │ • pveversion    │    │ • CT_TYPE       │    │ • Create JSON       │ │
-│  │  │   command       │    │ • DISK_SIZE     │    │   structure         │ │
-│  │  │ • Parse version │    │ • CORE_COUNT    │    │ • Include all       │ │
-│  │  │ • Extract       │    │ • RAM_SIZE      │    │   variables         │ │
-│  │  │   major.minor  │    │ • var_os        │    │ • Format for API    │ │
+│  │  │   获取 PVE      │    │   收集          │    │   准备 JSON         │ │ │
+│  │  │   版本          │    │   环境变量      │    │   负载              │ │
+│  │  │                 │    │                 │    │                     │ │
+│  │  │ • pveversion    │    │ • CT_TYPE       │    │ • 创建 JSON         │ │
+│  │  │   命令          │    │ • DISK_SIZE     │    │   结构              │ │
+│  │  │ • 解析版本      │    │ • CORE_COUNT    │    │ • 包含所有          │ │
+│  │  │ • 提取          │    │ • RAM_SIZE      │    │   变量              │ │
+│  │  │   major.minor   │    │ • var_os        │    │ • 格式化为 API      │ │
 │  │  │                 │    │ • var_version   │    │                     │ │
-│  │  │                 │    │ • NSAPP        │    │                     │ │
-│  │  │                 │    │ • METHOD       │    │                     │ │
+│  │  │                 │    │ • NSAPP         │    │                     │ │
+│  │  │                 │    │ • METHOD        │    │                     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        API Request Execution                                   │
+│                        API 请求执行                                             │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    HTTP Request Processing                                 │ │
+│  │                    HTTP 请求处理                                            │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Prepare       │    │   Execute       │    │   Handle            │ │ │
-│  │  │   Request        │    │   HTTP Request  │    │   Response          │ │
+│  │  │   准备          │    │   执行          │    │   处理              │ │ │
+│  │  │   请求          │    │   HTTP 请求     │    │   响应              │ │
 │  │  │                 │    │                 │    │                     │ │
-│  │  │ • Set API URL   │    │ • curl -s -w    │    │ • Capture HTTP      │ │
-│  │  │ • Set headers   │    │   "%{http_code}" │    │   status code      │ │
-│  │  │ • Set payload   │    │ • POST request  │    │ • Store response    │ │
-│  │  │ • Content-Type  │    │ • JSON data     │    │ • Handle errors     │ │
-│  │  │   application/  │    │ • Follow        │    │   gracefully        │ │
-│  │  │   json          │    │   redirects     │    │                     │ │
+│  │  │ • 设置 API URL  │    │ • curl -s -w    │    │ • 捕获 HTTP         │ │
+│  │  │ • 设置标头      │    │   "%{http_code}"│    │   状态码            │ │
+│  │  │ • 设置负载      │    │ • POST 请求     │    │ • 存储响应          │ │
+│  │  │ • Content-Type  │    │ • JSON 数据     │    │ • 优雅地处理        │ │
+│  │  │   application/  │    │ • 跟随          │    │   错误              │ │
+│  │  │   json          │    │   重定向        │    │                     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## LXC API Reporting Flow
+## LXC API 报告流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        POST_TO_API() Flow                                     │
-│  Send LXC container installation data to API                                  │
+│                        POST_TO_API() 流程                                       │
+│  向 API 发送 LXC 容器安装数据                                                   │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        LXC Data Preparation                                   │
+│                        LXC 数据准备                                             │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    LXC-Specific Data Collection                           │ │
+│  │                    LXC 特定数据收集                                         │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Set LXC       │    │   Include LXC   │    │   Set Status        │ │ │
-│  │  │   Type           │    │   Variables     │    │   Information        │ │
+│  │  │   设置 LXC      │    │   包含 LXC      │    │   设置状态          │ │ │
+│  │  │   类型          │    │   变量          │    │   信息              │ │
 │  │  │                 │    │                 │    │                     │ │
 │  │  │ • ct_type: 1    │    │ • DISK_SIZE     │    │ • status:           │ │
 │  │  │ • type: "lxc"   │    │ • CORE_COUNT    │    │   "installing"      │ │
-│  │  │ • Include all   │    │ • RAM_SIZE      │    │ • Include all       │ │
-│  │  │   LXC data      │    │ • var_os        │    │   tracking data     │ │
+│  │  │ • 包含所有      │    │ • RAM_SIZE      │    │ • 包含所有          │ │
+│  │  │   LXC 数据      │    │ • var_os        │    │   跟踪数据          │ │
 │  │  │                 │    │ • var_version   │    │                     │ │
 │  │  │                 │    │ • DISABLEIP6    │    │                     │ │
 │  │  │                 │    │ • NSAPP         │    │                     │ │
@@ -108,74 +108,72 @@
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        JSON Payload Creation                                  │
+│                        JSON 负载创建                                            │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    JSON Structure Generation                               │ │
+│  │                    JSON 结构生成                                            │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Create JSON   │    │   Validate       │    │   Format for        │ │ │
-│  │  │   Structure      │    │   Data           │    │   API Request       │ │
+│  │  │   创建 JSON     │    │   验证          │    │   格式化为          │ │ │
+│  │  │   结构          │    │   数据          │    │   API 请求          │ │
 │  │  │                 │    │                 │    │                     │ │
-│  │  │ • Use heredoc   │    │ • Check all     │    │ • Ensure proper     │ │
-│  │  │   syntax        │    │   variables      │    │   JSON format       │ │
-│  │  │ • Include all   │    │   are set       │    │ • Escape special    │ │
-│  │  │   required      │    │ • Validate      │    │   characters        │ │
-│  │  │   fields        │    │   data types    │    │ • Set content       │ │
-│  │  │ • Format        │    │ • Handle        │    │   type              │ │
-│  │  │   properly      │    │   missing       │    │                     │ │
-│  │  │                 │    │   values        │    │                     │ │
+│  │  │ • 使用 heredoc  │    │ • 检查所有      │    │ • 确保正确的        │ │
+│  │  │   语法          │    │   变量已设置    │    │   JSON 格式         │ │
+│  │  │ • 包含所有      │    │ • 验证          │    │ • 转义特殊          │ │
+│  │  │   必需字段      │    │   数据类型      │    │   字符              │ │
+│  │  │ • 正确          │    │ • 处理          │    │ • 设置 content      │ │
+│  │  │   格式化        │    │   缺失值        │    │   type              │ │
+│  │  │                 │    │                 │    │                     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## VM API Reporting Flow
+## VM API 报告流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        POST_TO_API_VM() Flow                                  │
-│  Send VM installation data to API                                            │
+│                        POST_TO_API_VM() 流程                                    │
+│  向 API 发送 VM 安装数据                                                        │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        VM Data Preparation                                    │
+│                        VM 数据准备                                              │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    VM-Specific Data Collection                             │ │
+│  │                    VM 特定数据收集                                          │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Check         │    │   Set VM        │    │   Process Disk      │ │ │
-│  │  │   Diagnostics   │    │   Type          │    │   Size              │ │
-│  │  │   File          │    │                 │    │                     │ │
-│  │  │                 │    │ • ct_type: 2   │    │ • Remove 'G'        │ │
-│  │  │ • Check file    │    │ • type: "vm"    │    │   suffix            │ │
-│  │  │   existence     │    │ • Include all   │    │ • Convert to        │ │
-│  │  │ • Read          │    │   VM data       │    │   numeric value      │ │
-│  │  │   DIAGNOSTICS   │    │                 │    │ • Store in          │ │
-│  │  │   setting       │    │                 │    │   DISK_SIZE_API    │ │
-│  │  │ • Parse value   │    │                 │    │                     │ │
+│  │  │   检查          │    │   设置 VM       │    │   处理磁盘          │ │ │
+│  │  │   诊断文件      │    │   类型          │    │   大小              │ │
+│  │  │                 │    │                 │    │                     │ │
+│  │  │ • 检查文件      │    │ • ct_type: 2    │    │ • 删除 'G'          │ │
+│  │  │   存在          │    │ • type: "vm"    │    │   后缀              │ │
+│  │  │ • 读取          │    │ • 包含所有      │    │ • 转换为            │ │
+│  │  │   DIAGNOSTICS   │    │   VM 数据       │    │   数值              │ │
+│  │  │   设置          │    │                 │    │ • 存储在            │ │
+│  │  │ • 解析值        │    │                 │    │   DISK_SIZE_API     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        VM JSON Payload Creation                              │
+│                        VM JSON 负载创建                                         │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    VM-Specific JSON Structure                              │ │
+│  │                    VM 特定 JSON 结构                                        │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Include VM    │    │   Set VM        │    │   Format VM         │ │ │
-│  │  │   Variables      │    │   Status         │    │   Data for API      │ │
+│  │  │   包含 VM       │    │   设置 VM       │    │   格式化 VM         │ │ │
+│  │  │   变量          │    │   状态          │    │   数据为 API        │ │
 │  │  │                 │    │                 │    │                     │ │
-│  │  │ • DISK_SIZE_API │    │ • status:       │    │ • Ensure proper     │ │
-│  │  │ • CORE_COUNT    │    │   "installing"  │    │   JSON format       │ │
-│  │  │ • RAM_SIZE      │    │ • Include all   │    │ • Handle VM-        │ │
-│  │  │ • var_os        │    │   tracking      │    │   specific data     │ │
-│  │  │ • var_version   │    │   information   │    │ • Set appropriate   │ │
+│  │  │ • DISK_SIZE_API │    │ • status:       │    │ • 确保正确的        │ │
+│  │  │ • CORE_COUNT    │    │   "installing"  │    │   JSON 格式         │ │
+│  │  │ • RAM_SIZE      │    │ • 包含所有      │    │ • 处理 VM 特定      │ │
+│  │  │ • var_os        │    │   跟踪信息      │    │   数据              │ │
+│  │  │ • var_version   │    │                 │    │ • 设置适当的        │ │
 │  │  │ • NSAPP         │    │                 │    │   content type      │ │
 │  │  │ • METHOD        │    │                 │    │                     │ │
 │  │  │ • pve_version   │    │                 │    │                     │ │
@@ -185,158 +183,151 @@
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Status Update Flow
+## 状态更新流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        POST_UPDATE_TO_API() Flow                              │
-│  Send installation completion status to API                                  │
+│                        POST_UPDATE_TO_API() 流程                                │
+│  向 API 发送安装完成状态                                                        │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Update Prevention Check                                │
+│                        更新防止检查                                             │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    Duplicate Update Prevention                             │ │
+│  │                    重复更新防止                                             │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Check         │    │   Set Flag      │    │   Return Early      │ │ │
-│  │  │   POST_UPDATE_  │    │   if First      │    │   if Already        │ │
-│  │  │   DONE          │    │   Update        │    │   Updated           │ │
+│  │  │   检查          │    │   如果首次      │    │   如果已更新        │ │ │
+│  │  │   POST_UPDATE_  │    │   更新则设置    │    │   则提前返回        │ │
+│  │  │   DONE          │    │   标志          │    │                     │ │
 │  │  │                 │    │                 │    │                     │ │
-│  │  │ • Check if      │    │ • Set           │    │ • Return 0          │ │
-│  │  │   already       │    │   POST_UPDATE_  │    │ • Skip API call    │ │
-│  │  │   updated       │    │   DONE=true     │    │ • Prevent          │ │
-│  │  │ • Prevent       │    │ • Continue      │    │   duplicate        │ │
-│  │  │   duplicate     │    │   with update   │    │   requests         │ │
-│  │  │   requests      │    │                 │    │                     │ │
+│  │  │ • 检查是否      │    │ • 设置          │    │ • 返回 0            │ │
+│  │  │   已更新        │    │   POST_UPDATE_  │    │ • 跳过 API 调用     │ │
+│  │  │ • 防止          │    │   DONE=true     │    │ • 防止              │ │
+│  │  │   重复请求      │    │ • 继续更新      │    │   重复请求          │ │
+│  │  │                 │    │                 │    │                     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Status and Error Processing                            │
+│                        状态和错误处理                                           │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    Status Determination                                     │ │
+│  │                    状态确定                                                 │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Determine     │    │   Get Error     │    │   Prepare Status    │ │ │
-│  │  │   Status         │    │   Description   │    │   Data              │ │
+│  │  │   确定          │    │   获取错误      │    │   准备状态          │ │ │
+│  │  │   状态          │    │   描述          │    │   数据              │ │
 │  │  │                 │    │                 │    │                     │ │
-│  │  │ • status:       │    │ • Call          │    │ • Include status    │ │
-│  │  │   "success" or  │    │   get_error_    │    │ • Include error     │ │
-│  │  │   "failed"      │    │   description() │    │   description       │ │
-│  │  │ • Set exit      │    │ • Get human-    │    │ • Include random    │ │
-│  │  │   code based    │    │   readable      │    │   ID for tracking   │ │
-│  │  │   on status     │    │   error message │    │                     │ │
-│  │  │ • Default to    │    │ • Handle        │    │                     │ │
-│  │  │   error if      │    │   unknown       │    │                     │ │
-│  │  │   not set      │    │   errors         │    │                     │ │
+│  │  │ • status:       │    │ • 调用          │    │ • 包含状态          │ │
+│  │  │   "success" 或  │    │   get_error_    │    │ • 包含错误          │ │
+│  │  │   "failed"      │    │   description() │    │   描述              │ │
+│  │  │ • 根据状态      │    │ • 获取人类      │    │ • 包含 random       │ │
+│  │  │   设置退出码    │    │   可读错误      │    │   ID 用于跟踪       │ │
+│  │  │ • 如果未设置    │    │   消息          │    │                     │ │
+│  │  │   则默认为错误  │    │ • 处理未知      │    │                     │ │
+│  │  │                 │    │   错误          │    │                     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Status Update API Request                              │
+│                        状态更新 API 请求                                        │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    Status Update Payload Creation                          │ │
+│  │                    状态更新负载创建                                         │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Create        │    │   Send Status    │    │   Mark Update       │ │ │
-│  │  │   Status JSON    │    │   Update         │    │   Complete          │ │
+│  │  │   创建          │    │   发送状态      │    │   标记更新          │ │ │
+│  │  │   状态 JSON     │    │   更新          │    │   完成              │ │
 │  │  │                 │    │                 │    │                     │ │
-│  │  │ • Include       │    │ • POST to        │    │ • Set              │ │
-│  │  │   status        │    │   updatestatus   │    │   POST_UPDATE_     │ │
-│  │  │ • Include       │    │   endpoint       │    │   DONE=true        │ │
-│  │  │   error         │    │ • Include JSON   │    │ • Prevent further  │ │
-│  │  │   description   │    │   payload        │    │   updates          │ │
-│  │  │ • Include       │    │ • Handle         │    │ • Complete         │ │
-│  │  │   random_id     │    │   response       │    │   process          │ │
-│  │  │                 │    │   gracefully     │    │                     │ │
+│  │  │ • 包含状态      │    │ • POST 到       │    │ • 设置              │ │
+│  │  │ • 包含错误      │    │   updatestatus  │    │   POST_UPDATE_      │ │
+│  │  │   描述          │    │   端点          │    │   DONE=true         │ │
+│  │  │ • 包含          │    │ • 包含 JSON     │    │ • 防止进一步        │ │
+│  │  │   random_id     │    │   负载          │    │   更新              │ │
+│  │  │                 │    │ • 优雅地处理    │    │ • 完成              │ │
+│  │  │                 │    │   响应          │    │   过程              │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Error Description Flow
+## 错误描述流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        GET_ERROR_DESCRIPTION() Flow                           │
-│  Convert numeric exit codes to human-readable explanations                    │
+│                        GET_ERROR_DESCRIPTION() 流程                             │
+│  将数字退出代码转换为人类可读的解释                                             │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Error Code Classification                              │
+│                        错误代码分类                                             │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    Error Code Categories                                  │ │
+│  │                    错误代码类别                                             │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   General       │    │   Network        │    │   LXC-Specific      │ │ │
-│  │  │   System        │    │   Errors         │    │   Errors            │ │
-│  │  │   Errors        │    │                 │    │                     │ │
-│  │  │                 │    │ • 18: Connection│    │ • 100-101: LXC      │ │
-│  │  │ • 0-9: Basic    │    │   failed         │    │   install errors    │ │
-│  │  │   errors        │    │ • 22: Invalid    │    │ • 200-209: LXC      │ │
-│  │  │ • 126-128:      │    │   argument       │    │   creation errors   │ │
-│  │  │   Command       │    │ • 28: No space   │    │                     │ │
-│  │  │   errors        │    │ • 35: Timeout    │    │                     │ │
-│  │  │ • 129-143:      │    │ • 56: TLS error  │    │                     │ │
-│  │  │   Signal        │    │ • 60: SSL cert   │    │                     │ │
-│  │  │   errors        │    │   error          │    │                     │ │
-│  │  │ • 152: Resource │    │                 │    │                     │ │
-│  │  │   limit         │    │                 │    │                     │ │
-│  │  │ • 255: Unknown  │    │                 │    │                     │ │
-│  │  │   critical      │    │                 │    │                     │ │
+│  │  │   一般          │    │   网络          │    │   LXC 特定          │ │ │
+│  │  │   系统错误      │    │   错误          │    │   错误              │ │
+│  │  │                 │    │                 │    │                     │ │
+│  │  │ • 0-9: 基本     │    │ • 18: 连接      │    │ • 100-101: LXC      │ │
+│  │  │   错误          │    │   失败          │    │   安装错误          │ │
+│  │  │ • 126-128:      │    │ • 22: 无效      │    │ • 200-209: LXC      │ │
+│  │  │   命令错误      │    │   参数          │    │   创建错误          │ │
+│  │  │ • 129-143:      │    │ • 28: 无空间    │    │                     │ │
+│  │  │   信号错误      │    │ • 35: 超时      │    │                     │ │
+│  │  │ • 152: 资源     │    │ • 56: TLS 错误  │    │                     │ │
+│  │  │   限制          │    │ • 60: SSL 证书  │    │                     │ │
+│  │  │ • 255: 未知     │    │   错误          │    │                     │ │
+│  │  │   严重错误      │    │                 │    │                     │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Error Message Return                                   │
+│                        错误消息返回                                             │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    Error Message Formatting                               │ │
+│  │                    错误消息格式化                                           │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐ │ │
-│  │  │   Match Error   │    │   Return        │    │   Default Case       │ │ │
-│  │  │   Code          │    │   Description   │    │                     │ │
+│  │  │   匹配错误      │    │   返回          │    │   默认情况          │ │ │
+│  │  │   代码          │    │   描述          │    │                     │ │
 │  │  │                 │    │                 │    │                     │ │
-│  │  │ • Use case      │    │ • Return        │    │ • Return "Unknown   │ │
-│  │  │   statement     │    │   human-        │    │   error code        │ │
-│  │  │ • Match         │    │   readable      │    │   (exit_code)"      │ │
-│  │  │   specific      │    │   message       │    │ • Handle            │ │
-│  │  │   codes         │    │ • Include       │    │   unrecognized      │ │
-│  │  │ • Handle        │    │   context       │    │   codes             │ │
-│  │  │   ranges        │    │   information   │    │ • Provide fallback  │ │
-│  │  │                 │    │                 │    │   message           │ │
+│  │  │ • 使用 case     │    │ • 返回人类      │    │ • 返回 "Unknown     │ │
+│  │  │   语句          │    │   可读消息      │    │   error code        │ │
+│  │  │ • 匹配特定      │    │ • 包含上下文    │    │   (exit_code)"      │ │
+│  │  │   代码          │    │   信息          │    │ • 处理未识别        │ │
+│  │  │ • 处理范围      │    │                 │    │   的代码            │ │
+│  │  │                 │    │                 │    │ • 提供后备          │ │
+│  │  │                 │    │                 │    │   消息              │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Integration Points
+## 集成点
 
-### With Installation Scripts
-- **build.func**: Sends LXC installation data
-- **vm-core.func**: Sends VM installation data
-- **install.func**: Reports installation status
-- **alpine-install.func**: Reports Alpine installation data
+### 与安装脚本
+- **build.func**：发送 LXC 安装数据
+- **vm-core.func**：发送 VM 安装数据
+- **install.func**：报告安装状态
+- **alpine-install.func**：报告 Alpine 安装数据
 
-### With Error Handling
-- **error_handler.func**: Provides error explanations
-- **core.func**: Uses error descriptions in silent execution
-- **Diagnostic reporting**: Tracks error patterns
+### 与错误处理
+- **error_handler.func**：提供错误解释
+- **core.func**：在静默执行中使用错误描述
+- **诊断报告**：跟踪错误模式
 
-### External Dependencies
-- **curl**: HTTP client for API communication
-- **Community Scripts API**: External API endpoint
-- **Network connectivity**: Required for API communication
+### 外部依赖
+- **curl**：用于 API 通信的 HTTP 客户端
+- **Community Scripts API**：外部 API 端点
+- **网络连接**：API 通信所需

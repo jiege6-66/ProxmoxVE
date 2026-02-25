@@ -7,7 +7,7 @@
 
 clear
 if command -v pveversion >/dev/null 2>&1; then
-  echo -e "⚠️  Can't Run from the Proxmox Shell"
+  echo -e "⚠️  无法从 Proxmox Shell 运行"
   exit
 fi
 YW=$(echo "\033[33m")
@@ -23,11 +23,11 @@ CM="${GN}✓${CL}"
 CROSS="${RD}✗${CL}"
 APP="Home Assistant Container"
 while true; do
-  read -p "This will restore ${APP} from a backup. Proceed(y/n)?" yn
+  read -p "这将从备份恢复 ${APP}。是否继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 clear
@@ -61,33 +61,33 @@ function msg_error() {
   echo -e "${BFR} ${CROSS} ${RD}${msg}${CL}"
 }
 if [ -z "$(ls -A /var/lib/docker/volumes/hass_config/_data/backups/)" ]; then
-  msg_error "No backups found! \n"
+  msg_error "未找到备份！\n"
   exit 1
 fi
 DIR=/var/lib/docker/volumes/hass_config/_data/restore
 if [ -d "$DIR" ]; then
-  msg_ok "Restore Directory Exists."
+  msg_ok "恢复目录已存在。"
 else
   mkdir -p /var/lib/docker/volumes/hass_config/_data/restore
-  msg_ok "Created Restore Directory."
+  msg_ok "已创建恢复目录。"
 fi
 cd /var/lib/docker/volumes/hass_config/_data/backups/
-PS3="Please enter your choice: "
+PS3="请输入您的选择: "
 files="$(ls -A .)"
 select filename in ${files}; do
-  msg_ok "You selected ${BL}${filename}${CL}"
+  msg_ok "您选择了 ${BL}${filename}${CL}"
   break
 done
-msg_info "Stopping Home Assistant"
+msg_info "正在停止 Home Assistant"
 docker stop homeassistant &>/dev/null
-msg_ok "Stopped Home Assistant"
-msg_info "Restoring Home Assistant using ${filename}"
+msg_ok "已停止 Home Assistant"
+msg_info "正在使用 ${filename} 恢复 Home Assistant"
 tar xvf ${filename} -C /var/lib/docker/volumes/hass_config/_data/restore &>/dev/null
 cd /var/lib/docker/volumes/hass_config/_data/restore
 tar -xvf homeassistant.tar.gz &>/dev/null
 if ! command -v rsync >/dev/null 2>&1; then apt-get install -y rsync &>/dev/null; fi
 rsync -a /var/lib/docker/volumes/hass_config/_data/restore/data/ /var/lib/docker/volumes/hass_config/_data
 rm -rf /var/lib/docker/volumes/hass_config/_data/restore/*
-msg_ok "Restore Complete"
-msg_ok "Starting Home Assistant \n"
+msg_ok "恢复完成"
+msg_ok "正在启动 Home Assistant \n"
 docker start homeassistant

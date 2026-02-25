@@ -1,32 +1,32 @@
-# 🎯 **ProxmoxVE Contribution Guide**
+# 🎯 **ProxmoxVE 贡献指南**
 
-**Everything you need to know to contribute to ProxmoxVE**
+**为 ProxmoxVE 做贡献所需了解的一切**
 
-> **Last Updated**: December 2025
-> **Difficulty**: Beginner → Advanced
-> **Time to Setup**: 15 minutes
-> **Time to Contribute**: 1-3 hours
-
----
-
-## 📋 Table of Contents
-
-- [Quick Start](#quick-start)
-- [Repository Structure](#repository-structure)
-- [Development Setup](#development-setup)
-- [Creating New Applications](#creating-new-applications)
-- [Updating Existing Applications](#updating-existing-applications)
-- [Code Standards](#code-standards)
-- [Testing Your Changes](#testing-your-changes)
-- [Submitting a Pull Request](#submitting-a-pull-request)
-- [Troubleshooting](#troubleshooting)
-- [FAQ](#faq)
+> **最后更新**: 2025年12月
+> **难度**: 初学者 → 高级
+> **设置时间**: 15分钟
+> **贡献时间**: 1-3小时
 
 ---
 
-## Quick Start
+## 📋 目录
 
-### Setup Your Fork (First Time Only)
+- [快速开始](#快速开始)
+- [仓库结构](#仓库结构)
+- [开发环境设置](#开发环境设置)
+- [创建新应用](#创建新应用)
+- [更新现有应用](#更新现有应用)
+- [代码规范](#代码规范)
+- [测试你的更改](#测试你的更改)
+- [提交 Pull Request](#提交-pull-request)
+- [故障排除](#故障排除)
+- [常见问题](#常见问题)
+
+---
+
+## 快速开始
+
+### 设置你的 Fork（仅首次需要）
 
 ```bash
 # 1. Fork the repository on GitHub

@@ -28,7 +28,7 @@ function header_info {
  / /|  // // /___   / /_/ / __/ __/ / /_/ / /_/ / /_/ / / / / / /_/ /  / /_/ / (__  ) /_/ / /_/ / /  __/ /
 /_/ |_/___/\____/   \____/_/ /_/ /_/\____/\__,_/\__,_/_/_/ /_/\__, /  /_____/_/____/\__,_/_.___/_/\___/_/
                                                              /____/
-Enhanced version supporting both e1000e and e1000 drivers
+Enhanced 版本 supporting both e1000e and e1000 drivers
 
 EOF
 }
@@ -46,15 +46,15 @@ function msg_warn() { echo -e "${WARN} ${YWB}${1}"; }
 
 # Check for root privileges
 if [ "$(id -u)" -ne 0 ]; then
-  msg_error "Error: This script must be run as root."
+  msg_error "错误: This script must be run as root."
   exit 1
 fi
 
 if ! command -v ethtool >/dev/null 2>&1; then
-  msg_info "Installing ethtool"
+  msg_info "正在安装 ethtool"
   apt-get update &>/dev/null
   apt-get install -y ethtool &>/dev/null || {
-    msg_error "Failed to install ethtool. Exiting."
+    msg_error "无法 install ethtool. Exiting."
     exit 1
   }
   msg_ok "ethtool installed successfully"
@@ -64,7 +64,7 @@ fi
 INTERFACES=()
 COUNT=0
 
-msg_info "Searching for Intel e1000e and e1000 interfaces"
+msg_info "正在搜索 for Intel e1000e and e1000 interfaces"
 
 for device in /sys/class/net/*; do
   interface="$(basename "$device")" # or adjust the rest of the usages below, as mostly you'll use the path anyway
@@ -84,7 +84,7 @@ done
 
 # Check if any Intel e1000e/e1000 interfaces were found
 if [ ${#INTERFACES[@]} -eq 0 ]; then
-  whiptail --title "Error" --msgbox "No Intel e1000e or e1000 network interfaces found!" 10 60
+  whiptail --title "错误" --msgbox "No Intel e1000e or e1000 network interfaces found!" 10 60
   msg_error "No Intel e1000e or e1000 network interfaces found! Exiting."
   exit 1
 fi
@@ -114,7 +114,7 @@ if [ -z "$SELECTED_INTERFACES" ]; then
   exit 0
 fi
 
-# Convert the selected interfaces into an array
+# Convert the selected interfaces in到n array
 readarray -t INTERFACE_ARRAY <<<"$SELECTED_INTERFACES"
 
 # Show the number of selected interfaces
@@ -123,7 +123,7 @@ INTERFACE_COUNT=${#INTERFACE_ARRAY[@]}
 # Print selected interfaces with their driver types
 for iface in "${INTERFACE_ARRAY[@]}"; do
   driver=$(basename $(readlink -f /sys/class/net/$iface/device/driver 2>/dev/null) 2>/dev/null)
-  msg_ok "Selected interface: ${BL}$iface${GN} (${BL}$driver${GN})"
+  msg_ok "已选择 interface: ${BL}$iface${GN} (${BL}$driver${GN})"
 done
 
 # Ask for confirmation with the list of selected interfaces
@@ -134,7 +134,7 @@ for iface in "${INTERFACE_ARRAY[@]}"; do
   DRIVER=$(basename $(readlink -f /sys/class/net/$iface/device/driver 2>/dev/null) 2>/dev/null)
   CONFIRMATION_MSG+="- $iface (Driver: $DRIVER, MAC: $MAC, Speed: ${SPEED}Mbps)\n"
 done
-CONFIRMATION_MSG+="\nThis will create systemd service(s) to disable offloading features.\n\nProceed?"
+CONFIRMATION_MSG+="\nThis will create systemd service(s) to disable offloading features.\n\n继续?"
 
 if ! whiptail --backtitle "Intel e1000e/e1000 NIC Offloading Disabler" --title "Confirmation" \
   --yesno "$CONFIRMATION_MSG" 20 80; then
@@ -152,7 +152,7 @@ for SELECTED_INTERFACE in "${INTERFACE_ARRAY[@]}"; do
   SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
 
   # Create the service file with driver-specific optimizations
-  msg_info "Creating systemd service for interface: ${BL}$SELECTED_INTERFACE${YW} (${BL}$DRIVER${YW})"
+  msg_info "正在创建 systemd service for interface: ${BL}$SELECTED_INTERFACE${YW} (${BL}$DRIVER${YW})"
 
   # Start with the common part of the service file
   cat >"$SERVICE_PATH" <<EOF
@@ -172,8 +172,8 @@ EOF
 
   # Check if service file was created successfully
   if [ ! -f "$SERVICE_PATH" ]; then
-    whiptail --title "Error" --msgbox "Failed to create service file for $SELECTED_INTERFACE!" 10 50
-    msg_error "Failed to create service file for $SELECTED_INTERFACE! Skipping to next interface."
+    whiptail --title "错误" --msgbox "无法 create service file for $SELECTED_INTERFACE!" 10 50
+    msg_error "无法 create service file for $SELECTED_INTERFACE! 正在跳过 to next interface."
     continue
   fi
 
@@ -193,7 +193,7 @@ EOF
     systemctl enable "$SERVICE_NAME"
     echo "100"
     sleep 0.2
-  } | whiptail --backtitle "Intel e1000e/e1000 NIC Offloading Disabler" --gauge "Configuring service for $SELECTED_INTERFACE..." 10 80 0
+  } | whiptail --backtitle "Intel e1000e/e1000 NIC Offloading Disabler" --gauge "正在配置 service for $SELECTED_INTERFACE..." 10 80 0
 
   # Individual service status
   if systemctl is-active --quiet "$SERVICE_NAME"; then
@@ -203,9 +203,9 @@ EOF
   fi
 
   if systemctl is-enabled --quiet "$SERVICE_NAME"; then
-    BOOT_STATUS="Enabled"
+    BOOT_STATUS="已启用"
   else
-    BOOT_STATUS="Disabled"
+    BOOT_STATUS="已禁用"
   fi
 
   # Show individual service results
@@ -217,7 +217,7 @@ done
 
 # Prepare summary of all interfaces
 SUMMARY_MSG="Services created successfully!\n\n"
-SUMMARY_MSG+="Configured Interfaces:\n"
+SUMMARY_MSG+="已配置 Interfaces:\n"
 
 for iface in "${INTERFACE_ARRAY[@]}"; do
   SERVICE_NAME="disable-nic-offload-$iface.service"
@@ -230,16 +230,16 @@ for iface in "${INTERFACE_ARRAY[@]}"; do
   fi
 
   if systemctl is-enabled --quiet "$SERVICE_NAME"; then
-    BOOT_SVC_STATUS="Enabled"
+    BOOT_SVC_STATUS="已启用"
   else
-    BOOT_SVC_STATUS="Disabled"
+    BOOT_SVC_STATUS="已禁用"
   fi
 
   SUMMARY_MSG+="- $iface ($DRIVER): $SVC_STATUS, Boot: $BOOT_SVC_STATUS\n"
 done
 
 # Show summary results
-whiptail --backtitle "Intel e1000e/e1000 NIC Offloading Disabler" --title "Success" --msgbox "$SUMMARY_MSG" 22 80
+whiptail --backtitle "Intel e1000e/e1000 NIC Offloading Disabler" --title "成功" --msgbox "$SUMMARY_MSG" 22 80
 
 msg_ok "Intel e1000e/e1000 optimization complete for ${#INTERFACE_ARRAY[@]} interface(s)!"
 

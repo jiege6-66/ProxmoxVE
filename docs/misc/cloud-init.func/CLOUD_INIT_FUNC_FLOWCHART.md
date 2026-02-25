@@ -1,8 +1,8 @@
-# cloud-init.func Flowchart
+# cloud-init.func 流程图
 
-Cloud-init VM provisioning flow.
+Cloud-init VM 配置流程。
 
-## Cloud-Init Generation and Application
+## Cloud-Init 生成和应用
 
 ```
 generate_cloud_init()
@@ -11,18 +11,18 @@ generate_user_data()
     ↓
 setup_ssh_keys()
     ↓
-Apply to VM
+应用于 VM
     ↓
-VM Boot
+VM 启动
     ↓
-cloud-init phases
+cloud-init 阶段
 ├─ system
 ├─ config
 └─ final
     ↓
-VM Ready ✓
+VM 准备就绪 ✓
 ```
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

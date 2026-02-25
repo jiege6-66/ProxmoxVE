@@ -39,15 +39,15 @@ function error_exit() {
   exit "$EXIT"
 }
 if command -v pveversion >/dev/null 2>&1; then
-  echo -e "⚠️  Can't Install on Proxmox "
+  echo -e "⚠️  无法在 Proxmox 上安装 "
   exit
 fi
 while true; do
-  read -p "This will Install ${APP} on $hostname. Proceed(y/n)?" yn
+  read -p "这将在 $hostname 上安装 ${APP}。是否继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 clear
@@ -74,20 +74,20 @@ function msg_ok() {
   echo -e "${BFR} ${CM} ${GN}${msg}${CL}"
 }
 
-msg_info "Setting up ${APP} Repository"
+msg_info "正在设置 ${APP} 仓库"
 apt-get update &>/dev/null
 apt-get install -y curl &>/dev/null
 apt-get install -y gnupg &>/dev/null
 curl -fsSL "https://install.crowdsec.net" | bash &>/dev/null
-msg_ok "Setup ${APP} Repository"
+msg_ok "已设置 ${APP} 仓库"
 
-msg_info "Installing ${APP}"
+msg_info "正在安装 ${APP}"
 apt-get update &>/dev/null
 apt-get install -y crowdsec &>/dev/null
-msg_ok "Installed ${APP} on $hostname"
+msg_ok "已在 $hostname 上安装 ${APP}"
 
-msg_info "Installing ${APP} Common Bouncer"
+msg_info "正在安装 ${APP} Common Bouncer"
 apt-get install -y crowdsec-firewall-bouncer-iptables &>/dev/null
-msg_ok "Installed ${APP} Common Bouncer"
+msg_ok "已安装 ${APP} Common Bouncer"
 
-msg_ok "Completed successfully!\n"
+msg_ok "成功完成！\n"

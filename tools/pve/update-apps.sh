@@ -24,8 +24,8 @@ var_backup_storage="${var_backup_storage:-}"
 # var_container: Which containers to update
 #   Options:
 #     - "all"         : All containers with community-scripts tags
-#     - "all_running" : Only running containers with community-scripts tags
-#     - "all_stopped" : Only stopped containers with community-scripts tags
+#     - "all_running" : 仅 running containers with community-scripts tags
+#     - "all_stopped" : 仅 stopped containers with community-scripts tags
 #     - "101,102,109" : Comma-separated list of specific container IDs
 #     - ""            : Interactive selection via Whiptail
 var_container="${var_container:-}"
@@ -77,7 +77,7 @@ Options:
 Environment Variables:
   var_backup          Enable backup before update (yes/no)
   var_backup_storage  Storage location for backups
-  var_container       Container selection (all/all_running/all_stopped/101,102,...)
+  var_container       容器 selection (all/all_running/all_stopped/101,102,...)
   var_unattended      Run updates unattended (yes/no)
   var_skip_confirm    Skip initial confirmation (yes/no)
   var_auto_reboot     Auto-reboot containers if required (yes/no)
@@ -132,7 +132,7 @@ function detect_service() {
 }
 
 function backup_container() {
-  msg_info "Creating backup for container $1"
+  msg_info "正在创建 backup for container $1"
   vzdump $1 --compress zstd --storage $STORAGE_CHOICE -notes-template "{{guestname}} - community-scripts backup updater" >/dev/null 2>&1
   status=$?
 
@@ -173,16 +173,16 @@ header_info
 
 # Skip confirmation if var_skip_confirm is set to yes
 if [[ "$var_skip_confirm" != "yes" ]]; then
-  whiptail --backtitle "Proxmox VE Helper Scripts" --title "LXC App Update" --yesno "This will update apps in LXCs installed by Helper-Scripts. Proceed?" 10 58 || exit
+  whiptail --backtitle "Proxmox VE Helper Scripts" --title "LXC App Update" --yesno "This will update apps in LXCs installed by Helper-Scripts. 继续?" 10 58 || exit
 fi
 
 tags_formatted="${var_tags//|/, }"
-msg_info "Loading all possible LXC containers from Proxmox VE with tags: ${tags_formatted}. This may take a few seconds..."
+msg_info "正在加载 all possible LXC containers from Proxmox VE with tags: ${tags_formatted}. This may take a few seconds..."
 NODE=$(hostname)
 containers=$(pct list | tail -n +2 | awk '{print $0 " " $4}')
 
 if [ -z "$containers" ]; then
-  whiptail --title "LXC Container Update" --msgbox "No LXC containers available!" 10 60
+  whiptail --title "LXC 容器 Update" --msgbox "No LXC containers available!" 10 60
   exit 1
 fi
 
@@ -199,7 +199,7 @@ while read -r container; do
     menu_items+=("$container_id" "$formatted_line" "OFF")
   fi
 done <<<"$containers"
-msg_ok "Loaded ${#menu_items[@]} containers"
+msg_ok "已加载 ${#menu_items[@]} containers"
 
 # Determine container selection based on var_container
 if [[ -n "$var_container" ]]; then
@@ -244,14 +244,14 @@ if [[ -n "$var_container" ]]; then
     msg_error "No containers matched the selection criteria: $var_container ${var_tags:-community-script|proxmox-helper-scripts}"
     exit 1
   fi
-  msg_ok "Selected containers: $CHOICE"
+  msg_ok "已选择 containers: $CHOICE"
 else
-  CHOICE=$(whiptail --title "LXC Container Update" \
+  CHOICE=$(whiptail --title "LXC 容器 Update" \
     --checklist "Select LXC containers to update:" 25 60 13 \
     "${menu_items[@]}" 3>&2 2>&1 1>&3 | tr -d '"')
 
   if [ -z "$CHOICE" ]; then
-    whiptail --title "LXC Container Update" \
+    whiptail --title "LXC 容器 Update" \
       --msgbox "No containers selected!" 10 60
     exit 1
   fi
@@ -264,7 +264,7 @@ if [[ -n "$var_backup" ]]; then
   BACKUP_CHOICE="$var_backup"
 else
   BACKUP_CHOICE="no"
-  if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "LXC Container Update" --yesno "Do you want to backup your containers before update?" 10 58); then
+  if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "LXC 容器 Update" --yesno "Do you want to backup your containers before update?" 10 58); then
     BACKUP_CHOICE="yes"
   fi
 fi
@@ -274,7 +274,7 @@ if [[ -n "$var_unattended" ]]; then
   UNATTENDED_UPDATE="$var_unattended"
 else
   UNATTENDED_UPDATE="no"
-  if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "LXC Container Update" --yesno "Run updates unattended?" 10 58); then
+  if (whiptail --backtitle "Proxmox VE Helper Scripts" --title "LXC 容器 Update" --yesno "Run updates unattended?" 10 58); then
     UNATTENDED_UPDATE="yes"
   fi
 fi
@@ -294,7 +294,7 @@ if [ "$BACKUP_CHOICE" == "yes" ]; then
       STORAGE_CHOICE="$var_backup_storage"
       msg_ok "Using backup storage: $STORAGE_CHOICE"
     else
-      msg_error "Specified backup storage '$var_backup_storage' not found or doesn't support backups!"
+      msg_error "Specified backup storage '$var_backup_storage' 未找到 or doesn't support backups!"
       msg_info "Available storages: $(echo $STORAGES | tr '\n' ' ')"
       exit 1
     fi
@@ -304,7 +304,7 @@ if [ "$BACKUP_CHOICE" == "yes" ]; then
       MENU_ITEMS+=("$STORAGE" "")
     done
 
-    STORAGE_CHOICE=$(whiptail --title "Select storage device" --menu "Select a storage device (Only storage devices with 'backup' support are listed):" 15 50 5 "${MENU_ITEMS[@]}" 3>&1 1>&2 2>&3)
+    STORAGE_CHOICE=$(whiptail --title "Select storage device" --menu "Select a storage device (仅 storage devices with 'backup' support are listed):" 15 50 5 "${MENU_ITEMS[@]}" 3>&1 1>&2 2>&3)
 
     if [ -z "$STORAGE_CHOICE" ]; then
       msg_error "No storage selected!"
@@ -320,7 +320,7 @@ fi
 
 containers_needing_reboot=()
 for container in $CHOICE; do
-  echo -e "${BL}[INFO]${CL} Updating container $container"
+  echo -e "${BL}[INFO]${CL} 正在更新 container $container"
 
   if [ "$BACKUP_CHOICE" == "yes" ]; then
     backup_container $container
@@ -330,9 +330,9 @@ for container in $CHOICE; do
   status=$(pct status $container)
   template=$(pct config $container | grep -q "template:" && echo "true" || echo "false")
   if [ "$template" == "false" ] && [ "$status" == "status: stopped" ]; then
-    echo -e "${BL}[Info]${GN} Starting${BL} $container ${CL} \n"
+    echo -e "${BL}[信息]${GN} 正在启动${BL} $container ${CL} \n"
     pct start $container
-    echo -e "${BL}[Info]${GN} Waiting For${BL} $container${CL}${GN} To Start ${CL} \n"
+    echo -e "${BL}[信息]${GN} Waiting For${BL} $container${CL}${GN} To Start ${CL} \n"
     sleep 5
   fi
 
@@ -341,10 +341,10 @@ for container in $CHOICE; do
 
   #1.1) If update script not detected, return
   if [ -z "${service}" ]; then
-    echo -e "${YW}[WARN]${CL} Update script not found. Skipping to next container"
+    echo -e "${YW}[WARN]${CL} Update script 未找到. 正在跳过 to next container"
     continue
   else
-    echo -e "${BL}[INFO]${CL} Detected service: ${GN}${service}${CL}"
+    echo -e "${BL}[INFO]${CL} 已检测到 service: ${GN}${service}${CL}"
   fi
 
   #2) Extract service build/update resource requirements from config/installation file
@@ -353,7 +353,7 @@ for container in $CHOICE; do
   #2.1) Check if the script downloaded successfully
   if [ $? -ne 0 ]; then
     echo -e "${RD}[ERROR]${CL} Issue while downloading install script."
-    echo -e "${YW}[WARN]${CL} Unable to assess build resource requirements. Proceeding with current resources."
+    echo -e "${YW}[WARN]${CL} Unable 到ssess build resource requirements. 继续ing with current resources."
   fi
 
   config=$(pct config "$container")
@@ -406,7 +406,7 @@ for container in $CHOICE; do
   exit_code=$?
 
   if [ "$template" == "false" ] && [ "$status" == "status: stopped" ]; then
-    echo -e "${BL}[Info]${GN} Shutting down${BL} $container ${CL} \n"
+    echo -e "${BL}[信息]${GN} Shutting down${BL} $container ${CL} \n"
     pct shutdown $container &
   fi
 
@@ -422,9 +422,9 @@ for container in $CHOICE; do
   fi
 
   if [ $exit_code -eq 0 ]; then
-    msg_ok "Updated container $container"
+    msg_ok "已更新 container $container"
   elif [ $exit_code -eq 75 ]; then
-    echo -e "${YW}[WARN]${CL} Container $container skipped (requires interactive mode)"
+    echo -e "${YW}[WARN]${CL} 容器 $container skipped (requires interactive mode)"
   elif [ "$BACKUP_CHOICE" == "yes" ]; then
     msg_info "Restoring LXC from backup"
     pct stop $container
@@ -446,7 +446,7 @@ done
 
 wait
 header_info
-echo -e "${GN}The process is complete, and the containers have been successfully updated.${CL}\n"
+echo -e "${GN}处理已完成, and the containers have been successfully updated.${CL}\n"
 if [ "${#containers_needing_reboot[@]}" -gt 0 ]; then
   echo -e "${RD}The following containers require a reboot:${CL}"
   for container_name in "${containers_needing_reboot[@]}"; do

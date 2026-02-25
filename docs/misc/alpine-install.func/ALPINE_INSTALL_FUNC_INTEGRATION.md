@@ -1,14 +1,14 @@
-# alpine-install.func Integration Guide
+# alpine-install.func 集成指南
 
-Integration of alpine-install.func with Alpine container workflows.
+alpine-install.func 与 Alpine 容器工作流程的集成。
 
-## Alpine-Specific Integration
+## Alpine 特定集成
 
-Alpine containers use:
-- `apk` instead of `apt-get`
-- `OpenRC` instead of `systemd`
-- Alpine-specific package names
+Alpine 容器使用：
+- `apk` 而非 `apt-get`
+- `OpenRC` 而非 `systemd`
+- Alpine 特定的包名称
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

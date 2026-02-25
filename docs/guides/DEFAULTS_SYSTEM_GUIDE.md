@@ -1,210 +1,210 @@
-# Configuration & Defaults System - User Guide
+# 配置和默认系统 - 用户指南
 
-> **Complete Guide to App Defaults and User Defaults**
+> **应用默认值和用户默认值完整指南**
 > 
-> *Learn how to configure, save, and reuse your installation settings*
+> *学习如何配置、保存和重用您的安装设置*
 
 ---
 
-## Table of Contents
+## 目录
 
-1. [Quick Start](#quick-start)
-2. [Understanding the Defaults System](#understanding-the-defaults-system)
-3. [Installation Modes](#installation-modes)
-4. [How to Save Defaults](#how-to-save-defaults)
-5. [How to Use Saved Defaults](#how-to-use-saved-defaults)
-6. [Managing Your Defaults](#managing-your-defaults)
-7. [Advanced Configuration](#advanced-configuration)
-8. [Troubleshooting](#troubleshooting)
+1. [快速开始](#快速开始)
+2. [理解默认系统](#理解默认系统)
+3. [安装模式](#安装模式)
+4. [如何保存默认值](#如何保存默认值)
+5. [如何使用保存的默认值](#如何使用保存的默认值)
+6. [管理您的默认值](#管理您的默认值)
+7. [高级配置](#高级配置)
+8. [故障排除](#故障排除)
 
 ---
 
-## Quick Start
+## 快速开始
 
-### 30-Second Setup
+### 30秒设置
 
 ```bash
-# 1. Run any container installation script
+# 1. 运行任何容器安装脚本
 bash pihole-install.sh
 
-# 2. When prompted, select: "Advanced Settings"
-#    (This allows you to customize everything)
+# 2. 当提示时，选择："Advanced Settings"
+#    （这允许您自定义所有内容）
 
-# 3. Answer all configuration questions
+# 3. 回答所有配置问题
 
-# 4. At the end, when asked "Save as App Defaults?"
-#    Select: YES
+# 4. 最后，当询问 "Save as App Defaults?" 时
+#    选择：YES
 
-# 5. Done! Your settings are now saved
+# 5. 完成！您的设置现已保存
 ```
 
-**Next Time**: Run the same script again, select **"App Defaults"** and your settings will be applied automatically!
+**下次**：再次运行相同的脚本，选择 **"App Defaults"**，您的设置将自动应用！
 
 ---
 
-## Understanding the Defaults System
+## 理解默认系统
 
-### The Three-Tier System
+### 三层系统
 
-Your installation settings are managed through three layers:
+您的安装设置通过三个层次管理：
 
-#### 🔷 **Tier 1: Built-in Defaults** (Fallback)
+#### 🔷 **层次 1: 内置默认值**（后备）
 ```
-These are hardcoded in the scripts
-Provide sensible defaults for each application
-Example: PiHole uses 2 CPU cores by default
-```
-
-#### 🔶 **Tier 2: User Defaults** (Global)
-```
-Your personal global defaults
-Applied to ALL container installations
-Location: /usr/local/community-scripts/default.vars
-Example: "I always want 4 CPU cores and 2GB RAM"
+这些是脚本中硬编码的
+为每个应用程序提供合理的默认值
+示例：PiHole 默认使用 2 个 CPU 核心
 ```
 
-#### 🔴 **Tier 3: App Defaults** (Specific)
+#### 🔶 **层次 2: 用户默认值**（全局）
 ```
-Application-specific saved settings
-Only applied when installing that specific app
-Location: /usr/local/community-scripts/defaults/<appname>.vars
-Example: "Whenever I install PiHole, use these exact settings"
+您的个人全局默认值
+应用于所有容器安装
+位置：/usr/local/community-scripts/default.vars
+示例："我总是想要 4 个 CPU 核心和 2GB RAM"
 ```
 
-### Priority System
+#### 🔴 **层次 3: 应用默认值**（特定）
+```
+应用程序特定的保存设置
+仅在安装该特定应用时应用
+位置：/usr/local/community-scripts/defaults/<appname>.vars
+示例："每当我安装 PiHole 时，使用这些确切的设置"
+```
 
-When installing a container, settings are applied in this order:
+### 优先级系统
+
+安装容器时，设置按以下顺序应用：
 
 ```
 ┌─────────────────────────────────────┐
-│ 1. Environment Variables (HIGHEST)  │  Set in shell: export var_cpu=8
-│    (these override everything)      │
+│ 1. 环境变量（最高）                  │  在 shell 中设置：export var_cpu=8
+│    （这些覆盖所有内容）              │
 ├─────────────────────────────────────┤
-│ 2. App Defaults                     │  From: defaults/pihole.vars
-│    (app-specific saved settings)    │
+│ 2. 应用默认值                        │  来自：defaults/pihole.vars
+│    （应用特定的保存设置）            │
 ├─────────────────────────────────────┤
-│ 3. User Defaults                    │  From: default.vars
-│    (your global defaults)           │
+│ 3. 用户默认值                        │  来自：default.vars
+│    （您的全局默认值）                │
 ├─────────────────────────────────────┤
-│ 4. Built-in Defaults (LOWEST)       │  Hardcoded in script
-│    (failsafe, always available)     │
+│ 4. 内置默认值（最低）                │  脚本中硬编码
+│    （故障安全，始终可用）            │
 └─────────────────────────────────────┘
 ```
 
-**In Plain English**: 
-- If you set an environment variable → it wins
-- Otherwise, if you have app-specific defaults → use those
-- Otherwise, if you have user defaults → use those
-- Otherwise, use the hardcoded defaults
+**简单来说**：
+- 如果您设置了环境变量 → 它获胜
+- 否则，如果您有应用特定的默认值 → 使用它们
+- 否则，如果您有用户默认值 → 使用它们
+- 否则，使用硬编码的默认值
 
 ---
 
-## Installation Modes
+## 安装模式
 
-When you run any installation script, you'll be presented with a menu:
+运行任何安装脚本时，您将看到一个菜单：
 
-### Option 1️⃣ : **Default Settings**
+### 选项 1️⃣：**默认设置**
 
 ```
-Quick installation with standard settings
-├─ Best for: First-time users, quick deployments
-├─ What happens:
-│  1. Script uses built-in defaults
-│  2. Container created immediately
-│  3. No questions asked
-└─ Time: ~2 minutes
+使用标准设置快速安装
+├─ 最适合：首次用户，快速部署
+├─ 发生什么：
+│  1. 脚本使用内置默认值
+│  2. 立即创建容器
+│  3. 不询问问题
+└─ 时间：约 2 分钟
 ```
 
-**When to use**: You want a standard installation, don't need customization
+**何时使用**：您想要标准安装，不需要自定义
 
 ---
 
-### Option 2️⃣ : **Advanced Settings**
+### 选项 2️⃣：**高级设置**
 
 ```
-Full customization with 19 configuration steps
-├─ Best for: Power users, custom requirements
-├─ What happens:
-│  1. Script asks for EVERY setting
-│  2. You control: CPU, RAM, Disk, Network, SSH, etc.
-│  3. Shows summary before creating
-│  4. Offers to save as App Defaults
-└─ Time: ~5-10 minutes
+通过 19 个配置步骤完全自定义
+├─ 最适合：高级用户，自定义需求
+├─ 发生什么：
+│  1. 脚本询问每个设置
+│  2. 您控制：CPU、RAM、磁盘、网络、SSH 等
+│  3. 创建前显示摘要
+│  4. 提供保存为应用默认值
+└─ 时间：约 5-10 分钟
 ```
 
-**When to use**: You want full control over the configuration
+**何时使用**：您想要完全控制配置
 
-**Available Settings**:
-- CPU cores, RAM amount, Disk size
-- Container name, network settings
-- SSH access, API access, Features
-- Password, SSH keys, Tags
+**可用设置**：
+- CPU 核心数、RAM 数量、磁盘大小
+- 容器名称、网络设置
+- SSH 访问、API 访问、功能
+- 密码、SSH 密钥、标签
 
 ---
 
-### Option 3️⃣ : **User Defaults**
+### 选项 3️⃣：**用户默认值**
 
 ```
-Use your saved global defaults
-├─ Best for: Consistent deployments across many containers
-├─ Requires: You've previously saved User Defaults
-├─ What happens:
-│  1. Loads settings from: /usr/local/community-scripts/default.vars
-│  2. Shows you the loaded settings
-│  3. Creates container immediately
-└─ Time: ~2 minutes
+使用您保存的全局默认值
+├─ 最适合：跨多个容器的一致部署
+├─ 要求：您之前已保存用户默认值
+├─ 发生什么：
+│  1. 从以下位置加载设置：/usr/local/community-scripts/default.vars
+│  2. 显示加载的设置
+│  3. 立即创建容器
+└─ 时间：约 2 分钟
 ```
 
-**When to use**: You have preferred defaults you want to use for every app
+**何时使用**：您有想要用于每个应用的首选默认值
 
 ---
 
-### Option 4️⃣ : **App Defaults** (if available)
+### 选项 4️⃣：**应用默认值**（如果可用）
 
 ```
-Use previously saved app-specific defaults
-├─ Best for: Repeating the same configuration multiple times
-├─ Requires: You've previously saved App Defaults for this app
-├─ What happens:
-│  1. Loads settings from: /usr/local/community-scripts/defaults/<app>.vars
-│  2. Shows you the loaded settings
-│  3. Creates container immediately
-└─ Time: ~2 minutes
+使用之前保存的应用特定默认值
+├─ 最适合：多次重复相同配置
+├─ 要求：您之前已为此应用保存应用默认值
+├─ 发生什么：
+│  1. 从以下位置加载设置：/usr/local/community-scripts/defaults/<app>.vars
+│  2. 显示加载的设置
+│  3. 立即创建容器
+└─ 时间：约 2 分钟
 ```
 
-**When to use**: You've installed this app before and want identical settings
+**何时使用**：您之前安装过此应用并想要相同的设置
 
 ---
 
-### Option 5️⃣ : **Settings Menu**
+### 选项 5️⃣：**设置菜单**
 
 ```
-Manage your saved configurations
-├─ Functions:
-│  • View current settings
-│  • Edit storage selections
-│  • Manage defaults location
-│  • See what's currently configured
-└─ Time: ~1 minute
+管理您保存的配置
+├─ 功能：
+│  • 查看当前设置
+│  • 编辑存储选择
+│  • 管理默认值位置
+│  • 查看当前配置的内容
+└─ 时间：约 1 分钟
 ```
 
-**When to use**: You want to review or modify saved settings
+**何时使用**：您想要查看或修改保存的设置
 
 ---
 
-## How to Save Defaults
+## 如何保存默认值
 
-### Method 1: Save While Installing
+### 方法 1：安装时保存
 
-This is the easiest way:
+这是最简单的方法：
 
-#### Step-by-Step: Create App Defaults
+#### 分步说明：创建应用默认值
 
 ```bash
-# 1. Run the installation script
+# 1. 运行安装脚本
 bash pihole-install.sh
 
-# 2. Choose installation mode
+# 2. 选择安装模式
 #    ┌─────────────────────────┐
 #    │ Select installation mode:│
 #    │ 1) Default Settings     │
@@ -214,50 +214,50 @@ bash pihole-install.sh
 #    │ 5) Settings Menu        │
 #    └─────────────────────────┘
 #
-#    Enter: 2 (Advanced Settings)
+#    输入：2（高级设置）
 
-# 3. Answer all configuration questions
+# 3. 回答所有配置问题
 #    • Container name? → my-pihole
 #    • CPU cores? → 4
 #    • RAM amount? → 2048
 #    • Disk size? → 20
 #    • SSH access? → yes
-#    ... (more options)
+#    ...（更多选项）
 
-# 4. Review summary (shown before creation)
-#    ✓ Confirm to proceed
+# 4. 查看摘要（创建前显示）
+#    ✓ 确认继续
 
-# 5. After creation completes, you'll see:
+# 5. 创建完成后，您将看到：
 #    ┌──────────────────────────────────┐
 #    │ Save as App Defaults for PiHole? │
 #    │ (Yes/No)                         │
 #    └──────────────────────────────────┘
 #
-#    Select: Yes
+#    选择：Yes
 
-# 6. Done! Settings saved to:
+# 6. 完成！设置保存到：
 #    /usr/local/community-scripts/defaults/pihole.vars
 ```
 
-#### Step-by-Step: Create User Defaults
+#### 分步说明：创建用户默认值
 
 ```bash
-# Same as App Defaults, but:
-# When you select "Advanced Settings"
-# FIRST app you run with this selection will offer
-# to save as "User Defaults" additionally
+# 与应用默认值相同，但是：
+# 当您选择 "Advanced Settings" 时
+# 您运行此选择的第一个应用将提供
+# 额外保存为 "User Defaults"
 
-# This saves to: /usr/local/community-scripts/default.vars
+# 这保存到：/usr/local/community-scripts/default.vars
 ```
 
 ---
 
-### Method 2: Manual File Creation
+### 方法 2：手动文件创建
 
-For advanced users who want to create defaults without running installation:
+对于想要在不运行安装的情况下创建默认值的高级用户：
 
 ```bash
-# Create User Defaults manually
+# 手动创建用户默认值
 sudo tee /usr/local/community-scripts/default.vars > /dev/null << 'EOF'
 # Global User Defaults
 var_cpu=4
@@ -272,7 +272,7 @@ var_container_storage=local
 var_template_storage=local
 EOF
 
-# Create App Defaults manually
+# 手动创建应用默认值
 sudo tee /usr/local/community-scripts/defaults/pihole.vars > /dev/null << 'EOF'
 # App-specific defaults for PiHole
 var_unprivileged=1
@@ -289,205 +289,205 @@ EOF
 
 ---
 
-### Method 3: Using Environment Variables
+### 方法 3：使用环境变量
 
-Set defaults via environment before running:
+在运行前通过环境设置默认值：
 
 ```bash
-# Set as environment variables
+# 设置为环境变量
 export var_cpu=4
 export var_ram=2048
 export var_disk=20
 export var_hostname=my-container
 
-# Run installation
+# 运行安装
 bash pihole-install.sh
 
-# These settings will be used
-# (Can still be overridden by saved defaults)
+# 这些设置将被使用
+#（仍可被保存的默认值覆盖）
 ```
 
 ---
 
-## How to Use Saved Defaults
+## 如何使用保存的默认值
 
-### Using User Defaults
+### 使用用户默认值
 
 ```bash
-# 1. Run any installation script
+# 1. 运行任何安装脚本
 bash pihole-install.sh
 
-# 2. When asked for mode, select:
-#    Option: 3 (User Defaults)
+# 2. 当询问模式时，选择：
+#    选项：3（用户默认值）
 
-# 3. Your settings from default.vars are applied
-# 4. Container created with your saved settings
+# 3. 应用来自 default.vars 的设置
+# 4. 使用您保存的设置创建容器
 ```
 
-### Using App Defaults
+### 使用应用默认值
 
 ```bash
-# 1. Run the app you configured before
+# 1. 运行您之前配置的应用
 bash pihole-install.sh
 
-# 2. When asked for mode, select:
-#    Option: 4 (App Defaults)
+# 2. 当询问模式时，选择：
+#    选项：4（应用默认值）
 
-# 3. Your settings from defaults/pihole.vars are applied
-# 4. Container created with exact same settings
+# 3. 应用来自 defaults/pihole.vars 的设置
+# 4. 使用完全相同的设置创建容器
 ```
 
-### Overriding Saved Defaults
+### 覆盖保存的默认值
 
 ```bash
-# Even if you have defaults saved,
-# you can override them with environment variables
+# 即使您保存了默认值，
+# 您也可以使用环境变量覆盖它们
 
-export var_cpu=8  # Override saved defaults
+export var_cpu=8  # 覆盖保存的默认值
 export var_hostname=custom-name
 
 bash pihole-install.sh
-# Installation will use these values instead of saved defaults
+# 安装将使用这些值而不是保存的默认值
 ```
 
 ---
 
-## Managing Your Defaults
+## 管理您的默认值
 
-### View Your Settings
+### 查看您的设置
 
-#### View User Defaults
+#### 查看用户默认值
 ```bash
 cat /usr/local/community-scripts/default.vars
 ```
 
-#### View App Defaults
+#### 查看应用默认值
 ```bash
 cat /usr/local/community-scripts/defaults/pihole.vars
 ```
 
-#### List All Saved App Defaults
+#### 列出所有保存的应用默认值
 ```bash
 ls -la /usr/local/community-scripts/defaults/
 ```
 
-### Edit Your Settings
+### 编辑您的设置
 
-#### Edit User Defaults
+#### 编辑用户默认值
 ```bash
 sudo nano /usr/local/community-scripts/default.vars
 ```
 
-#### Edit App Defaults
+#### 编辑应用默认值
 ```bash
 sudo nano /usr/local/community-scripts/defaults/pihole.vars
 ```
 
-### Update Existing Defaults
+### 更新现有默认值
 
 ```bash
-# Run installation again with your app
+# 再次运行您的应用的安装
 bash pihole-install.sh
 
-# Select: Advanced Settings
-# Make desired changes
-# At end, when asked to save:
+# 选择：高级设置
+# 进行所需的更改
+# 最后，当询问保存时：
 #   "Defaults already exist, Update?"
-#   Select: Yes
+#   选择：Yes
 
-# Your saved defaults are updated
+# 您保存的默认值已更新
 ```
 
-### Delete Defaults
+### 删除默认值
 
-#### Delete User Defaults
+#### 删除用户默认值
 ```bash
 sudo rm /usr/local/community-scripts/default.vars
 ```
 
-#### Delete App Defaults
+#### 删除应用默认值
 ```bash
 sudo rm /usr/local/community-scripts/defaults/pihole.vars
 ```
 
-#### Delete All App Defaults
+#### 删除所有应用默认值
 ```bash
 sudo rm /usr/local/community-scripts/defaults/*
 ```
 
 ---
 
-## Advanced Configuration
+## 高级配置
 
-### Available Variables
+### 可用变量
 
-All configurable variables start with `var_`:
+所有可配置变量都以 `var_` 开头：
 
-#### Resource Allocation
+#### 资源分配
 ```bash
-var_cpu=4              # CPU cores
-var_ram=2048           # RAM in MB
-var_disk=20            # Disk in GB
-var_unprivileged=1     # 0=privileged, 1=unprivileged
+var_cpu=4              # CPU 核心数
+var_ram=2048           # RAM（MB）
+var_disk=20            # 磁盘（GB）
+var_unprivileged=1     # 0=特权，1=非特权
 ```
 
-#### Network
+#### 网络
 ```bash
-var_brg=vmbr0          # Bridge interface
-var_net=dhcp           # dhcp, static IP/CIDR, or IP range (see below)
-var_gateway=192.168.1.1  # Default gateway (required for static IP)
-var_mtu=1500           # MTU size
+var_brg=vmbr0          # 桥接接口
+var_net=dhcp           # dhcp、静态 IP/CIDR 或 IP 范围（见下文）
+var_gateway=192.168.1.1  # 默认网关（静态 IP 需要）
+var_mtu=1500           # MTU 大小
 var_vlan=100           # VLAN ID
 ```
 
-#### IP Range Scanning
+#### IP 范围扫描
 
-You can specify an IP range instead of a static IP. The system will ping each IP in the range and automatically assign the first free IP:
+您可以指定 IP 范围而不是静态 IP。系统将 ping 范围内的每个 IP 并自动分配第一个空闲 IP：
 
 ```bash
-# Format: START_IP/CIDR-END_IP/CIDR
+# 格式：START_IP/CIDR-END_IP/CIDR
 var_net=192.168.1.100/24-192.168.1.200/24
 var_gateway=192.168.1.1
 ```
 
-This is useful for automated deployments where you want static IPs but don't want to track which IPs are already in use.
+这对于自动化部署很有用，您想要静态 IP 但不想跟踪哪些 IP 已在使用。
 
-#### System
+#### 系统
 ```bash
-var_hostname=pihole    # Container name
-var_timezone=Europe/Berlin  # Timezone
-var_pw=SecurePass123   # Root password
-var_tags=dns,pihole    # Tags for organization
-var_verbose=yes        # Enable verbose output
+var_hostname=pihole    # 容器名称
+var_timezone=Europe/Berlin  # 时区
+var_pw=SecurePass123   # Root 密码
+var_tags=dns,pihole    # 用于组织的标签
+var_verbose=yes        # 启用详细输出
 ```
 
-#### Security & Access
+#### 安全和访问
 ```bash
-var_ssh=yes            # Enable SSH
-var_ssh_authorized_key="ssh-rsa AA..." # SSH public key
-var_protection=1       # Enable protection flag
+var_ssh=yes            # 启用 SSH
+var_ssh_authorized_key="ssh-rsa AA..." # SSH 公钥
+var_protection=1       # 启用保护标志
 ```
 
-#### Features
+#### 功能
 ```bash
-var_fuse=1             # FUSE filesystem support
-var_tun=1              # TUN device support
-var_nesting=1          # Nesting (Docker in LXC)
-var_keyctl=1           # Keyctl syscall
-var_mknod=1            # Device node creation
+var_fuse=1             # FUSE 文件系统支持
+var_tun=1              # TUN 设备支持
+var_nesting=1          # 嵌套（LXC 中的 Docker）
+var_keyctl=1           # Keyctl 系统调用
+var_mknod=1            # 设备节点创建
 ```
 
-#### Storage
+#### 存储
 ```bash
-var_container_storage=local    # Where to store container
-var_template_storage=local     # Where to store templates
+var_container_storage=local    # 存储容器的位置
+var_template_storage=local     # 存储模板的位置
 ```
 
-### Example Configuration Files
+### 示例配置文件
 
-#### Gaming Server Defaults
+#### 游戏服务器默认值
 ```bash
-# High performance for gaming containers
+# 游戏容器的高性能
 var_cpu=8
 var_ram=4096
 var_disk=50
@@ -497,9 +497,9 @@ var_nesting=1
 var_tags=gaming
 ```
 
-#### Development Server
+#### 开发服务器
 ```bash
-# Development with Docker support
+# 支持 Docker 的开发
 var_cpu=4
 var_ram=2048
 var_disk=30
@@ -509,9 +509,9 @@ var_ssh=yes
 var_tags=development
 ```
 
-#### IoT/Monitoring
+#### IoT/监控
 ```bash
-# Low-resource, always-on containers
+# 低资源，始终在线的容器
 var_cpu=2
 var_ram=512
 var_disk=10
@@ -524,58 +524,58 @@ var_tags=iot,monitoring
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "App Defaults not available" Message
+### "App Defaults not available" 消息
 
-**Problem**: You want to use App Defaults, but option says they're not available
+**问题**：您想使用应用默认值，但选项显示它们不可用
 
-**Solution**:
-1. You haven't created App Defaults yet for this app
-2. Run the app with "Advanced Settings"
-3. When finished, save as App Defaults
-4. Next time, App Defaults will be available
+**解决方案**：
+1. 您尚未为此应用创建应用默认值
+2. 使用 "Advanced Settings" 运行应用
+3. 完成后，保存为应用默认值
+4. 下次，应用默认值将可用
 
 ---
 
 ### "Settings not being applied"
 
-**Problem**: You saved defaults, but they're not being used
+**问题**：您保存了默认值，但它们没有被使用
 
-**Checklist**:
+**检查清单**：
 ```bash
-# 1. Verify files exist
+# 1. 验证文件存在
 ls -la /usr/local/community-scripts/default.vars
 ls -la /usr/local/community-scripts/defaults/<app>.vars
 
-# 2. Check file permissions (should be readable)
+# 2. 检查文件权限（应该可读）
 stat /usr/local/community-scripts/default.vars
 
-# 3. Verify correct mode selected
-#    (Make sure you selected "User Defaults" or "App Defaults")
+# 3. 验证选择了正确的模式
+#    （确保您选择了 "User Defaults" 或 "App Defaults"）
 
-# 4. Check for environment variable override
+# 4. 检查环境变量覆盖
 env | grep var_
-#    If you have var_* set in environment,
-#    those override your saved defaults
+#    如果您在环境中设置了 var_*，
+#    这些会覆盖您保存的默认值
 ```
 
 ---
 
 ### "Cannot write to defaults location"
 
-**Problem**: Permission denied when saving defaults
+**问题**：保存默认值时权限被拒绝
 
-**Solution**:
+**解决方案**：
 ```bash
-# Create the defaults directory if missing
+# 如果缺少，创建默认值目录
 sudo mkdir -p /usr/local/community-scripts/defaults
 
-# Fix permissions
+# 修复权限
 sudo chmod 755 /usr/local/community-scripts
 sudo chmod 755 /usr/local/community-scripts/defaults
 
-# Make sure you're running as root
+# 确保您以 root 身份运行
 sudo bash pihole-install.sh
 ```
 
@@ -583,39 +583,39 @@ sudo bash pihole-install.sh
 
 ### "Defaults directory doesn't exist"
 
-**Problem**: Script can't find where to save defaults
+**问题**：脚本找不到保存默认值的位置
 
-**Solution**:
+**解决方案**：
 ```bash
-# Create the directory
+# 创建目录
 sudo mkdir -p /usr/local/community-scripts/defaults
 
-# Verify
+# 验证
 ls -la /usr/local/community-scripts/
 ```
 
 ---
 
-### Settings seem random or wrong
+### 设置看起来随机或错误
 
-**Problem**: Container gets different settings than expected
+**问题**：容器获得的设置与预期不同
 
-**Possible Causes & Solutions**:
+**可能的原因和解决方案**：
 
 ```bash
-# 1. Check if environment variables are set
+# 1. 检查是否设置了环境变量
 env | grep var_
-# If you see var_* entries, those override your defaults
-# Clear them: unset var_cpu var_ram (etc)
+# 如果您看到 var_* 条目，这些会覆盖您的默认值
+# 清除它们：unset var_cpu var_ram（等）
 
-# 2. Verify correct defaults are in files
+# 2. 验证文件中的默认值正确
 cat /usr/local/community-scripts/default.vars
 cat /usr/local/community-scripts/defaults/pihole.vars
 
-# 3. Check which mode you actually selected
-# (Script output shows which defaults were applied)
+# 3. 检查您实际选择的模式
+#（脚本输出显示应用了哪些默认值）
 
-# 4. Check Proxmox logs for errors
+# 4. 检查 Proxmox 日志中的错误
 sudo journalctl -u pve-daemon -n 50
 ```
 
@@ -623,98 +623,98 @@ sudo journalctl -u pve-daemon -n 50
 
 ### "Variable not recognized"
 
-**Problem**: You set a variable that doesn't work
+**问题**：您设置的变量不起作用
 
-**Solution**:
-Only certain variables are allowed (security whitelist):
+**解决方案**：
+只允许某些变量（安全白名单）：
 
 ```
-Allowed variables (starting with var_):
-✓ var_cpu, var_ram, var_disk, var_unprivileged
-✓ var_brg, var_gateway, var_mtu, var_vlan, var_net
-✓ var_hostname, var_pw, var_timezone
-✓ var_ssh, var_ssh_authorized_key
-✓ var_fuse, var_tun, var_nesting, var_keyctl
-✓ var_container_storage, var_template_storage
-✓ var_tags, var_verbose
-✓ var_apt_cacher, var_apt_cacher_ip
-✓ var_protection, var_mount_fs
+允许的变量（以 var_ 开头）：
+✓ var_cpu、var_ram、var_disk、var_unprivileged
+✓ var_brg、var_gateway、var_mtu、var_vlan、var_net
+✓ var_hostname、var_pw、var_timezone
+✓ var_ssh、var_ssh_authorized_key
+✓ var_fuse、var_tun、var_nesting、var_keyctl
+✓ var_container_storage、var_template_storage
+✓ var_tags、var_verbose
+✓ var_apt_cacher、var_apt_cacher_ip
+✓ var_protection、var_mount_fs
 
-✗ Other variables are NOT supported
+✗ 不支持其他变量
 ```
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### ✅ Do's
+### ✅ 应该做的
 
-✓ Use **App Defaults** when you want app-specific settings
-✓ Use **User Defaults** for your global preferences
-✓ Edit defaults files directly with `nano` (safe)
-✓ Keep separate App Defaults for each app
-✓ Back up your defaults regularly
-✓ Use environment variables for temporary overrides
+✓ 当您想要应用特定设置时使用 **应用默认值**
+✓ 为您的全局首选项使用 **用户默认值**
+✓ 使用 `nano` 直接编辑默认值文件（安全）
+✓ 为每个应用保留单独的应用默认值
+✓ 定期备份您的默认值
+✓ 使用环境变量进行临时覆盖
 
-### ❌ Don'ts
+### ❌ 不应该做的
 
-✗ Don't use `source` on defaults files (security risk)
-✗ Don't put sensitive passwords in defaults (use SSH keys)
-✗ Don't modify defaults while installation is running
-✗ Don't delete defaults.d while containers are being created
-✗ Don't use special characters without escaping
+✗ 不要在默认值文件上使用 `source`（安全风险）
+✗ 不要在默认值中放置敏感密码（使用 SSH 密钥）
+✗ 不要在安装运行时修改默认值
+✗ 不要在创建容器时删除 defaults.d
+✗ 不要在不转义的情况下使用特殊字符
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Defaults Locations
+### 默认值位置
 
-| Type | Location | Example |
+| 类型 | 位置 | 示例 |
 |------|----------|---------|
-| User Defaults | `/usr/local/community-scripts/default.vars` | Global settings |
-| App Defaults | `/usr/local/community-scripts/defaults/<app>.vars` | PiHole-specific |
-| Backup Dir | `/usr/local/community-scripts/defaults/` | All app defaults |
+| 用户默认值 | `/usr/local/community-scripts/default.vars` | 全局设置 |
+| 应用默认值 | `/usr/local/community-scripts/defaults/<app>.vars` | PiHole 特定 |
+| 备份目录 | `/usr/local/community-scripts/defaults/` | 所有应用默认值 |
 
-### File Format
+### 文件格式
 
 ```bash
-# Comments start with #
+# 注释以 # 开头
 var_name=value
 
-# No spaces around =
+# = 周围没有空格
 ✓ var_cpu=4
 ✗ var_cpu = 4
 
-# String values don't need quotes
+# 字符串值不需要引号
 ✓ var_hostname=mycontainer
 ✓ var_hostname='mycontainer'
 
-# Values with spaces need quotes
+# 带空格的值需要引号
 ✓ var_tags="docker,production,testing"
 ✗ var_tags=docker,production,testing
 ```
 
-### Command Reference
+### 命令参考
 
 ```bash
-# View defaults
+# 查看默认值
 cat /usr/local/community-scripts/default.vars
 
-# Edit defaults
+# 编辑默认值
 sudo nano /usr/local/community-scripts/default.vars
 
-# List all app defaults
+# 列出所有应用默认值
 ls /usr/local/community-scripts/defaults/
 
-# Backup your defaults
+# 备份您的默认值
 cp -r /usr/local/community-scripts/defaults/ ~/defaults-backup/
 
-# Set temporary override
+# 设置临时覆盖
 export var_cpu=8
 bash pihole-install.sh
 
-# Create custom defaults
+# 创建自定义默认值
 sudo tee /usr/local/community-scripts/defaults/custom.vars << 'EOF'
 var_cpu=4
 var_ram=2048
@@ -723,38 +723,38 @@ EOF
 
 ---
 
-## Getting Help
+## 获取帮助
 
-### Need More Information?
+### 需要更多信息？
 
-- 📖 [Main Documentation](../../docs/)
-- 🐛 [Report Issues](https://github.com/community-scripts/ProxmoxVE/issues)
-- 💬 [Discussions](https://github.com/community-scripts/ProxmoxVE/discussions)
+- 📖 [主文档](../../docs/)
+- 🐛 [报告问题](https://github.com/community-scripts/ProxmoxVE/issues)
+- 💬 [讨论](https://github.com/community-scripts/ProxmoxVE/discussions)
 
-### Useful Commands
+### 有用的命令
 
 ```bash
-# Check what variables are available
+# 检查可用的变量
 grep "var_" /path/to/app-install.sh | head -20
 
-# Verify defaults syntax
+# 验证默认值语法
 cat /usr/local/community-scripts/default.vars
 
-# Monitor installation with defaults
+# 使用默认值监控安装
 bash pihole-install.sh 2>&1 | tee installation.log
 ```
 
 ---
 
-## Document Information
+## 文档信息
 
-| Field | Value |
+| 字段 | 值 |
 |-------|-------|
-| Version | 1.0 |
-| Last Updated | November 28, 2025 |
-| Status | Current |
-| License | MIT |
+| 版本 | 1.0 |
+| 最后更新 | 2025年11月28日 |
+| 状态 | 当前 |
+| 许可证 | MIT |
 
 ---
 
-**Happy configuring! 🚀**
+**祝配置愉快！🚀**

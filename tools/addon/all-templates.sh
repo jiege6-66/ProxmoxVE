@@ -84,9 +84,9 @@ if systemctl is-active -q ping-instances.service; then
   systemctl stop ping-instances.service
 fi
 header_info
-echo "Loading..."
+echo "加载中..."
 pveam update >/dev/null 2>&1
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "All Templates" --yesno "This will allow for the creation of one of the many Template LXC Containers. Proceed?" 10 68
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "All Templates" --yesno "这将允许创建众多模板 LXC 容器之一。是否继续？" 10 68
 TEMPLATE_MENU=()
 MSG_MAX_LENGTH=0
 while read -r TAG ITEM; do
@@ -94,10 +94,10 @@ while read -r TAG ITEM; do
   ((${#ITEM} + OFFSET > MSG_MAX_LENGTH)) && MSG_MAX_LENGTH=${#ITEM}+OFFSET
   TEMPLATE_MENU+=("$ITEM" "$TAG " "OFF")
 done < <(pveam available)
-TEMPLATE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "All Template LXCs" --radiolist "\nSelect a Template LXC to create:\n" 16 $((MSG_MAX_LENGTH + 58)) 10 "${TEMPLATE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
+TEMPLATE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "All Template LXCs" --radiolist "\n选择要创建的模板 LXC：\n" 16 $((MSG_MAX_LENGTH + 58)) 10 "${TEMPLATE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
 [ -z "$TEMPLATE" ] && {
-  whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Template LXC Selected" --msgbox "It appears that no Template LXC container was selected" 10 68
-  msg "Done"
+  whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Template LXC Selected" --msgbox "似乎未选择模板 LXC 容器" 10 68
+  msg "完成"
   exit
 }
 
@@ -108,9 +108,9 @@ PASS="$(openssl rand -base64 8)"
 # Get valid Container ID
 CTID=$(pvesh get /cluster/nextid)
 if ! validate_container_id "$CTID"; then
-  warn "Container ID $CTID is already in use."
+  warn "容器 ID $CTID 已被使用。"
   CTID=$(get_valid_container_id "$CTID")
-  info "Using next available ID: $CTID"
+  info "使用下一个可用 ID：$CTID"
 fi
 
 PCT_OPTIONS="
@@ -161,17 +161,17 @@ function select_storage() {
 
   # Select storage location
   if [ $((${#MENU[@]} / 3)) -eq 0 ]; then
-    warn "'$CONTENT_LABEL' needs to be selected for at least one storage location."
-    die "Unable to detect valid storage location."
+    warn "至少需要为一个存储位置选择 '$CONTENT_LABEL'。"
+    die "无法检测到有效的存储位置。"
   elif [ $((${#MENU[@]} / 3)) -eq 1 ]; then
     printf ${MENU[0]}
   else
     local STORAGE
     while [ -z "${STORAGE:+x}" ]; do
       STORAGE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Storage Pools" --radiolist \
-        "Which storage pool would you like to use for the ${CONTENT_LABEL,,}?\n\n" \
+        "您想为 ${CONTENT_LABEL,,} 使用哪个存储池？\n\n" \
         16 $(($MSG_MAX_LENGTH + 23)) 6 \
-        "${MENU[@]}" 3>&1 1>&2 2>&3) || die "Menu aborted."
+        "${MENU[@]}" 3>&1 1>&2 2>&3) || die "菜单已中止。"
     done
     printf $STORAGE
   fi
@@ -179,30 +179,30 @@ function select_storage() {
 header_info
 # Get template storage
 TEMPLATE_STORAGE=$(select_storage template)
-info "Using '$TEMPLATE_STORAGE' for template storage."
+info "使用 '$TEMPLATE_STORAGE' 作为模板存储。"
 
 # Get container storage
 CONTAINER_STORAGE=$(select_storage container)
-info "Using '$CONTAINER_STORAGE' for container storage."
+info "使用 '$CONTAINER_STORAGE' 作为容器存储。"
 
 # Download template
-msg "Downloading LXC template (Patience)..."
-pveam download $TEMPLATE_STORAGE $TEMPLATE >/dev/null || die "A problem occured while downloading the LXC template."
+msg "正在下载 LXC 模板（请耐心等待）..."
+pveam download $TEMPLATE_STORAGE $TEMPLATE >/dev/null || die "下载 LXC 模板时出现问题。"
 
 # Create variable for 'pct' options
 PCT_OPTIONS=(${PCT_OPTIONS[@]:-${DEFAULT_PCT_OPTIONS[@]}})
 [[ " ${PCT_OPTIONS[@]} " =~ " -rootfs " ]] || PCT_OPTIONS+=(-rootfs $CONTAINER_STORAGE:${PCT_DISK_SIZE:-8})
 
 # Create LXC
-msg "Creating LXC container..."
+msg "正在创建 LXC 容器..."
 pct create $CTID ${TEMPLATE_STORAGE}:vztmpl/${TEMPLATE} ${PCT_OPTIONS[@]} >/dev/null ||
-  die "A problem occured while trying to create container."
+  die "尝试创建容器时出现问题。"
 
 # Save password
 echo "$NAME password: ${PASS}" >>~/$NAME.creds # file is located in the Proxmox root directory
 
 # Start container
-msg "Starting LXC Container..."
+msg "正在启动 LXC 容器..."
 pct start "$CTID"
 sleep 5
 
@@ -216,14 +216,14 @@ while [[ $attempt -le $max_attempts ]]; do
   if [[ -n $IP ]]; then
     break
   else
-    warn "Attempt $attempt: IP address not found. Pausing for 5 seconds..."
+    warn "尝试 $attempt：未找到 IP 地址。暂停 5 秒..."
     sleep 5
     ((attempt++))
   fi
 done
 
 if [[ -z $IP ]]; then
-  warn "Maximum number of attempts reached. IP address not found."
+  warn "已达到最大尝试次数。未找到 IP 地址。"
   IP="NOT FOUND"
 fi
 
@@ -236,10 +236,10 @@ fi
 # Success message
 header_info
 echo
-info "LXC container '$CTID' was successfully created, and its IP address is ${IP}."
+info "LXC 容器 '$CTID' 已成功创建，其 IP 地址为 ${IP}。"
 echo
-info "Proceed to the LXC console to complete the setup."
+info "继续进入 LXC 控制台以完成设置。"
 echo
-info "login: root"
-info "password: $PASS"
+info "登录名：root"
+info "密码：$PASS"
 echo

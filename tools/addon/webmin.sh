@@ -42,24 +42,24 @@ declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "webmin" "addo
 
 header_info
 
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "Webmin Installer" --yesno "This Will Install Webmin on this LXC Container. Proceed?" 10 58
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "Webmin 安装程序" --yesno "这将在此 LXC 容器上安装 Webmin。是否继续？" 10 58
 
-msg_info "Installing Prerequisites"
+msg_info "正在安装先决条件"
 apt update &>/dev/null
 apt-get -y install libnet-ssleay-perl libauthen-pam-perl libio-pty-perl unzip shared-mime-info curl &>/dev/null
-msg_ok "Installed Prerequisites"
+msg_ok "已安装先决条件"
 
 LATEST=$(curl -fsSL https://api.github.com/repos/webmin/webmin/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
 
-msg_info "Downloading Webmin"
+msg_info "正在下载 Webmin"
 curl -fsSL "https://github.com/webmin/webmin/releases/download/$LATEST/webmin_${LATEST}_all.deb" -o $(basename "https://github.com/webmin/webmin/releases/download/$LATEST/webmin_${LATEST}_all.deb")
-msg_ok "Downloaded Webmin"
+msg_ok "已下载 Webmin"
 
-msg_info "Installing Webmin"
+msg_info "正在安装 Webmin"
 dpkg -i webmin_${LATEST}_all.deb &>/dev/null
 /usr/share/webmin/changepass.pl /etc/webmin root root &>/dev/null
 rm -rf /root/webmin_${LATEST}_all.deb
-msg_ok "Installed Webmin"
+msg_ok "已安装 Webmin"
 
 IP=$(hostname -I | cut -f1 -d ' ')
-echo -e "Successfully Installed!! Webmin should be reachable by going to ${BL}https://${IP}:10000${CL}"
+echo -e "安装成功！！Webmin 应该可以通过以下地址访问 ${BL}https://${IP}:10000${CL}"

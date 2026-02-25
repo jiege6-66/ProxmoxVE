@@ -55,12 +55,12 @@ start_routines() {
     "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Backing up Proxmox Backup Server 2"
+    msg_info "正在备份 Proxmox Backup Server 2"
     tar czf "pbs2-etc-backup-$(date -I).tar.gz" -C "/etc" "proxmox-backup"
-    msg_ok "Backed up Proxmox Backup Server 2"
+    msg_ok "已备份 Proxmox Backup Server 2"
     ;;
   no)
-    msg_error "Selected no to Backing up Proxmox Backup Server 2"
+    msg_error "已选择不 正在备份 Proxmox Backup Server 2"
     ;;
   esac
 
@@ -69,16 +69,16 @@ start_routines() {
     "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Changing to Proxmox Backup Server 3 Sources"
+    msg_info "正在切换至 Proxmox Backup Server 3 源"
     cat <<EOF >/etc/apt/sources.list
 deb http://deb.debian.org/debian bookworm main contrib
 deb http://deb.debian.org/debian bookworm-updates main contrib
 deb http://security.debian.org/debian-security bookworm-security main contrib
 EOF
-    msg_ok "Changed to Proxmox Backup Server 3 Sources"
+    msg_ok "已切换至 Proxmox Backup Server 3 源"
     ;;
   no)
-    msg_error "Selected no to Correcting Proxmox Backup Server 3 Sources"
+    msg_error "已选择不 正在修正 Proxmox Backup Server 3 源"
     ;;
   esac
 
@@ -87,46 +87,46 @@ EOF
     "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Disabling 'pbs-enterprise' repository"
+    msg_info "正在禁用 'pbs-enterprise' repository"
     cat <<EOF >/etc/apt/sources.list.d/pbs-enterprise.list
 # deb https://enterprise.proxmox.com/debian/pbs bookworm pbs-enterprise
 EOF
-    msg_ok "Disabled 'pbs-enterprise' repository"
+    msg_ok "已禁用 'pbs-enterprise' repository"
     ;;
   no)
-    msg_error "Selected no to Disabling 'pbs-enterprise' repository"
+    msg_error "已选择不 正在禁用 'pbs-enterprise' repository"
     ;;
   esac
 
-  CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "PBS3-NO-SUBSCRIPTION" --menu "The 'pbs-no-subscription' repository provides access to all of the open-source components of Proxmox Backup Server.\n \nEnable 'pbs-no-subscription' repository?" 14 58 2 \
+  CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "PBS3-NO-SUBSCRIPTION" --menu "The 'pbs-no-subscription' repository provides access 到ll of the open-source components of Proxmox Backup Server.\n \nEnable 'pbs-no-subscription' repository?" 14 58 2 \
     "yes" " " \
     "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Enabling 'pbs-no-subscription' repository"
+    msg_info "正在启用 'pbs-no-subscription' repository"
     cat <<EOF >/etc/apt/sources.list.d/pbs-install-repo.list
 deb http://download.proxmox.com/debian/pbs bookworm pbs-no-subscription
 EOF
-    msg_ok "Enabled 'pbs-no-subscription' repository"
+    msg_ok "已启用 'pbs-no-subscription' repository"
     ;;
   no)
-    msg_error "Selected no to Enabling 'pbs-no-subscription' repository"
+    msg_error "已选择不 正在启用 'pbs-no-subscription' repository"
     ;;
   esac
 
-  CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "PBS3 TEST" --menu "The 'pbstest' repository can give advanced users access to new features and updates before they are officially released.\n \nAdd (Disabled) 'pbstest' repository?" 14 58 2 \
+  CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "PBS3 TEST" --menu "The 'pbstest' repository can give advanced users access to new features and updates before they are officially released.\n \nAdd (已禁用) 'pbstest' repository?" 14 58 2 \
     "yes" " " \
     "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Adding 'pbstest' repository and set disabled"
+    msg_info "正在添加 'pbstest' repository and set disabled"
     cat <<EOF >/etc/apt/sources.list.d/pbstest-for-beta.list
 # deb http://download.proxmox.com/debian/pbs bookworm pbstest
 EOF
-    msg_ok "Added 'pbstest' repository"
+    msg_ok "已添加 'pbstest' repository"
     ;;
   no)
-    msg_error "Selected no to Adding 'pbstest' repository"
+    msg_error "已选择不 正在添加 'pbstest' repository"
     ;;
   esac
 
@@ -135,13 +135,13 @@ EOF
     "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Updating to Proxmox Backup Server 3 (Patience)"
+    msg_info "正在更新 to Proxmox Backup Server 3 (Patience)"
     apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" dist-upgrade -y
-    msg_ok "Updated to Proxmox Backup Server 3"
+    msg_ok "已更新 to Proxmox Backup Server 3"
     ;;
   no)
-    msg_error "Selected no to Updating to Proxmox Backup Server 3"
+    msg_error "已选择不 正在更新 to Proxmox Backup Server 3"
     ;;
   esac
 
@@ -152,12 +152,12 @@ EOF
   yes)
     msg_info "Rebooting Proxmox Backup Server 3"
     sleep 2
-    msg_ok "Completed Install Routines"
+    msg_ok "已完成 Install Routines"
     reboot
     ;;
   no)
-    msg_error "Selected no to Rebooting Proxmox Backup Server 3 (Reboot recommended)"
-    msg_ok "Completed Install Routines"
+    msg_error "已选择不 Rebooting Proxmox Backup Server 3 (Reboot recommended)"
+    msg_ok "已完成 Install Routines"
     ;;
   esac
 }

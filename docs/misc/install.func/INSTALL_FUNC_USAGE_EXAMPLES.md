@@ -1,10 +1,10 @@
-# install.func Usage Examples
+# install.func 使用示例
 
-Practical examples for using install.func functions in application installation scripts.
+在应用程序安装脚本中使用 install.func 函数的实用示例。
 
-## Basic Examples
+## 基础示例
 
-### Example 1: Minimal Setup
+### 示例 1：最小化设置
 
 ```bash
 #!/usr/bin/env bash
@@ -21,7 +21,7 @@ customize
 cleanup_lxc
 ```
 
-### Example 2: With Error Handling
+### 示例 2：带错误处理
 
 ```bash
 #!/usr/bin/env bash
@@ -45,9 +45,9 @@ fi
 
 ---
 
-## Production Examples
+## 生产环境示例
 
-### Example 3: Full Application Installation
+### 示例 3：完整应用程序安装
 
 ```bash
 #!/usr/bin/env bash
@@ -67,7 +67,7 @@ customize
 cleanup_lxc
 ```
 
-### Example 4: With IPv6 Support
+### 示例 4：支持 IPv6
 
 ```bash
 #!/usr/bin/env bash
@@ -88,6 +88,6 @@ cleanup_lxc
 
 ---
 
-**Last Updated**: December 2025
-**Examples**: Basic and production patterns
-**All examples production-ready**
+**最后更新**：2025年12月
+**示例**：基础和生产环境模式
+**所有示例均可用于生产环境**

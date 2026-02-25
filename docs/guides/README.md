@@ -1,58 +1,58 @@
-# Configuration & Deployment Guides
+# 配置和部署指南
 
-This directory contains comprehensive guides for configuring and deploying Proxmox VE containers using community-scripts.
+本目录包含使用 community-scripts 配置和部署 Proxmox VE 容器的综合指南。
 
-## 📚 Available Guides
+## 📚 可用指南
 
-### [Configuration Reference](CONFIGURATION_REFERENCE.md)
+### [配置参考](CONFIGURATION_REFERENCE.md)
 
-Complete reference for all configuration options, environment variables, and advanced settings available in the build system.
+构建系统中所有配置选项、环境变量和高级设置的完整参考。
 
-**Topics covered:**
+**涵盖的主题：**
 
-- Container specifications (CPU, RAM, Disk)
-- Network configuration (IPv4/IPv6, VLAN, MTU)
-- Storage selection and management
-- Privilege modes and features
-- OS selection and versions
+- 容器规格（CPU、RAM、磁盘）
+- 网络配置（IPv4/IPv6、VLAN、MTU）
+- 存储选择和管理
+- 权限模式和功能
+- 操作系统选择和版本
 
-### [Defaults System Guide](DEFAULTS_SYSTEM_GUIDE.md)
+### [默认系统指南](DEFAULTS_SYSTEM_GUIDE.md)
 
-Understanding and customizing default settings for container deployments.
+理解和自定义容器部署的默认设置。
 
-**Topics covered:**
+**涵盖的主题：**
 
-- Default system settings
-- Per-script overrides
-- Custom defaults configuration
-- Environment variable precedence
+- 默认系统设置
+- 每个脚本的覆盖
+- 自定义默认配置
+- 环境变量优先级
 
-### [Unattended Deployments](UNATTENDED_DEPLOYMENTS.md)
+### [无人值守部署](UNATTENDED_DEPLOYMENTS.md)
 
-Automating container deployments without user interaction.
+在无用户交互的情况下自动化容器部署。
 
-**Topics covered:**
+**涵盖的主题：**
 
-- Environment variable configuration
-- Batch deployments
-- CI/CD integration
-- Scripted installations
-- Pre-configured templates
+- 环境变量配置
+- 批量部署
+- CI/CD 集成
+- 脚本化安装
+- 预配置模板
 
-## 🔗 Related Documentation
+## 🔗 相关文档
 
-- **[CT Scripts Guide](../ct/)** - Container script structure and usage
-- **[Install Scripts Guide](../install/)** - Installation script internals
-- **[API Documentation](../api/)** - API integration and endpoints
-- **[Build Functions](../misc/build.func/)** - Build system functions reference
-- **[Tools Functions](../misc/tools.func/)** - Utility functions reference
+- **[CT 脚本指南](../ct/)** - 容器脚本结构和用法
+- **[安装脚本指南](../install/)** - 安装脚本内部
+- **[API 文档](../api/)** - API 集成和端点
+- **[构建函数](../misc/build.func/)** - 构建系统函数参考
+- **[工具函数](../misc/tools.func/)** - 实用函数参考
 
-## 💡 Quick Start
+## 💡 快速开始
 
-For most users, start with the **Unattended Deployments** guide to learn how to automate your container setups.
+对于大多数用户，从**无人值守部署**指南开始，了解如何自动化您的容器设置。
 
-For advanced configuration options, refer to the **Configuration Reference**.
+对于高级配置选项，请参考**配置参考**。
 
-## 🤝 Contributing
+## 🤝 贡献
 
-If you'd like to improve these guides or add new ones, please see our [Contribution Guide](../contribution/).
+如果您想改进这些指南或添加新指南，请参阅我们的[贡献指南](../contribution/)。

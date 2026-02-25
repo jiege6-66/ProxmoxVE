@@ -1,8 +1,8 @@
-# cloud-init.func Usage Examples
+# cloud-init.func 使用示例
 
-Examples for VM cloud-init configuration.
+VM cloud-init 配置示例。
 
-### Example: Basic Cloud-Init
+### 示例：基本 Cloud-Init
 
 ```bash
 #!/usr/bin/env bash
@@ -14,4 +14,4 @@ apply_cloud_init "$VMID" cloud-init.yaml
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

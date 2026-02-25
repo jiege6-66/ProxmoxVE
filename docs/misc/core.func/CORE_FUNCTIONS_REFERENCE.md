@@ -1,278 +1,278 @@
-# core.func Functions Reference
+# core.func 函数参考
 
-## Overview
+## 概述
 
-This document provides a comprehensive alphabetical reference of all functions in `core.func`, including parameters, dependencies, usage examples, and error handling.
+本文档提供 `core.func` 中所有函数的完整字母顺序参考，包括参数、依赖关系、使用示例和错误处理。
 
-## Function Categories
+## 函数类别
 
-### Initialization Functions
+### 初始化函数
 
 #### `load_functions()`
-**Purpose**: Main function loader that initializes all core utilities
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
-- Sets `__FUNCTIONS_LOADED=1` to prevent reloading
-- Calls all core function groups in sequence
-- Initializes color, formatting, icons, defaults, and standard mode
-**Dependencies**: None
-**Environment Variables Used**: `__FUNCTIONS_LOADED`
+**目的**：初始化所有核心实用工具的主函数加载器
+**参数**：无
+**返回**：无
+**副作用**：
+- 设置 `__FUNCTIONS_LOADED=1` 以防止重新加载
+- 按顺序调用所有核心函数组
+- 初始化颜色、格式化、图标、默认值和标准模式
+**依赖关系**：无
+**使用的环境变量**：`__FUNCTIONS_LOADED`
 
-**Usage Example**:
+**使用示例**：
 ```bash
-# Automatically called when core.func is sourced
+# 引用 core.func 时自动调用
 source core.func
-# load_functions() is called automatically
+# load_functions() 自动调用
 ```
 
-### Color and Formatting Functions
+### 颜色和格式化函数
 
 #### `color()`
-**Purpose**: Set ANSI color codes for styled terminal output
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Sets global color variables
-**Dependencies**: None
-**Environment Variables Used**: None
+**目的**：为样式化终端输出设置 ANSI 颜色代码
+**参数**：无
+**返回**：无
+**副作用**：设置全局颜色变量
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Sets Variables**:
-- `YW`: Yellow
-- `YWB`: Bright yellow
-- `BL`: Blue
-- `RD`: Red
-- `BGN`: Bright green
-- `GN`: Green
-- `DGN`: Dark green
-- `CL`: Clear/reset
+**设置的变量**：
+- `YW`：黄色
+- `YWB`：亮黄色
+- `BL`：蓝色
+- `RD`：红色
+- `BGN`：亮绿色
+- `GN`：绿色
+- `DGN`：深绿色
+- `CL`：清除/重置
 
-**Usage Example**:
+**使用示例**：
 ```bash
 color
-echo -e "${GN}Success message${CL}"
-echo -e "${RD}Error message${CL}"
+echo -e "${GN}成功消息${CL}"
+echo -e "${RD}错误消息${CL}"
 ```
 
 #### `color_spinner()`
-**Purpose**: Set color codes specifically for spinner output
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Sets spinner-specific color variables
-**Dependencies**: None
-**Environment Variables Used**: None
+**目的**：专门为旋转器输出设置颜色代码
+**参数**：无
+**返回**：无
+**副作用**：设置旋转器特定的颜色变量
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Sets Variables**:
-- `CS_YW`: Yellow for spinner
-- `CS_YWB`: Bright yellow for spinner
-- `CS_CL`: Clear for spinner
+**设置的变量**：
+- `CS_YW`：旋转器黄色
+- `CS_YWB`：旋转器亮黄色
+- `CS_CL`：旋转器清除
 
 #### `formatting()`
-**Purpose**: Define formatting helpers for terminal output
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Sets global formatting variables
-**Dependencies**: None
-**Environment Variables Used**: None
+**目的**：定义终端输出的格式化助手
+**参数**：无
+**返回**：无
+**副作用**：设置全局格式化变量
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Sets Variables**:
-- `BFR`: Back and forward reset
-- `BOLD`: Bold text
-- `HOLD`: Space character
-- `TAB`: Two spaces
-- `TAB3`: Six spaces
+**设置的变量**：
+- `BFR`：后退和前进重置
+- `BOLD`：粗体文本
+- `HOLD`：空格字符
+- `TAB`：两个空格
+- `TAB3`：六个空格
 
-### Icon Functions
+### 图标函数
 
 #### `icons()`
-**Purpose**: Set symbolic icons used throughout user feedback and prompts
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Sets global icon variables
-**Dependencies**: `formatting()` (for TAB variable)
-**Environment Variables Used**: `TAB`, `CL`
+**目的**：设置用于用户反馈和提示的符号图标
+**参数**：无
+**返回**：无
+**副作用**：设置全局图标变量
+**依赖关系**：`formatting()`（用于 TAB 变量）
+**使用的环境变量**：`TAB`、`CL`
 
-**Sets Variables**:
-- `CM`: Check mark
-- `CROSS`: Cross mark
-- `DNSOK`: DNS success
-- `DNSFAIL`: DNS failure
-- `INFO`: Information icon
-- `OS`: Operating system icon
-- `OSVERSION`: OS version icon
-- `CONTAINERTYPE`: Container type icon
-- `DISKSIZE`: Disk size icon
-- `CPUCORE`: CPU core icon
-- `RAMSIZE`: RAM size icon
-- `SEARCH`: Search icon
-- `VERBOSE_CROPPED`: Verbose mode icon
-- `VERIFYPW`: Password verification icon
-- `CONTAINERID`: Container ID icon
-- `HOSTNAME`: Hostname icon
-- `BRIDGE`: Bridge icon
-- `NETWORK`: Network icon
-- `GATEWAY`: Gateway icon
-- `DISABLEIPV6`: IPv6 disable icon
-- `DEFAULT`: Default settings icon
-- `MACADDRESS`: MAC address icon
-- `VLANTAG`: VLAN tag icon
-- `ROOTSSH`: SSH key icon
-- `CREATING`: Creating icon
-- `ADVANCED`: Advanced settings icon
-- `FUSE`: FUSE icon
-- `HOURGLASS`: Hourglass icon
+**设置的变量**：
+- `CM`：复选标记
+- `CROSS`：叉号
+- `DNSOK`：DNS 成功
+- `DNSFAIL`：DNS 失败
+- `INFO`：信息图标
+- `OS`：操作系统图标
+- `OSVERSION`：OS 版本图标
+- `CONTAINERTYPE`：容器类型图标
+- `DISKSIZE`：磁盘大小图标
+- `CPUCORE`：CPU 核心图标
+- `RAMSIZE`：RAM 大小图标
+- `SEARCH`：搜索图标
+- `VERBOSE_CROPPED`：详细模式图标
+- `VERIFYPW`：密码验证图标
+- `CONTAINERID`：容器 ID 图标
+- `HOSTNAME`：主机名图标
+- `BRIDGE`：桥接图标
+- `NETWORK`：网络图标
+- `GATEWAY`：网关图标
+- `DISABLEIPV6`：IPv6 禁用图标
+- `DEFAULT`：默认设置图标
+- `MACADDRESS`：MAC 地址图标
+- `VLANTAG`：VLAN 标签图标
+- `ROOTSSH`：SSH 密钥图标
+- `CREATING`：创建图标
+- `ADVANCED`：高级设置图标
+- `FUSE`：FUSE 图标
+- `HOURGLASS`：沙漏图标
 
-### Default Variables Functions
+### 默认变量函数
 
 #### `default_vars()`
-**Purpose**: Set default retry and wait variables for system actions
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Sets retry configuration variables
-**Dependencies**: None
-**Environment Variables Used**: None
+**目的**：为系统操作设置默认重试和等待变量
+**参数**：无
+**返回**：无
+**副作用**：设置重试配置变量
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Sets Variables**:
-- `RETRY_NUM`: Number of retry attempts (default: 10)
-- `RETRY_EVERY`: Seconds between retries (default: 3)
-- `i`: Retry counter initialized to RETRY_NUM
+**设置的变量**：
+- `RETRY_NUM`：重试尝试次数（默认：10）
+- `RETRY_EVERY`：重试间隔秒数（默认：3）
+- `i`：重试计数器初始化为 RETRY_NUM
 
 #### `set_std_mode()`
-**Purpose**: Set default verbose mode for script execution
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Sets STD variable based on VERBOSE setting
-**Dependencies**: None
-**Environment Variables Used**: `VERBOSE`
+**目的**：为脚本执行设置默认详细模式
+**参数**：无
+**返回**：无
+**副作用**：根据 VERBOSE 设置设置 STD 变量
+**依赖关系**：无
+**使用的环境变量**：`VERBOSE`
 
-**Sets Variables**:
-- `STD`: "silent" if VERBOSE != "yes", empty string if VERBOSE = "yes"
+**设置的变量**：
+- `STD`：如果 VERBOSE != "yes" 则为 "silent"，如果 VERBOSE = "yes" 则为空字符串
 
-### Silent Execution Functions
+### 静默执行函数
 
 #### `silent()`
-**Purpose**: Execute commands silently with detailed error reporting
-**Parameters**: `$*` - Command and arguments to execute
-**Returns**: None (exits on error)
-**Side Effects**:
-- Executes command with output redirected to log file
-- On error, displays detailed error information
-- Exits with command's exit code
-**Dependencies**: `error_handler.func` (for error explanations)
-**Environment Variables Used**: `SILENT_LOGFILE`
+**目的**：使用详细错误报告静默执行命令
+**参数**：`$*` - 要执行的命令和参数
+**返回**：无（错误时退出）
+**副作用**：
+- 执行命令并将输出重定向到日志文件
+- 错误时显示详细错误信息
+- 以命令的退出代码退出
+**依赖关系**：`error_handler.func`（用于错误说明）
+**使用的环境变量**：`SILENT_LOGFILE`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 silent apt-get update
 silent apt-get install -y package-name
 ```
 
-**Error Handling**:
-- Captures command output to `/tmp/silent.$$.log`
-- Shows error code explanation
-- Displays last 10 lines of log
-- Provides command to view full log
+**错误处理**：
+- 将命令输出捕获到 `/tmp/silent.$$.log`
+- 显示错误代码说明
+- 显示日志的最后 10 行
+- 提供查看完整日志的命令
 
-### System Check Functions
+### 系统检查函数
 
 #### `shell_check()`
-**Purpose**: Verify that the script is running in Bash shell
-**Parameters**: None
-**Returns**: None (exits if not Bash)
-**Side Effects**:
-- Checks current shell process
-- Exits with error message if not Bash
-**Dependencies**: None
-**Environment Variables Used**: None
+**目的**：验证脚本在 Bash shell 中运行
+**参数**：无
+**返回**：无（如果不是 Bash 则退出）
+**副作用**：
+- 检查当前 shell 进程
+- 如果不是 Bash 则以错误消息退出
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
 shell_check
-# Script continues if Bash, exits if not
+# 如果是 Bash 则脚本继续，否则退出
 ```
 
 #### `root_check()`
-**Purpose**: Ensure script is running as root user
-**Parameters**: None
-**Returns**: None (exits if not root)
-**Side Effects**:
-- Checks user ID and parent process
-- Exits with error message if not root
-**Dependencies**: None
-**Environment Variables Used**: None
+**目的**：确保脚本以 root 用户身份运行
+**参数**：无
+**返回**：无（如果不是 root 则退出）
+**副作用**：
+- 检查用户 ID 和父进程
+- 如果不是 root 则以错误消息退出
+**依赖关系**：无
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
 root_check
-# Script continues if root, exits if not
+# 如果是 root 则脚本继续，否则退出
 ```
 
 #### `pve_check()`
-**Purpose**: Verify Proxmox VE version compatibility
-**Parameters**: None
-**Returns**: None (exits if unsupported version)
-**Side Effects**:
-- Checks PVE version using pveversion command
-- Exits with error message if unsupported
-**Dependencies**: `pveversion` command
-**Environment Variables Used**: None
+**目的**：验证 Proxmox VE 版本兼容性
+**参数**：无
+**返回**：无（如果版本不支持则退出）
+**副作用**：
+- 使用 pveversion 命令检查 PVE 版本
+- 如果不支持则以错误消息退出
+**依赖关系**：`pveversion` 命令
+**使用的环境变量**：无
 
-**Supported Versions**:
+**支持的版本**：
 - Proxmox VE 8.0 - 8.9
-- Proxmox VE 9.0 (only)
+- Proxmox VE 9.0（仅限）
 
-**Usage Example**:
+**使用示例**：
 ```bash
 pve_check
-# Script continues if supported version, exits if not
+# 如果是支持的版本则脚本继续，否则退出
 ```
 
 #### `arch_check()`
-**Purpose**: Verify system architecture is AMD64
-**Parameters**: None
-**Returns**: None (exits if not AMD64)
-**Side Effects**:
-- Checks system architecture
-- Exits with PiMox warning if not AMD64
-**Dependencies**: `dpkg` command
-**Environment Variables Used**: None
+**目的**：验证系统架构是 AMD64
+**参数**：无
+**返回**：无（如果不是 AMD64 则退出）
+**副作用**：
+- 检查系统架构
+- 如果不是 AMD64 则以 PiMox 警告退出
+**依赖关系**：`dpkg` 命令
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
 arch_check
-# Script continues if AMD64, exits if not
+# 如果是 AMD64 则脚本继续，否则退出
 ```
 
 #### `ssh_check()`
-**Purpose**: Detect and warn about external SSH usage
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
-- Checks SSH_CLIENT environment variable
-- Warns if connecting from external IP
-- Allows local connections (127.0.0.1 or host IP)
-**Dependencies**: None
-**Environment Variables Used**: `SSH_CLIENT`
+**目的**：检测并警告外部 SSH 使用
+**参数**：无
+**返回**：无
+**副作用**：
+- 检查 SSH_CLIENT 环境变量
+- 如果从外部 IP 连接则警告
+- 允许本地连接（127.0.0.1 或主机 IP）
+**依赖关系**：无
+**使用的环境变量**：`SSH_CLIENT`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 ssh_check
-# Shows warning if external SSH, continues anyway
+# 如果是外部 SSH 则显示警告，无论如何继续
 ```
 
-### Header Management Functions
+### 头部管理函数
 
 #### `get_header()`
-**Purpose**: Download and cache application header files
-**Parameters**: None (uses APP and APP_TYPE variables)
-**Returns**: Header content on success, empty on failure
-**Side Effects**:
-- Downloads header from remote URL
-- Caches header locally
-- Creates directory structure if needed
-**Dependencies**: `curl` command
-**Environment Variables Used**: `APP`, `APP_TYPE`
+**目的**：下载并缓存应用程序头文件
+**参数**：无（使用 APP 和 APP_TYPE 变量）
+**返回**：成功时返回头部内容，失败时为空
+**副作用**：
+- 从远程 URL 下载头部
+- 本地缓存头部
+- 如需要创建目录结构
+**依赖关系**：`curl` 命令
+**使用的环境变量**：`APP`、`APP_TYPE`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 export APP="plex"
 export APP_TYPE="ct"
@@ -280,266 +280,266 @@ header_content=$(get_header)
 ```
 
 #### `header_info()`
-**Purpose**: Display application header information
-**Parameters**: None (uses APP variable)
-**Returns**: None
-**Side Effects**:
-- Clears screen
-- Displays header content
-- Gets terminal width for formatting
-**Dependencies**: `get_header()`, `tput` command
-**Environment Variables Used**: `APP`
+**目的**：显示应用程序头部信息
+**参数**：无（使用 APP 变量）
+**返回**：无
+**副作用**：
+- 清除屏幕
+- 显示头部内容
+- 获取终端宽度以进行格式化
+**依赖关系**：`get_header()`、`tput` 命令
+**使用的环境变量**：`APP`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 export APP="plex"
 header_info
-# Displays Plex header information
+# 显示 Plex 头部信息
 ```
 
-### Utility Functions
+### 实用函数
 
 #### `ensure_tput()`
-**Purpose**: Ensure tput command is available for terminal control
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
-- Installs ncurses package if tput missing
-- Works on Alpine and Debian-based systems
-**Dependencies**: `apk` or `apt-get` package managers
-**Environment Variables Used**: None
+**目的**：确保 tput 命令可用于终端控制
+**参数**：无
+**返回**：无
+**副作用**：
+- 如果 tput 缺失则安装 ncurses 包
+- 在 Alpine 和基于 Debian 的系统上工作
+**依赖关系**：`apk` 或 `apt-get` 包管理器
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
 ensure_tput
-# Installs ncurses if needed, continues if already available
+# 如需要安装 ncurses，如果已可用则继续
 ```
 
 #### `is_alpine()`
-**Purpose**: Detect if running on Alpine Linux
-**Parameters**: None
-**Returns**: 0 if Alpine, 1 if not Alpine
-**Side Effects**: None
-**Dependencies**: None
-**Environment Variables Used**: `var_os`, `PCT_OSTYPE`
+**目的**：检测是否在 Alpine Linux 上运行
+**参数**：无
+**返回**：如果是 Alpine 则为 0，如果不是 Alpine 则为 1
+**副作用**：无
+**依赖关系**：无
+**使用的环境变量**：`var_os`、`PCT_OSTYPE`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 if is_alpine; then
-    echo "Running on Alpine Linux"
+    echo "在 Alpine Linux 上运行"
 else
-    echo "Not running on Alpine Linux"
+    echo "不在 Alpine Linux 上运行"
 fi
 ```
 
 #### `is_verbose_mode()`
-**Purpose**: Check if verbose mode is enabled
-**Parameters**: None
-**Returns**: 0 if verbose mode, 1 if not verbose
-**Side Effects**: None
-**Dependencies**: None
-**Environment Variables Used**: `VERBOSE`, `var_verbose`
+**目的**：检查是否启用详细模式
+**参数**：无
+**返回**：如果是详细模式则为 0，如果不是详细则为 1
+**副作用**：无
+**依赖关系**：无
+**使用的环境变量**：`VERBOSE`、`var_verbose`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 if is_verbose_mode; then
-    echo "Verbose mode enabled"
+    echo "详细模式已启用"
 else
-    echo "Verbose mode disabled"
+    echo "详细模式已禁用"
 fi
 ```
 
 #### `fatal()`
-**Purpose**: Display fatal error and terminate script
-**Parameters**: `$1` - Error message
-**Returns**: None (terminates script)
-**Side Effects**:
-- Displays error message
-- Sends INT signal to current process
-**Dependencies**: `msg_error()`
-**Environment Variables Used**: None
+**目的**：显示致命错误并终止脚本
+**参数**：`$1` - 错误消息
+**返回**：无（终止脚本）
+**副作用**：
+- 显示错误消息
+- 向当前进程发送 INT 信号
+**依赖关系**：`msg_error()`
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
-fatal "Critical error occurred"
-# Script terminates after displaying error
+fatal "发生严重错误"
+# 显示错误后脚本终止
 ```
 
-### Spinner Functions
+### 旋转器函数
 
 #### `spinner()`
-**Purpose**: Display animated spinner for progress indication
-**Parameters**: None (uses SPINNER_MSG variable)
-**Returns**: None (runs indefinitely)
-**Side Effects**:
-- Displays rotating spinner characters
-- Uses terminal control sequences
-**Dependencies**: `color_spinner()`
-**Environment Variables Used**: `SPINNER_MSG`
+**目的**：显示动画旋转器以指示进度
+**参数**：无（使用 SPINNER_MSG 变量）
+**返回**：无（无限期运行）
+**副作用**：
+- 显示旋转的旋转器字符
+- 使用终端控制序列
+**依赖关系**：`color_spinner()`
+**使用的环境变量**：`SPINNER_MSG`
 
-**Usage Example**:
+**使用示例**：
 ```bash
-SPINNER_MSG="Processing..."
+SPINNER_MSG="正在处理..."
 spinner &
 SPINNER_PID=$!
-# Spinner runs in background
+# 旋转器在后台运行
 ```
 
 #### `clear_line()`
-**Purpose**: Clear current terminal line
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Clears current line using terminal control
-**Dependencies**: `tput` command
-**Environment Variables Used**: None
+**目的**：清除当前终端行
+**参数**：无
+**返回**：无
+**副作用**：使用终端控制清除当前行
+**依赖关系**：`tput` 命令
+**使用的环境变量**：无
 
 #### `stop_spinner()`
-**Purpose**: Stop running spinner and cleanup
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
-- Kills spinner process
-- Removes PID file
-- Resets terminal settings
-- Unsets spinner variables
-**Dependencies**: None
-**Environment Variables Used**: `SPINNER_PID`, `SPINNER_MSG`
+**目的**：停止运行的旋转器并清理
+**参数**：无
+**返回**：无
+**副作用**：
+- 终止旋转器进程
+- 删除 PID 文件
+- 重置终端设置
+- 取消设置旋转器变量
+**依赖关系**：无
+**使用的环境变量**：`SPINNER_PID`、`SPINNER_MSG`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 stop_spinner
-# Stops spinner and cleans up
+# 停止旋转器并清理
 ```
 
-### Message Functions
+### 消息函数
 
 #### `msg_info()`
-**Purpose**: Display informational message with spinner
-**Parameters**: `$1` - Message text
-**Returns**: None
-**Side Effects**:
-- Starts spinner if not in verbose mode
-- Tracks shown messages to prevent duplicates
-- Displays message with hourglass icon in verbose mode
-**Dependencies**: `spinner()`, `is_verbose_mode()`, `is_alpine()`
-**Environment Variables Used**: `MSG_INFO_SHOWN`
+**目的**：显示带旋转器的信息消息
+**参数**：`$1` - 消息文本
+**返回**：无
+**副作用**：
+- 如果不在详细模式则启动旋转器
+- 跟踪显示的消息以防止重复
+- 在详细模式下显示带沙漏图标的消息
+**依赖关系**：`spinner()`、`is_verbose_mode()`、`is_alpine()`
+**使用的环境变量**：`MSG_INFO_SHOWN`
 
-**Usage Example**:
+**使用示例**：
 ```bash
-msg_info "Installing package..."
-# Shows spinner with message
+msg_info "正在安装包..."
+# 显示带消息的旋转器
 ```
 
 #### `msg_ok()`
-**Purpose**: Display success message
-**Parameters**: `$1` - Success message text
-**Returns**: None
-**Side Effects**:
-- Stops spinner
-- Displays green checkmark with message
-- Removes message from shown tracking
-**Dependencies**: `stop_spinner()`
-**Environment Variables Used**: `MSG_INFO_SHOWN`
+**目的**：显示成功消息
+**参数**：`$1` - 成功消息文本
+**返回**：无
+**副作用**：
+- 停止旋转器
+- 显示带消息的绿色复选标记
+- 从显示跟踪中删除消息
+**依赖关系**：`stop_spinner()`
+**使用的环境变量**：`MSG_INFO_SHOWN`
 
-**Usage Example**:
+**使用示例**：
 ```bash
-msg_ok "Package installed successfully"
-# Shows green checkmark with message
+msg_ok "包安装成功"
+# 显示带消息的绿色复选标记
 ```
 
 #### `msg_error()`
-**Purpose**: Display error message
-**Parameters**: `$1` - Error message text
-**Returns**: None
-**Side Effects**:
-- Stops spinner
-- Displays red cross with message
-**Dependencies**: `stop_spinner()`
-**Environment Variables Used**: None
+**目的**：显示错误消息
+**参数**：`$1` - 错误消息文本
+**返回**：无
+**副作用**：
+- 停止旋转器
+- 显示带消息的红色叉号
+**依赖关系**：`stop_spinner()`
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
-msg_error "Installation failed"
-# Shows red cross with message
+msg_error "安装失败"
+# 显示带消息的红色叉号
 ```
 
 #### `msg_warn()`
-**Purpose**: Display warning message
-**Parameters**: `$1` - Warning message text
-**Returns**: None
-**Side Effects**:
-- Stops spinner
-- Displays yellow info icon with message
-**Dependencies**: `stop_spinner()`
-**Environment Variables Used**: None
+**目的**：显示警告消息
+**参数**：`$1` - 警告消息文本
+**返回**：无
+**副作用**：
+- 停止旋转器
+- 显示带消息的黄色信息图标
+**依赖关系**：`stop_spinner()`
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
-msg_warn "This operation may take some time"
-# Shows yellow info icon with message
+msg_warn "此操作可能需要一些时间"
+# 显示带消息的黄色信息图标
 ```
 
 #### `msg_custom()`
-**Purpose**: Display custom message with specified symbol and color
-**Parameters**:
-- `$1` - Custom symbol (default: "[*]")
-- `$2` - Color code (default: "\e[36m")
-- `$3` - Message text
-**Returns**: None
-**Side Effects**:
-- Stops spinner
-- Displays custom formatted message
-**Dependencies**: `stop_spinner()`
-**Environment Variables Used**: None
+**目的**：显示带指定符号和颜色的自定义消息
+**参数**：
+- `$1` - 自定义符号（默认："[*]"）
+- `$2` - 颜色代码（默认："\e[36m"）
+- `$3` - 消息文本
+**返回**：无
+**副作用**：
+- 停止旋转器
+- 显示自定义格式的消息
+**依赖关系**：`stop_spinner()`
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
-msg_custom "⚡" "\e[33m" "Custom warning message"
-# Shows custom symbol and color with message
+msg_custom "⚡" "\e[33m" "自定义警告消息"
+# 显示带消息的自定义符号和颜色
 ```
 
 #### `msg_debug()`
-**Purpose**: Display debug message if debug mode enabled
-**Parameters**: `$*` - Debug message text
-**Returns**: None
-**Side Effects**:
-- Only displays if var_full_verbose is set
-- Shows timestamp and debug prefix
-**Dependencies**: None
-**Environment Variables Used**: `var_full_verbose`, `var_verbose`
+**目的**：如果启用调试模式则显示调试消息
+**参数**：`$*` - 调试消息文本
+**返回**：无
+**副作用**：
+- 仅在设置 var_full_verbose 时显示
+- 显示时间戳和调试前缀
+**依赖关系**：无
+**使用的环境变量**：`var_full_verbose`、`var_verbose`
 
-**Usage Example**:
+**使用示例**：
 ```bash
 export var_full_verbose=1
-msg_debug "Debug information here"
-# Shows debug message with timestamp
+msg_debug "这里的调试信息"
+# 显示带时间戳的调试消息
 ```
 
-### System Management Functions
+### 系统管理函数
 
 #### `check_or_create_swap()`
-**Purpose**: Check for active swap and optionally create swap file
-**Parameters**: None
-**Returns**: 0 if swap exists or created, 1 if skipped
-**Side Effects**:
-- Checks for active swap
-- Prompts user to create swap if none found
-- Creates swap file if user confirms
-**Dependencies**: `swapon`, `dd`, `mkswap` commands
-**Environment Variables Used**: None
+**目的**：检查活动交换并可选择创建交换文件
+**参数**：无
+**返回**：如果交换存在或已创建则为 0，如果跳过则为 1
+**副作用**：
+- 检查活动交换
+- 如果未找到则提示用户创建交换
+- 如果用户确认则创建交换文件
+**依赖关系**：`swapon`、`dd`、`mkswap` 命令
+**使用的环境变量**：无
 
-**Usage Example**:
+**使用示例**：
 ```bash
 if check_or_create_swap; then
-    echo "Swap is available"
+    echo "交换可用"
 else
-    echo "No swap available"
+    echo "交换不可用"
 fi
 ```
 
-## Function Call Hierarchy
+## 函数调用层次结构
 
-### Initialization Flow
+### 初始化流程
 ```
 load_functions()
 ├── color()
@@ -549,7 +549,7 @@ load_functions()
 └── set_std_mode()
 ```
 
-### Message System Flow
+### 消息系统流程
 ```
 msg_info()
 ├── is_verbose_mode()
@@ -568,70 +568,70 @@ msg_warn()
 └── stop_spinner()
 ```
 
-### System Check Flow
+### 系统检查流程
 ```
 pve_check()
-├── pveversion command
-└── version parsing
+├── pveversion 命令
+└── 版本解析
 
 arch_check()
-├── dpkg command
-└── architecture check
+├── dpkg 命令
+└── 架构检查
 
 shell_check()
-├── ps command
-└── shell detection
+├── ps 命令
+└── shell 检测
 
 root_check()
-├── id command
-└── parent process check
+├── id 命令
+└── 父进程检查
 ```
 
-### Silent Execution Flow
+### 静默执行流程
 ```
 silent()
-├── Command execution
-├── Output redirection
-├── Error handling
-├── error_handler.func loading
-└── Log management
+├── 命令执行
+├── 输出重定向
+├── 错误处理
+├── error_handler.func 加载
+└── 日志管理
 ```
 
-## Error Handling Patterns
+## 错误处理模式
 
-### System Check Errors
-- All system check functions exit with appropriate error messages
-- Clear indication of what's wrong and how to fix it
-- Graceful exit with sleep delay for user to read message
+### 系统检查错误
+- 所有系统检查函数以适当的错误消息退出
+- 清楚指示问题所在以及如何修复
+- 优雅退出，延迟以便用户阅读消息
 
-### Silent Execution Errors
-- Commands executed via `silent()` capture output to log file
-- On failure, displays error code explanation
-- Shows last 10 lines of log output
-- Provides command to view full log
+### 静默执行错误
+- 通过 `silent()` 执行的命令将输出捕获到日志文件
+- 失败时显示错误代码说明
+- 显示日志输出的最后 10 行
+- 提供查看完整日志的命令
 
-### Spinner Errors
-- Spinner functions handle process cleanup on exit
-- Trap handlers ensure spinners are stopped
-- Terminal settings are restored on error
+### 旋转器错误
+- 旋转器函数处理退出时的进程清理
+- 陷阱处理程序确保旋转器停止
+- 错误时恢复终端设置
 
-## Environment Variable Dependencies
+## 环境变量依赖关系
 
-### Required Variables
-- `APP`: Application name for header display
-- `APP_TYPE`: Application type (ct/vm) for header paths
-- `VERBOSE`: Verbose mode setting
+### 必需变量
+- `APP`：头部显示的应用程序名称
+- `APP_TYPE`：头部路径的应用程序类型（ct/vm）
+- `VERBOSE`：详细模式设置
 
-### Optional Variables
-- `var_os`: OS type for Alpine detection
-- `PCT_OSTYPE`: Alternative OS type variable
-- `var_verbose`: Alternative verbose setting
-- `var_full_verbose`: Debug mode setting
+### 可选变量
+- `var_os`：Alpine 检测的 OS 类型
+- `PCT_OSTYPE`：替代 OS 类型变量
+- `var_verbose`：替代详细设置
+- `var_full_verbose`：调试模式设置
 
-### Internal Variables
-- `_CORE_FUNC_LOADED`: Prevents multiple loading
-- `__FUNCTIONS_LOADED`: Prevents multiple function loading
-- `SILENT_LOGFILE`: Silent execution log file path
-- `SPINNER_PID`: Spinner process ID
-- `SPINNER_MSG`: Spinner message text
-- `MSG_INFO_SHOWN`: Tracks shown info messages
+### 内部变量
+- `_CORE_FUNC_LOADED`：防止多次加载
+- `__FUNCTIONS_LOADED`：防止多次函数加载
+- `SILENT_LOGFILE`：静默执行日志文件路径
+- `SPINNER_PID`：旋转器进程 ID
+- `SPINNER_MSG`：旋转器消息文本
+- `MSG_INFO_SHOWN`：跟踪显示的信息消息

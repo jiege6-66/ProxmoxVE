@@ -40,7 +40,7 @@ elif grep -qE 'ID=debian|ID=ubuntu' /etc/os-release; then
   OS="Debian"
   SERVICE_PATH="/etc/systemd/system/qbittorrent-exporter.service"
 else
-  echo -e "${CROSS} Unsupported OS detected. Exiting."
+  echo -e "${CROSS} 检测到不支持的操作系统。正在退出。"
   exit 1
 fi
 
@@ -48,7 +48,7 @@ fi
 # UNINSTALL
 # ==============================================================================
 function uninstall() {
-  msg_info "Uninstalling qBittorrent-Exporter"
+  msg_info "正在卸载 qBittorrent-Exporter"
   if [[ "$OS" == "Alpine" ]]; then
     rc-service qbittorrent-exporter stop &>/dev/null
     rc-update del qbittorrent-exporter &>/dev/null
@@ -60,7 +60,7 @@ function uninstall() {
   rm -rf "$INSTALL_PATH" "$CONFIG_PATH"
   rm -f "/usr/local/bin/update_qbittorrent-exporter"
   rm -f "$HOME/.qbittorrent-exporter"
-  msg_ok "qBittorrent-Exporter has been uninstalled"
+  msg_ok "qBittorrent-Exporter 已卸载"
 }
 
 # ==============================================================================
@@ -68,30 +68,30 @@ function uninstall() {
 # ==============================================================================
 function update() {
   if check_for_gh_release "qbittorrent-exporter" "martabal/qbittorrent-exporter"; then
-    msg_info "Stopping service"
+    msg_info "正在停止服务"
     if [[ "$OS" == "Alpine" ]]; then
       rc-service qbittorrent-exporter stop &>/dev/null
     else
       systemctl stop qbittorrent-exporter
     fi
-    msg_ok "Stopped service"
+    msg_ok "已停止服务"
 
     fetch_and_deploy_gh_release "qbittorrent-exporter" "martabal/qbittorrent-exporter" "tarball" "latest"
     setup_go
 
-    msg_info "Building qBittorrent-Exporter"
+    msg_info "正在构建 qBittorrent-Exporter"
     cd /opt/qbittorrent-exporter
     $STD /usr/local/bin/go build -o ./qbittorrent-exporter
-    msg_ok "Built qBittorrent-Exporter"
+    msg_ok "已构建 qBittorrent-Exporter"
 
-    msg_info "Starting service"
+    msg_info "正在启动服务"
     if [[ "$OS" == "Alpine" ]]; then
       rc-service qbittorrent-exporter start &>/dev/null
     else
       systemctl start qbittorrent-exporter
     fi
-    msg_ok "Started service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动服务"
+    msg_ok "更新成功！"
     exit
   fi
 }
@@ -100,28 +100,28 @@ function update() {
 # INSTALL
 # ==============================================================================
 function install() {
-  read -erp "Enter URL of qBittorrent, example: (http://127.0.0.1:8080): " QBITTORRENT_BASE_URL
-  read -erp "Enter qBittorrent username: " QBITTORRENT_USERNAME
-  read -rsp "Enter qBittorrent password: " QBITTORRENT_PASSWORD
+  read -erp "输入 qBittorrent URL，例如：(http://127.0.0.1:8080): " QBITTORRENT_BASE_URL
+  read -erp "输入 qBittorrent 用户名: " QBITTORRENT_USERNAME
+  read -rsp "输入 qBittorrent 密码: " QBITTORRENT_PASSWORD
   printf "\n"
 
   fetch_and_deploy_gh_release "qbittorrent-exporter" "martabal/qbittorrent-exporter" "tarball" "latest"
   setup_go
-  msg_info "Building qBittorrent-Exporter on ${OS}"
+  msg_info "正在 ${OS} 上构建 qBittorrent-Exporter"
   cd /opt/qbittorrent-exporter
   $STD /usr/local/bin/go build -o ./qbittorrent-exporter
-  msg_ok "Built qBittorrent-Exporter"
+  msg_ok "已构建 qBittorrent-Exporter"
 
-  msg_info "Creating configuration"
+  msg_info "正在创建配置"
   cat <<EOF >"$CONFIG_PATH"
 # https://github.com/martabal/qbittorrent-exporter?tab=readme-ov-file#parameters
 QBITTORRENT_BASE_URL="${QBITTORRENT_BASE_URL}"
 QBITTORRENT_USERNAME="${QBITTORRENT_USERNAME}"
 QBITTORRENT_PASSWORD="${QBITTORRENT_PASSWORD}"
 EOF
-  msg_ok "Created configuration"
+  msg_ok "已创建配置"
 
-  msg_info "Creating service"
+  msg_info "正在创建服务"
   if [[ "$OS" == "Debian" ]]; then
     cat <<EOF >"$SERVICE_PATH"
 [Unit]
@@ -168,10 +168,10 @@ EOF
     $STD rc-update add qbittorrent-exporter default
     $STD rc-service qbittorrent-exporter start
   fi
-  msg_ok "Created and started service"
+  msg_ok "已创建并启动服务"
 
   # Create update script
-  msg_info "Creating update script"
+  msg_info "正在创建更新脚本"
   ensure_usr_local_bin_persist
   cat <<'UPDATEEOF' >/usr/local/bin/update_qbittorrent-exporter
 #!/usr/bin/env bash
@@ -179,12 +179,12 @@ EOF
 type=update bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/addon/qbittorrent-exporter.sh)"
 UPDATEEOF
   chmod +x /usr/local/bin/update_qbittorrent-exporter
-  msg_ok "Created update script (/usr/local/bin/update_qbittorrent-exporter)"
+  msg_ok "已创建更新脚本 (/usr/local/bin/update_qbittorrent-exporter)"
 
   echo ""
-  msg_ok "qBittorrent-Exporter installed successfully"
-  msg_ok "Metrics: ${BL}http://${LOCAL_IP}:8090/metrics${CL}"
-  msg_ok "Config: ${BL}${CONFIG_PATH}${CL}"
+  msg_ok "qBittorrent-Exporter 安装成功"
+  msg_ok "指标: ${BL}http://${LOCAL_IP}:8090/metrics${CL}"
+  msg_ok "配置文件: ${BL}${CONFIG_PATH}${CL}"
 }
 
 # ==============================================================================
@@ -199,7 +199,7 @@ if [[ "${type:-}" == "update" ]]; then
   if [[ -d "$INSTALL_PATH" && -f "$INSTALL_PATH/qbittorrent-exporter" ]]; then
     update
   else
-    msg_error "qBittorrent-Exporter is not installed. Nothing to update."
+    msg_error "qBittorrent-Exporter 未安装。无需更新。"
     exit 1
   fi
   exit 0
@@ -207,40 +207,40 @@ fi
 
 # Check if already installed
 if [[ -d "$INSTALL_PATH" && -f "$INSTALL_PATH/qbittorrent-exporter" ]]; then
-  msg_warn "qBittorrent-Exporter is already installed."
+  msg_warn "qBittorrent-Exporter 已安装。"
   echo ""
 
-  echo -n "${TAB}Uninstall qBittorrent-Exporter? (y/N): "
+  echo -n "${TAB}卸载 qBittorrent-Exporter? (y/N): "
   read -r uninstall_prompt
   if [[ "${uninstall_prompt,,}" =~ ^(y|yes)$ ]]; then
     uninstall
     exit 0
   fi
 
-  echo -n "${TAB}Update qBittorrent-Exporter? (y/N): "
+  echo -n "${TAB}更新 qBittorrent-Exporter? (y/N): "
   read -r update_prompt
   if [[ "${update_prompt,,}" =~ ^(y|yes)$ ]]; then
     update
     exit 0
   fi
 
-  msg_warn "No action selected. Exiting."
+  msg_warn "未选择操作。正在退出。"
   exit 0
 fi
 
 # Fresh installation
-msg_warn "qBittorrent-Exporter is not installed."
+msg_warn "qBittorrent-Exporter 未安装。"
 echo ""
-echo -e "${TAB}${INFO} This will install:"
-echo -e "${TAB}  - qBittorrent Exporter (Go binary)"
-echo -e "${TAB}  - Systemd/OpenRC service"
+echo -e "${TAB}${INFO} 这将安装："
+echo -e "${TAB}  - qBittorrent Exporter（Go 二进制文件）"
+echo -e "${TAB}  - Systemd/OpenRC 服务"
 echo ""
 
-echo -n "${TAB}Install qBittorrent-Exporter? (y/N): "
+echo -n "${TAB}安装 qBittorrent-Exporter? (y/N): "
 read -r install_prompt
 if [[ "${install_prompt,,}" =~ ^(y|yes)$ ]]; then
   install
 else
-  msg_warn "Installation cancelled. Exiting."
+  msg_warn "安装已取消。正在退出。"
   exit 0
 fi

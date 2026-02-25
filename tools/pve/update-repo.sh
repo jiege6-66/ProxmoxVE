@@ -28,7 +28,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "update-repo" "pve"
 
 header_info
-echo "Loading..."
+echo "正在加载..."
 NODE=$(hostname)
 
 function update_container() {
@@ -36,27 +36,27 @@ function update_container() {
   os=$(pct config "$container" | awk '/^ostype/ {print $2}')
 
   if [[ "$os" == "ubuntu" || "$os" == "debian" ]]; then
-    echo -e "${BL}[Info]${GN} Checking /usr/bin/update in ${BL}$container${CL} (OS: ${GN}$os${CL})"
+    echo -e "${BL}[信息]${GN} 正在检查 /usr/bin/update in ${BL}$container${CL} (OS: ${GN}$os${CL})"
 
     if pct exec "$container" -- [ -e /usr/bin/update ]; then
       if pct exec "$container" -- grep -q "community-scripts/ProxmoxVE" /usr/bin/update; then
-        echo -e "${RD}[No Change]${CL} /usr/bin/update is already up to date in ${BL}$container${CL}.\n"
+        echo -e "${RD}[无变化]${CL} /usr/bin/update 已是最新 in ${BL}$container${CL}.\n"
       elif pct exec "$container" -- grep -q -v "tteck" /usr/bin/update; then
-        echo -e "${RD}[Warning]${CL} /usr/bin/update in ${BL}$container${CL} contains a different entry (${RD}tteck${CL}). No changes made.\n"
+        echo -e "${RD}[警告]${CL} /usr/bin/update in ${BL}$container${CL} 包含不同的条目 (${RD}tteck${CL}). 未做任何更改。\n"
       else
         pct exec "$container" -- bash -c "sed -i 's/tteck\\/Proxmox/community-scripts\\/ProxmoxVE/g' /usr/bin/update"
 
         if pct exec "$container" -- grep -q "community-scripts/ProxmoxVE" /usr/bin/update; then
-          echo -e "${GN}[Success]${CL} /usr/bin/update updated in ${BL}$container${CL}.\n"
+          echo -e "${GN}[成功]${CL} /usr/bin/update updated in ${BL}$container${CL}.\n"
         else
-          echo -e "${RD}[Error]${CL} /usr/bin/update in ${BL}$container${CL} could not be updated properly.\n"
+          echo -e "${RD}[错误]${CL} /usr/bin/update in ${BL}$container${CL} 无法正确更新.\n"
         fi
       fi
     else
-      echo -e "${RD}[Error]${CL} /usr/bin/update not found in container ${BL}$container${CL}.\n"
+      echo -e "${RD}[错误]${CL} /usr/bin/update 未找到 in container ${BL}$container${CL}.\n"
     fi
   else
-    echo -e "${BL}[Info]${GN} Skipping ${BL}$container${CL} (not Debian/Ubuntu)\n"
+    echo -e "${BL}[信息]${GN} 正在跳过 ${BL}$container${CL} (非 Debian/Ubuntu)\n"
   fi
 }
 
@@ -66,4 +66,4 @@ for container in $(pct list | awk '{if(NR>1) print $1}'); do
 done
 
 header_info
-echo -e "${GN}The process is complete. The repositories have been switched to community-scripts/ProxmoxVE.${CL}\n"
+echo -e "${GN}处理已完成. 仓库已切换至 community-scripts/ProxmoxVE.${CL}\n"

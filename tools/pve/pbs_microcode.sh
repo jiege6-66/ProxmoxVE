@@ -38,9 +38,9 @@ msg_error() { echo -e "${BFR} ${CROSS} ${RD}$1${CL}"; }
 header_info
 
 # Check if running on bare metal using systemd-detect-virt.
-virt=$(systemd-detect-virt)
+  virt=$(systemd-detect-virt)
 if [ "$virt" != "none" ]; then
-  msg_error "This script must be run on bare metal. Detected virtual environment: $virt"
+  msg_error "此脚本必须在裸机上运行。检测到虚拟环境: $virt"
   exit 1
 fi
 

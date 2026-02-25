@@ -68,7 +68,7 @@ component_exists_in_sources() {
 # ---- main ----
 main() {
   header_info
-  echo -e "\nThis script will Perform Post Install Routines.\n"
+  echo -e "\n此脚本将 执行安装后例行程序.\n"
   while true; do
     read -rp "Start the Proxmox Backup Server Post Install Script (y/n)? " yn
     case $yn in
@@ -81,8 +81,8 @@ main() {
     esac
   done
 
-  if command -v pveversion >/dev/null 2>&1; then
-    echo -e "\n🛑  PVE Detected, Wrong Script!\n"
+  if command -v pve版本 >/dev/null 2>&1; then
+    echo -e "\n🛑  PVE 已检测到, Wrong Script!\n"
     exit 1
   fi
 
@@ -93,8 +93,8 @@ main() {
   bookworm) start_routines_3 ;;
   trixie) start_routines_4 ;;
   *)
-    msg_error "Unsupported Debian codename: $CODENAME"
-    echo -e "Supported: bookworm (PBS 3.x) and trixie (PBS 4.x)"
+    msg_error "不支持的 Debian codename: $CODENAME"
+    echo -e "支持的版本： bookworm (PBS 3.x) and trixie (PBS 4.x)"
     exit 1
     ;;
   esac
@@ -110,15 +110,15 @@ start_routines_3() {
     "Correct Debian sources for Proxmox Backup Server 3.x?" 14 58 2 "yes" " " "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Correcting Debian Sources"
+    msg_info "正在修正 Debian 源"
     cat <<EOF >/etc/apt/sources.list
 deb http://deb.debian.org/debian ${VERSION} main contrib
 deb http://deb.debian.org/debian ${VERSION}-updates main contrib
 deb http://security.debian.org/debian-security ${VERSION}-security main contrib
 EOF
-    msg_ok "Corrected Debian Sources"
+    msg_ok "已修正 Debian 源"
     ;;
-  no) msg_error "Selected no to Correcting Debian Sources" ;;
+  no) msg_error "已选择不 正在修正 Debian 源" ;;
   esac
 
   # --- Enterprise repo ---
@@ -126,14 +126,14 @@ EOF
   case $state in
   active)
     sed -i "s/^[^#].*pbs-enterprise/# &/" "$file"
-    msg_ok "Disabled 'pbs-enterprise' repository"
+    msg_ok "已禁用 'pbs-enterprise' repository"
     ;;
   disabled) msg_ok "'pbs-enterprise' already disabled" ;;
   missing)
     cat >/etc/apt/sources.list.d/pbs-enterprise.list <<EOF
 # deb https://enterprise.proxmox.com/debian/pbs ${VERSION} pbs-enterprise
 EOF
-    msg_ok "Added 'pbs-enterprise' repository (disabled)"
+    msg_ok "已添加 'pbs-enterprise' repository (disabled)"
     ;;
   esac
 
@@ -143,7 +143,7 @@ EOF
     cat >/etc/apt/sources.list.d/pbs-install-repo.list <<EOF
 deb http://download.proxmox.com/debian/pbs ${VERSION} pbs-no-subscription
 EOF
-    msg_ok "Enabled 'pbs-no-subscription' repository"
+    msg_ok "已启用 'pbs-no-subscription' repository"
   else
     msg_ok "'pbs-no-subscription' repository already present"
   fi
@@ -154,7 +154,7 @@ EOF
     cat >/etc/apt/sources.list.d/pbstest-for-beta.list <<EOF
 # deb http://download.proxmox.com/debian/pbs ${VERSION} pbstest
 EOF
-    msg_ok "Added 'pbstest' repository (disabled)"
+    msg_ok "已添加 'pbstest' repository (disabled)"
   else
     msg_ok "'pbstest' repository already exists"
   fi
@@ -172,7 +172,7 @@ start_routines_4() {
     "Correct Debian sources for Proxmox Backup Server 4.x (deb822)?" 14 58 2 "yes" " " "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Correcting Debian Sources (deb822)"
+    msg_info "正在修正 Debian 源 (deb822)"
     rm -f /etc/apt/sources.list.d/*.list
     sed -i '/proxmox/d;/bookworm/d' /etc/apt/sources.list || true
     cat >/etc/apt/sources.list.d/debian.sources <<EOF
@@ -188,9 +188,9 @@ Suites: trixie-security
 Components: main contrib non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
-    msg_ok "Corrected Debian Sources"
+    msg_ok "已修正 Debian 源"
     ;;
-  no) msg_error "Selected no to Correcting Debian Sources" ;;
+  no) msg_error "已选择不 正在修正 Debian 源" ;;
   esac
 
   # --- Enterprise repo ---
@@ -202,14 +202,14 @@ You normally need a valid subscription for this.
 Disable it (recommended)?" 14 58 2 "yes" " " "no" " " 3>&2 2>&1 1>&3)
     case $CHOICE in
     yes)
-      msg_info "Disabling 'pbs-enterprise' repository"
-      # Use Enabled: false instead of commenting to avoid malformed entry
-      if grep -q "^Enabled:" /etc/apt/sources.list.d/pbs-enterprise.sources 2>/dev/null; then
-        sed -i 's/^Enabled:.*/Enabled: false/' /etc/apt/sources.list.d/pbs-enterprise.sources
+      msg_info "正在禁用 'pbs-enterprise' repository"
+      # Use 已启用: false instead of commenting 到void malformed entry
+      if grep -q "^已启用:" /etc/apt/sources.list.d/pbs-enterprise.sources 2>/dev/null; then
+        sed -i 's/^已启用:.*/已启用: false/' /etc/apt/sources.list.d/pbs-enterprise.sources
       else
-        echo "Enabled: false" >>/etc/apt/sources.list.d/pbs-enterprise.sources
+        echo "已启用: false" >>/etc/apt/sources.list.d/pbs-enterprise.sources
       fi
-      msg_ok "Disabled 'pbs-enterprise' repository"
+      msg_ok "已禁用 'pbs-enterprise' repository"
       ;;
     no)
       msg_error "Keeping 'pbs-enterprise' active (subscription required!)"
@@ -222,9 +222,9 @@ URIs: https://enterprise.proxmox.com/debian/pbs
 Suites: trixie
 Components: pbs-enterprise
 Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
-Enabled: false
+已启用: false
 EOF
-    msg_ok "Added 'pbs-enterprise' repository (disabled)"
+    msg_ok "已添加 'pbs-enterprise' repository (disabled)"
   fi
 
   # --- No-subscription repo ---
@@ -236,7 +236,7 @@ Suites: trixie
 Components: pbs-no-subscription
 Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
 EOF
-    msg_ok "Added 'pbs-no-subscription' repository"
+    msg_ok "已添加 'pbs-no-subscription' repository"
   else
     msg_ok "'pbs-no-subscription' repository already present"
   fi
@@ -249,9 +249,9 @@ URIs: http://download.proxmox.com/debian/pbs
 Suites: trixie
 Components: pbs-test
 Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
-Enabled: false
+已启用: false
 EOF
-    msg_ok "Added 'pbs-test' repository (disabled)"
+    msg_ok "已添加 'pbs-test' repository (disabled)"
   else
     msg_ok "'pbs-test' repository already present"
   fi
@@ -268,12 +268,12 @@ post_routines_common() {
   yes)
     whiptail --backtitle "Proxmox VE Helper Scripts" --msgbox \
       "Supporting the software's development team is essential.\nPlease consider buying a subscription." 10 58
-    msg_info "Disabling subscription nag"
+    msg_info "正在禁用 subscription nag"
     echo "DPkg::Post-Invoke { \"if [ -s /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js ] && ! grep -q -F 'NoMoreNagging' /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js; then sed -i '/data\\.status/{s/\\!//;s/active/NoMoreNagging/}' /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js; fi\" };" >/etc/apt/apt.conf.d/no-nag-script
-    msg_ok "Disabled subscription nag (clear browser cache!)"
+    msg_ok "已禁用 subscription nag (clear browser cache!)"
     ;;
   no)
-    msg_error "Selected no to Disabling subscription nag"
+    msg_error "已选择不 正在禁用 subscription nag"
     rm -f /etc/apt/apt.conf.d/no-nag-script 2>/dev/null
     ;;
   esac
@@ -284,12 +284,12 @@ post_routines_common() {
     "Update Proxmox Backup Server now?" 11 58 2 "yes" " " "no" " " 3>&2 2>&1 1>&3)
   case $CHOICE in
   yes)
-    msg_info "Updating Proxmox Backup Server (Patience)"
+    msg_info "正在更新 Proxmox Backup Server (Patience)"
     apt update &>/dev/null || msg_error "apt update failed"
     apt -y dist-upgrade &>/dev/null || msg_error "apt dist-upgrade failed"
-    msg_ok "Updated Proxmox Backup Server"
+    msg_ok "已更新 Proxmox Backup Server"
     ;;
-  no) msg_error "Selected no to updating Proxmox Backup Server" ;;
+  no) msg_error "已选择不 updating Proxmox Backup Server" ;;
   esac
 
   # Reminder
@@ -300,7 +300,7 @@ Please run this script on every PBS node individually if you have multiple nodes
 
 After completing these steps, it is strongly recommended to REBOOT your node.
 
-After the upgrade or post-install routines, always clear your browser cache or perform a hard reload (Ctrl+Shift+R) before using the PBS Web UI to avoid UI display issues." 20 80
+After the upgrade or post-install routines, always clear your browser cache or perform a hard reload (Ctrl+Shift+R) before using the PBS Web UI 到void UI display issues." 20 80
 
   # Reboot
   CHOICE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "REBOOT" --menu \
@@ -309,12 +309,12 @@ After the upgrade or post-install routines, always clear your browser cache or p
   yes)
     msg_info "Rebooting PBS"
     sleep 2
-    msg_ok "Completed Post Install Routines"
+    msg_ok "已完成 Post Install Routines"
     reboot
     ;;
   no)
-    msg_error "Selected no to Reboot (Reboot recommended)"
-    msg_ok "Completed Post Install Routines"
+    msg_error "已选择不 Reboot (Reboot recommended)"
+    msg_ok "已完成 Post Install Routines"
     ;;
   esac
 }

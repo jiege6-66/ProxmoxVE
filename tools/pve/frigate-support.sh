@@ -22,11 +22,11 @@ declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "frigate-suppo
 
 header_info
 while true; do
-  read -p "This will Prepare a LXC Container for Frigate. Proceed (y/n)?" yn
+  read -p "这将为 Frigate 准备 LXC 容器。是否继续 (y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 header_info
@@ -77,7 +77,7 @@ done < <(pct list | awk 'NR>1')
 # Selection menu for LXC containers
 while [ -z "${CTID:+x}" ]; do
   CTID=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Containers on $NODE" --radiolist \
-    "\nSelect a container to add support:\n" \
+    "\n选择要添加支持的容器:\n" \
     16 $(($MSG_MAX_LENGTH + 23)) 6 \
     "${CTID_MENU[@]}" 3>&1 1>&2 2>&3)
 done
@@ -91,7 +91,7 @@ cat <<EOF >>"$CTID_CONFIG_PATH"
 lxc.autodev: 1
 lxc.hook.autodev: bash -c '$HOOK_SCRIPT'
 EOF
-echo -e "\e[1;33m \nFinished....Reboot ${CTID} LXC to apply the changes.\n \e[0m"
+echo -e "\e[1;33m \n完成....重启 ${CTID} LXC 以应用更改。\n \e[0m"
 
 # In the Proxmox web shell run
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/pve/frigate-support.sh)"

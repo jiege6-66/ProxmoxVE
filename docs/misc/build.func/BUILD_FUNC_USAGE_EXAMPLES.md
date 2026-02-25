@@ -1,17 +1,17 @@
-# build.func Usage Examples
+# build.func 使用示例
 
-## Overview
+## 概述
 
-This document provides practical usage examples for `build.func`, covering common scenarios, CLI examples, and environment variable combinations.
+本文档提供 `build.func` 的实用示例，涵盖常见场景、CLI 示例和环境变量组合。
 
-## Basic Usage Examples
+## 基本使用示例
 
-### 1. Simple Container Creation
+### 1. 简单容器创建
 
-**Scenario**: Create a basic Plex media server container
+**场景**：创建基本的 Plex 媒体服务器容器
 
 ```bash
-# Set basic environment variables
+# 设置基本环境变量
 export APP="plex"
 export CTID="100"
 export var_hostname="plex-server"
@@ -26,27 +26,27 @@ export var_ip="192.168.1.100"
 export var_template_storage="local"
 export var_container_storage="local"
 
-# Execute build.func
+# 执行 build.func
 source build.func
 ```
 
-**Expected Output**:
+**预期输出**：
 ```
-Creating Plex container...
-Container ID: 100
-Hostname: plex-server
-OS: Debian 12
-Resources: 4 CPU, 4GB RAM, 20GB Disk
-Network: 192.168.1.100/24
-Container created successfully!
+正在创建 Plex 容器...
+容器 ID：100
+主机名：plex-server
+OS：Debian 12
+资源：4 CPU，4GB RAM，20GB 磁盘
+网络：192.168.1.100/24
+容器创建成功！
 ```
 
-### 2. Advanced Configuration
+### 2. 高级配置
 
-**Scenario**: Create a Nextcloud container with custom settings
+**场景**：使用自定义设置创建 Nextcloud 容器
 
 ```bash
-# Set advanced environment variables
+# 设置高级环境变量
 export APP="nextcloud"
 export CTID="101"
 export var_hostname="nextcloud-server"
@@ -66,16 +66,16 @@ export var_fuse="yes"
 export var_tun="yes"
 export SSH="true"
 
-# Execute build.func
+# 执行 build.func
 source build.func
 ```
 
-### 3. GPU Passthrough Configuration
+### 3. GPU 直通配置
 
-**Scenario**: Create a Jellyfin container with NVIDIA GPU passthrough
+**场景**：创建带 NVIDIA GPU 直通的 Jellyfin 容器
 
 ```bash
-# Set GPU passthrough variables
+# 设置 GPU 直通变量
 export APP="jellyfin"
 export CTID="102"
 export var_hostname="jellyfin-server"
@@ -95,21 +95,21 @@ export ENABLE_PRIVILEGED="true"
 export ENABLE_FUSE="true"
 export ENABLE_TUN="true"
 
-# Execute build.func
+# 执行 build.func
 source build.func
 ```
 
-## Silent/Non-Interactive Examples
+## 静默/非交互式示例
 
-### 1. Automated Deployment
+### 1. 自动化部署
 
-**Scenario**: Deploy multiple containers without user interaction
+**场景**：无需用户交互部署多个容器
 
 ```bash
 #!/bin/bash
-# Automated deployment script
+# 自动化部署脚本
 
-# Function to create container
+# 创建容器的函数
 create_container() {
     local app=$1
     local ctid=$2
@@ -135,21 +135,21 @@ create_container() {
     source build.func
 }
 
-# Create multiple containers
+# 创建多个容器
 create_container "plex" "100" "192.168.1.100"
 create_container "nextcloud" "101" "192.168.1.101"
 create_container "nginx" "102" "192.168.1.102"
 ```
 
-### 2. Development Environment Setup
+### 2. 开发环境设置
 
-**Scenario**: Create development containers with specific configurations
+**场景**：创建具有特定配置的开发容器
 
 ```bash
 #!/bin/bash
-# Development environment setup
+# 开发环境设置
 
-# Development container configuration
+# 开发容器配置
 export APP="dev-container"
 export CTID="200"
 export var_hostname="dev-server"
@@ -169,18 +169,18 @@ export ENABLE_FUSE="true"
 export ENABLE_TUN="true"
 export SSH="true"
 
-# Execute build.func
+# 执行 build.func
 source build.func
 ```
 
-## Network Configuration Examples
+## 网络配置示例
 
-### 1. VLAN Configuration
+### 1. VLAN 配置
 
-**Scenario**: Create container with VLAN support
+**场景**：创建支持 VLAN 的容器
 
 ```bash
-# VLAN configuration
+# VLAN 配置
 export APP="web-server"
 export CTID="300"
 export var_hostname="web-server"
@@ -200,12 +200,12 @@ export var_container_storage="local"
 source build.func
 ```
 
-### 2. IPv6 Configuration
+### 2. IPv6 配置
 
-**Scenario**: Create container with IPv6 support
+**场景**：创建支持 IPv6 的容器
 
 ```bash
-# IPv6 configuration
+# IPv6 配置
 export APP="ipv6-server"
 export CTID="301"
 export var_hostname="ipv6-server"
@@ -225,14 +225,14 @@ export var_container_storage="local"
 source build.func
 ```
 
-## Storage Configuration Examples
+## 存储配置示例
 
-### 1. Custom Storage Locations
+### 1. 自定义存储位置
 
-**Scenario**: Use different storage for templates and containers
+**场景**：为模板和容器使用不同的存储
 
 ```bash
-# Custom storage configuration
+# 自定义存储配置
 export APP="storage-test"
 export CTID="400"
 export var_hostname="storage-test"
@@ -250,12 +250,12 @@ export var_container_storage="ssd-storage"
 source build.func
 ```
 
-### 2. High-Performance Storage
+### 2. 高性能存储
 
-**Scenario**: Use high-performance storage for resource-intensive applications
+**场景**：为资源密集型应用使用高性能存储
 
 ```bash
-# High-performance storage configuration
+# 高性能存储配置
 export APP="database-server"
 export CTID="401"
 export var_hostname="database-server"
@@ -273,14 +273,14 @@ export var_container_storage="nvme-storage"
 source build.func
 ```
 
-## Feature Configuration Examples
+## 功能配置示例
 
-### 1. Privileged Container
+### 1. 特权容器
 
-**Scenario**: Create privileged container for system-level access
+**场景**：创建用于系统级访问的特权容器
 
 ```bash
-# Privileged container configuration
+# 特权容器配置
 export APP="system-container"
 export CTID="500"
 export var_hostname="system-container"
@@ -303,12 +303,12 @@ export ENABLE_MOUNT="true"
 source build.func
 ```
 
-### 2. Unprivileged Container
+### 2. 非特权容器
 
-**Scenario**: Create secure unprivileged container
+**场景**：创建安全的非特权容器
 
 ```bash
-# Unprivileged container configuration
+# 非特权容器配置
 export APP="secure-container"
 export CTID="501"
 export var_hostname="secure-container"
@@ -329,14 +329,14 @@ export ENABLE_TUN="true"
 source build.func
 ```
 
-## Settings Persistence Examples
+## 设置持久化示例
 
-### 1. Save Global Defaults
+### 1. 保存全局默认值
 
-**Scenario**: Save current settings as global defaults
+**场景**：将当前设置保存为全局默认值
 
 ```bash
-# Save global defaults
+# 保存全局默认值
 export APP="default-test"
 export CTID="600"
 export var_hostname="default-test"
@@ -355,12 +355,12 @@ export SAVE_DEFAULTS="true"
 source build.func
 ```
 
-### 2. Save App-Specific Defaults
+### 2. 保存应用特定默认值
 
-**Scenario**: Save settings as app-specific defaults
+**场景**：将设置保存为应用特定默认值
 
 ```bash
-# Save app-specific defaults
+# 保存应用特定默认值
 export APP="plex"
 export CTID="601"
 export var_hostname="plex-server"
@@ -379,17 +379,17 @@ export SAVE_APP_DEFAULTS="true"
 source build.func
 ```
 
-## Error Handling Examples
+## 错误处理示例
 
-### 1. Validation Error Handling
+### 1. 验证错误处理
 
-**Scenario**: Handle configuration validation errors
+**场景**：处理配置验证错误
 
 ```bash
 #!/bin/bash
-# Error handling example
+# 错误处理示例
 
-# Set invalid configuration
+# 设置无效配置
 export APP="error-test"
 export CTID="700"
 export var_hostname="error-test"
@@ -402,24 +402,24 @@ export var_net="invalid-network"
 export var_gateway="invalid-gateway"
 export var_ip="invalid-ip"
 
-# Execute with error handling
+# 使用错误处理执行
 if source build.func; then
-    echo "Container created successfully!"
+    echo "容器创建成功！"
 else
-    echo "Error: Container creation failed!"
-    echo "Please check your configuration and try again."
+    echo "错误：容器创建失败！"
+    echo "请检查您的配置并重试。"
 fi
 ```
 
-### 2. Storage Error Handling
+### 2. 存储错误处理
 
-**Scenario**: Handle storage selection errors
+**场景**：处理存储选择错误
 
 ```bash
 #!/bin/bash
-# Storage error handling
+# 存储错误处理
 
-# Set invalid storage
+# 设置无效存储
 export APP="storage-error-test"
 export CTID="701"
 export var_hostname="storage-error-test"
@@ -434,26 +434,26 @@ export var_ip="192.168.1.170"
 export var_template_storage="nonexistent-storage"
 export var_container_storage="nonexistent-storage"
 
-# Execute with error handling
+# 使用错误处理执行
 if source build.func; then
-    echo "Container created successfully!"
+    echo "容器创建成功！"
 else
-    echo "Error: Storage not available!"
-    echo "Please check available storage and try again."
+    echo "错误：存储不可用！"
+    echo "请检查可用存储并重试。"
 fi
 ```
 
-## Integration Examples
+## 集成示例
 
-### 1. With Install Scripts
+### 1. 与安装脚本集成
 
-**Scenario**: Integrate with application install scripts
+**场景**：与应用程序安装脚本集成
 
 ```bash
 #!/bin/bash
-# Integration with install scripts
+# 与安装脚本集成
 
-# Create container
+# 创建容器
 export APP="plex"
 export CTID="800"
 export var_hostname="plex-server"
@@ -468,26 +468,26 @@ export var_ip="192.168.1.180"
 export var_template_storage="local"
 export var_container_storage="local"
 
-# Create container
+# 创建容器
 source build.func
 
-# Run install script
+# 运行安装脚本
 if [ -f "plex-install.sh" ]; then
     source plex-install.sh
 else
-    echo "Install script not found!"
+    echo "未找到安装脚本！"
 fi
 ```
 
-### 2. With Monitoring
+### 2. 与监控集成
 
-**Scenario**: Integrate with monitoring systems
+**场景**：与监控系统集成
 
 ```bash
 #!/bin/bash
-# Monitoring integration
+# 监控集成
 
-# Create container with monitoring
+# 创建带监控的容器
 export APP="monitored-app"
 export CTID="801"
 export var_hostname="monitored-app"
@@ -503,32 +503,32 @@ export var_template_storage="local"
 export var_container_storage="local"
 export DIAGNOSTICS="true"
 
-# Create container
+# 创建容器
 source build.func
 
-# Set up monitoring
+# 设置监控
 if [ -f "monitoring-setup.sh" ]; then
     source monitoring-setup.sh
 fi
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Environment Variable Management
+### 1. 环境变量管理
 
 ```bash
 #!/bin/bash
-# Best practice: Environment variable management
+# 最佳实践：环境变量管理
 
-# Set configuration file
+# 设置配置文件
 CONFIG_FILE="/etc/build.func.conf"
 
-# Load configuration if exists
+# 如果存在则加载配置
 if [ -f "$CONFIG_FILE" ]; then
     source "$CONFIG_FILE"
 fi
 
-# Set required variables
+# 设置必需变量
 export APP="${APP:-plex}"
 export CTID="${CTID:-100}"
 export var_hostname="${var_hostname:-plex-server}"
@@ -543,32 +543,32 @@ export var_ip="${var_ip:-192.168.1.100}"
 export var_template_storage="${var_template_storage:-local}"
 export var_container_storage="${var_container_storage:-local}"
 
-# Execute build.func
+# 执行 build.func
 source build.func
 ```
 
-### 2. Error Handling and Logging
+### 2. 错误处理和日志记录
 
 ```bash
 #!/bin/bash
-# Best practice: Error handling and logging
+# 最佳实践：错误处理和日志记录
 
-# Set log file
+# 设置日志文件
 LOG_FILE="/var/log/build.func.log"
 
-# Function to log messages
+# 记录消息的函数
 log_message() {
     echo "$(date): $1" >> "$LOG_FILE"
 }
 
-# Function to create container with error handling
+# 使用错误处理创建容器的函数
 create_container() {
     local app=$1
     local ctid=$2
 
-    log_message "Starting container creation for $app (ID: $ctid)"
+    log_message "开始为 $app 创建容器（ID：$ctid）"
 
-    # Set variables
+    # 设置变量
     export APP="$app"
     export CTID="$ctid"
     export var_hostname="${app}-server"
@@ -583,17 +583,17 @@ create_container() {
     export var_template_storage="local"
     export var_container_storage="local"
 
-    # Create container
+    # 创建容器
     if source build.func; then
-        log_message "Container $app created successfully (ID: $ctid)"
+        log_message "容器 $app 创建成功（ID：$ctid）"
         return 0
     else
-        log_message "Error: Failed to create container $app (ID: $ctid)"
+        log_message "错误：创建容器 $app 失败（ID：$ctid）"
         return 1
     fi
 }
 
-# Create containers
+# 创建容器
 create_container "plex" "100"
 create_container "nextcloud" "101"
 create_container "nginx" "102"

@@ -1,174 +1,174 @@
-# Exit Code Reference
+# 退出代码参考
 
-Comprehensive documentation of all exit codes used in ProxmoxVE scripts.
+ProxmoxVE 脚本中使用的所有退出代码的综合文档。
 
-## Table of Contents
+## 目录
 
-- [Generic/Shell Errors (1-255)](#genericshell-errors)
-- [Package Manager Errors (100-101, 255)](#package-manager-errors)
-- [Node.js/npm Errors (243-254)](#nodejsnpm-errors)
-- [Python/pip Errors (210-212)](#pythonpip-errors)
-- [Database Errors (231-254)](#database-errors)
-- [Proxmox Custom Codes (200-231)](#proxmox-custom-codes)
-
----
-
-## Generic/Shell Errors
-
-Standard Unix/Linux exit codes used across all scripts.
-
-| Code    | Description                             | Common Causes                             | Solutions                                      |
-| ------- | --------------------------------------- | ----------------------------------------- | ---------------------------------------------- |
-| **1**   | General error / Operation not permitted | Permission denied, general failure        | Check user permissions, run as root if needed  |
-| **2**   | Misuse of shell builtins                | Syntax error in script                    | Review script syntax, check bash version       |
-| **126** | Command cannot execute                  | Permission problem, not executable        | `chmod +x script.sh` or check file permissions |
-| **127** | Command not found                       | Missing binary, wrong PATH                | Install required package, check PATH variable  |
-| **128** | Invalid argument to exit                | Invalid exit code passed                  | Use exit codes 0-255 only                      |
-| **130** | Terminated by Ctrl+C (SIGINT)           | User interrupted script                   | Expected behavior, no action needed            |
-| **137** | Killed (SIGKILL)                        | Out of memory, forced termination         | Check memory usage, increase RAM allocation    |
-| **139** | Segmentation fault                      | Memory access violation, corrupted binary | Reinstall package, check system stability      |
-| **143** | Terminated (SIGTERM)                    | Graceful shutdown signal                  | Expected during container stops                |
+- [通用/Shell 错误 (1-255)](#通用shell-错误)
+- [包管理器错误 (100-101, 255)](#包管理器错误)
+- [Node.js/npm 错误 (243-254)](#nodejsnpm-错误)
+- [Python/pip 错误 (210-212)](#pythonpip-错误)
+- [数据库错误 (231-254)](#数据库错误)
+- [Proxmox 自定义代码 (200-231)](#proxmox-自定义代码)
 
 ---
 
-## Package Manager Errors
+## 通用/Shell 错误
 
-APT, DPKG, and package installation errors.
+所有脚本中使用的标准 Unix/Linux 退出代码。
 
-| Code    | Description                | Common Causes                           | Solutions                                         |
-| ------- | -------------------------- | --------------------------------------- | ------------------------------------------------- |
-| **100** | APT: Package manager error | Broken packages, dependency conflicts   | `apt --fix-broken install`, `dpkg --configure -a` |
-| **101** | APT: Configuration error   | Malformed sources.list, bad repo config | Check `/etc/apt/sources.list`, run `apt update`   |
-| **255** | DPKG: Fatal internal error | Corrupted package database              | `dpkg --configure -a`, restore from backup        |
-
----
-
-## Node.js/npm Errors
-
-Node.js runtime and package manager errors.
-
-| Code    | Description                                | Common Causes                  | Solutions                                      |
-| ------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------- |
-| **243** | Node.js: Out of memory                     | JavaScript heap exhausted      | Increase `--max-old-space-size`, optimize code |
-| **245** | Node.js: Invalid command-line option       | Wrong Node.js flags            | Check Node.js version, verify CLI options      |
-| **246** | Node.js: Internal JavaScript Parse Error   | Syntax error in JS code        | Review JavaScript syntax, check dependencies   |
-| **247** | Node.js: Fatal internal error              | Node.js runtime crash          | Update Node.js, check for known bugs           |
-| **248** | Node.js: Invalid C++ addon / N-API failure | Native module incompatibility  | Rebuild native modules, update packages        |
-| **249** | Node.js: Inspector error                   | Debug/inspect protocol failure | Disable inspector, check port conflicts        |
-| **254** | npm/pnpm/yarn: Unknown fatal error         | Package manager crash          | Clear cache, reinstall package manager         |
+| 代码    | 描述                             | 常见原因                             | 解决方案                                      |
+| ------- | -------------------------------- | ------------------------------------ | --------------------------------------------- |
+| **1**   | 一般错误 / 操作不允许            | 权限被拒绝，一般失败                 | 检查用户权限，如需要以 root 运行             |
+| **2**   | Shell 内置命令误用               | 脚本中的语法错误                     | 检查脚本语法，检查 bash 版本                  |
+| **126** | 命令无法执行                     | 权限问题，不可执行                   | `chmod +x script.sh` 或检查文件权限           |
+| **127** | 命令未找到                       | 缺少二进制文件，PATH 错误            | 安装所需包，检查 PATH 变量                    |
+| **128** | exit 的参数无效                  | 传递了无效的退出代码                 | 仅使用 0-255 的退出代码                       |
+| **130** | 被 Ctrl+C 终止 (SIGINT)          | 用户中断脚本                         | 预期行为，无需操作                            |
+| **137** | 被杀死 (SIGKILL)                 | 内存不足，强制终止                   | 检查内存使用情况，增加 RAM 分配               |
+| **139** | 段错误                           | 内存访问违规，二进制文件损坏         | 重新安装包，检查系统稳定性                    |
+| **143** | 终止 (SIGTERM)                   | 优雅关闭信号                         | 容器停止期间的预期行为                        |
 
 ---
 
-## Python/pip Errors
+## 包管理器错误
 
-Python runtime and package installation errors.
+APT、DPKG 和包安装错误。
 
-| Code    | Description                          | Common Causes                           | Solutions                                                |
-| ------- | ------------------------------------ | --------------------------------------- | -------------------------------------------------------- |
-| **210** | Python: Virtualenv missing or broken | venv not created, corrupted environment | `python3 -m venv venv`, recreate virtualenv              |
-| **211** | Python: Dependency resolution failed | Conflicting package versions            | Use `pip install --upgrade`, check requirements.txt      |
-| **212** | Python: Installation aborted         | EXTERNALLY-MANAGED, permission denied   | Use `--break-system-packages` or venv, check permissions |
+| 代码    | 描述                | 常见原因                           | 解决方案                                         |
+| ------- | ------------------- | ---------------------------------- | ------------------------------------------------ |
+| **100** | APT: 包管理器错误   | 损坏的包，依赖冲突                 | `apt --fix-broken install`，`dpkg --configure -a` |
+| **101** | APT: 配置错误       | sources.list 格式错误，仓库配置错误 | 检查 `/etc/apt/sources.list`，运行 `apt update`  |
+| **255** | DPKG: 致命内部错误  | 包数据库损坏                       | `dpkg --configure -a`，从备份恢复                |
 
 ---
 
-## Database Errors
+## Node.js/npm 错误
+
+Node.js 运行时和包管理器错误。
+
+| 代码    | 描述                                | 常见原因                  | 解决方案                                      |
+| ------- | ----------------------------------- | ------------------------- | --------------------------------------------- |
+| **243** | Node.js: 内存不足                   | JavaScript 堆耗尽         | 增加 `--max-old-space-size`，优化代码         |
+| **245** | Node.js: 无效的命令行选项           | 错误的 Node.js 标志       | 检查 Node.js 版本，验证 CLI 选项              |
+| **246** | Node.js: 内部 JavaScript 解析错误   | JS 代码中的语法错误       | 检查 JavaScript 语法，检查依赖项              |
+| **247** | Node.js: 致命内部错误               | Node.js 运行时崩溃        | 更新 Node.js，检查已知错误                    |
+| **248** | Node.js: 无效的 C++ 插件 / N-API 失败 | 原生模块不兼容            | 重建原生模块，更新包                          |
+| **249** | Node.js: Inspector 错误             | 调试/检查协议失败         | 禁用 inspector，检查端口冲突                  |
+| **254** | npm/pnpm/yarn: 未知致命错误         | 包管理器崩溃              | 清除缓存，重新安装包管理器                    |
+
+---
+
+## Python/pip 错误
+
+Python 运行时和包安装错误。
+
+| 代码    | 描述                          | 常见原因                           | 解决方案                                                |
+| ------- | ----------------------------- | ---------------------------------- | ------------------------------------------------------- |
+| **210** | Python: Virtualenv 缺失或损坏 | venv 未创建，环境损坏              | `python3 -m venv venv`，重新创建 virtualenv             |
+| **211** | Python: 依赖解析失败          | 包版本冲突                         | 使用 `pip install --upgrade`，检查 requirements.txt     |
+| **212** | Python: 安装中止              | EXTERNALLY-MANAGED，权限被拒绝     | 使用 `--break-system-packages` 或 venv，检查权限       |
+
+---
+
+## 数据库错误
 
 ### PostgreSQL (231-234)
 
-| Code    | Description             | Common Causes                      | Solutions                                             |
-| ------- | ----------------------- | ---------------------------------- | ----------------------------------------------------- |
-| **231** | Connection failed       | Server not running, wrong socket   | `systemctl start postgresql`, check connection string |
-| **232** | Authentication failed   | Wrong credentials                  | Verify username/password, check `pg_hba.conf`         |
-| **233** | Database does not exist | Database not created               | `CREATE DATABASE`, restore from backup                |
-| **234** | Fatal error in query    | Syntax error, constraint violation | Review SQL syntax, check constraints                  |
+| 代码    | 描述             | 常见原因                      | 解决方案                                             |
+| ------- | ---------------- | ----------------------------- | ---------------------------------------------------- |
+| **231** | 连接失败         | 服务器未运行，socket 错误     | `systemctl start postgresql`，检查连接字符串         |
+| **232** | 认证失败         | 凭据错误                      | 验证用户名/密码，检查 `pg_hba.conf`                  |
+| **233** | 数据库不存在     | 数据库未创建                  | `CREATE DATABASE`，从备份恢复                        |
+| **234** | 查询中的致命错误 | 语法错误，约束违规            | 检查 SQL 语法，检查约束                              |
 
 ### MySQL/MariaDB (241-244)
 
-| Code    | Description             | Common Causes                      | Solutions                                            |
-| ------- | ----------------------- | ---------------------------------- | ---------------------------------------------------- |
-| **241** | Connection failed       | Server not running, wrong socket   | `systemctl start mysql`, check connection parameters |
-| **242** | Authentication failed   | Wrong credentials                  | Verify username/password, grant privileges           |
-| **243** | Database does not exist | Database not created               | `CREATE DATABASE`, restore from backup               |
-| **244** | Fatal error in query    | Syntax error, constraint violation | Review SQL syntax, check constraints                 |
+| 代码    | 描述             | 常见原因                      | 解决方案                                            |
+| ------- | ---------------- | ----------------------------- | --------------------------------------------------- |
+| **241** | 连接失败         | 服务器未运行，socket 错误     | `systemctl start mysql`，检查连接参数               |
+| **242** | 认证失败         | 凭据错误                      | 验证用户名/密码，授予权限                           |
+| **243** | 数据库不存在     | 数据库未创建                  | `CREATE DATABASE`，从备份恢复                       |
+| **244** | 查询中的致命错误 | 语法错误，约束违规            | 检查 SQL 语法，检查约束                             |
 
 ### MongoDB (251-254)
 
-| Code    | Description           | Common Causes        | Solutions                                  |
-| ------- | --------------------- | -------------------- | ------------------------------------------ |
-| **251** | Connection failed     | Server not running   | `systemctl start mongod`, check port 27017 |
-| **252** | Authentication failed | Wrong credentials    | Verify username/password, create user      |
-| **253** | Database not found    | Database not created | Database auto-created on first write       |
-| **254** | Fatal query error     | Invalid query syntax | Review MongoDB query syntax                |
+| 代码    | 描述           | 常见原因        | 解决方案                                  |
+| ------- | -------------- | --------------- | ----------------------------------------- |
+| **251** | 连接失败       | 服务器未运行    | `systemctl start mongod`，检查端口 27017  |
+| **252** | 认证失败       | 凭据错误        | 验证用户名/密码，创建用户                 |
+| **253** | 数据库未找到   | 数据库未创建    | 数据库在首次写入时自动创建                |
+| **254** | 致命查询错误   | 查询语法无效    | 检查 MongoDB 查询语法                     |
 
 ---
 
-## Proxmox Custom Codes
+## Proxmox 自定义代码
 
-Custom exit codes specific to ProxmoxVE scripts.
+ProxmoxVE 脚本特定的自定义退出代码。
 
-### Container Creation Errors (200-209)
+### 容器创建错误 (200-209)
 
-| Code    | Description                                    | Common Causes                                           | Solutions                                               |
-| ------- | ---------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
-| **200** | Failed to create lock file                     | Permission denied, disk full                            | Check `/tmp` permissions, free disk space               |
-| **203** | Missing CTID variable                          | Script configuration error                              | Set CTID in script or via prompt                        |
-| **204** | Missing PCT_OSTYPE variable                    | Template selection failed                               | Verify template availability                            |
-| **205** | Invalid CTID (<100)                            | CTID below minimum value                                | Use CTID ≥ 100 (1-99 reserved for Proxmox)              |
-| **206** | CTID already in use                            | Container/VM with same ID exists                        | Check `pct list` and `/etc/pve/lxc/`, use different ID  |
-| **207** | Password contains unescaped special characters | Special chars like `-`, `/`, `\`, `*` at start/end      | Avoid leading special chars, use alphanumeric passwords |
-| **208** | Invalid configuration                          | DNS format (`.home` vs `home`), MAC format (`-` vs `:`) | Remove leading dots from DNS, use `:` in MAC addresses  |
-| **209** | Container creation failed                      | Multiple possible causes                                | Check logs in `/tmp/pct_create_*.log`, verify template  |
+| 代码    | 描述                                    | 常见原因                                           | 解决方案                                               |
+| ------- | --------------------------------------- | -------------------------------------------------- | ------------------------------------------------------ |
+| **200** | 创建锁文件失败                          | 权限被拒绝，磁盘已满                               | 检查 `/tmp` 权限，释放磁盘空间                         |
+| **203** | 缺少 CTID 变量                          | 脚本配置错误                                       | 在脚本中设置 CTID 或通过提示设置                       |
+| **204** | 缺少 PCT_OSTYPE 变量                    | 模板选择失败                                       | 验证模板可用性                                         |
+| **205** | 无效的 CTID (<100)                      | CTID 低于最小值                                    | 使用 CTID ≥ 100（1-99 为 Proxmox 保留）                |
+| **206** | CTID 已被使用                           | 存在相同 ID 的容器/VM                              | 检查 `pct list` 和 `/etc/pve/lxc/`，使用不同的 ID     |
+| **207** | 密码包含未转义的特殊字符                | 开头/结尾有特殊字符如 `-`、`/`、`\`、`*`           | 避免开头的特殊字符，使用字母数字密码                   |
+| **208** | 无效的配置                              | DNS 格式（`.home` vs `home`），MAC 格式（`-` vs `:`） | 从 DNS 中删除前导点，在 MAC 地址中使用 `:`            |
+| **209** | 容器创建失败                            | 多种可能原因                                       | 检查 `/tmp/pct_create_*.log` 中的日志，验证模板        |
 
-### Cluster & Storage Errors (210, 214, 217)
+### 集群和存储错误 (210, 214, 217)
 
-| Code    | Description                       | Common Causes                      | Solutions                                                   |
-| ------- | --------------------------------- | ---------------------------------- | ----------------------------------------------------------- |
-| **210** | Cluster not quorate               | Cluster nodes down, network issues | Check cluster status: `pvecm status`, fix node connectivity |
-| **211** | Timeout waiting for template lock | Concurrent download in progress    | Wait for other download to complete (60s timeout)           |
-| **214** | Not enough storage space          | Disk full, quota exceeded          | Free disk space, increase storage allocation                |
-| **217** | Storage does not support rootdir  | Wrong storage type selected        | Use storage supporting containers (dir, zfspool, lvm-thin)  |
+| 代码    | 描述                       | 常见原因                  | 解决方案                                                   |
+| ------- | -------------------------- | ------------------------- | ---------------------------------------------------------- |
+| **210** | 集群未达到法定人数         | 集群节点宕机，网络问题    | 检查集群状态：`pvecm status`，修复节点连接                 |
+| **211** | 等待模板锁超时             | 正在进行并发下载          | 等待其他下载完成（60秒超时）                               |
+| **214** | 存储空间不足               | 磁盘已满，超出配额        | 释放磁盘空间，增加存储分配                                 |
+| **217** | 存储不支持 rootdir         | 选择了错误的存储类型      | 使用支持容器的存储（dir、zfspool、lvm-thin）               |
 
-### Container Verification Errors (215-216)
+### 容器验证错误 (215-216)
 
-| Code    | Description                      | Common Causes                    | Solutions                                                 |
-| ------- | -------------------------------- | -------------------------------- | --------------------------------------------------------- |
-| **215** | Container created but not listed | Ghost state, incomplete creation | Check `/etc/pve/lxc/CTID.conf`, remove manually if needed |
-| **216** | RootFS entry missing in config   | Incomplete container creation    | Delete container, retry creation                          |
+| 代码    | 描述                        | 常见原因                | 解决方案                                                 |
+| ------- | --------------------------- | ----------------------- | -------------------------------------------------------- |
+| **215** | 容器已创建但未列出          | 幽灵状态，创建不完整    | 检查 `/etc/pve/lxc/CTID.conf`，如需要手动删除            |
+| **216** | 配置中缺少 RootFS 条目      | 容器创建不完整          | 删除容器，重试创建                                       |
 
-### Template Errors (218, 220-223, 225)
+### 模板错误 (218, 220-223, 225)
 
-| Code    | Description                               | Common Causes                                    | Solutions                                                   |
-| ------- | ----------------------------------------- | ------------------------------------------------ | ----------------------------------------------------------- |
-| **218** | Template file corrupted or incomplete     | Download interrupted, file <1MB, invalid archive | Delete template, run `pveam update && pveam download`       |
-| **220** | Unable to resolve template path           | Template storage not accessible                  | Check storage availability, verify permissions              |
-| **221** | Template file exists but not readable     | Permission denied                                | `chmod 644 template.tar.zst`, check storage permissions     |
-| **222** | Template download failed after 3 attempts | Network issues, storage problems                 | Check internet connectivity, verify storage space           |
-| **223** | Template not available after download     | Storage sync issue, I/O delay                    | Wait a few seconds, verify storage is mounted               |
-| **225** | No template available for OS/Version      | Unsupported OS version, catalog outdated         | Run `pveam update`, check `pveam available -section system` |
+| 代码    | 描述                               | 常见原因                                    | 解决方案                                                   |
+| ------- | ---------------------------------- | ------------------------------------------- | ---------------------------------------------------------- |
+| **218** | 模板文件损坏或不完整               | 下载中断，文件 <1MB，无效存档              | 删除模板，运行 `pveam update && pveam download`            |
+| **220** | 无法解析模板路径                   | 模板存储不可访问                            | 检查存储可用性，验证权限                                   |
+| **221** | 模板文件存在但不可读               | 权限被拒绝                                  | `chmod 644 template.tar.zst`，检查存储权限                 |
+| **222** | 3 次尝试后模板下载失败             | 网络问题，存储问题                          | 检查互联网连接，验证存储空间                               |
+| **223** | 下载后模板不可用                   | 存储同步问题，I/O 延迟                      | 等待几秒钟，验证存储已挂载                                 |
+| **225** | 操作系统/版本没有可用模板          | 不支持的操作系统版本，目录过时              | 运行 `pveam update`，检查 `pveam available -section system` |
 
-### LXC Stack Errors (231)
+### LXC 堆栈错误 (231)
 
-| Code    | Description                    | Common Causes                               | Solutions                                    |
-| ------- | ------------------------------ | ------------------------------------------- | -------------------------------------------- |
-| **231** | LXC stack upgrade/retry failed | Outdated `pve-container`, Debian 13.1 issue | See [Debian 13.1 Fix Guide](#debian-131-fix) |
+| 代码    | 描述                        | 常见原因                               | 解决方案                                    |
+| ------- | --------------------------- | -------------------------------------- | ------------------------------------------- |
+| **231** | LXC 堆栈升级/重试失败       | `pve-container` 过时，Debian 13.1 问题 | 参见 [Debian 13.1 修复指南](#debian-131-修复) |
 
 ---
 
-## Special Case: Debian 13.1 "unsupported version" Error
+## 特殊情况：Debian 13.1 "不支持的版本" 错误
 
-### Problem
+### 问题
 
 ```
 TASK ERROR: unable to create CT 129 - unsupported debian version '13.1'
 ```
 
-### Root Cause
+### 根本原因
 
-Outdated `pve-container` package doesn't recognize Debian 13 (Trixie).
+过时的 `pve-container` 包无法识别 Debian 13 (Trixie)。
 
-### Solutions
+### 解决方案
 
-#### Option 1: Full System Upgrade (Recommended)
+#### 选项 1：完整系统升级（推荐）
 
 ```bash
 apt update
@@ -176,123 +176,123 @@ apt full-upgrade -y
 reboot
 ```
 
-Verify fix:
+验证修复：
 
 ```bash
 dpkg -l pve-container
-# PVE 8: Should show 5.3.3+
-# PVE 9: Should show 6.0.13+
+# PVE 8: 应显示 5.3.3+
+# PVE 9: 应显示 6.0.13+
 ```
 
-#### Option 2: Update Only pve-container
+#### 选项 2：仅更新 pve-container
 
 ```bash
 apt update
 apt install --only-upgrade pve-container -y
 ```
 
-**Warning:** If Proxmox fails to boot after this, your system was inconsistent. Perform Option 1 instead.
+**警告**：如果此后 Proxmox 无法启动，说明您的系统不一致。请改用选项 1。
 
-#### Option 3: Verify Repository Configuration
+#### 选项 3：验证仓库配置
 
-Many users disable Enterprise repos but forget to add no-subscription repos.
+许多用户禁用企业仓库但忘记添加无订阅仓库。
 
-**For PVE 9 (Trixie):**
+**对于 PVE 9 (Trixie)：**
 
 ```bash
 cat /etc/apt/sources.list.d/pve-no-subscription.list
 ```
 
-Should contain:
+应包含：
 
 ```
 deb http://download.proxmox.com/debian/pve trixie pve-no-subscription
 deb http://download.proxmox.com/debian/ceph-squid trixie no-subscription
 ```
 
-**For PVE 8 (Bookworm):**
+**对于 PVE 8 (Bookworm)：**
 
 ```
 deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription
 deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription
 ```
 
-Then:
+然后：
 
 ```bash
 apt update
 apt full-upgrade -y
 ```
 
-### Reference
+### 参考
 
-Official discussion: [GitHub #8126](https://github.com/community-scripts/ProxmoxVE/discussions/8126)
+官方讨论：[GitHub #8126](https://github.com/community-scripts/ProxmoxVE/discussions/8126)
 
 ---
 
-## Troubleshooting Tips
+## 故障排除提示
 
-### Finding Error Details
+### 查找错误详情
 
-1. **Check logs:**
+1. **检查日志：**
 
    ```bash
    tail -n 50 /tmp/pct_create_*.log
    ```
 
-2. **Enable verbose mode:**
+2. **启用详细模式：**
 
    ```bash
-   bash -x script.sh  # Shows every command executed
+   bash -x script.sh  # 显示执行的每个命令
    ```
 
-3. **Check container status:**
+3. **检查容器状态：**
 
    ```bash
    pct list
    pct status CTID
    ```
 
-4. **Verify storage:**
+4. **验证存储：**
    ```bash
    pvesm status
    df -h
    ```
 
-### Common Patterns
+### 常见模式
 
-- **Exit 0 with error message:** Configuration validation failed (check DNS, MAC, password format)
-- **Exit 206 but container not visible:** Ghost container state - check `/etc/pve/lxc/` manually
-- **Exit 209 generic error:** Check `/tmp/pct_create_*.log` for specific `pct create` failure reason
-- **Exit 218 or 222:** Template issues - delete and re-download template
-
----
-
-## Quick Reference Chart
-
-| Exit Code Range | Category           | Typical Issue                               |
-| --------------- | ------------------ | ------------------------------------------- |
-| 1-2, 126-143    | Shell/System       | Permissions, signals, missing commands      |
-| 100-101, 255    | Package Manager    | APT/DPKG errors, broken packages            |
-| 200-209         | Container Creation | CTID, password, configuration               |
-| 210-217         | Storage/Cluster    | Disk space, quorum, storage type            |
-| 218-225         | Templates          | Download, corruption, availability          |
-| 231-254         | Databases/Runtime  | PostgreSQL, MySQL, MongoDB, Node.js, Python |
+- **退出 0 但有错误消息：** 配置验证失败（检查 DNS、MAC、密码格式）
+- **退出 206 但容器不可见：** 幽灵容器状态 - 手动检查 `/etc/pve/lxc/`
+- **退出 209 一般错误：** 检查 `/tmp/pct_create_*.log` 以了解具体的 `pct create` 失败原因
+- **退出 218 或 222：** 模板问题 - 删除并重新下载模板
 
 ---
 
-## Contributing
+## 快速参考图表
 
-Found an undocumented exit code or have a solution to share? Please:
-
-1. Open an issue on [GitHub](https://github.com/community-scripts/ProxmoxVE/issues)
-2. Include:
-   - Exit code number
-   - Error message
-   - Steps to reproduce
-   - Solution that worked for you
+| 退出代码范围    | 类别           | 典型问题                               |
+| --------------- | -------------- | -------------------------------------- |
+| 1-2, 126-143    | Shell/系统     | 权限，信号，缺少命令                   |
+| 100-101, 255    | 包管理器       | APT/DPKG 错误，损坏的包                |
+| 200-209         | 容器创建       | CTID，密码，配置                       |
+| 210-217         | 存储/集群      | 磁盘空间，法定人数，存储类型           |
+| 218-225         | 模板           | 下载，损坏，可用性                     |
+| 231-254         | 数据库/运行时  | PostgreSQL、MySQL、MongoDB、Node.js、Python |
 
 ---
 
-_Last updated: November 2025_
-_ProxmoxVE Version: 2.x_
+## 贡献
+
+发现未记录的退出代码或有解决方案要分享？请：
+
+1. 在 [GitHub](https://github.com/community-scripts/ProxmoxVE/issues) 上开启问题
+2. 包括：
+   - 退出代码编号
+   - 错误消息
+   - 重现步骤
+   - 对您有效的解决方案
+
+---
+
+_最后更新：2025 年 11 月_
+_ProxmoxVE 版本：2.x_

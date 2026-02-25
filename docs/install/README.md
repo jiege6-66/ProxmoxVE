@@ -1,160 +1,160 @@
-# Installation Scripts Documentation (/install)
+# 安装脚本文档 (/install)
 
-This directory contains comprehensive documentation for installation scripts in the `/install` directory.
+本目录包含 `/install` 目录中安装脚本的综合文档。
 
-## Overview
+## 概述
 
-Installation scripts (`install/*.sh`) run inside LXC containers and handle application-specific setup, configuration, and deployment.
+安装脚本（`install/*.sh`）在 LXC 容器内运行，处理应用程序特定的设置、配置和部署。
 
-## Documentation Structure
+## 文档结构
 
-Each installation script category has documentation following the project pattern.
+每个安装脚本类别都有遵循项目模式的文档。
 
-## Key Resources
+## 关键资源
 
-- **[DETAILED_GUIDE.md](DETAILED_GUIDE.md)** - Complete reference for creating install scripts
-- **[../contribution/README.md](../contribution/README.md)** - How to contribute
-- **[../misc/install.func/](../misc/install.func/)** - Installation workflow documentation
-- **[../misc/tools.func/](../misc/tools.func/)** - Package installation documentation
+- **[DETAILED_GUIDE.md](DETAILED_GUIDE.md)** - 创建安装脚本的完整参考
+- **[../contribution/README.md](../contribution/README.md)** - 如何贡献
+- **[../misc/install.func/](../misc/install.func/)** - 安装工作流文档
+- **[../misc/tools.func/](../misc/tools.func/)** - 包安装文档
 
-## Installation Script Flow
+## 安装脚本流程
 
 ```
-install/appname-install.sh (container-side)
+install/appname-install.sh (容器端)
     │
-    ├─ Sources: $FUNCTIONS_FILE_PATH
-    │  ├─ core.func (messaging)
-    │  ├─ error_handler.func (error handling)
-    │  ├─ install.func (setup)
-    │  └─ tools.func (packages & tools)
+    ├─ Sources：$FUNCTIONS_FILE_PATH
+    │  ├─ core.func（消息传递）
+    │  ├─ error_handler.func（错误处理）
+    │  ├─ install.func（设置）
+    │  └─ tools.func（包和工具）
     │
-    ├─ 10-Phase Installation:
-    │  1. OS Setup
-    │  2. Base Dependencies
-    │  3. Tool Setup
-    │  4. Application Download
-    │  5. Configuration
-    │  6. Database Setup
-    │  7. Permissions
-    │  8. Services
-    │  9. Version Tracking
-    │  10. Final Cleanup
+    ├─ 10 阶段安装：
+    │  1. 操作系统设置
+    │  2. 基础依赖项
+    │  3. 工具设置
+    │  4. 应用程序下载
+    │  5. 配置
+    │  6. 数据库设置
+    │  7. 权限
+    │  8. 服务
+    │  9. 版本跟踪
+    │  10. 最终清理
     │
-    └─ Result: Application ready
+    └─ 结果：应用程序就绪
 ```
 
-## Available Installation Scripts
+## 可用安装脚本
 
-See `/install` directory for all installation scripts. Examples:
+查看 `/install` 目录以获取所有安装脚本。示例：
 
-- `pihole-install.sh` - Pi-hole installation
-- `docker-install.sh` - Docker installation
-- `wallabag-install.sh` - Wallabag setup
-- `nextcloud-install.sh` - Nextcloud deployment
-- `debian-install.sh` - Base Debian setup
-- And 30+ more...
+- `pihole-install.sh` - Pi-hole 安装
+- `docker-install.sh` - Docker 安装
+- `wallabag-install.sh` - Wallabag 设置
+- `nextcloud-install.sh` - Nextcloud 部署
+- `debian-install.sh` - 基本 Debian 设置
+- 以及 30+ 个更多...
 
-## Quick Start
+## 快速开始
 
-To understand how to create an installation script:
+要了解如何创建安装脚本：
 
-1. Read: [UPDATED_APP-install.md](../UPDATED_APP-install.md)
-2. Study: A similar existing script in `/install`
-3. Copy template and customize
-4. Test in container
-5. Submit PR
+1. 阅读：[UPDATED_APP-install.md](../UPDATED_APP-install.md)
+2. 研究：`/install` 中类似的现有脚本
+3. 复制模板并自定义
+4. 在容器中测试
+5. 提交 PR
 
-## 10-Phase Installation Pattern
+## 10 阶段安装模式
 
-Every installation script follows this structure:
+每个安装脚本都遵循此结构：
 
-### Phase 1: OS Setup
+### 阶段 1：操作系统设置
 ```bash
 setting_up_container
 network_check
 update_os
 ```
 
-### Phase 2: Base Dependencies
+### 阶段 2：基础依赖项
 ```bash
 pkg_update
 pkg_install curl wget git
 ```
 
-### Phase 3: Tool Setup
+### 阶段 3：工具设置
 ```bash
 setup_nodejs "20"
 setup_php "8.3"
-setup_mariadb  # Uses distribution packages (recommended)
-# MARIADB_VERSION="11.4" setup_mariadb  # For specific version
+setup_mariadb  # 使用发行版包（推荐）
+# MARIADB_VERSION="11.4" setup_mariadb  # 用于特定版本
 ```
 
-### Phase 4: Application Download
+### 阶段 4：应用程序下载
 ```bash
 git clone https://github.com/user/app /opt/app
 cd /opt/app
 ```
 
-### Phase 5: Configuration
+### 阶段 5：配置
 ```bash
-# Create .env files, config files, etc.
+# 创建 .env 文件、配置文件等
 cat > .env <<EOF
 SETTING=value
 EOF
 ```
 
-### Phase 6: Database Setup
+### 阶段 6：数据库设置
 ```bash
-# Create databases, users, etc.
+# 创建数据库、用户等
 mysql -e "CREATE DATABASE appdb"
 ```
 
-### Phase 7: Permissions
+### 阶段 7：权限
 ```bash
 chown -R appuser:appgroup /opt/app
 chmod -R 755 /opt/app
 ```
 
-### Phase 8: Services
+### 阶段 8：服务
 ```bash
 systemctl enable app
 systemctl start app
 ```
 
-### Phase 9: Version Tracking
+### 阶段 9：版本跟踪
 ```bash
 echo "1.0.0" > /opt/app_version.txt
 ```
 
-### Phase 10: Final Cleanup
+### 阶段 10：最终清理
 ```bash
 motd_ssh
 customize
 cleanup_lxc
 ```
 
-## Contributing an Installation Script
+## 贡献安装脚本
 
-1. Create `ct/myapp.sh` (host script)
-2. Create `install/myapp-install.sh` (container script)
-3. Follow 10-phase pattern in [UPDATED_APP-install.md](../UPDATED_APP-install.md)
-4. Test in actual container
-5. Submit PR with both files
+1. 创建 `ct/myapp.sh`（主机脚本）
+2. 创建 `install/myapp-install.sh`（容器脚本）
+3. 遵循 [UPDATED_APP-install.md](../UPDATED_APP-install.md) 中的 10 阶段模式
+4. 在实际容器中测试
+5. 提交包含两个文件的 PR
 
-## Common Tasks
+## 常见任务
 
-- **Create new installation script** → [UPDATED_APP-install.md](../UPDATED_APP-install.md)
-- **Install Node.js/PHP/Database** → [misc/tools.func/](../misc/tools.func/)
-- **Setup Alpine container** → [misc/alpine-install.func/](../misc/alpine-install.func/)
-- **Debug installation errors** → [EXIT_CODES.md](../EXIT_CODES.md)
-- **Use dev mode** → [DEV_MODE.md](../DEV_MODE.md)
+- **创建新安装脚本** → [UPDATED_APP-install.md](../UPDATED_APP-install.md)
+- **安装 Node.js/PHP/数据库** → [misc/tools.func/](../misc/tools.func/)
+- **设置 Alpine 容器** → [misc/alpine-install.func/](../misc/alpine-install.func/)
+- **调试安装错误** → [EXIT_CODES.md](../EXIT_CODES.md)
+- **使用开发模式** → [DEV_MODE.md](../DEV_MODE.md)
 
 ## Alpine vs Debian
 
-- **Debian-based** → Use `tools.func`, `install.func`, `systemctl`
-- **Alpine-based** → Use `alpine-tools.func`, `alpine-install.func`, `rc-service`
+- **基于 Debian** → 使用 `tools.func`、`install.func`、`systemctl`
+- **基于 Alpine** → 使用 `alpine-tools.func`、`alpine-install.func`、`rc-service`
 
 ---
 
-**Last Updated**: December 2025
-**Maintainers**: community-scripts team
+**最后更新**：2025 年 12 月
+**维护者**：community-scripts 团队

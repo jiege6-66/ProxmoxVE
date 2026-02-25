@@ -43,18 +43,18 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "lxc-delete" "pve"
 
 header_info
-echo "Loading..."
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE LXC Deletion" --yesno "This will delete LXC containers. Proceed?" 10 58
+echo "加载中..."
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE LXC 删除" --yesno "这将删除 LXC 容器。是否继续？" 10 58
 
 NODE=$(hostname)
 containers=$(pct list | tail -n +2 | awk '{print $0 " " $4}')
 
 if [ -z "$containers" ]; then
-  whiptail --title "LXC Container Delete" --msgbox "No LXC containers available!" 10 60
+  whiptail --title "LXC 容器删除" --msgbox "没有可用的 LXC 容器！" 10 60
   exit 1
 fi
 
-menu_items=("ALL" "Delete ALL containers" "OFF") # Add as first option
+menu_items=("ALL" "删除所有容器" "OFF") # Add as first option
 FORMAT="%-10s %-15s %-10s"
 
 while read -r container; do
@@ -65,17 +65,17 @@ while read -r container; do
   menu_items+=("$container_id" "$formatted_line" "OFF")
 done <<<"$containers"
 
-CHOICES=$(whiptail --title "LXC Container Delete" \
-  --checklist "Select LXC containers to delete:" 25 60 13 \
+CHOICES=$(whiptail --title "LXC 容器删除" \
+  --checklist "选择要删除的 LXC 容器:" 25 60 13 \
   "${menu_items[@]}" 3>&2 2>&1 1>&3)
 
 if [ -z "$CHOICES" ]; then
-  whiptail --title "LXC Container Delete" \
-    --msgbox "No containers selected!" 10 60
+  whiptail --title "LXC 容器删除" \
+    --msgbox "未选择容器！" 10 60
   exit 1
 fi
 
-read -p "Delete containers manually or automatically? (Default: manual) m/a: " DELETE_MODE
+read -p "手动还是自动删除容器？(默认: 手动) m/a: " DELETE_MODE
 DELETE_MODE=${DELETE_MODE:-m}
 
 selected_ids=$(echo "$CHOICES" | tr -d '"' | tr -s ' ' '\n')
@@ -89,31 +89,31 @@ for container_id in $selected_ids; do
   status=$(pct status $container_id)
 
   if [ "$status" == "status: running" ]; then
-    echo -e "${BL}[Info]${GN} Stopping container $container_id...${CL}"
+    echo -e "${BL}[信息]${GN} 正在停止容器 $container_id...${CL}"
     pct stop $container_id &
     sleep 5
-    echo -e "${BL}[Info]${GN} Container $container_id stopped.${CL}"
+    echo -e "${BL}[信息]${GN} 容器 $container_id 已停止。${CL}"
   fi
 
   if [[ "$DELETE_MODE" == "a" ]]; then
-    echo -e "${BL}[Info]${GN} Automatically deleting container $container_id...${CL}"
+    echo -e "${BL}[信息]${GN} 正在自动删除容器 $container_id...${CL}"
     pct destroy "$container_id" -f &
     pid=$!
     spinner $pid
-    [ $? -eq 0 ] && echo "Container $container_id deleted." || whiptail --title "Error" --msgbox "Failed to delete container $container_id." 10 60
+    [ $? -eq 0 ] && echo "容器 $container_id 已删除。" || whiptail --title "错误" --msgbox "删除容器 $container_id 失败。" 10 60
   else
-    read -p "Delete container $container_id? (y/N): " CONFIRM
+    read -p "删除容器 $container_id？(y/N): " CONFIRM
     if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
-      echo -e "${BL}[Info]${GN} Deleting container $container_id...${CL}"
+      echo -e "${BL}[信息]${GN} 正在删除容器 $container_id...${CL}"
       pct destroy "$container_id" -f &
       pid=$!
       spinner $pid
-      [ $? -eq 0 ] && echo "Container $container_id deleted." || whiptail --title "Error" --msgbox "Failed to delete container $container_id." 10 60
+      [ $? -eq 0 ] && echo "容器 $container_id 已删除。" || whiptail --title "错误" --msgbox "删除容器 $container_id 失败。" 10 60
     else
-      echo -e "${BL}[Info]${RD} Skipping container $container_id...${CL}"
+      echo -e "${BL}[信息]${RD} 跳过容器 $container_id...${CL}"
     fi
   fi
 done
 
 header_info
-echo -e "${GN}Deletion process completed.${CL}\n"
+echo -e "${GN}删除过程完成。${CL}\n"

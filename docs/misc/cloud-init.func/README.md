@@ -1,129 +1,129 @@
-# cloud-init.func Documentation
+# cloud-init.func 文档
 
-## Overview
+## 概述
 
-The `cloud-init.func` file provides cloud-init configuration and VM initialization functions for Proxmox VE virtual machines. It handles user data, cloud-config generation, and VM setup automation.
+`cloud-init.func` 文件为 Proxmox VE 虚拟机提供 cloud-init 配置和 VM 初始化函数。它处理用户数据、cloud-config 生成和 VM 设置自动化。
 
-## Purpose and Use Cases
+## 目的和用例
 
-- **VM Cloud-Init Setup**: Generate and apply cloud-init configurations for VMs
-- **User Data Generation**: Create user-data scripts for VM initialization
-- **Cloud-Config**: Generate cloud-config YAML for VM provisioning
-- **SSH Key Management**: Setup SSH keys for VM access
-- **Network Configuration**: Configure networking for VMs
-- **Automated VM Provisioning**: Complete VM setup without manual intervention
+- **VM Cloud-Init 设置**：为 VM 生成并应用 cloud-init 配置
+- **用户数据生成**：创建 VM 初始化的用户数据脚本
+- **Cloud-Config**：为 VM 配置生成 cloud-config YAML
+- **SSH 密钥管理**：设置 VM 访问的 SSH 密钥
+- **网络配置**：为 VM 配置网络
+- **自动化 VM 配置**：无需手动干预即可完成 VM 设置
 
-## Quick Reference
+## 快速参考
 
-### Key Function Groups
-- **Cloud-Init Core**: Generate and apply cloud-init configurations
-- **User Data**: Create initialization scripts for VMs
-- **SSH Setup**: Deploy SSH keys automatically
-- **Network Configuration**: Setup networking during VM provisioning
-- **VM Customization**: Apply custom settings to VMs
+### 主要功能组
+- **Cloud-Init 核心**：生成并应用 cloud-init 配置
+- **用户数据**：为 VM 创建初始化脚本
+- **SSH 设置**：自动部署 SSH 密钥
+- **网络配置**：在 VM 配置期间设置网络
+- **VM 自定义**：将自定义设置应用于 VM
 
-### Dependencies
-- **External**: `cloud-init`, `curl`, `qemu-img`
-- **Internal**: Uses functions from `core.func`, `error_handler.func`
+### 依赖关系
+- **外部**：`cloud-init`、`curl`、`qemu-img`
+- **内部**：使用 `core.func`、`error_handler.func` 中的函数
 
-### Integration Points
-- Used by: VM creation scripts (vm/*.sh)
-- Uses: Environment variables from build.func
-- Provides: VM initialization and cloud-init services
+### 集成点
+- 使用者：VM 创建脚本（vm/*.sh）
+- 使用：来自 build.func 的环境变量
+- 提供：VM 初始化和 cloud-init 服务
 
-## Documentation Files
+## 文档文件
 
 ### 📊 [CLOUD_INIT_FUNC_FLOWCHART.md](./CLOUD_INIT_FUNC_FLOWCHART.md)
-Visual execution flows showing cloud-init generation and VM provisioning workflows.
+显示 cloud-init 生成和 VM 配置工作流的可视化执行流程。
 
 ### 📚 [CLOUD_INIT_FUNC_FUNCTIONS_REFERENCE.md](./CLOUD_INIT_FUNC_FUNCTIONS_REFERENCE.md)
-Complete alphabetical reference of all cloud-init functions.
+所有 cloud-init 函数的完整字母顺序参考。
 
 ### 💡 [CLOUD_INIT_FUNC_USAGE_EXAMPLES.md](./CLOUD_INIT_FUNC_USAGE_EXAMPLES.md)
-Practical examples for VM cloud-init setup and customization.
+VM cloud-init 设置和自定义的实用示例。
 
 ### 🔗 [CLOUD_INIT_FUNC_INTEGRATION.md](./CLOUD_INIT_FUNC_INTEGRATION.md)
-How cloud-init.func integrates with VM creation and Proxmox workflows.
+cloud-init.func 如何与 VM 创建和 Proxmox 工作流集成。
 
-## Key Features
+## 主要功能
 
-### Cloud-Init Configuration
-- **User Data Generation**: Create custom initialization scripts
-- **Cloud-Config YAML**: Generate standardized cloud-config
-- **SSH Keys**: Automatically deploy public keys
-- **Package Installation**: Install packages during VM boot
-- **Custom Commands**: Run arbitrary commands on first boot
+### Cloud-Init 配置
+- **用户数据生成**：创建自定义初始化脚本
+- **Cloud-Config YAML**：生成标准化的 cloud-config
+- **SSH 密钥**：自动部署公钥
+- **包安装**：在 VM 启动期间安装包
+- **自定义命令**：在首次启动时运行任意命令
 
-### VM Network Setup
-- **DHCP Configuration**: Configure DHCP for automatic IP assignment
-- **Static IP Setup**: Configure static IP addresses
-- **IPv6 Support**: Enable IPv6 on VMs
-- **DNS Configuration**: Set DNS servers for VM
-- **Firewall Rules**: Basic firewall configuration
+### VM 网络设置
+- **DHCP 配置**：配置 DHCP 以自动分配 IP
+- **静态 IP 设置**：配置静态 IP 地址
+- **IPv6 支持**：在 VM 上启用 IPv6
+- **DNS 配置**：为 VM 设置 DNS 服务器
+- **防火墙规则**：基本防火墙配置
 
-### Security Features
-- **SSH Key Injection**: Deploy SSH keys during VM creation
-- **Disable Passwords**: Disable password authentication
-- **Sudoers Configuration**: Setup sudo access
-- **User Management**: Create and configure users
+### 安全功能
+- **SSH 密钥注入**：在 VM 创建期间部署 SSH 密钥
+- **禁用密码**：禁用密码身份验证
+- **Sudoers 配置**：设置 sudo 访问
+- **用户管理**：创建和配置用户
 
-## Function Categories
+## 功能类别
 
-### 🔹 Cloud-Init Core Functions
-- `generate_cloud_init()` - Create cloud-init configuration
-- `generate_user_data()` - Generate user-data script
-- `apply_cloud_init()` - Apply cloud-init to VM
-- `validate_cloud_init()` - Validate cloud-config syntax
+### 🔹 Cloud-Init 核心函数
+- `generate_cloud_init()` - 创建 cloud-init 配置
+- `generate_user_data()` - 生成用户数据脚本
+- `apply_cloud_init()` - 将 cloud-init 应用于 VM
+- `validate_cloud_init()` - 验证 cloud-config 语法
 
-### 🔹 SSH & Security Functions
-- `setup_ssh_keys()` - Deploy SSH public keys
-- `setup_sudo()` - Configure sudoers
-- `create_user()` - Create new user account
-- `disable_password_auth()` - Disable password login
+### 🔹 SSH 和安全函数
+- `setup_ssh_keys()` - 部署 SSH 公钥
+- `setup_sudo()` - 配置 sudoers
+- `create_user()` - 创建新用户账户
+- `disable_password_auth()` - 禁用密码登录
 
-### 🔹 Network Configuration Functions
-- `setup_dhcp()` - Configure DHCP networking
-- `setup_static_ip()` - Configure static IP
-- `setup_dns()` - Configure DNS servers
-- `setup_ipv6()` - Enable IPv6 support
+### 🔹 网络配置函数
+- `setup_dhcp()` - 配置 DHCP 网络
+- `setup_static_ip()` - 配置静态 IP
+- `setup_dns()` - 配置 DNS 服务器
+- `setup_ipv6()` - 启用 IPv6 支持
 
-### 🔹 VM Customization Functions
-- `install_packages()` - Install packages during boot
-- `run_custom_commands()` - Execute custom scripts
-- `configure_hostname()` - Set VM hostname
-- `configure_timezone()` - Set VM timezone
+### 🔹 VM 自定义函数
+- `install_packages()` - 在启动期间安装包
+- `run_custom_commands()` - 执行自定义脚本
+- `configure_hostname()` - 设置 VM 主机名
+- `configure_timezone()` - 设置 VM 时区
 
-## Cloud-Init Workflow
+## Cloud-Init 工作流
 
 ```
-VM Created
+VM 已创建
     ↓
-cloud-init (system) boot phase
+cloud-init (system) 启动阶段
     ↓
-User-Data Script Execution
+用户数据脚本执行
     ↓
-├─ Install packages
-├─ Deploy SSH keys
-├─ Configure network
-└─ Create users
+├─ 安装包
+├─ 部署 SSH 密钥
+├─ 配置网络
+└─ 创建用户
     ↓
-cloud-init config phase
+cloud-init config 阶段
     ↓
-Apply cloud-config settings
+应用 cloud-config 设置
     ↓
-cloud-init final phase
+cloud-init final 阶段
     ↓
-VM Ready for Use
+VM 准备就绪
 ```
 
-## Common Usage Patterns
+## 常见使用模式
 
-### Basic VM Setup with Cloud-Init
+### 使用 Cloud-Init 的基本 VM 设置
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-# Generate cloud-init configuration
+# 生成 cloud-init 配置
 cat > cloud-init.yaml <<EOF
 #cloud-config
 hostname: myvm
@@ -141,94 +141,94 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
 
 bootcmd:
-  - echo "VM initializing..."
+  - echo "VM 正在初始化..."
 
 runcmd:
   - apt-get update
   - apt-get upgrade -y
 EOF
 
-# Apply to VM
+# 应用于 VM
 qm set VMID --cicustom local:snippets/cloud-init.yaml
 ```
 
-### With SSH Key Deployment
+### 使用 SSH 密钥部署
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-# Get SSH public key
+# 获取 SSH 公钥
 SSH_KEY=$(cat ~/.ssh/id_rsa.pub)
 
-# Generate cloud-init with SSH key
+# 使用 SSH 密钥生成 cloud-init
 generate_user_data > user-data.txt
 
-# Inject SSH key
+# 注入 SSH 密钥
 setup_ssh_keys "$VMID" "$SSH_KEY"
 
-# Create VM with cloud-init
+# 使用 cloud-init 创建 VM
 qm create $VMID ... --cicustom local:snippets/user-data
 ```
 
-### Network Configuration
+### 网络配置
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 
-# Static IP setup
+# 静态 IP 设置
 setup_static_ip "192.168.1.100" "255.255.255.0" "192.168.1.1"
 
-# DNS configuration
+# DNS 配置
 setup_dns "8.8.8.8 8.8.4.4"
 
-# IPv6 support
+# IPv6 支持
 setup_ipv6
 ```
 
-## Best Practices
+## 最佳实践
 
-### ✅ DO
-- Validate cloud-config syntax before applying
-- Use cloud-init for automated setup
-- Deploy SSH keys for secure access
-- Test cloud-init configuration in non-production first
-- Use DHCP for easier VM deployment
-- Document custom cloud-init configurations
-- Version control cloud-init templates
+### ✅ 应该做
+- 在应用前验证 cloud-config 语法
+- 使用 cloud-init 进行自动化设置
+- 部署 SSH 密钥以实现安全访问
+- 首先在非生产环境中测试 cloud-init 配置
+- 使用 DHCP 以便更轻松地部署 VM
+- 记录自定义 cloud-init 配置
+- 对 cloud-init 模板进行版本控制
 
-### ❌ DON'T
-- Use weak SSH keys or passwords
-- Leave SSH password authentication enabled
-- Hardcode credentials in cloud-init
-- Skip validation of cloud-config
-- Use untrusted cloud-init sources
-- Forget to set timezone on VMs
-- Mix cloud-init versions
+### ❌ 不应该做
+- 使用弱 SSH 密钥或密码
+- 保持 SSH 密码身份验证启用
+- 在 cloud-init 中硬编码凭据
+- 跳过 cloud-config 验证
+- 使用不受信任的 cloud-init 源
+- 忘记在 VM 上设置时区
+- 混合使用 cloud-init 版本
 
-## Cloud-Config Format
+## Cloud-Config 格式
 
-### Example Cloud-Config
+### Cloud-Config 示例
 ```yaml
 #cloud-config
-# This is a comment
+# 这是注释
 
-# System configuration
+# 系统配置
 hostname: myvm
 timezone: UTC
 package_upgrade: true
 
-# Packages to install
+# 要安装的包
 packages:
   - curl
   - wget
   - git
   - build-essential
 
-# SSH keys for users
+# 用户的 SSH 密钥
 ssh_authorized_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC...
 
-# Users to create
+# 要创建的用户
 users:
   - name: ubuntu
     home: /home/ubuntu
@@ -237,22 +237,22 @@ users:
     ssh_authorized_keys:
       - ssh-rsa AAAAB3...
 
-# Commands to run on boot
+# 启动时运行的命令
 runcmd:
   - apt-get update
   - apt-get upgrade -y
   - systemctl restart ssh
 
-# Files to create
+# 要创建的文件
 write_files:
   - path: /etc/profile.d/custom.sh
     content: |
       export CUSTOM_VAR="value"
 ```
 
-## VM Network Configuration
+## VM 网络配置
 
-### DHCP Configuration
+### DHCP 配置
 ```bash
 network:
   version: 2
@@ -262,7 +262,7 @@ network:
       dhcp6: true
 ```
 
-### Static IP Configuration
+### 静态 IP 配置
 ```bash
 network:
   version: 2
@@ -275,65 +275,65 @@ network:
         addresses: [8.8.8.8, 8.8.4.4]
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Cloud-Init Configuration Not Applied"
+### "Cloud-Init 配置未应用"
 ```bash
-# Check cloud-init status in VM
+# 在 VM 中检查 cloud-init 状态
 cloud-init status
 cloud-init status --long
 
-# View cloud-init logs
+# 查看 cloud-init 日志
 tail /var/log/cloud-init.log
 ```
 
-### "SSH Keys Not Deployed"
+### "SSH 密钥未部署"
 ```bash
-# Verify SSH key in cloud-config
+# 验证 cloud-config 中的 SSH 密钥
 grep ssh_authorized_keys user-data.txt
 
-# Check permissions
+# 检查权限
 ls -la ~/.ssh/authorized_keys
 ```
 
-### "Network Not Configured"
+### "网络未配置"
 ```bash
-# Check network configuration
+# 检查网络配置
 ip addr show
 ip route show
 
-# View netplan (if used)
+# 查看 netplan（如果使用）
 cat /etc/netplan/*.yaml
 ```
 
-### "Packages Failed to Install"
+### "包安装失败"
 ```bash
-# Check cloud-init package log
+# 检查 cloud-init 包日志
 tail /var/log/cloud-init-output.log
 
-# Manual package installation
+# 手动包安装
 apt-get update && apt-get install -y package-name
 ```
 
-## Related Documentation
+## 相关文档
 
-- **[install.func/](../install.func/)** - Container installation (similar workflow)
-- **[core.func/](../core.func/)** - Utility functions
-- **[error_handler.func/](../error_handler.func/)** - Error handling
-- **[UPDATED_APP-install.md](../../UPDATED_APP-install.md)** - Application setup guide
-- **Proxmox Docs**: https://pve.proxmox.com/wiki/Cloud-Init
+- **[install.func/](../install.func/)** - 容器安装（类似工作流）
+- **[core.func/](../core.func/)** - 实用函数
+- **[error_handler.func/](../error_handler.func/)** - 错误处理
+- **[UPDATED_APP-install.md](../../UPDATED_APP-install.md)** - 应用程序设置指南
+- **Proxmox 文档**：https://pve.proxmox.com/wiki/Cloud-Init
 
-## Recent Updates
+## 最近更新
 
-### Version 2.0 (Dec 2025)
-- ✅ Enhanced cloud-init validation
-- ✅ Improved SSH key deployment
-- ✅ Better network configuration support
-- ✅ Added IPv6 support
-- ✅ Streamlined user and package setup
+### 版本 2.0（2025 年 12 月）
+- ✅ 增强的 cloud-init 验证
+- ✅ 改进的 SSH 密钥部署
+- ✅ 更好的网络配置支持
+- ✅ 添加 IPv6 支持
+- ✅ 简化的用户和包设置
 
 ---
 
-**Last Updated**: December 2025
-**Maintainers**: community-scripts team
-**License**: MIT
+**最后更新**：2025 年 12 月
+**维护者**：community-scripts 团队
+**许可证**：MIT

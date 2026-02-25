@@ -5,15 +5,15 @@
 # License: MIT
 # https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 
-# Use to copy all data from a Podman Home Assistant LXC to a Docker Home Assistant LXC.
+# Use to copy all 的数据从 a Podman Home Assistant LXC 到 Docker Home Assistant LXC.
 # run from the Proxmox Shell
 clear
-if ! command -v pveversion >/dev/null 2>&1; then
+if ! command -v pve版本 >/dev/null 2>&1; then
   echo -e "⚠️  Run from the Proxmox Shell"
   exit
 fi
 while true; do
-  read -p "Use to copy all data from a Podman Home Assistant LXC to a Docker Home Assistant LXC. Proceed(y/n)?" yn
+  read -p "Use to copy all 的数据从 a Podman Home Assistant LXC 到 Docker Home Assistant LXC. 继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
@@ -89,30 +89,30 @@ for i in ${!CTID_MENU[@]}; do
     CTID_TO_HOSTNAME=$(sed 's/[[:space:]]*$//' <<<${CTID_MENU[$i + 1]})
 done
 whiptail --backtitle "Proxmox VE Helper Scripts" --defaultno --title "$TITLE" --yesno \
-  "Are you sure you want to copy data between the following LXCs?
+  "你确定吗 you want to copy data between the following LXCs?
 $CTID_FROM (${CTID_FROM_HOSTNAME}) -> $CTID_TO (${CTID_TO_HOSTNAME})
 Version: 2022.03.31" 13 50
 info "Home Assistant Data from '$CTID_FROM' to '$CTID_TO'"
 if [ $(pct status $CTID_TO | sed 's/.* //') == 'running' ]; then
-  msg "Stopping '$CTID_TO'..."
+  msg "正在停止 '$CTID_TO'..."
   pct stop $CTID_TO
 fi
-msg "Mounting Container Disks..."
+msg "Mounting 容器 Disks..."
 DOCKER_PATH=/var/lib/docker/volumes/hass_config/
 PODMAN_PATH=/var/lib/containers/storage/volumes/hass_config/
 CTID_FROM_PATH=$(pct mount $CTID_FROM | sed -n "s/.*'\(.*\)'/\1/p") ||
   die "There was a problem mounting the root disk of LXC '${CTID_FROM}'."
 [ -d "${CTID_FROM_PATH}${PODMAN_PATH}" ] ||
-  die "Home Assistant directories in '$CTID_FROM' not found."
+  die "Home Assistant directories in '$CTID_FROM' 未找到."
 CTID_TO_PATH=$(pct mount $CTID_TO | sed -n "s/.*'\(.*\)'/\1/p") ||
   die "There was a problem mounting the root disk of LXC '${CTID_TO}'."
 [ -d "${CTID_TO_PATH}${DOCKER_PATH}" ] ||
-  die "Home Assistant directories in '$CTID_TO' not found."
+  die "Home Assistant directories in '$CTID_TO' 未找到."
 
 rm -rf ${CTID_TO_PATH}${DOCKER_PATH}
 mkdir ${CTID_TO_PATH}${DOCKER_PATH}
 
-msg "Copying Data Between Containers..."
+msg "正在复制 Data Between 容器s..."
 RSYNC_OPTIONS=(
   --archive
   --hard-links
@@ -125,8 +125,8 @@ msg "<======== Data ========>"
 rsync ${RSYNC_OPTIONS[*]} ${CTID_FROM_PATH}${PODMAN_PATH} ${CTID_TO_PATH}${DOCKER_PATH}
 echo -en "\e[1A\e[0K\e[1A\e[0K"
 
-info "Successfully Transferred Data."
+info "成功fully Transferred Data."
 
-# Use to copy all data from a Podman Home Assistant LXC to a Docker Home Assistant LXC.
+# Use to copy all 的数据从 a Podman Home Assistant LXC 到 Docker Home Assistant LXC.
 # run from the Proxmox Shell
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/mainmain/tools/copy-data//podman-home-assistant-copy-data-home-assistant-container.sh)"

@@ -50,7 +50,7 @@ elif [[ -f "/etc/debian_version" ]]; then
   SERVICE_PATH="/etc/systemd/system/filebrowser.service"
   PKG_MANAGER="apt-get install -y"
 else
-  echo -e "${CROSS} Unsupported OS detected. Exiting."
+  echo -e "${CROSS} 检测到不支持的操作系统。正在退出。"
   exit 1
 fi
 
@@ -72,10 +72,10 @@ function msg_error() {
 }
 
 if [ -f "$INSTALL_PATH" ]; then
-  echo -e "${YW}⚠️ ${APP} is already installed.${CL}"
-  read -r -p "Would you like to uninstall ${APP}? (y/N): " uninstall_prompt
+  echo -e "${YW}⚠️ ${APP} 已安装。${CL}"
+  read -r -p "您想卸载 ${APP} 吗？(y/N): " uninstall_prompt
   if [[ "${uninstall_prompt,,}" =~ ^(y|yes)$ ]]; then
-    msg_info "Uninstalling ${APP}"
+    msg_info "正在卸载 ${APP}"
     if [[ "$OS" == "Debian" ]]; then
       systemctl disable --now filebrowser.service &>/dev/null
       rm -f "$SERVICE_PATH"
@@ -85,65 +85,65 @@ if [ -f "$INSTALL_PATH" ]; then
       rm -f "$SERVICE_PATH"
     fi
     rm -f "$INSTALL_PATH" "$DB_PATH"
-    msg_ok "${APP} has been uninstalled."
+    msg_ok "${APP} 已卸载。"
     exit 0
   fi
 
-  read -r -p "Would you like to update ${APP}? (y/N): " update_prompt
+  read -r -p "您想更新 ${APP} 吗？(y/N): " update_prompt
   if [[ "${update_prompt,,}" =~ ^(y|yes)$ ]]; then
-    msg_info "Updating ${APP}"
+    msg_info "正在更新 ${APP}"
     if ! command -v curl &>/dev/null; then $PKG_MANAGER curl &>/dev/null; fi
     curl -fsSL "https://github.com/filebrowser/filebrowser/releases/latest/download/linux-amd64-filebrowser.tar.gz" | tar -xzv -C /usr/local/bin &>/dev/null
     chmod +x "$INSTALL_PATH"
-    msg_ok "Updated ${APP}"
+    msg_ok "已更新 ${APP}"
     exit 0
   else
-    echo -e "${YW}⚠️ Update skipped. Exiting.${CL}"
+    echo -e "${YW}⚠️ 已跳过更新。正在退出。${CL}"
     exit 0
   fi
 fi
 
-echo -e "${YW}⚠️ ${APP} is not installed.${CL}"
-read -r -p "Enter port number (Default: ${DEFAULT_PORT}): " PORT
+echo -e "${YW}⚠️ ${APP} 未安装。${CL}"
+read -r -p "输入端口号（默认：${DEFAULT_PORT}）: " PORT
 PORT=${PORT:-$DEFAULT_PORT}
 
-read -r -p "Would you like to install ${APP}? (y/n): " install_prompt
+read -r -p "您想安装 ${APP} 吗？(y/n): " install_prompt
 if [[ "${install_prompt,,}" =~ ^(y|yes)$ ]]; then
-  msg_info "Installing ${APP} on ${OS}"
+  msg_info "正在 ${OS} 上安装 ${APP}"
   $PKG_MANAGER wget tar curl &>/dev/null
   curl -fsSL "https://github.com/filebrowser/filebrowser/releases/latest/download/linux-amd64-filebrowser.tar.gz" | tar -xzv -C /usr/local/bin &>/dev/null
   chmod +x "$INSTALL_PATH"
-  msg_ok "Installed ${APP}"
+  msg_ok "已安装 ${APP}"
 
-  msg_info "Creating FileBrowser directory"
+  msg_info "正在创建 FileBrowser 目录"
   mkdir -p /usr/local/community-scripts
   chown root:root /usr/local/community-scripts
   chmod 755 /usr/local/community-scripts
   touch "$DB_PATH"
   chown root:root "$DB_PATH"
   chmod 644 "$DB_PATH"
-  msg_ok "Directory created successfully"
+  msg_ok "目录创建成功"
 
-  read -r -p "Would you like to use No Authentication? (y/N): " auth_prompt
+  read -r -p "您想使用无身份验证吗？(y/N): " auth_prompt
   if [[ "${auth_prompt,,}" =~ ^(y|yes)$ ]]; then
-    msg_info "Configuring No Authentication"
+    msg_info "正在配置无身份验证"
     cd /usr/local/community-scripts
     filebrowser config init -a '0.0.0.0' -p "$PORT" -d "$DB_PATH" &>/dev/null
     filebrowser config set -a '0.0.0.0' -p "$PORT" -d "$DB_PATH" &>/dev/null
     filebrowser config init --auth.method=noauth &>/dev/null
     filebrowser config set --auth.method=noauth &>/dev/null
     filebrowser users add ID 1 --perm.admin &>/dev/null
-    msg_ok "No Authentication configured"
+    msg_ok "已配置无身份验证"
   else
-    msg_info "Setting up default authentication"
+    msg_info "正在设置默认身份验证"
     cd /usr/local/community-scripts
     filebrowser config init -a '0.0.0.0' -p "$PORT" -d "$DB_PATH" &>/dev/null
     filebrowser config set -a '0.0.0.0' -p "$PORT" -d "$DB_PATH" &>/dev/null
     filebrowser users add admin helper-scripts.com --perm.admin --database "$DB_PATH" &>/dev/null
-    msg_ok "Default authentication configured (admin:helper-scripts.com)"
+    msg_ok "已配置默认身份验证（admin:helper-scripts.com）"
   fi
 
-  msg_info "Creating service"
+  msg_info "正在创建服务"
   if [[ "$OS" == "Debian" ]]; then
     cat <<EOF >"$SERVICE_PATH"
 [Unit]
@@ -180,10 +180,10 @@ EOF
     rc-update add filebrowser default &>/dev/null
     rc-service filebrowser start &>/dev/null
   fi
-  msg_ok "Service created successfully"
+  msg_ok "服务创建成功"
 
-  echo -e "${CM} ${GN}${APP} is reachable at: ${BL}http://$IP:$PORT${CL}"
+  echo -e "${CM} ${GN}${APP} 可通过以下地址访问: ${BL}http://$IP:$PORT${CL}"
 else
-  echo -e "${YW}⚠️ Installation skipped. Exiting.${CL}"
+  echo -e "${YW}⚠️ 已跳过安装。正在退出。${CL}"
   exit 0
 fi

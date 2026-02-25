@@ -1,84 +1,84 @@
-# Install Scripts - Quick Reference
+# 安装脚本 - 快速参考
 
 > [!WARNING]
-> **This is legacy documentation.** Refer to the **modern template** at [templates_install/AppName-install.sh](AppName-install.sh) for best practices.
+> **这是旧版文档。** 请参考 [templates_install/AppName-install.sh](AppName-install.sh) 中的**现代模板**以获取最佳实践。
 >
-> Current templates use:
+> 当前模板使用：
 >
-> - `tools.func` helpers (setup_nodejs, setup_uv, setup_postgresql_db, etc.)
-> - Automatic dependency installation via build.func
-> - Standardized environment variable patterns
+> - `tools.func` 辅助函数（setup_nodejs、setup_uv、setup_postgresql_db 等）
+> - 通过 build.func 自动安装依赖项
+> - 标准化的环境变量模式
 
 ---
 
-## Before Creating a Script
+## 创建脚本之前
 
-1. **Copy the Modern Template:**
+1. **复制现代模板：**
 
    ```bash
    cp templates_install/AppName-install.sh install/MyApp-install.sh
-   # Edit install/MyApp-install.sh
+   # 编辑 install/MyApp-install.sh
    ```
 
-2. **Key Pattern:**
-   - CT scripts source build.func and call the install script
-   - Install scripts use sourced FUNCTIONS_FILE_PATH (via build.func)
-   - Both scripts work together in the container
+2. **关键模式：**
+   - CT 脚本引用 build.func 并调用安装脚本
+   - 安装脚本使用引用的 FUNCTIONS_FILE_PATH（通过 build.func）
+   - 两个脚本在容器中协同工作
 
-3. **Test via GitHub:**
+3. **通过 GitHub 测试：**
 
    ```bash
-   # Push your changes to your fork first
+   # 首先将更改推送到您的分支
    git push origin feature/my-awesome-app
 
-   # Test the CT script via curl (it will call the install script)
+   # 通过 curl 测试 CT 脚本（它将调用安装脚本）
    bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/main/ct/MyApp.sh)"
-   # ⏱️ Wait 10-30 seconds after pushing - GitHub takes time to update
+   # ⏱️ 推送后等待 10-30 秒 - GitHub 需要时间更新
    ```
 
 ---
 
-## Template Structure
+## 模板结构
 
-### Header
+### 头部
 
 ```bash
 #!/usr/bin/env bash
 source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/install.func)
-# (setup-fork.sh modifies this URL to point to YOUR fork during development)
+# （setup-fork.sh 在开发期间将此 URL 修改为指向您的分支）
 ```
 
-### Dependencies (App-Specific Only)
+### 依赖项（仅应用特定）
 
 ```bash
-# Don't add: ca-certificates, curl, gnupg, wget, git, jq
-# These are handled by build.func
+# 不要添加：ca-certificates、curl、gnupg、wget、git、jq
+# 这些由 build.func 处理
 msg_info "Installing dependencies"
 $STD apt-get install -y app-specific-deps
 msg_ok "Installed dependencies"
 ```
 
-### Runtime Setup
+### 运行时设置
 
-Use tools.func helpers instead of manual installation:
+使用 tools.func 辅助函数而不是手动安装：
 
 ```bash
-# ✅ NEW (use tools.func):
+# ✅ 新方式（使用 tools.func）：
 NODE_VERSION="20"
 setup_nodejs
-# OR
+# 或
 PYTHON_VERSION="3.12"
 setup_uv
-# OR
+# 或
 PG_DB_NAME="myapp_db"
 PG_DB_USER="myapp"
 setup_postgresql_db
 ```
 
-### Service Configuration
+### 服务配置
 
 ```bash
-# Create .env file
+# 创建 .env 文件
 msg_info "Configuring MyApp"
 cat << EOF > /opt/myapp/.env
 DEBUG=false
@@ -87,7 +87,7 @@ DATABASE_URL=postgresql://...
 EOF
 msg_ok "Configuration complete"
 
-# Create systemd service
+# 创建 systemd 服务
 msg_info "Creating systemd service"
 cat << EOF > /etc/systemd/system/myapp.service
 [Unit]
@@ -100,7 +100,7 @@ EOF
 msg_ok "Service created"
 ```
 
-### Finalization
+### 最终化
 
 ```bash
 msg_info "Finalizing MyApp installation"
@@ -113,34 +113,34 @@ cleanup_lxc
 
 ---
 
-## Key Patterns
+## 关键模式
 
-### Avoid Manual Version Checking
+### 避免手动版本检查
 
-❌ OLD (manual):
+❌ 旧方式（手动）：
 
 ```bash
 RELEASE=$(curl -fsSL https://api.github.com/repos/app/repo/releases/latest | grep tag_name)
 wget https://github.com/app/repo/releases/download/$RELEASE/app.tar.gz
 ```
 
-✅ NEW (use tools.func via CT script's fetch_and_deploy_gh_release):
+✅ 新方式（通过 CT 脚本的 fetch_and_deploy_gh_release 使用 tools.func）：
 
 ```bash
-# In CT script, not install script:
+# 在 CT 脚本中，而不是安装脚本：
 fetch_and_deploy_gh_release "myapp" "app/repo" "app.tar.gz" "latest" "/opt/myapp"
 ```
 
-### Database Setup
+### 数据库设置
 
 ```bash
-# Use setup_postgresql_db, setup_mysql_db, etc.
+# 使用 setup_postgresql_db、setup_mysql_db 等
 PG_DB_NAME="myapp"
 PG_DB_USER="myapp"
 setup_postgresql_db
 ```
 
-### Node.js Setup
+### Node.js 设置
 
 ```bash
 NODE_VERSION="20"
@@ -150,32 +150,32 @@ npm install --no-save
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Only add app-specific dependencies**
-   - Don't add: ca-certificates, curl, gnupg, wget, git, jq
-   - These are handled by build.func
+1. **仅添加应用特定的依赖项**
+   - 不要添加：ca-certificates、curl、gnupg、wget、git、jq
+   - 这些由 build.func 处理
 
-2. **Use tools.func helpers**
-   - setup_nodejs, setup_python, setup_uv, setup_postgresql_db, setup_mysql_db, etc.
+2. **使用 tools.func 辅助函数**
+   - setup_nodejs、setup_python、setup_uv、setup_postgresql_db、setup_mysql_db 等
 
-3. **Don't do version checks in install script**
-   - Version checking happens in CT script's update_script()
-   - Install script just installs the latest
+3. **不要在安装脚本中进行版本检查**
+   - 版本检查在 CT 脚本的 update_script() 中进行
+   - 安装脚本只安装最新版本
 
-4. **Structure:**
-   - Dependencies
-   - Runtime setup (tools.func)
-   - Deployment (fetch from CT script)
-   - Configuration files
-   - Systemd service
-   - Finalization
+4. **结构：**
+   - 依赖项
+   - 运行时设置（tools.func）
+   - 部署（从 CT 脚本获取）
+   - 配置文件
+   - Systemd 服务
+   - 最终化
 
 ---
 
-## Reference Scripts
+## 参考脚本
 
-See working examples:
+查看工作示例：
 
 - [Trip](https://github.com/community-scripts/ProxmoxVE/blob/main/install/trip-install.sh)
 - [Thingsboard](https://github.com/community-scripts/ProxmoxVE/blob/main/install/thingsboard-install.sh)
@@ -183,19 +183,19 @@ See working examples:
 
 ---
 
-## Need Help?
+## 需要帮助？
 
-- **[Modern Template](AppName-install.sh)** - Start here
-- **[CT Template](../templates_ct/AppName.sh)** - How CT scripts work
-- **[README.md](../README.md)** - Full contribution workflow
-- **[AI.md](../AI.md)** - AI-generated script guidelines
+- **[现代模板](AppName-install.sh)** - 从这里开始
+- **[CT 模板](../templates_ct/AppName.sh)** - CT 脚本如何工作
+- **[README.md](../README.md)** - 完整的贡献工作流
+- **[AI.md](../AI.md)** - AI 生成的脚本指南
 
-### 1.2 **Comments**
+### 1.2 **注释**
 
-- Add clear comments for script metadata, including author, copyright, and license information.
-- Use meaningful inline comments to explain complex commands or logic.
+- 为脚本元数据添加清晰的注释，包括作者、版权和许可证信息。
+- 使用有意义的内联注释来解释复杂的命令或逻辑。
 
-Example:
+示例：
 
 ```bash
 # Copyright (c) 2021-2026 community-scripts ORG
@@ -206,12 +206,12 @@ Example:
 
 > [!NOTE]:
 >
-> - Add your username
-> - When updating/reworking scripts, add "| Co-Author [YourUserName]"
+> - 添加您的用户名
+> - 更新/重做脚本时，添加"| Co-Author [YourUserName]"
 
-### 1.3 **Variables and function import**
+### 1.3 **变量和函数导入**
 
-- This sections adds the support for all needed functions and variables.
+- 此部分添加对所有所需函数和变量的支持。
 
 ```bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
@@ -225,29 +225,29 @@ update_os
 
 ---
 
-## 2. **Variable naming and management**
+## 2. **变量命名和管理**
 
-### 2.1 **Naming conventions**
+### 2.1 **命名约定**
 
-- Use uppercase names for constants and environment variables.
-- Use lowercase names for local script variables.
+- 对常量和环境变量使用大写名称。
+- 对本地脚本变量使用小写名称。
 
-Example:
+示例：
 
 ```bash
-DB_NAME=snipeit_db    # Environment-like variable (constant)
-db_user="snipeit"     # Local variable
+DB_NAME=snipeit_db    # 类似环境的变量（常量）
+db_user="snipeit"     # 本地变量
 ```
 
 ---
 
-## 3. **Dependencies**
+## 3. **依赖项**
 
-### 3.1 **Install all at once**
+### 3.1 **一次性安装所有**
 
-- Install all dependencies with a single command if possible
+- 如果可能，使用单个命令安装所有依赖项
 
-Example:
+示例：
 
 ```bash
 $STD apt-get install -y \
@@ -259,18 +259,18 @@ $STD apt-get install -y \
   nginx
 ```
 
-### 3.2 **Collapse dependencies**
+### 3.2 **折叠依赖项**
 
-Collapse dependencies to keep the code readable.
+折叠依赖项以保持代码可读性。
 
-Example:
-Use
+示例：
+使用
 
 ```bash
 php8.2-{bcmath,common,ctype}
 ```
 
-instead of
+而不是
 
 ```bash
 php8.2-bcmath php8.2-common php8.2-ctype
@@ -278,32 +278,32 @@ php8.2-bcmath php8.2-common php8.2-ctype
 
 ---
 
-## 4. **Paths to application files**
+## 4. **应用程序文件路径**
 
-If possible install the app and all necessary files in `/opt/`
+如果可能，将应用和所有必要文件安装在 `/opt/` 中
 
 ---
 
-## 5. **Version management**
+## 5. **版本管理**
 
-### 5.1 **Install the latest release**
+### 5.1 **安装最新版本**
 
-- Always try and install the latest release
-- Do not hardcode any version if not absolutely necessary
+- 始终尝试安装最新版本
+- 除非绝对必要，否则不要硬编码任何版本
 
-Example for a git release:
+git 发布的示例：
 
 ```bash
 RELEASE=$(curl -fsSL https://api.github.com/repos/snipe/snipe-it/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
 curl -fsSL "https://github.com/snipe/snipe-it/archive/refs/tags/v${RELEASE}.zip"
 ```
 
-### 5.2 **Save the version for update checks**
+### 5.2 **保存版本以进行更新检查**
 
-- Write the installed version into a file.
-- This is used for the update function in **AppName.sh** to check for if a Update is needed.
+- 将安装的版本写入文件。
+- 这用于 **AppName.sh** 中的更新函数，以检查是否需要更新。
 
-Example:
+示例：
 
 ```bash
 echo "${RELEASE}" >"/opt/AppName_version.txt"
@@ -311,15 +311,15 @@ echo "${RELEASE}" >"/opt/AppName_version.txt"
 
 ---
 
-## 6. **Input and output management**
+## 6. **输入和输出管理**
 
-### 6.1 **User feedback**
+### 6.1 **用户反馈**
 
-- Use standard functions like `msg_info`, `msg_ok` or `msg_error` to print status messages.
-- Each `msg_info` must be followed with a `msg_ok` before any other output is made.
-- Display meaningful progress messages at key stages.
+- 使用标准函数如 `msg_info`、`msg_ok` 或 `msg_error` 打印状态消息。
+- 每个 `msg_info` 必须在任何其他输出之前跟随 `msg_ok`。
+- 在关键阶段显示有意义的进度消息。
 
-Example:
+示例：
 
 ```bash
 msg_info "Installing Dependencies"
@@ -327,19 +327,19 @@ $STD apt-get install -y ...
 msg_ok "Installed Dependencies"
 ```
 
-### 6.2 **Verbosity**
+### 6.2 **详细程度**
 
-- Use the appropiate flag (**-q** in the examples) for a command to suppres its output
-  Example:
+- 使用适当的标志（示例中的 **-q**）来抑制命令的输出
+  示例：
 
 ```bash
 curl -fsSL
 unzip -q
 ```
 
-- If a command dose not come with such a functionality use `$STD` (a custom standard redirection variable) for managing output verbosity.
+- 如果命令没有此功能，请使用 `$STD`（自定义标准重定向变量）来管理输出详细程度。
 
-Example:
+示例：
 
 ```bash
 $STD apt-get install -y nginx
@@ -347,13 +347,13 @@ $STD apt-get install -y nginx
 
 ---
 
-## 7. **String/File Manipulation**
+## 7. **字符串/文件操作**
 
-### 7.1 **File Manipulation**
+### 7.1 **文件操作**
 
-- Use `sed` to replace placeholder values in configuration files.
+- 使用 `sed` 替换配置文件中的占位符值。
 
-Example:
+示例：
 
 ```bash
 sed -i -e "s|^DB_DATABASE=.*|DB_DATABASE=$DB_NAME|" \
@@ -363,24 +363,24 @@ sed -i -e "s|^DB_DATABASE=.*|DB_DATABASE=$DB_NAME|" \
 
 ---
 
-## 8. **Security practices**
+## 8. **安全实践**
 
-### 8.1 **Password generation**
+### 8.1 **密码生成**
 
-- Use `openssl` to generate random passwords.
-- Use only alphanumeric values to not introduce unknown behaviour.
+- 使用 `openssl` 生成随机密码。
+- 仅使用字母数字值以避免引入未知行为。
 
-Example:
+示例：
 
 ```bash
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 ```
 
-### 8.2 **File permissions**
+### 8.2 **文件权限**
 
-Explicitly set secure ownership and permissions for sensitive files.
+明确设置敏感文件的安全所有权和权限。
 
-Example:
+示例：
 
 ```bash
 chown -R www-data: /opt/snipe-it
@@ -389,13 +389,13 @@ chmod -R 755 /opt/snipe-it
 
 ---
 
-## 9. **Service Configuration**
+## 9. **服务配置**
 
-### 9.1 **Configuration files**
+### 9.1 **配置文件**
 
-Use `cat <<EOF` to write configuration files in a clean and readable way.
+使用 `cat <<EOF` 以清晰可读的方式编写配置文件。
 
-Example:
+示例：
 
 ```bash
 cat <<EOF >/etc/nginx/conf.d/snipeit.conf
@@ -407,11 +407,11 @@ server {
 EOF
 ```
 
-### 9.2 **Credential management**
+### 9.2 **凭据管理**
 
-Store the generated credentials in a file.
+将生成的凭据存储在文件中。
 
-Example:
+示例：
 
 ```bash
 USERNAME=username
@@ -423,11 +423,11 @@ PASSWORD=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 } >> ~/application.creds
 ```
 
-### 9.3 **Enviroment files**
+### 9.3 **环境文件**
 
-Use `cat <<EOF` to write enviromental files in a clean and readable way.
+使用 `cat <<EOF` 以清晰可读的方式编写环境文件。
 
-Example:
+示例：
 
 ```bash
 cat <<EOF >/path/to/.env
@@ -437,11 +437,11 @@ DB_NAME="${DB_NAME}"
 EOF
 ```
 
-### 9.4 **Services**
+### 9.4 **服务**
 
-Enable affected services after configuration changes and start them right away.
+配置更改后启用受影响的服务并立即启动它们。
 
-Example:
+示例：
 
 ```bash
 systemctl enable -q --now nginx
@@ -449,23 +449,23 @@ systemctl enable -q --now nginx
 
 ---
 
-## 10. **Cleanup**
+## 10. **清理**
 
-### 10.1 **Remove temporary files**
+### 10.1 **删除临时文件**
 
-Remove temporary files and downloads after use.
+使用后删除临时文件和下载。
 
-Example:
+示例：
 
 ```bash
 rm -rf /opt/v${RELEASE}.zip
 ```
 
-### 10.2 **Autoremove and autoclean**
+### 10.2 **自动删除和自动清理**
 
-Remove unused dependencies to reduce disk space usage.
+删除未使用的依赖项以减少磁盘空间使用。
 
-Example:
+示例：
 
 ```bash
 apt-get -y autoremove
@@ -474,21 +474,21 @@ apt-get -y autoclean
 
 ---
 
-## 11. **Best Practices Checklist**
+## 11. **最佳实践清单**
 
-- [ ] Shebang is correctly set (`#!/usr/bin/env bash`).
-- [ ] Metadata (author, license) is included at the top.
-- [ ] Variables follow naming conventions.
-- [ ] Sensitive values are dynamically generated.
-- [ ] Files and services have proper permissions.
-- [ ] Script cleans up temporary files.
+- [ ] Shebang 设置正确（`#!/usr/bin/env bash`）。
+- [ ] 顶部包含元数据（作者、许可证）。
+- [ ] 变量遵循命名约定。
+- [ ] 敏感值动态生成。
+- [ ] 文件和服务具有适当的权限。
+- [ ] 脚本清理临时文件。
 
 ---
 
-### Example: High-Level Script Flow
+### 示例：高级脚本流程
 
-1. Dependencies installation
-2. Database setup
-3. Download and configure application
-4. Service configuration
-5. Final cleanup
+1. 依赖项安装
+2. 数据库设置
+3. 下载和配置应用程序
+4. 服务配置
+5. 最终清理

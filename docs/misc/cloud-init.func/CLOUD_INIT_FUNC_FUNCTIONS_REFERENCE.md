@@ -1,30 +1,30 @@
-# cloud-init.func Functions Reference
+# cloud-init.func 函数参考
 
-Cloud-init and VM provisioning functions.
+Cloud-init 和 VM 配置函数。
 
-## Core Functions
+## 核心函数
 
 ### generate_cloud_init()
-Generate cloud-init configuration.
+生成 cloud-init 配置。
 
 ### generate_user_data()
-Generate user-data script for VM.
+为 VM 生成用户数据脚本。
 
 ### apply_cloud_init()
-Apply cloud-init to VM.
+将 cloud-init 应用于 VM。
 
 ### setup_ssh_keys()
-Deploy SSH public keys.
+部署 SSH 公钥。
 
 ### setup_static_ip()
-Configure static IP on VM.
+在 VM 上配置静态 IP。
 
 ### setup_dns()
-Configure DNS for VM.
+为 VM 配置 DNS。
 
 ### setup_ipv6()
-Enable IPv6 on VM.
+在 VM 上启用 IPv6。
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

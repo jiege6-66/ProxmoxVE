@@ -1,146 +1,146 @@
-# Advanced Settings Wizard Reference
+# 高级设置向导参考
 
-## Overview
+## 概述
 
-The Advanced Settings wizard provides a 28-step interactive configuration for LXC container creation. It allows users to customize every aspect of the container while inheriting sensible defaults from the CT script.
+高级设置向导为 LXC 容器创建提供了 28 步交互式配置。它允许用户自定义容器的每个方面，同时从 CT 脚本继承合理的默认值。
 
-## Key Features
+## 主要功能
 
-- **Inherit App Defaults**: All `var_*` values from CT scripts pre-populate wizard fields
-- **Back Navigation**: Press Cancel/Back to return to previous step
-- **App Default Hints**: Each dialog shows `(App default: X)` to indicate script defaults
-- **Full Customization**: Every configurable option is accessible
+- **继承应用默认值**：CT 脚本中的所有 `var_*` 值预填充向导字段
+- **返回导航**：按取消/返回可返回上一步
+- **应用默认提示**：每个对话框显示 `(App default: X)` 以指示脚本默认值
+- **完全自定义**：可访问每个可配置选项
 
-## Wizard Steps
+## 向导步骤
 
-| Step | Title                    | Variable(s)                       | Description                                           |
-| ---- | ------------------------ | --------------------------------- | ----------------------------------------------------- |
-| 1    | Container Type           | `var_unprivileged`                | Privileged (0) or Unprivileged (1) container          |
-| 2    | Root Password            | `var_pw`                          | Set password or use automatic login                   |
-| 3    | Container ID             | `var_ctid`                        | Unique container ID (auto-suggested)                  |
-| 4    | Hostname                 | `var_hostname`                    | Container hostname                                    |
-| 5    | Disk Size                | `var_disk`                        | Disk size in GB                                       |
-| 6    | CPU Cores                | `var_cpu`                         | Number of CPU cores                                   |
-| 7    | RAM Size                 | `var_ram`                         | RAM size in MiB                                       |
-| 8    | Network Bridge           | `var_brg`                         | Network bridge (vmbr0, etc.)                          |
-| 9    | IPv4 Configuration       | `var_net`, `var_gateway`          | DHCP or static IP with gateway                        |
-| 10   | IPv6 Configuration       | `var_ipv6_method`                 | Auto, DHCP, Static, or None                           |
-| 11   | MTU Size                 | `var_mtu`                         | Network MTU (default: 1500)                           |
-| 12   | DNS Search Domain        | `var_searchdomain`                | DNS search domain                                     |
-| 13   | DNS Server               | `var_ns`                          | Custom DNS server IP                                  |
-| 14   | MAC Address              | `var_mac`                         | Custom MAC address (auto-generated if empty)          |
-| 15   | VLAN Tag                 | `var_vlan`                        | VLAN tag ID                                           |
-| 16   | Tags                     | `var_tags`                        | Container tags (comma/semicolon separated)            |
-| 17   | SSH Settings             | `var_ssh`                         | SSH key selection and root access                     |
-| 18   | FUSE Support             | `var_fuse`                        | Enable FUSE for rclone, mergerfs, AppImage            |
-| 19   | TUN/TAP Support          | `var_tun`                         | Enable for VPN apps (WireGuard, OpenVPN, Tailscale)   |
-| 20   | Nesting Support          | `var_nesting`                     | Enable for Docker, LXC in LXC, Podman                 |
-| 21   | GPU Passthrough          | `var_gpu`                         | Auto-detect and pass through Intel/AMD/NVIDIA GPUs    |
-| 22   | Keyctl Support           | `var_keyctl`                      | Enable for Docker, systemd-networkd                   |
-| 23   | APT Cacher Proxy         | `var_apt_cacher`, `var_apt_cacher_ip` | Use apt-cacher-ng for faster downloads            |
-| 24   | Container Timezone       | `var_timezone`                    | Set timezone (e.g., Europe/Berlin)                    |
-| 25   | Container Protection     | `var_protection`                  | Prevent accidental deletion                           |
-| 26   | Device Node Creation     | `var_mknod`                       | Allow mknod (experimental, kernel 5.3+)               |
-| 27   | Mount Filesystems        | `var_mount_fs`                    | Allow specific mounts: nfs, cifs, fuse, etc.          |
-| 28   | Verbose Mode & Confirm   | `var_verbose`                     | Enable verbose output + final confirmation            |
+| 步骤 | 标题                    | 变量                       | 描述                                           |
+| ---- | ----------------------- | -------------------------- | ---------------------------------------------- |
+| 1    | 容器类型                | `var_unprivileged`         | 特权 (0) 或非特权 (1) 容器                     |
+| 2    | Root 密码               | `var_pw`                   | 设置密码或使用自动登录                         |
+| 3    | 容器 ID                 | `var_ctid`                 | 唯一容器 ID（自动建议）                        |
+| 4    | 主机名                  | `var_hostname`             | 容器主机名                                     |
+| 5    | 磁盘大小                | `var_disk`                 | 磁盘大小（GB）                                 |
+| 6    | CPU 核心数              | `var_cpu`                  | CPU 核心数量                                   |
+| 7    | RAM 大小                | `var_ram`                  | RAM 大小（MiB）                                |
+| 8    | 网络桥接                | `var_brg`                  | 网络桥接（vmbr0 等）                           |
+| 9    | IPv4 配置               | `var_net`, `var_gateway`   | DHCP 或静态 IP 及网关                          |
+| 10   | IPv6 配置               | `var_ipv6_method`          | 自动、DHCP、静态或无                           |
+| 11   | MTU 大小                | `var_mtu`                  | 网络 MTU（默认：1500）                         |
+| 12   | DNS 搜索域              | `var_searchdomain`         | DNS 搜索域                                     |
+| 13   | DNS 服务器              | `var_ns`                   | 自定义 DNS 服务器 IP                           |
+| 14   | MAC 地址                | `var_mac`                  | 自定义 MAC 地址（为空则自动生成）              |
+| 15   | VLAN 标签               | `var_vlan`                 | VLAN 标签 ID                                   |
+| 16   | 标签                    | `var_tags`                 | 容器标签（逗号/分号分隔）                      |
+| 17   | SSH 设置                | `var_ssh`                  | SSH 密钥选择和 root 访问                       |
+| 18   | FUSE 支持               | `var_fuse`                 | 为 rclone、mergerfs、AppImage 启用 FUSE        |
+| 19   | TUN/TAP 支持            | `var_tun`                  | 为 VPN 应用启用（WireGuard、OpenVPN、Tailscale）|
+| 20   | 嵌套支持                | `var_nesting`              | 为 Docker、LXC in LXC、Podman 启用             |
+| 21   | GPU 直通                | `var_gpu`                  | 自动检测并直通 Intel/AMD/NVIDIA GPU            |
+| 22   | Keyctl 支持             | `var_keyctl`               | 为 Docker、systemd-networkd 启用               |
+| 23   | APT Cacher 代理         | `var_apt_cacher`, `var_apt_cacher_ip` | 使用 apt-cacher-ng 加速下载        |
+| 24   | 容器时区                | `var_timezone`             | 设置时区（例如 Europe/Berlin）                 |
+| 25   | 容器保护                | `var_protection`           | 防止意外删除                                   |
+| 26   | 设备节点创建            | `var_mknod`                | 允许 mknod（实验性，内核 5.3+）                |
+| 27   | 挂载文件系统            | `var_mount_fs`             | 允许特定挂载：nfs、cifs、fuse 等               |
+| 28   | 详细模式和确认          | `var_verbose`              | 启用详细输出 + 最终确认                        |
 
-## Default Value Inheritance
+## 默认值继承
 
-The wizard inherits defaults from multiple sources:
-
-```text
-CT Script (var_*) → default.vars → app.vars → User Input
-```
-
-### Example: VPN Container (alpine-wireguard.sh)
-
-```bash
-# CT script sets:
-var_tun="${var_tun:-1}"  # TUN enabled by default
-
-# In Advanced Settings Step 19:
-# Dialog shows: "(App default: 1)" and pre-selects "Yes"
-```
-
-### Example: Media Server (jellyfin.sh)
-
-```bash
-# CT script sets:
-var_gpu="${var_gpu:-yes}"  # GPU enabled by default
-
-# In Advanced Settings Step 21:
-# Dialog shows: "(App default: yes)" and pre-selects "Yes"
-```
-
-## Feature Matrix
-
-| Feature           | Variable         | When to Enable                                      |
-| ----------------- | ---------------- | --------------------------------------------------- |
-| FUSE              | `var_fuse`       | rclone, mergerfs, AppImage, SSHFS                   |
-| TUN/TAP           | `var_tun`        | WireGuard, OpenVPN, Tailscale, VPN containers       |
-| Nesting           | `var_nesting`    | Docker, Podman, LXC-in-LXC, systemd-nspawn          |
-| GPU Passthrough   | `var_gpu`        | Plex, Jellyfin, Emby, Frigate, Ollama, ComfyUI      |
-| Keyctl            | `var_keyctl`     | Docker (unprivileged), systemd-networkd             |
-| Protection        | `var_protection` | Production containers, prevent accidental deletion  |
-| Mknod             | `var_mknod`      | Device node creation (experimental)                 |
-| Mount FS          | `var_mount_fs`   | NFS mounts, CIFS shares, custom filesystems         |
-| APT Cacher        | `var_apt_cacher` | Speed up downloads with local apt-cacher-ng         |
-
-## Confirmation Summary
-
-Step 28 displays a comprehensive summary before creation:
+向导从多个来源继承默认值：
 
 ```text
-Container Type: Unprivileged
-Container ID: 100
-Hostname: jellyfin
-
-Resources:
-  Disk: 8 GB
-  CPU: 2 cores
-  RAM: 2048 MiB
-
-Network:
-  Bridge: vmbr0
-  IPv4: dhcp
-  IPv6: auto
-
-Features:
-  FUSE: no | TUN: no
-  Nesting: Enabled | Keyctl: Disabled
-  GPU: yes | Protection: No
-
-Advanced:
-  Timezone: Europe/Berlin
-  APT Cacher: no
-  Verbose: no
+CT 脚本 (var_*) → default.vars → app.vars → 用户输入
 ```
 
-## Usage Examples
-
-### Skip to Advanced Settings
+### 示例：VPN 容器 (alpine-wireguard.sh)
 
 ```bash
-# Run script, select "Advanced" from menu
+# CT 脚本设置：
+var_tun="${var_tun:-1}"  # 默认启用 TUN
+
+# 在高级设置步骤 19：
+# 对话框显示："(App default: 1)" 并预选 "Yes"
+```
+
+### 示例：媒体服务器 (jellyfin.sh)
+
+```bash
+# CT 脚本设置：
+var_gpu="${var_gpu:-yes}"  # 默认启用 GPU
+
+# 在高级设置步骤 21：
+# 对话框显示："(App default: yes)" 并预选 "Yes"
+```
+
+## 功能矩阵
+
+| 功能              | 变量             | 何时启用                                        |
+| ----------------- | ---------------- | ----------------------------------------------- |
+| FUSE              | `var_fuse`       | rclone、mergerfs、AppImage、SSHFS               |
+| TUN/TAP           | `var_tun`        | WireGuard、OpenVPN、Tailscale、VPN 容器         |
+| 嵌套              | `var_nesting`    | Docker、Podman、LXC-in-LXC、systemd-nspawn      |
+| GPU 直通          | `var_gpu`        | Plex、Jellyfin、Emby、Frigate、Ollama、ComfyUI  |
+| Keyctl            | `var_keyctl`     | Docker（非特权）、systemd-networkd               |
+| 保护              | `var_protection` | 生产容器，防止意外删除                          |
+| Mknod             | `var_mknod`      | 设备节点创建（实验性）                          |
+| 挂载 FS           | `var_mount_fs`   | NFS 挂载、CIFS 共享、自定义文件系统             |
+| APT Cacher        | `var_apt_cacher` | 使用本地 apt-cacher-ng 加速下载                 |
+
+## 确认摘要
+
+步骤 28 在创建前显示全面摘要：
+
+```text
+容器类型：非特权
+容器 ID：100
+主机名：jellyfin
+
+资源：
+  磁盘：8 GB
+  CPU：2 核心
+  RAM：2048 MiB
+
+网络：
+  桥接：vmbr0
+  IPv4：dhcp
+  IPv6：auto
+
+功能：
+  FUSE：no | TUN：no
+  嵌套：已启用 | Keyctl：已禁用
+  GPU：yes | 保护：否
+
+高级：
+  时区：Europe/Berlin
+  APT Cacher：no
+  详细：no
+```
+
+## 使用示例
+
+### 跳转到高级设置
+
+```bash
+# 运行脚本，从菜单选择 "Advanced"
 bash -c "$(curl -fsSL https://...jellyfin.sh)"
-# Then select option 3 "Advanced"
+# 然后选择选项 3 "Advanced"
 ```
 
-### Pre-set Defaults via Environment
+### 通过环境预设默认值
 
 ```bash
-# Set defaults before running
+# 运行前设置默认值
 export var_cpu=4
 export var_ram=4096
 export var_gpu=yes
 bash -c "$(curl -fsSL https://...jellyfin.sh)"
-# Advanced settings will inherit these values
+# 高级设置将继承这些值
 ```
 
-### Non-Interactive with All Options
+### 包含所有选项的非交互式
 
 ```bash
-# Set all variables for fully automated deployment
+# 设置所有变量以实现完全自动化部署
 export var_unprivileged=1
 export var_cpu=2
 export var_ram=2048
@@ -155,10 +155,10 @@ export var_verbose=no
 bash -c "$(curl -fsSL https://...jellyfin.sh)"
 ```
 
-## Notes
+## 注意事项
 
-- **Cancel at Step 1**: Exits the script entirely
-- **Cancel at Steps 2-28**: Goes back to previous step
-- **Empty fields**: Use default value
-- **Keyctl**: Automatically enabled for unprivileged containers
-- **Nesting**: Enabled by default (required for many apps)
+- **在步骤 1 取消**：完全退出脚本
+- **在步骤 2-28 取消**：返回上一步
+- **空字段**：使用默认值
+- **Keyctl**：自动为非特权容器启用
+- **嵌套**：默认启用（许多应用需要）

@@ -1,20 +1,20 @@
-# build.func Architecture Guide
+# build.func 架构指南
 
-## Overview
+## 概述
 
-This document provides a high-level architectural overview of `build.func`, including module dependencies, data flow, integration points, and system architecture.
+本文档提供 `build.func` 的高层架构概述，包括模块依赖关系、数据流、集成点和系统架构。
 
-## High-Level Architecture
+## 高层架构
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                           Proxmox Host System                                  │
+│                           Proxmox 主机系统                                      │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
 │  │                        build.func                                          │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐ │ │
-│  │  │   Entry Point   │  │   Configuration │  │      Container Creation     │ │ │
+│  │  │   入口点        │  │   配置          │  │      容器创建               │ │ │
 │  │  │                 │  │                 │  │                             │ │ │
 │  │  │ • start()       │  │ • variables()   │  │ • build_container()        │ │ │
 │  │  │ • install_      │  │ • base_         │  │ • create_lxc_container()    │ │ │
@@ -25,386 +25,386 @@ This document provides a high-level architectural overview of `build.func`, incl
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                        Module Dependencies                                │ │
+│  │                        模块依赖关系                                         │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐ │ │
 │  │  │   core.func     │  │ error_handler.   │  │        api.func             │ │ │
 │  │  │                 │  │ func             │  │                             │ │ │
-│  │  │ • Basic         │  │ • Error          │  │ • Proxmox API               │ │ │
-│  │  │   utilities     │  │   handling       │  │   interactions              │ │ │
-│  │  │ • Common        │  │ • Error          │  │ • Container                  │ │ │
-│  │  │   functions     │  │   recovery       │  │   management                │ │ │
-│  │  │ • System        │  │ • Cleanup        │  │ • Status                    │ │ │
-│  │  │   utilities     │  │   functions      │  │   monitoring                 │ │ │
+│  │  │ • 基础          │  │ • 错误           │  │ • Proxmox API               │ │ │
+│  │  │   实用工具      │  │   处理           │  │   交互                      │ │ │
+│  │  │ • 通用          │  │ • 错误           │  │ • 容器                      │ │ │
+│  │  │   函数          │  │   恢复           │  │   管理                      │ │ │
+│  │  │ • 系统          │  │ • 清理           │  │ • 状态                      │ │ │
+│  │  │   实用工具      │  │   函数           │  │   监控                      │ │ │
 │  │  └─────────────────┘  └─────────────────┘  └─────────────────────────────┘ │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────────────────────────────────────────────────────────────┐ │ │
 │  │  │                        tools.func                                      │ │ │
 │  │  │                                                                       │ │ │
-│  │  │ • Additional utilities                                                 │ │ │
-│  │  │ • Helper functions                                                     │ │ │
-│  │  │ • System tools                                                         │ │ │
+│  │  │ • 附加实用工具                                                         │ │ │
+│  │  │ • 辅助函数                                                             │ │ │
+│  │  │ • 系统工具                                                             │ │ │
 │  │  └─────────────────────────────────────────────────────────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Module Dependencies
+## 模块依赖关系
 
-### Core Dependencies
+### 核心依赖
 
 ```
-build.func Dependencies:
+build.func 依赖关系：
 ├── core.func
-│   ├── Basic system utilities
-│   ├── Common functions
-│   ├── System information
-│   └── File operations
+│   ├── 基础系统实用工具
+│   ├── 通用函数
+│   ├── 系统信息
+│   └── 文件操作
 ├── error_handler.func
-│   ├── Error handling
-│   ├── Error recovery
-│   ├── Cleanup functions
-│   └── Error logging
+│   ├── 错误处理
+│   ├── 错误恢复
+│   ├── 清理函数
+│   └── 错误日志
 ├── api.func
-│   ├── Proxmox API interactions
-│   ├── Container management
-│   ├── Status monitoring
-│   └── Configuration updates
+│   ├── Proxmox API 交互
+│   ├── 容器管理
+│   ├── 状态监控
+│   └── 配置更新
 └── tools.func
-    ├── Additional utilities
-    ├── Helper functions
-    ├── System tools
-    └── Custom functions
+    ├── 附加实用工具
+    ├── 辅助函数
+    ├── 系统工具
+    └── 自定义函数
 ```
 
-### Dependency Flow
+### 依赖流程
 
 ```
-Dependency Flow:
+依赖流程：
 ├── build.func
-│   ├── Sources core.func
-│   ├── Sources error_handler.func
-│   ├── Sources api.func
-│   └── Sources tools.func
+│   ├── 引用 core.func
+│   ├── 引用 error_handler.func
+│   ├── 引用 api.func
+│   └── 引用 tools.func
 ├── core.func
-│   ├── Basic utilities
-│   └── System functions
+│   ├── 基础实用工具
+│   └── 系统函数
 ├── error_handler.func
-│   ├── Error management
-│   └── Recovery functions
+│   ├── 错误管理
+│   └── 恢复函数
 ├── api.func
-│   ├── Proxmox integration
-│   └── Container operations
+│   ├── Proxmox 集成
+│   └── 容器操作
 └── tools.func
-    ├── Additional tools
-    └── Helper functions
+    ├── 附加工具
+    └── 辅助函数
 ```
 
-## Data Flow Architecture
+## 数据流架构
 
-### Configuration Data Flow
-
-```
-Configuration Data Flow:
-├── Environment Variables
-│   ├── Hard environment variables
-│   ├── App-specific .vars
-│   ├── Global default.vars
-│   └── Built-in defaults
-├── Variable Resolution
-│   ├── Apply precedence chain
-│   ├── Validate settings
-│   └── Resolve conflicts
-├── Configuration Storage
-│   ├── Memory variables
-│   ├── Temporary files
-│   └── Persistent storage
-└── Configuration Usage
-    ├── Container creation
-    ├── Feature configuration
-    └── Settings persistence
-```
-
-### Container Data Flow
+### 配置数据流
 
 ```
-Container Data Flow:
-├── Input Data
-│   ├── Configuration variables
-│   ├── Resource specifications
-│   ├── Network settings
-│   └── Storage requirements
-├── Processing
-│   ├── Validation
-│   ├── Conflict resolution
-│   ├── Resource allocation
-│   └── Configuration generation
-├── Container Creation
-│   ├── LXC container creation
-│   ├── Network configuration
-│   ├── Storage setup
-│   └── Feature configuration
-└── Output
-    ├── Container status
-    ├── Access information
-    ├── Configuration files
-    └── Log files
+配置数据流：
+├── 环境变量
+│   ├── 硬环境变量
+│   ├── 应用特定 .vars
+│   ├── 全局 default.vars
+│   └── 内置默认值
+├── 变量解析
+│   ├── 应用优先级链
+│   ├── 验证设置
+│   └── 解决冲突
+├── 配置存储
+│   ├── 内存变量
+│   ├── 临时文件
+│   └── 持久存储
+└── 配置使用
+    ├── 容器创建
+    ├── 功能配置
+    └── 设置持久化
 ```
 
-## Integration Architecture
-
-### With Proxmox System
+### 容器数据流
 
 ```
-Proxmox Integration:
-├── Proxmox Host
-│   ├── LXC container management
-│   ├── Storage management
-│   ├── Network management
-│   └── Resource management
+容器数据流：
+├── 输入数据
+│   ├── 配置变量
+│   ├── 资源规格
+│   ├── 网络设置
+│   └── 存储需求
+├── 处理
+│   ├── 验证
+│   ├── 冲突解决
+│   ├── 资源分配
+│   └── 配置生成
+├── 容器创建
+│   ├── LXC 容器创建
+│   ├── 网络配置
+│   ├── 存储设置
+│   └── 功能配置
+└── 输出
+    ├── 容器状态
+    ├── 访问信息
+    ├── 配置文件
+    └── 日志文件
+```
+
+## 集成架构
+
+### 与 Proxmox 系统集成
+
+```
+Proxmox 集成：
+├── Proxmox 主机
+│   ├── LXC 容器管理
+│   ├── 存储管理
+│   ├── 网络管理
+│   └── 资源管理
 ├── Proxmox API
-│   ├── Container operations
-│   ├── Configuration updates
-│   ├── Status monitoring
-│   └── Error handling
-├── Proxmox Configuration
+│   ├── 容器操作
+│   ├── 配置更新
+│   ├── 状态监控
+│   └── 错误处理
+├── Proxmox 配置
 │   ├── /etc/pve/lxc/<ctid>.conf
-│   ├── Storage configuration
-│   ├── Network configuration
-│   └── Resource configuration
-└── Proxmox Services
-    ├── Container services
-    ├── Network services
-    ├── Storage services
-    └── Monitoring services
+│   ├── 存储配置
+│   ├── 网络配置
+│   └── 资源配置
+└── Proxmox 服务
+    ├── 容器服务
+    ├── 网络服务
+    ├── 存储服务
+    └── 监控服务
 ```
 
-### With Install Scripts
+### 与安装脚本集成
 
 ```
-Install Script Integration:
+安装脚本集成：
 ├── build.func
-│   ├── Creates container
-│   ├── Configures basic settings
-│   ├── Starts container
-│   └── Provides access
-├── Install Scripts
+│   ├── 创建容器
+│   ├── 配置基本设置
+│   ├── 启动容器
+│   └── 提供访问
+├── 安装脚本
 │   ├── <app>-install.sh
-│   ├── Downloads application
-│   ├── Configures application
-│   └── Sets up services
-├── Container
-│   ├── Running application
-│   ├── Configured services
-│   ├── Network access
-│   └── Storage access
-└── Integration Points
-    ├── Container creation
-    ├── Network configuration
-    ├── Storage setup
-    └── Service configuration
+│   ├── 下载应用程序
+│   ├── 配置应用程序
+│   └── 设置服务
+├── 容器
+│   ├── 运行应用程序
+│   ├── 配置服务
+│   ├── 网络访问
+│   └── 存储访问
+└── 集成点
+    ├── 容器创建
+    ├── 网络配置
+    ├── 存储设置
+    └── 服务配置
 ```
 
-## System Architecture Components
+## 系统架构组件
 
-### Core Components
-
-```
-System Components:
-├── Entry Point
-│   ├── start() function
-│   ├── Context detection
-│   ├── Environment capture
-│   └── Workflow routing
-├── Configuration Management
-│   ├── Variable resolution
-│   ├── Settings persistence
-│   ├── Default management
-│   └── Validation
-├── Container Creation
-│   ├── LXC container creation
-│   ├── Network configuration
-│   ├── Storage setup
-│   └── Feature configuration
-├── Hardware Integration
-│   ├── GPU passthrough
-│   ├── USB passthrough
-│   ├── Storage management
-│   └── Network management
-└── Error Handling
-    ├── Error detection
-    ├── Error recovery
-    ├── Cleanup functions
-    └── User notification
-```
-
-### User Interface Components
+### 核心组件
 
 ```
-UI Components:
-├── Menu System
-│   ├── Installation mode selection
-│   ├── Configuration menus
-│   ├── Storage selection
-│   └── GPU configuration
-├── Interactive Elements
-│   ├── Whiptail menus
-│   ├── User prompts
-│   ├── Confirmation dialogs
-│   └── Error messages
-├── Non-Interactive Mode
-│   ├── Environment variable driven
-│   ├── Silent execution
-│   ├── Automated configuration
-│   └── Error handling
-└── Output
-    ├── Status messages
-    ├── Progress indicators
-    ├── Completion information
-    └── Access details
+系统组件：
+├── 入口点
+│   ├── start() 函数
+│   ├── 上下文检测
+│   ├── 环境捕获
+│   └── 工作流路由
+├── 配置管理
+│   ├── 变量解析
+│   ├── 设置持久化
+│   ├── 默认管理
+│   └── 验证
+├── 容器创建
+│   ├── LXC 容器创建
+│   ├── 网络配置
+│   ├── 存储设置
+│   └── 功能配置
+├── 硬件集成
+│   ├── GPU 直通
+│   ├── USB 直通
+│   ├── 存储管理
+│   └── 网络管理
+└── 错误处理
+    ├── 错误检测
+    ├── 错误恢复
+    ├── 清理函数
+    └── 用户通知
 ```
 
-## Security Architecture
-
-### Security Considerations
+### 用户界面组件
 
 ```
-Security Architecture:
-├── Container Security
-│   ├── Unprivileged containers (default)
-│   ├── Privileged containers (when needed)
-│   ├── Resource limits
-│   └── Access controls
-├── Network Security
-│   ├── Network isolation
-│   ├── VLAN support
-│   ├── Firewall integration
-│   └── Access controls
-├── Storage Security
-│   ├── Storage isolation
-│   ├── Access controls
-│   ├── Encryption support
-│   └── Backup integration
-├── GPU Security
-│   ├── Device isolation
-│   ├── Permission management
-│   ├── Access controls
-│   └── Security validation
-└── API Security
-    ├── Authentication
-    ├── Authorization
-    ├── Input validation
-    └── Error handling
+UI 组件：
+├── 菜单系统
+│   ├── 安装模式选择
+│   ├── 配置菜单
+│   ├── 存储选择
+│   └── GPU 配置
+├── 交互元素
+│   ├── Whiptail 菜单
+│   ├── 用户提示
+│   ├── 确认对话框
+│   └── 错误消息
+├── 非交互模式
+│   ├── 环境变量驱动
+│   ├── 静默执行
+│   ├── 自动配置
+│   └── 错误处理
+└── 输出
+    ├── 状态消息
+    ├── 进度指示器
+    ├── 完成信息
+    └── 访问详情
 ```
 
-## Performance Architecture
+## 安全架构
 
-### Performance Considerations
-
-```
-Performance Architecture:
-├── Execution Optimization
-│   ├── Parallel operations
-│   ├── Efficient algorithms
-│   ├── Minimal user interaction
-│   └── Optimized validation
-├── Resource Management
-│   ├── Memory efficiency
-│   ├── CPU optimization
-│   ├── Disk usage optimization
-│   └── Network efficiency
-├── Caching
-│   ├── Configuration caching
-│   ├── Template caching
-│   ├── Storage caching
-│   └── GPU detection caching
-└── Monitoring
-    ├── Performance monitoring
-    ├── Resource monitoring
-    ├── Error monitoring
-    └── Status monitoring
-```
-
-## Deployment Architecture
-
-### Deployment Scenarios
+### 安全考虑
 
 ```
-Deployment Scenarios:
-├── Single Container
-│   ├── Individual application
-│   ├── Standard configuration
-│   ├── Basic networking
-│   └── Standard storage
-├── Multiple Containers
-│   ├── Application stack
-│   ├── Shared networking
-│   ├── Shared storage
-│   └── Coordinated deployment
-├── High Availability
-│   ├── Redundant containers
-│   ├── Load balancing
-│   ├── Failover support
-│   └── Monitoring integration
-└── Development Environment
-    ├── Development containers
-    ├── Testing containers
-    ├── Staging containers
-    └── Production containers
+安全架构：
+├── 容器安全
+│   ├── 非特权容器（默认）
+│   ├── 特权容器（需要时）
+│   ├── 资源限制
+│   └── 访问控制
+├── 网络安全
+│   ├── 网络隔离
+│   ├── VLAN 支持
+│   ├── 防火墙集成
+│   └── 访问控制
+├── 存储安全
+│   ├── 存储隔离
+│   ├── 访问控制
+│   ├── 加密支持
+│   └── 备份集成
+├── GPU 安全
+│   ├── 设备隔离
+│   ├── 权限管理
+│   ├── 访问控制
+│   └── 安全验证
+└── API 安全
+    ├── 身份验证
+    ├── 授权
+    ├── 输入验证
+    └── 错误处理
 ```
 
-## Maintenance Architecture
+## 性能架构
 
-### Maintenance Components
-
-```
-Maintenance Architecture:
-├── Updates
-│   ├── Container updates
-│   ├── Application updates
-│   ├── Configuration updates
-│   └── Security updates
-├── Monitoring
-│   ├── Container monitoring
-│   ├── Resource monitoring
-│   ├── Performance monitoring
-│   └── Error monitoring
-├── Backup
-│   ├── Configuration backup
-│   ├── Container backup
-│   ├── Storage backup
-│   └── Recovery procedures
-└── Troubleshooting
-    ├── Error diagnosis
-    ├── Log analysis
-    ├── Performance analysis
-    └── Recovery procedures
-```
-
-## Future Architecture Considerations
-
-### Scalability
+### 性能考虑
 
 ```
-Scalability Considerations:
-├── Horizontal Scaling
-│   ├── Multiple containers
-│   ├── Load balancing
-│   ├── Distributed deployment
-│   └── Resource distribution
-├── Vertical Scaling
-│   ├── Resource scaling
-│   ├── Performance optimization
-│   ├── Capacity planning
-│   └── Resource management
-├── Automation
-│   ├── Automated deployment
-│   ├── Automated scaling
-│   ├── Automated monitoring
-│   └── Automated recovery
-└── Integration
-    ├── External systems
-    ├── Cloud integration
-    ├── Container orchestration
-    └── Service mesh
+性能架构：
+├── 执行优化
+│   ├── 并行操作
+│   ├── 高效算法
+│   ├── 最少用户交互
+│   └── 优化验证
+├── 资源管理
+│   ├── 内存效率
+│   ├── CPU 优化
+│   ├── 磁盘使用优化
+│   └── 网络效率
+├── 缓存
+│   ├── 配置缓存
+│   ├── 模板缓存
+│   ├── 存储缓存
+│   └── GPU 检测缓存
+└── 监控
+    ├── 性能监控
+    ├── 资源监控
+    ├── 错误监控
+    └── 状态监控
+```
+
+## 部署架构
+
+### 部署场景
+
+```
+部署场景：
+├── 单容器
+│   ├── 单个应用程序
+│   ├── 标准配置
+│   ├── 基本网络
+│   └── 标准存储
+├── 多容器
+│   ├── 应用程序栈
+│   ├── 共享网络
+│   ├── 共享存储
+│   └── 协调部署
+├── 高可用性
+│   ├── 冗余容器
+│   ├── 负载均衡
+│   ├── 故障转移支持
+│   └── 监控集成
+└── 开发环境
+    ├── 开发容器
+    ├── 测试容器
+    ├── 预发布容器
+    └── 生产容器
+```
+
+## 维护架构
+
+### 维护组件
+
+```
+维护架构：
+├── 更新
+│   ├── 容器更新
+│   ├── 应用程序更新
+│   ├── 配置更新
+│   └── 安全更新
+├── 监控
+│   ├── 容器监控
+│   ├── 资源监控
+│   ├── 性能监控
+│   └── 错误监控
+├── 备份
+│   ├── 配置备份
+│   ├── 容器备份
+│   ├── 存储备份
+│   └── 恢复程序
+└── 故障排除
+    ├── 错误诊断
+    ├── 日志分析
+    ├── 性能分析
+    └── 恢复程序
+```
+
+## 未来架构考虑
+
+### 可扩展性
+
+```
+可扩展性考虑：
+├── 水平扩展
+│   ├── 多容器
+│   ├── 负载均衡
+│   ├── 分布式部署
+│   └── 资源分配
+├── 垂直扩展
+│   ├── 资源扩展
+│   ├── 性能优化
+│   ├── 容量规划
+│   └── 资源管理
+├── 自动化
+│   ├── 自动部署
+│   ├── 自动扩展
+│   ├── 自动监控
+│   └── 自动恢复
+└── 集成
+    ├── 外部系统
+    ├── 云集成
+    ├── 容器编排
+    └── 服务网格
 ```

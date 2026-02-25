@@ -101,21 +101,21 @@ migrate_config() {
   local new_config="/opt/iptag/iptag.conf"
 
   if [[ -f "$old_config" ]]; then
-    msg_info "Migrating configuration from old path"
+    msg_info "正在从旧路径迁移配置"
     if cp "$old_config" "$new_config" &>/dev/null; then
       rm -rf "$old_config" &>/dev/null
-      msg_ok "Configuration migrated and old config removed"
+      msg_ok "配置已迁移，旧配置已移除"
     else
-      msg_error "Failed to migrate configuration"
+      msg_error "配置迁移失败"
     fi
   fi
 }
 
 # Update existing installation
 update_installation() {
-  msg_info "Updating IP-Tag Scripts"
+  msg_info "正在更新 IP-Tag 脚本"
   systemctl stop iptag.service &>/dev/null
-  msg_ok "Stopped IP-Tag service"
+  msg_ok "已停止 IP-Tag 服务"
 
   # Create directory if it doesn't exist
   if [[ ! -d "/opt/iptag" ]]; then
@@ -124,64 +124,64 @@ update_installation() {
 
   # Create new config file (check if exists and ask user)
   if [[ -f "/opt/iptag/iptag.conf" ]]; then
-    echo -e "\n${YW}Configuration file already exists.${CL}"
-    echo -e "${YW}Note: No critical changes were made in this version.${CL}"
+    echo -e "\n${YW}配置文件已存在。${CL}"
+    echo -e "${YW}注意：此版本未进行重大更改。${CL}"
     while true; do
-      read -p "Do you want to replace it with defaults? (y/n): " yn
+      read -p "您想用默认值替换它吗？(y/n): " yn
       case $yn in
       [Yy]*)
         interactive_config_setup
-        msg_info "Replacing configuration file"
+        msg_info "正在替换配置文件"
         generate_config >/opt/iptag/iptag.conf
-        msg_ok "Configuration file replaced with defaults"
+        msg_ok "配置文件已替换为默认值"
         break
         ;;
       [Nn]*)
-        echo -e "${GN}✓ Keeping existing configuration file${CL}"
+        echo -e "${GN}✓ 保留现有配置文件${CL}"
         break
         ;;
       *)
-        echo -e "${RD}Please answer yes or no.${CL}"
+        echo -e "${RD}请回答 yes 或 no。${CL}"
         ;;
       esac
     done
   else
     interactive_config_setup
-    msg_info "Creating new configuration file"
+    msg_info "正在创建新配置文件"
     generate_config >/opt/iptag/iptag.conf
-    msg_ok "Created new configuration file at /opt/iptag/iptag.conf"
+    msg_ok "已在 /opt/iptag/iptag.conf 创建新配置文件"
   fi
 
   # Update main script
-  msg_info "Updating main script"
+  msg_info "正在更新主脚本"
   generate_main_script >/opt/iptag/iptag
   chmod +x /opt/iptag/iptag
-  msg_ok "Updated main script"
+  msg_ok "已更新主脚本"
 
   # Update service file
-  msg_info "Updating service file"
+  msg_info "正在更新服务文件"
   generate_service >/lib/systemd/system/iptag.service
-  msg_ok "Updated service file"
+  msg_ok "已更新服务文件"
 
-  msg_info "Creating manual run command"
+  msg_info "正在创建手动运行命令"
   cat <<'EOF' >/usr/local/bin/iptag-run
 #!/usr/bin/env bash
 CONFIG_FILE="/opt/iptag/iptag.conf"
 SCRIPT_FILE="/opt/iptag/iptag"
 if [[ ! -f "$SCRIPT_FILE" ]]; then
-  echo "✗ Main script not found: $SCRIPT_FILE"
+  echo "✗ 未找到主脚本：$SCRIPT_FILE"
   exit 1
 fi
 export FORCE_SINGLE_RUN=true
 exec "$SCRIPT_FILE"
 EOF
   chmod +x /usr/local/bin/iptag-run
-  msg_ok "Created iptag-run executable - You can execute this manually by entering “iptag-run” in the Proxmox host, so the script is executed by hand."
+  msg_ok "已创建 iptag-run 可执行文件 - 您可以在 Proxmox 主机中输入 "iptag-run" 手动执行此脚本。"
 
-  msg_info "Restarting service"
+  msg_info "正在重启服务"
   systemctl daemon-reload &>/dev/null
   systemctl enable -q --now iptag.service &>/dev/null
-  msg_ok "Updated IP-Tag Scripts"
+  msg_ok "已更新 IP-Tag 脚本"
 
   # Show configuration information after update
   show_post_install_info
@@ -189,7 +189,7 @@ EOF
 
 # Install only command without service
 install_command_only() {
-  msg_info "Installing IP-Tag Command Only"
+  msg_info "正在安装 IP-Tag 命令"
 
   # Create directory if it doesn't exist
   if [[ ! -d "/opt/iptag" ]]; then
@@ -202,108 +202,108 @@ install_command_only() {
   # Interactive configuration setup
   if [[ ! -f /opt/iptag/iptag.conf ]]; then
     interactive_config_setup_command
-    msg_info "Setup Configuration"
+    msg_info "正在设置配置"
     generate_config >/opt/iptag/iptag.conf
-    msg_ok "Created configuration file at /opt/iptag/iptag.conf"
+    msg_ok "已在 /opt/iptag/iptag.conf 创建配置文件"
   else
     stop_spinner
-    echo -e "\n${YW}Configuration file already exists.${CL}"
-    read -p "Do you want to reconfigure tag format? (y/n): " reconfigure
+    echo -e "\n${YW}配置文件已存在。${CL}"
+    read -p "您想重新配置标签格式吗？(y/n): " reconfigure
     case $reconfigure in
     [Yy]*)
       interactive_config_setup_command
-      msg_info "Updating Configuration"
+      msg_info "正在更新配置"
       generate_config >/opt/iptag/iptag.conf
-      msg_ok "Updated configuration file"
+      msg_ok "已更新配置文件"
       ;;
     *)
-      msg_ok "Keeping existing configuration file"
+      msg_ok "保留现有配置文件"
       ;;
     esac
   fi
 
   # Setup main script
-  msg_info "Setup Main Script"
+  msg_info "正在设置主脚本"
   generate_main_script >/opt/iptag/iptag
   chmod +x /opt/iptag/iptag
-  msg_ok "Created main script"
+  msg_ok "已创建主脚本"
 
   # Create manual run command
-  msg_info "Creating iptag-run command"
+  msg_info "正在创建 iptag-run 命令"
   cat <<'EOF' >/usr/local/bin/iptag-run
 #!/usr/bin/env bash
 CONFIG_FILE="/opt/iptag/iptag.conf"
 SCRIPT_FILE="/opt/iptag/iptag"
 if [[ ! -f "$SCRIPT_FILE" ]]; then
-  echo "✗ Main script not found: $SCRIPT_FILE"
+  echo "✗ 未找到主脚本：$SCRIPT_FILE"
   exit 1
 fi
 export FORCE_SINGLE_RUN=true
 exec "$SCRIPT_FILE"
 EOF
   chmod +x /usr/local/bin/iptag-run
-  msg_ok "Created iptag-run command"
+  msg_ok "已创建 iptag-run 命令"
 
-  msg_ok "IP-Tag Command installed successfully! Use 'iptag-run' to run manually."
+  msg_ok "IP-Tag 命令安装成功！使用 'iptag-run' 手动运行。"
 }
 
 # Show post-installation information
 show_post_install_info() {
   stop_spinner
-  echo -e "\n${YW}=== Next Steps ===${CL}"
+  echo -e "\n${YW}=== 后续步骤 ===${CL}"
 
   # Show usage information
   if command -v iptag-run >/dev/null 2>&1; then
-    echo -e "${YW}Run IP tagging manually: ${GN}iptag-run${CL}"
-    echo -e "${YW}Add to cron for scheduled execution if needed${CL}"
+    echo -e "${YW}手动运行 IP 标记: ${GN}iptag-run${CL}"
+    echo -e "${YW}如需定时执行，可添加到 cron${CL}"
     echo -e ""
   fi
 
-  echo -e "${RD}IMPORTANT: Configure your network subnets!${CL}"
+  echo -e "${RD}重要：配置您的网络子网！${CL}"
   echo -e ""
-  echo -e "${YW}Configuration file: ${GN}/opt/iptag/iptag.conf${CL}"
+  echo -e "${YW}配置文件: ${GN}/opt/iptag/iptag.conf${CL}"
   echo -e ""
-  echo -e "${YW}Edit CIDR_LIST with your actual subnets:${CL}"
-  echo -e "${GN}nano /opt/iptag/iptag.conf${CL} ${YW}or${CL} ${GN}vim /opt/iptag/iptag.conf${CL}"
+  echo -e "${YW}使用您的实际子网编辑 CIDR_LIST:${CL}"
+  echo -e "${GN}nano /opt/iptag/iptag.conf${CL} ${YW}或${CL} ${GN}vim /opt/iptag/iptag.conf${CL}"
   echo -e ""
-  echo -e "${YW}Example configuration:${CL}"
+  echo -e "${YW}配置示例:${CL}"
   echo -e "${GN}CIDR_LIST=(${CL}"
-  echo -e "${GN}  192.168.1.0/24    # Your actual subnet${CL}"
-  echo -e "${GN}  10.10.0.0/16      # Another subnet${CL}"
+  echo -e "${GN}  192.168.1.0/24    # 您的实际子网${CL}"
+  echo -e "${GN}  10.10.0.0/16      # 另一个子网${CL}"
   echo -e "${GN})${CL}"
   echo -e ""
 }
 
 # Interactive configuration setup for command-only (TAG_FORMAT only)
 interactive_config_setup_command() {
-  echo -e "\n${YW}=== Configuration Setup ===${CL}"
+  echo -e "\n${YW}=== 配置设置 ===${CL}"
 
   # TAG_FORMAT configuration
-  echo -e "\n${YW}Select tag format:${CL}"
-  echo -e "${GN}1)${CL} last_two_octets - Show last two octets (e.g., 0.100) [Default]"
-  echo -e "${GN}2)${CL} last_octet - Show only last octet (e.g., 100)"
-  echo -e "${GN}3)${CL} full - Show full IP address (e.g., 192.168.0.100)"
+  echo -e "\n${YW}选择标签格式:${CL}"
+  echo -e "${GN}1)${CL} last_two_octets - 显示最后两个八位组（例如 0.100）[默认]"
+  echo -e "${GN}2)${CL} last_octet - 仅显示最后一个八位组（例如 100）"
+  echo -e "${GN}3)${CL} full - 显示完整 IP 地址（例如 192.168.0.100）"
 
   while true; do
-    read -p "Enter your choice (1-3) [1]: " tag_choice
+    read -p "输入您的选择 (1-3) [1]: " tag_choice
     case ${tag_choice:-1} in
     1)
       TAG_FORMAT="last_two_octets"
-      echo -e "${GN}✓ Selected: last_two_octets${CL}"
+      echo -e "${GN}✓ 已选择: last_two_octets${CL}"
       break
       ;;
     2)
       TAG_FORMAT="last_octet"
-      echo -e "${GN}✓ Selected: last_octet${CL}"
+      echo -e "${GN}✓ 已选择: last_octet${CL}"
       break
       ;;
     3)
       TAG_FORMAT="full"
-      echo -e "${GN}✓ Selected: full${CL}"
+      echo -e "${GN}✓ 已选择: full${CL}"
       break
       ;;
     *)
-      echo -e "${RD}Please enter 1, 2, or 3.${CL}"
+      echo -e "${RD}请输入 1、2 或 3。${CL}"
       ;;
     esac
   done
@@ -314,53 +314,53 @@ interactive_config_setup_command() {
 
 # Interactive configuration setup for service (TAG_FORMAT + LOOP_INTERVAL)
 interactive_config_setup() {
-  echo -e "\n${YW}=== Configuration Setup ===${CL}"
+  echo -e "\n${YW}=== 配置设置 ===${CL}"
 
   # TAG_FORMAT configuration
-  echo -e "\n${YW}Select tag format:${CL}"
-  echo -e "${GN}1)${CL} last_two_octets - Show last two octets (e.g., 0.100) [Default]"
-  echo -e "${GN}2)${CL} last_octet - Show only last octet (e.g., 100)"
-  echo -e "${GN}3)${CL} full - Show full IP address (e.g., 192.168.0.100)"
+  echo -e "\n${YW}选择标签格式:${CL}"
+  echo -e "${GN}1)${CL} last_two_octets - 显示最后两个八位组（例如 0.100）[默认]"
+  echo -e "${GN}2)${CL} last_octet - 仅显示最后一个八位组（例如 100）"
+  echo -e "${GN}3)${CL} full - 显示完整 IP 地址（例如 192.168.0.100）"
 
   while true; do
-    read -p "Enter your choice (1-3) [1]: " tag_choice
+    read -p "输入您的选择 (1-3) [1]: " tag_choice
     case ${tag_choice:-1} in
     1)
       TAG_FORMAT="last_two_octets"
-      echo -e "${GN}✓ Selected: last_two_octets${CL}"
+      echo -e "${GN}✓ 已选择: last_two_octets${CL}"
       break
       ;;
     2)
       TAG_FORMAT="last_octet"
-      echo -e "${GN}✓ Selected: last_octet${CL}"
+      echo -e "${GN}✓ 已选择: last_octet${CL}"
       break
       ;;
     3)
       TAG_FORMAT="full"
-      echo -e "${GN}✓ Selected: full${CL}"
+      echo -e "${GN}✓ 已选择: full${CL}"
       break
       ;;
     *)
-      echo -e "${RD}Please enter 1, 2, or 3.${CL}"
+      echo -e "${RD}请输入 1、2 或 3。${CL}"
       ;;
     esac
   done
 
   # LOOP_INTERVAL configuration
-  echo -e "\n${YW}Set check interval (in seconds):${CL}"
-  echo -e "${YW}Default: 300 seconds (5 minutes)${CL}"
-  echo -e "${YW}Recommended range: 300-3600 seconds${CL}"
+  echo -e "\n${YW}设置检查间隔（秒）:${CL}"
+  echo -e "${YW}默认: 300 秒（5 分钟）${CL}"
+  echo -e "${YW}推荐范围: 300-3600 秒${CL}"
 
   while true; do
-    read -p "Enter interval in seconds [300]: " interval_input
+    read -p "输入间隔秒数 [300]: " interval_input
     interval_input=${interval_input:-300}
 
     if [[ $interval_input =~ ^[0-9]+$ ]] && [ $interval_input -ge 300 ] && [ $interval_input -le 7200 ]; then
       LOOP_INTERVAL=$interval_input
-      echo -e "${GN}✓ Selected: ${LOOP_INTERVAL} seconds${CL}"
+      echo -e "${GN}✓ 已选择: ${LOOP_INTERVAL} 秒${CL}"
       break
     else
-      echo -e "${RD}Please enter a valid number between 300 and 7200 seconds.${CL}"
+      echo -e "${RD}请输入 300 到 7200 秒之间的有效数字。${CL}"
     fi
   done
 }
@@ -475,32 +475,32 @@ log_unchanged() {
 ip_in_cidr() {
     local ip="$1" cidr="$2"
     debug_log "ip_in_cidr: checking '$ip' against '$cidr'"
-    
+
     # Manual CIDR check - более надёжный метод
     debug_log "ip_in_cidr: using manual check (bypassing ipcalc)"
         local network prefix
         IFS='/' read -r network prefix <<< "$cidr"
-        
+
         # Convert IP and network to integers for comparison
         local ip_int net_int mask
         IFS='.' read -r a b c d <<< "$ip"
         ip_int=$(( (a << 24) + (b << 16) + (c << 8) + d ))
-        
+
         IFS='.' read -r a b c d <<< "$network"
         net_int=$(( (a << 24) + (b << 16) + (c << 8) + d ))
-        
+
     # Create subnet mask
         mask=$(( 0xFFFFFFFF << (32 - prefix) ))
-        
+
     # Apply mask and compare
     local ip_masked=$((ip_int & mask))
     local net_masked=$((net_int & mask))
-    
+
     debug_log "ip_in_cidr: IP=$ip ($ip_int), Network=$network ($net_int), Prefix=$prefix"
     debug_log "ip_in_cidr: Mask=$mask (hex: $(printf '0x%08x' $mask))"
     debug_log "ip_in_cidr: IP&Mask=$ip_masked ($(printf '%d.%d.%d.%d' $((ip_masked>>24&255)) $((ip_masked>>16&255)) $((ip_masked>>8&255)) $((ip_masked&255))))"
     debug_log "ip_in_cidr: Net&Mask=$net_masked ($(printf '%d.%d.%d.%d' $((net_masked>>24&255)) $((net_masked>>16&255)) $((net_masked>>8&255)) $((net_masked&255))))"
-    
+
     if (( ip_masked == net_masked )); then
         debug_log "ip_in_cidr: manual check PASSED - IP is in CIDR"
         return 0
@@ -529,7 +529,7 @@ ip_in_cidrs() {
     [[ -z "$cidrs" ]] && return 1
     local IFS=' '
     debug_log "Checking IP '$ip' against CIDRs: '$cidrs'"
-    for cidr in $cidrs; do 
+    for cidr in $cidrs; do
         debug_log "Testing IP '$ip' against CIDR '$cidr'"
         if ip_in_cidr "$ip" "$cidr"; then
             debug_log "IP '$ip' matches CIDR '$cidr' - PASSED"
@@ -546,7 +546,7 @@ ip_in_cidrs() {
 is_valid_ipv4() {
     local ip="$1"
     [[ "$ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] || return 1
-    
+
     local IFS='.' parts
     read -ra parts <<< "$ip"
     for part in "${parts[@]}"; do
@@ -560,24 +560,24 @@ get_vm_ips() {
     local vmid=$1 ips=""
     local vm_config="/etc/pve/qemu-server/${vmid}.conf"
     [[ ! -f "$vm_config" ]] && return
-    
+
     debug_log "vm $vmid: starting IP detection"
-    
+
     # Check if VM is running first
     local vm_status=""
     if command -v qm >/dev/null 2>&1; then
         vm_status=$(qm status "$vmid" 2>/dev/null | awk '{print $2}')
     fi
-    
+
     if [[ "$vm_status" != "running" ]]; then
         debug_log "vm $vmid: not running (status: $vm_status)"
         return
     fi
-    
+
     # Get MAC addresses from config
     local mac_addresses=$(grep -E "^net[0-9]+:" "$vm_config" | grep -oE "([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}" | head -3)
     debug_log "vm $vmid: found MACs: $mac_addresses"
-    
+
     # Method 1: QM guest agent (most reliable for current IP)
     if command -v qm >/dev/null 2>&1; then
         debug_log "vm $vmid: trying qm guest agent first"
@@ -589,17 +589,17 @@ get_vm_ips() {
             fi
         done
     fi
-    
+
     # Method 2: Fresh ARP table lookup (force refresh)
     if [[ -n "$mac_addresses" ]]; then
         debug_log "vm $vmid: refreshing ARP table and checking"
         # Try to refresh ARP table by pinging network ranges
         for mac in $mac_addresses; do
             local mac_lower=$(echo "$mac" | tr '[:upper:]' '[:lower:]')
-            
+
             # First check current ARP table
             local current_ip=$(ip neighbor show | grep "$mac_lower" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -1)
-            
+
             # If found in ARP, verify it's still valid by trying to ping
             if [[ -n "$current_ip" && "$current_ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
                 debug_log "vm $vmid: found IP $current_ip in ARP table for MAC $mac_lower, verifying..."
@@ -615,7 +615,7 @@ get_vm_ips() {
             fi
         done
     fi
-    
+
     # Method 3: DHCP leases (backup method)
     if [[ -z "$ips" ]]; then
         debug_log "vm $vmid: checking DHCP leases as fallback"
@@ -640,11 +640,11 @@ get_vm_ips() {
             done
         done
     fi
-    
+
     # Remove duplicates and clean up
     local unique_ips=$(echo "$ips" | tr ' ' '\n' | sort -u | tr '\n' ' ')
     unique_ips="${unique_ips% }"
-    
+
     debug_log "vm $vmid: final IPs: '$unique_ips'"
     echo "$unique_ips"
 }
@@ -742,25 +742,25 @@ update_tags() {
     # Update tags if there are changes
     local old_tags_str=$(IFS=';'; echo "${current_tags[*]}")
     local new_tags_str=$(IFS=';'; echo "${next_tags[*]}")
-    
+
     debug_log "$type $vmid old_tags: '$old_tags_str'"
     debug_log "$type $vmid new_tags: '$new_tags_str'"
     debug_log "$type $vmid tags_equal: $([[ "$old_tags_str" == "$new_tags_str" ]] && echo true || echo false)"
-    
+
     if [[ "$old_tags_str" != "$new_tags_str" ]]; then
         # Determine what changed
         local old_ip_tags_count=${#current_ip_tags[@]}
         local new_ip_tags_count=${#formatted_ips[@]}
-        
+
         # Build detailed change message
         local change_details=""
-        
+
         if [[ $old_ip_tags_count -eq 0 ]]; then
             change_details="added ${new_ip_tags_count} IP tag(s): [${GREEN}${formatted_ips[*]}${NC}]"
         else
             # Compare old and new IP tags
             local added_tags=() removed_tags=() common_tags=()
-            
+
             # Find removed tags
             for old_tag in "${current_ip_tags[@]}"; do
                 local found=false
@@ -776,7 +776,7 @@ update_tags() {
                     common_tags+=("$old_tag")
                 fi
             done
-            
+
             # Find added tags
             for new_tag in "${formatted_ips[@]}"; do
                 local found=false
@@ -790,7 +790,7 @@ update_tags() {
                     added_tags+=("$new_tag")
                 fi
             done
-            
+
             # Build change message
             local change_parts=()
             if [[ ${#added_tags[@]} -gt 0 ]]; then
@@ -802,12 +802,12 @@ update_tags() {
             if [[ ${#common_tags[@]} -gt 0 ]]; then
                 change_parts+=("kept [${GRAY}${common_tags[*]}${NC}]")
             fi
-            
+
             change_details=$(IFS=', '; echo "${change_parts[*]}")
         fi
-        
+
         log_change "${type^^} ${CYAN}${vmid}${NC}: ${change_details}"
-        
+
         if [[ "$type" == "lxc" ]]; then
             pct set "${vmid}" -tags "$(IFS=';'; echo "${next_tags[*]}")" &>/dev/null
         else
@@ -823,7 +823,7 @@ update_tags() {
         # Tags unchanged
         local ip_count=${#formatted_ips[@]}
         local status_msg=""
-        
+
         if [[ $ip_count -eq 0 ]]; then
             status_msg="No IPs detected"
         elif [[ $ip_count -eq 1 ]]; then
@@ -831,7 +831,7 @@ update_tags() {
         else
             status_msg="${ip_count} IP tags [${GRAY}${formatted_ips[*]}${NC}] unchanged"
         fi
-        
+
         log_unchanged "${type^^} ${GRAY}${vmid}${NC}: ${status_msg}"
     fi
 }
@@ -839,7 +839,7 @@ update_tags() {
 # Update all instances of specified type
 update_all_tags() {
     local type="$1" vmids count=0
-    
+
     # Get list of all containers/VMs
     if [[ "$type" == "lxc" ]]; then
         vmids=($(pct list 2>/dev/null | grep -v VMID | awk '{print $1}'))
@@ -852,24 +852,24 @@ update_all_tags() {
             vmids+=("${basename%.conf}")
         done
     fi
-    
+
     count=${#vmids[@]}
     [[ $count -eq 0 ]] && return
-    
+
     # Display processing header with color
     if [[ "$type" == "lxc" ]]; then
         log_info "Processing ${WHITE}${count}${NC} LXC container(s)"
     else
         log_info "Processing ${WHITE}${count}${NC} virtual machine(s)"
     fi
-    
+
     # Process each VM/LXC container
     local processed=0
     for vmid in "${vmids[@]}"; do
         update_tags "$type" "$vmid"
         ((processed++))
     done
-    
+
     # Add completion message
     if [[ "$type" == "lxc" ]]; then
         log_success "Completed processing LXC containers"
@@ -881,19 +881,19 @@ update_all_tags() {
 # Main check function
 check() {
     local start_time=$(date +%s)
-    
+
     log_info "Starting periodic check"
-    
+
     # Clear caches before each run
     CONFIG_CACHE=()
     IP_CACHE=()
-    
+
     # Update LXC containers
     update_all_tags "lxc"
-    
-    # Update VMs  
+
+    # Update VMs
     update_all_tags "vm"
-    
+
     local end_time=$(date +%s)
     local duration=$((end_time - start_time))
     log_success "Check completed in ${WHITE}${duration}${NC} seconds"
@@ -928,18 +928,18 @@ main() {
 # Simple LXC IP detection
 get_lxc_ips() {
     local vmid=$1
-    
+
     debug_log "lxc $vmid: starting IP detection"
-    
+
     # Check if LXC is running
     local lxc_status=$(pct status "${vmid}" 2>/dev/null | awk '{print $2}')
     if [[ "$lxc_status" != "running" ]]; then
         debug_log "lxc $vmid: not running (status: $lxc_status)"
         return
     fi
-    
+
     local ips=""
-    
+
     # Method 1: Check Proxmox config for ALL static IPs (multiple interfaces)
     local pve_lxc_config="/etc/pve/lxc/${vmid}.conf"
     if [[ -f "$pve_lxc_config" ]]; then
@@ -953,7 +953,7 @@ get_lxc_ips() {
             done <<< "$static_ips"
         fi
     fi
-    
+
     # Method 2: ARP table lookup for ALL MAC addresses if no static IPs found
     if [[ -z "$ips" && -f "$pve_lxc_config" ]]; then
         local mac_addrs=$(grep -Eo 'hwaddr=([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}' "$pve_lxc_config" | cut -d'=' -f2)
@@ -968,7 +968,7 @@ get_lxc_ips() {
             done <<< "$mac_addrs"
         fi
     fi
-    
+
     # Method 3: Direct container command to get ALL IPs if previous methods failed
     if [[ -z "$ips" ]]; then
         local container_ips=$(timeout 5s pct exec "$vmid" -- ip -4 addr show 2>/dev/null | grep -oE 'inet ([0-9]{1,3}\.){3}[0-9]{1,3}' | awk '{print $2}' | grep -v '127.0.0.1')
@@ -981,11 +981,11 @@ get_lxc_ips() {
             done <<< "$container_ips"
         fi
     fi
-    
+
     # Remove duplicates and clean up
     local unique_ips=$(echo "$ips" | tr ' ' '\n' | sort -u | tr '\n' ' ')
     unique_ips="${unique_ips% }"
-    
+
     debug_log "lxc $vmid: final IPs: '$unique_ips'"
     echo "$unique_ips"
 }
@@ -995,76 +995,76 @@ EOF
 }
 
 # Choose installation/update mode
-echo -e "\n${YW}Choose action:${CL}"
-echo -e "${GN}1)${CL} Install with automatic service (recommended)"
-echo -e "${GN}2)${CL} Install command only (manual execution)"
-echo -e "${GN}3)${CL} Update existing installation"
-echo -e "${RD}4)${CL} Cancel"
+echo -e "\n${YW}选择操作:${CL}"
+echo -e "${GN}1)${CL} 使用自动服务安装（推荐）"
+echo -e "${GN}2)${CL} 仅安装命令（手动执行）"
+echo -e "${GN}3)${CL} 更新现有安装"
+echo -e "${RD}4)${CL} 取消"
 
 while true; do
-  read -p "Enter your choice (1-4): " choice
+  read -p "输入您的选择 (1-4): " choice
   case $choice in
   1)
     INSTALL_MODE="service"
-    echo -e "${GN}✓ Selected: Service installation${CL}"
+    echo -e "${GN}✓ 已选择: 服务安装${CL}"
     break
     ;;
   2)
     INSTALL_MODE="command"
-    echo -e "${GN}✓ Selected: Command-only installation${CL}"
+    echo -e "${GN}✓ 已选择: 仅命令安装${CL}"
     break
     ;;
   3)
-    echo -e "${GN}✓ Selected: Update installation${CL}"
+    echo -e "${GN}✓ 已选择: 更新安装${CL}"
     update_installation
     exit 0
     ;;
   4)
-    msg_error "Action cancelled."
+    msg_error "操作已取消。"
     exit 0
     ;;
   *)
-    msg_error "Please enter 1, 2, 3, or 4."
+    msg_error "请输入 1、2、3 或 4。"
     ;;
   esac
 done
 
-echo -e "\n${YW}This will install ${APP} on ${hostname} in $INSTALL_MODE mode.${CL}"
+echo -e "\n${YW}这将在 ${hostname} 上以 $INSTALL_MODE 模式安装 ${APP}。${CL}"
 while true; do
-  read -p "Proceed? (y/n): " yn
+  read -p "是否继续？(y/n): " yn
   case $yn in
   [Yy]*)
     break
     ;;
   [Nn]*)
-    msg_error "Installation cancelled."
+    msg_error "安装已取消。"
     exit
     ;;
   *)
-    msg_error "Please answer yes or no."
+    msg_error "请回答 yes 或 no。"
     ;;
   esac
 done
 
 if ! pveversion | grep -Eq "pve-manager/(8\.[0-4]|9\.[0-9]+)(\.[0-9]+)*"; then
-  msg_error "This version of Proxmox Virtual Environment is not supported"
-  msg_error "⚠ Requires Proxmox Virtual Environment Version 8.0–8.4 or 9.x."
-  msg_error "Exiting..."
+  msg_error "不支持此版本的 Proxmox Virtual Environment"
+  msg_error "⚠ 需要 Proxmox Virtual Environment 版本 8.0–8.4 或 9.x。"
+  msg_error "正在退出..."
   sleep 2
   exit
 fi
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖项"
 apt-get update &>/dev/null
 apt-get install -y ipcalc net-tools &>/dev/null
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖项"
 
 # Execute installation based on selected mode
 if [[ "$INSTALL_MODE" == "service" ]]; then
   # Full service installation
-  msg_info "Setting up IP-Tag Scripts"
+  msg_info "正在设置 IP-Tag 脚本"
   mkdir -p /opt/iptag
-  msg_ok "Setup IP-Tag Scripts"
+  msg_ok "已设置 IP-Tag 脚本"
 
   # Migrate config if needed
   migrate_config
@@ -1072,58 +1072,58 @@ if [[ "$INSTALL_MODE" == "service" ]]; then
   # Interactive configuration setup
   if [[ ! -f /opt/iptag/iptag.conf ]]; then
     interactive_config_setup
-    msg_info "Setup Default Config"
+    msg_info "正在设置默认配置"
     generate_config >/opt/iptag/iptag.conf
-    msg_ok "Setup default config"
+    msg_ok "已设置默认配置"
   else
     stop_spinner
-    echo -e "\n${YW}Configuration file already exists.${CL}"
-    read -p "Do you want to reconfigure tag format and loop interval? (y/n): " reconfigure
+    echo -e "\n${YW}配置文件已存在。${CL}"
+    read -p "您想重新配置标签格式和循环间隔吗？(y/n): " reconfigure
     case $reconfigure in
     [Yy]*)
       interactive_config_setup
-      msg_info "Updating Configuration"
+      msg_info "正在更新配置"
       generate_config >/opt/iptag/iptag.conf
-      msg_ok "Updated configuration file"
+      msg_ok "已更新配置文件"
       ;;
     *)
-      msg_ok "Keeping existing configuration file"
+      msg_ok "保留现有配置文件"
       ;;
     esac
   fi
 
-  msg_info "Setup Main Function"
+  msg_info "正在设置主函数"
   generate_main_script >/opt/iptag/iptag
   chmod +x /opt/iptag/iptag
-  msg_ok "Setup Main Function"
+  msg_ok "已设置主函数"
 
-  msg_info "Creating Service"
+  msg_info "正在创建服务"
   generate_service >/lib/systemd/system/iptag.service
-  msg_ok "Created Service"
+  msg_ok "已创建服务"
 
-  msg_info "Starting Service"
+  msg_info "正在启动服务"
   systemctl daemon-reload &>/dev/null
   systemctl enable -q --now iptag.service &>/dev/null
-  msg_ok "Started Service"
+  msg_ok "已启动服务"
 
-  msg_info "Creating manual run command"
+  msg_info "正在创建手动运行命令"
   cat <<'EOF' >/usr/local/bin/iptag-run
 #!/usr/bin/env bash
 CONFIG_FILE="/opt/iptag/iptag.conf"
 SCRIPT_FILE="/opt/iptag/iptag"
 if [[ ! -f "$SCRIPT_FILE" ]]; then
-  echo "✗ Main script not found: $SCRIPT_FILE"
+  echo "✗ 未找到主脚本：$SCRIPT_FILE"
   exit 1
 fi
 export FORCE_SINGLE_RUN=true
 exec "$SCRIPT_FILE"
 EOF
   chmod +x /usr/local/bin/iptag-run
-  msg_ok "Created iptag-run command"
+  msg_ok "已创建 iptag-run 命令"
 
-  echo -e "\n${GN}${APP} service installation completed successfully! ${CL}"
-  echo -e "${YW}The service is now running automatically.${CL}"
-  echo -e "${YW}You can also run it manually with: ${GN}iptag-run${CL}\n"
+  echo -e "\n${GN}${APP} 服务安装成功完成！${CL}"
+  echo -e "${YW}服务现在正在自动运行。${CL}"
+  echo -e "${YW}您也可以使用以下命令手动运行: ${GN}iptag-run${CL}\n"
 
   # Show configuration information
   show_post_install_info
@@ -1133,7 +1133,7 @@ elif [[ "$INSTALL_MODE" == "command" ]]; then
   install_command_only
 
   stop_spinner
-  echo -e "\n${GN}${APP} command installation completed successfully! ${CL}"
+  echo -e "\n${GN}${APP} 命令安装成功完成！${CL}"
 
   # Show configuration information
   show_post_install_info

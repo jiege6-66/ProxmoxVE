@@ -39,20 +39,20 @@ current_microcode=$(journalctl -k | grep -i 'microcode: Current revision:' | gre
 
 intel() {
   if ! dpkg -s iucode-tool >/dev/null 2>&1; then
-    msg_info "Installing iucode-tool (Intel microcode updater)"
+    msg_info "正在安装 iucode-tool (Intel 微码更新器)"
     apt-get install -y iucode-tool &>/dev/null
-    msg_ok "Installed iucode-tool"
+    msg_ok "已安装 iucode-tool"
   else
-    msg_ok "Intel iucode-tool is already installed"
+    msg_ok "Intel iucode-tool 已安装"
     sleep 1
   fi
 
   intel_microcode=$(curl -fsSL "https://ftp.debian.org/debian/pool/non-free-firmware/i/intel-microcode//" | grep -o 'href="[^"]*amd64.deb"' | sed 's/href="//;s/"//')
   [ -z "$intel_microcode" ] && {
-    whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Found" --msgbox "It appears there were no microcode packages found\n Try again later." 10 68
-    msg_info "Exiting"
+    whiptail --backtitle "Proxmox VE Helper Scripts" --title "未找到微码" --msgbox "似乎未找到微码包\n请稍后重试。" 10 68
+    msg_info "正在退出"
     sleep 1
-    msg_ok "Done"
+    msg_ok "完成"
     exit
   }
 
@@ -65,38 +65,38 @@ intel() {
     MICROCODE_MENU+=("$TAG" "$ITEM " "OFF")
   done < <(echo "$intel_microcode")
 
-  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Current Microcode revision:${current_microcode}" --radiolist "\nSelect a microcode package to install:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${MICROCODE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
+  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "当前微码版本:${current_microcode}" --radiolist "\n选择要安装的微码包:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${MICROCODE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
 
   [ -z "$microcode" ] && {
-    whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Selected" --msgbox "It appears that no microcode packages were selected" 10 68
-    msg_info "Exiting"
+    whiptail --backtitle "Proxmox VE Helper Scripts" --title "未选择微码" --msgbox "似乎未选择微码包" 10 68
+    msg_info "正在退出"
     sleep 1
-    msg_ok "Done"
+    msg_ok "完成"
     exit
   }
 
-  msg_info "Downloading the Intel Processor Microcode Package $microcode"
+  msg_info "正在下载 Intel 处理器微码包 $microcode"
   curl -fsSL "http://ftp.debian.org/debian/pool/non-free-firmware/i/intel-microcode/$microcode" -o $(basename "http://ftp.debian.org/debian/pool/non-free-firmware/i/intel-microcode/$microcode")
-  msg_ok "Downloaded the Intel Processor Microcode Package $microcode"
+  msg_ok "已下载 Intel 处理器微码包 $microcode"
 
-  msg_info "Installing $microcode (Patience)"
+  msg_info "正在安装 $microcode (请耐心等待)"
   dpkg -i $microcode &>/dev/null
-  msg_ok "Installed $microcode"
+  msg_ok "已安装 $microcode"
 
-  msg_info "Cleaning up"
+  msg_info "正在清理"
   rm $microcode
-  msg_ok "Cleaned"
-  echo -e "\nIn order to apply the changes, a system reboot will be necessary.\n"
+  msg_ok "已清理"
+  echo -e "\n为了应用更改，需要重启系统。\n"
 }
 
 amd() {
   amd_microcode=$(curl -fsSL "https://ftp.debian.org/debian/pool/non-free-firmware/a/amd64-microcode///" | grep -o 'href="[^"]*amd64.deb"' | sed 's/href="//;s/"//')
 
   [ -z "$amd_microcode" ] && {
-    whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Found" --msgbox "It appears there were no microcode packages found\n Try again later." 10 68
-    msg_info "Exiting"
+    whiptail --backtitle "Proxmox VE Helper Scripts" --title "未找到微码" --msgbox "似乎未找到微码包\n请稍后重试。" 10 68
+    msg_info "正在退出"
     sleep 1
-    msg_ok "Done"
+    msg_ok "完成"
     exit
   }
 
@@ -109,49 +109,49 @@ amd() {
     MICROCODE_MENU+=("$TAG" "$ITEM " "OFF")
   done < <(echo "$amd_microcode")
 
-  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Current Microcode revision:${current_microcode}" --radiolist "\nSelect a microcode package to install:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${MICROCODE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
+  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "当前微码版本:${current_microcode}" --radiolist "\n选择要安装的微码包:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${MICROCODE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
 
   [ -z "$microcode" ] && {
-    whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Selected" --msgbox "It appears that no microcode packages were selected" 10 68
-    msg_info "Exiting"
+    whiptail --backtitle "Proxmox VE Helper Scripts" --title "未选择微码" --msgbox "似乎未选择微码包" 10 68
+    msg_info "正在退出"
     sleep 1
-    msg_ok "Done"
+    msg_ok "完成"
     exit
   }
 
-  msg_info "Downloading the AMD Processor Microcode Package $microcode"
+  msg_info "正在下载 AMD 处理器微码包 $microcode"
   curl -fsSL "https://ftp.debian.org/debian/pool/non-free-firmware/a/amd64-microcode/$microcode" -o $(basename "https://ftp.debian.org/debian/pool/non-free-firmware/a/amd64-microcode/$microcode")
-  msg_ok "Downloaded the AMD Processor Microcode Package $microcode"
+  msg_ok "已下载 AMD 处理器微码包 $microcode"
 
-  msg_info "Installing $microcode (Patience)"
+  msg_info "正在安装 $microcode (请耐心等待)"
   dpkg -i $microcode &>/dev/null
-  msg_ok "Installed $microcode"
+  msg_ok "已安装 $microcode"
 
-  msg_info "Cleaning up"
+  msg_info "正在清理"
   rm $microcode
-  msg_ok "Cleaned"
-  echo -e "\nIn order to apply the changes, a system reboot will be necessary.\n"
+  msg_ok "已清理"
+  echo -e "\n为了应用更改，需要重启系统。\n"
 }
 
 if ! command -v pveversion >/dev/null 2>&1; then
   header_info
-  msg_error "No PVE Detected!"
+  msg_error "未检测到 PVE！"
   exit
 fi
 
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE Processor Microcode" --yesno "This will check for CPU microcode packages with the option to install. Proceed?" 10 58
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE 处理器微码" --yesno "这将检查 CPU 微码包并提供安装选项。是否继续？" 10 58
 
-msg_info "Checking CPU Vendor"
+msg_info "正在检查 CPU 供应商"
 cpu=$(lscpu | grep -oP 'Vendor ID:\s*\K\S+' | head -n 1)
 if [ "$cpu" == "GenuineIntel" ]; then
-  msg_ok "${cpu} was detected"
+  msg_ok "检测到 ${cpu}"
   sleep 1
   intel
 elif [ "$cpu" == "AuthenticAMD" ]; then
-  msg_ok "${cpu} was detected"
+  msg_ok "检测到 ${cpu}"
   sleep 1
   amd
 else
-  msg_error "${cpu} is not supported"
+  msg_error "不支持 ${cpu}"
   exit
 fi

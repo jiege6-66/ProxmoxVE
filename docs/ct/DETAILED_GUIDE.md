@@ -1,134 +1,134 @@
-# 🚀 **Application Container Scripts (ct/AppName.sh)**
+# 🚀 **应用容器脚本 (ct/AppName.sh)**
 
-**Modern Guide to Creating LXC Container Installation Scripts**
+**创建 LXC 容器安装脚本的现代指南**
 
-> **Updated**: December 2025
-> **Context**: Fully integrated with build.func, advanced_settings wizard, and defaults system
-> **Example Used**: `/ct/pihole.sh`, `/ct/docker.sh`
-
----
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Architecture & Flow](#architecture--flow)
-- [File Structure](#file-structure)
-- [Complete Script Template](#complete-script-template)
-- [Function Reference](#function-reference)
-- [Advanced Features](#advanced-features)
-- [Real Examples](#real-examples)
-- [Troubleshooting](#troubleshooting)
-- [Contribution Checklist](#contribution-checklist)
+> **更新时间**: 2025年12月
+> **上下文**: 完全集成 build.func、advanced_settings 向导和默认系统
+> **示例**: `/ct/pihole.sh`、`/ct/docker.sh`
 
 ---
 
-## Overview
+## 📋 目录
 
-### Purpose
-
-Container scripts (`ct/AppName.sh`) are **entry points for creating LXC containers** with specific applications pre-installed. They:
-
-1. Define container defaults (CPU, RAM, disk, OS)
-2. Call the main build orchestrator (`build.func`)
-3. Implement application-specific update mechanisms
-4. Provide user-facing success messages
-
-### Execution Context
-
-```
-Proxmox Host
-    ↓
-ct/AppName.sh sourced (runs as root on host)
-    ↓
-build.func: Creates LXC container + runs install script inside
-    ↓
-install/AppName-install.sh (runs inside container)
-    ↓
-Container ready with app installed
-```
-
-### Key Integration Points
-
-- **build.func** - Main orchestrator (container creation, storage, variable management)
-- **install.func** - Container-specific setup (OS update, package management)
-- **tools.func** - Tool installation helpers (repositories, GitHub releases)
-- **core.func** - UI/messaging functions (colors, spinners, validation)
-- **error_handler.func** - Error handling and signal management
+- [概述](#概述)
+- [架构与流程](#架构与流程)
+- [文件结构](#文件结构)
+- [完整脚本模板](#完整脚本模板)
+- [函数参考](#函数参考)
+- [高级功能](#高级功能)
+- [实际示例](#实际示例)
+- [故障排除](#故障排除)
+- [贡献检查清单](#贡献检查清单)
 
 ---
 
-## Architecture & Flow
+## 概述
 
-### Container Creation Flow
+### 目的
 
-```
-START: bash ct/pihole.sh
-  ↓
-[1] Set APP, var_*, defaults
-  ↓
-[2] header_info() → Display ASCII art
-  ↓
-[3] variables() → Parse arguments & load build.func
-  ↓
-[4] color() → Setup ANSI codes
-  ↓
-[5] catch_errors() → Setup trap handlers
-  ↓
-[6] install_script() → Show mode menu (5 options)
-  ↓
-  ├─ INSTALL_MODE="0" (Default)
-  ├─ INSTALL_MODE="1" (Advanced - 19-step wizard)
-  ├─ INSTALL_MODE="2" (User Defaults)
-  ├─ INSTALL_MODE="3" (App Defaults)
-  └─ INSTALL_MODE="4" (Settings Menu)
-  ↓
-[7] advanced_settings() → Collect user configuration (if mode=1)
-  ↓
-[8] start() → Confirm or re-edit settings
-  ↓
-[9] build_container() → Create LXC + execute install script
-  ↓
-[10] description() → Set container description
-  ↓
-[11] SUCCESS → Display access URL
-  ↓
-END
-```
+容器脚本（`ct/AppName.sh`）是**创建预装特定应用程序的 LXC 容器的入口点**。它们：
 
-### Default Values Precedence
+1. 定义容器默认值（CPU、RAM、磁盘、操作系统）
+2. 调用主构建编排器（`build.func`）
+3. 实现应用程序特定的更新机制
+4. 提供面向用户的成功消息
+
+### 执行上下文
 
 ```
-Priority 1 (Highest): Environment Variables (var_cpu, var_ram, etc.)
-Priority 2: App-Specific Defaults (/defaults/AppName.vars)
-Priority 3: User Global Defaults (/default.vars)
-Priority 4 (Lowest): Built-in Defaults (in build.func)
+Proxmox 主机
+    ↓
+ct/AppName.sh sourced（以 root 身份在主机上运行）
+    ↓
+build.func: 创建 LXC 容器 + 在内部运行安装脚本
+    ↓
+install/AppName-install.sh（在容器内运行）
+    ↓
+容器就绪，应用已安装
+```
+
+### 关键集成点
+
+- **build.func** - 主编排器（容器创建、存储、变量管理）
+- **install.func** - 容器特定设置（操作系统更新、包管理）
+- **tools.func** - 工具安装助手（仓库、GitHub 发布）
+- **core.func** - UI/消息传递函数（颜色、旋转器、验证）
+- **error_handler.func** - 错误处理和信号管理
+
+---
+
+## 架构与流程
+
+### 容器创建流程
+
+```
+开始: bash ct/pihole.sh
+  ↓
+[1] 设置 APP、var_*、默认值
+  ↓
+[2] header_info() → 显示 ASCII 艺术
+  ↓
+[3] variables() → 解析参数并加载 build.func
+  ↓
+[4] color() → 设置 ANSI 代码
+  ↓
+[5] catch_errors() → 设置陷阱处理程序
+  ↓
+[6] install_script() → 显示模式菜单（5个选项）
+  ↓
+  ├─ INSTALL_MODE="0"（默认）
+  ├─ INSTALL_MODE="1"（高级 - 19步向导）
+  ├─ INSTALL_MODE="2"（用户默认值）
+  ├─ INSTALL_MODE="3"（应用默认值）
+  └─ INSTALL_MODE="4"（设置菜单）
+  ↓
+[7] advanced_settings() → 收集用户配置（如果 mode=1）
+  ↓
+[8] start() → 确认或重新编辑设置
+  ↓
+[9] build_container() → 创建 LXC + 执行安装脚本
+  ↓
+[10] description() → 设置容器描述
+  ↓
+[11] 成功 → 显示访问 URL
+  ↓
+结束
+```
+
+### 默认值优先级
+
+```
+优先级 1（最高）: 环境变量（var_cpu、var_ram 等）
+优先级 2: 应用特定默认值（/defaults/AppName.vars）
+优先级 3: 用户全局默认值（/default.vars）
+优先级 4（最低）: 内置默认值（在 build.func 中）
 ```
 
 ---
 
-## File Structure
+## 文件结构
 
-### Minimal ct/AppName.sh Template
+### 最小 ct/AppName.sh 模板
 
 ```
 #!/usr/bin/env bash                          # [1] Shebang
-                                             # [2] Copyright/License
-source <(curl -s .../misc/build.func)        # [3] Import functions
-                                             # [4] APP metadata
-APP="AppName"                                # [5] Default values
+                                             # [2] 版权/许可证
+source <(curl -s .../misc/build.func)        # [3] 导入函数
+                                             # [4] APP 元数据
+APP="AppName"                                # [5] 默认值
 var_tags="tag1;tag2"
 var_cpu="2"
 var_ram="2048"
 ...
 
-header_info "$APP"                           # [6] Display header
-variables                                    # [7] Process arguments
-color                                        # [8] Setup colors
-catch_errors                                 # [9] Setup error handling
+header_info "$APP"                           # [6] 显示标题
+variables                                    # [7] 处理参数
+color                                        # [8] 设置颜色
+catch_errors                                 # [9] 设置错误处理
 
-function update_script() { ... }             # [10] Update function (optional)
+function update_script() { ... }             # [10] 更新函数（可选）
 
-start                                        # [11] Launch container creation
+start                                        # [11] 启动容器创建
 build_container
 description
 msg_ok "Completed successfully!\n"
@@ -136,9 +136,9 @@ msg_ok "Completed successfully!\n"
 
 ---
 
-## Complete Script Template
+## 完整脚本模板
 
-### 1. File Header & Imports
+### 1. 文件头和导入
 
 ```bash
 #!/usr/bin/env bash
@@ -147,89 +147,89 @@ msg_ok "Completed successfully!\n"
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/example/project
 
-# Import main orchestrator
+# 导入主编排器
 source <(curl -fsSL https://git.community-scripts.org/community-scripts/ProxmoxVE/raw/branch/main/misc/build.func)
 ```
 
-> **⚠️ IMPORTANT**: Before opening a PR, change URL to `community-scripts` repo!
+> **⚠️ 重要**: 在打开 PR 之前，将 URL 更改为 `community-scripts` 仓库！
 
-### 2. Application Metadata
+### 2. 应用程序元数据
 
 ```bash
-# Application Configuration
+# 应用程序配置
 APP="ApplicationName"
-var_tags="tag1;tag2;tag3"      # Max 3-4 tags, no spaces, semicolon-separated
+var_tags="tag1;tag2;tag3"      # 最多 3-4 个标签，无空格，分号分隔
 
-# Container Resources
-var_cpu="2"                    # CPU cores
-var_ram="2048"                 # RAM in MB
-var_disk="10"                  # Disk in GB
+# 容器资源
+var_cpu="2"                    # CPU 核心数
+var_ram="2048"                 # RAM（MB）
+var_disk="10"                  # 磁盘（GB）
 
-# Container Type & OS
-var_os="debian"                # Options: alpine, debian, ubuntu
-var_version="12"               # Alpine: 3.20+, Debian: 11-13, Ubuntu: 20.04+
-var_unprivileged="1"           # 1=unprivileged (secure), 0=privileged (rarely needed)
+# 容器类型和操作系统
+var_os="debian"                # 选项: alpine、debian、ubuntu
+var_version="12"               # Alpine: 3.20+、Debian: 11-13、Ubuntu: 20.04+
+var_unprivileged="1"           # 1=非特权（安全）、0=特权（很少需要）
 ```
 
-**Variable Naming Convention**:
-- Variables exposed to user: `var_*` (e.g., `var_cpu`, `var_hostname`, `var_ssh`)
-- Internal variables: lowercase (e.g., `container_id`, `app_version`)
+**变量命名约定**:
+- 向用户公开的变量: `var_*`（例如 `var_cpu`、`var_hostname`、`var_ssh`）
+- 内部变量: 小写（例如 `container_id`、`app_version`）
 
-### 3. Display & Initialization
+### 3. 显示和初始化
 
 ```bash
-# Display header ASCII art
+# 显示标题 ASCII 艺术
 header_info "$APP"
 
-# Process command-line arguments and load configuration
+# 处理命令行参数并加载配置
 variables
 
-# Setup ANSI color codes and formatting
+# 设置 ANSI 颜色代码和格式
 color
 
-# Initialize error handling (trap ERR, EXIT, INT, TERM)
+# 初始化错误处理（trap ERR、EXIT、INT、TERM）
 catch_errors
 ```
 
-### 4. Update Function (Highly Recommended)
+### 4. 更新函数（强烈推荐）
 
 ```bash
 function update_script() {
   header_info
 
-  # Always start with these checks
+  # 始终从这些检查开始
   check_container_storage
   check_container_resources
 
-  # Verify app is installed
+  # 验证应用已安装
   if [[ ! -d /opt/appname ]]; then
     msg_error "No ${APP} Installation Found!"
     exit
   fi
 
-  # Get latest version from GitHub
+  # 从 GitHub 获取最新版本
   RELEASE=$(curl -fsSL https://api.github.com/repos/user/repo/releases/latest | \
     grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
 
-  # Compare with saved version
+  # 与保存的版本比较
   if [[ ! -f /opt/${APP}_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/${APP}_version.txt)" ]]; then
     msg_info "Updating ${APP} to v${RELEASE}"
 
-    # Backup user data
+    # 备份用户数据
     cp -r /opt/appname /opt/appname-backup
 
-    # Perform update
+    # 执行更新
     cd /opt
     wget -q "https://github.com/user/repo/releases/download/v${RELEASE}/app-${RELEASE}.tar.gz"
     tar -xzf app-${RELEASE}.tar.gz
 
-    # Restore user data
+    # 恢复用户数据
     cp /opt/appname-backup/config/* /opt/appname/config/
 
-    # Cleanup
+    # 清理
     rm -rf app-${RELEASE}.tar.gz /opt/appname-backup
 
-    # Save new version
+    # 保存新版本
     echo "${RELEASE}" > /opt/${APP}_version.txt
 
     msg_ok "Updated ${APP} to v${RELEASE}"
@@ -241,19 +241,19 @@ function update_script() {
 }
 ```
 
-### 5. Script Launch
+### 5. 脚本启动
 
 ```bash
-# Start the container creation workflow
+# 启动容器创建工作流
 start
 
-# Build the container with selected configuration
+# 使用选定的配置构建容器
 build_container
 
-# Set container description/notes in Proxmox UI
+# 在 Proxmox UI 中设置容器描述/注释
 description
 
-# Display success message
+# 显示成功消息
 msg_ok "Completed successfully!\n"
 echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
 echo -e "${INFO}${YW} Access it using the following URL:${CL}"
@@ -262,58 +262,58 @@ echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8080${CL}"
 
 ---
 
-## Function Reference
+## 函数参考
 
-### Core Functions (From build.func)
+### 核心函数（来自 build.func）
 
 #### `variables()`
 
-**Purpose**: Initialize container variables, load user arguments, setup orchestration
+**目的**: 初始化容器变量，加载用户参数，设置编排
 
-**Triggered by**: Called automatically at script start
+**触发方式**: 在脚本启动时自动调用
 
-**Behavior**:
-1. Parse command-line arguments (if any)
-2. Generate random UUID for session tracking
-3. Load container storage from Proxmox
-4. Initialize application-specific defaults
-5. Setup SSH/environment configuration
+**行为**:
+1. 解析命令行参数（如果有）
+2. 生成用于会话跟踪的随机 UUID
+3. 从 Proxmox 加载容器存储
+4. 初始化应用程序特定的默认值
+5. 设置 SSH/环境配置
 
 #### `start()`
 
-**Purpose**: Launch the container creation menu with 5 installation modes
+**目的**: 启动具有 5 种安装模式的容器创建菜单
 
-**Menu Options**:
+**菜单选项**:
 ```
-1. Default Installation (Quick setup, predefined settings)
-2. Advanced Installation (19-step wizard with full control)
-3. User Defaults (Load ~/.community-scripts/default.vars)
-4. App Defaults (Load /defaults/AppName.vars)
-5. Settings Menu (Interactive mode selection)
+1. 默认安装（快速设置，预定义设置）
+2. 高级安装（19步向导，完全控制）
+3. 用户默认值（加载 ~/.community-scripts/default.vars）
+4. 应用默认值（加载 /defaults/AppName.vars）
+5. 设置菜单（交互式模式选择）
 ```
 
 #### `build_container()`
 
-**Purpose**: Main orchestrator for LXC container creation
+**目的**: LXC 容器创建的主编排器
 
-**Operations**:
-1. Validates all variables
-2. Creates LXC container via `pct create`
-3. Executes `install/AppName-install.sh` inside container
-4. Monitors installation progress
-5. Handles errors and rollback on failure
+**操作**:
+1. 验证所有变量
+2. 通过 `pct create` 创建 LXC 容器
+3. 在容器内执行 `install/AppName-install.sh`
+4. 监控安装进度
+5. 处理错误并在失败时回滚
 
 #### `description()`
 
-**Purpose**: Set container description/notes visible in Proxmox UI
+**目的**: 设置 Proxmox UI 中可见的容器描述/注释
 
 ---
 
-## Advanced Features
+## 高级功能
 
-### 1. Custom Configuration Menus
+### 1. 自定义配置菜单
 
-If your app has additional setup beyond standard vars:
+如果您的应用程序除了标准变量之外还有其他设置：
 
 ```bash
 custom_app_settings() {
@@ -329,13 +329,13 @@ custom_app_settings() {
 custom_app_settings
 ```
 
-### 2. Update Function Patterns
+### 2. 更新函数模式
 
-Save installed version for update checks
+保存已安装的版本以进行更新检查
 
-### 3. Health Check Functions
+### 3. 健康检查函数
 
-Add custom validation:
+添加自定义验证：
 
 ```bash
 function health_check() {
@@ -357,9 +357,9 @@ function health_check() {
 
 ---
 
-## Real Examples
+## 实际示例
 
-### Example 1: Simple Web App (Debian-based)
+### 示例 1: 简单的 Web 应用（基于 Debian）
 
 ```bash
 #!/usr/bin/env bash
@@ -380,7 +380,7 @@ color
 catch_errors
 
 function update_script() {
-  # Update logic here
+  # 更新逻辑在这里
 }
 
 start
@@ -391,82 +391,82 @@ msg_ok "Completed successfully!\n"
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Container Creation Fails
+### 容器创建失败
 
-**Symptom**: `pct create` exits with error code 209
+**症状**: `pct create` 以错误代码 209 退出
 
-**Solution**:
+**解决方案**:
 ```bash
-# Check existing containers
+# 检查现有容器
 pct list | grep CTID
 
-# Remove conflicting container
+# 删除冲突的容器
 pct destroy CTID
 
-# Retry ct/AppName.sh
+# 重试 ct/AppName.sh
 ```
 
-### Update Function Doesn't Detect New Version
+### 更新函数未检测到新版本
 
-**Debug**:
+**调试**:
 ```bash
-# Check version file
+# 检查版本文件
 cat /opt/AppName_version.txt
 
-# Test GitHub API
+# 测试 GitHub API
 curl -fsSL https://api.github.com/repos/user/repo/releases/latest | grep tag_name
 ```
 
 ---
 
-## Contribution Checklist
+## 贡献检查清单
 
-Before submitting a PR:
+在提交 PR 之前：
 
-### Script Structure
-- [ ] Shebang is `#!/usr/bin/env bash`
-- [ ] Imports `build.func` from community-scripts repo
-- [ ] Copyright header with author and source URL
-- [ ] APP variable matches filename
-- [ ] `var_tags` are semicolon-separated (no spaces)
+### 脚本结构
+- [ ] Shebang 是 `#!/usr/bin/env bash`
+- [ ] 从 community-scripts 仓库导入 `build.func`
+- [ ] 带有作者和源 URL 的版权标题
+- [ ] APP 变量与文件名匹配
+- [ ] `var_tags` 是分号分隔的（无空格）
 
-### Default Values
-- [ ] `var_cpu` set appropriately (2-4 for most apps)
-- [ ] `var_ram` set appropriately (1024-4096 MB minimum)
-- [ ] `var_disk` sufficient for app + data (5-20 GB)
-- [ ] `var_os` is realistic
+### 默认值
+- [ ] `var_cpu` 设置适当（大多数应用为 2-4）
+- [ ] `var_ram` 设置适当（最少 1024-4096 MB）
+- [ ] `var_disk` 足够用于应用 + 数据（5-20 GB）
+- [ ] `var_os` 是现实的
 
-### Functions
-- [ ] `update_script()` implemented
-- [ ] Update function checks if app installed
-- [ ] Proper error handling with `msg_error`
+### 函数
+- [ ] 实现了 `update_script()`
+- [ ] 更新函数检查应用是否已安装
+- [ ] 使用 `msg_error` 进行适当的错误处理
 
-### Testing
-- [ ] Script tested with default installation
-- [ ] Script tested with advanced (19-step) installation
-- [ ] Update function tested on existing installation
-
----
-
-## Best Practices
-
-### ✅ DO:
-
-1. **Use meaningful defaults**
-2. **Implement version tracking**
-3. **Handle edge cases**
-4. **Use proper messaging with msg_info/msg_ok/msg_error**
-
-### ❌ DON'T:
-
-1. **Hardcode versions**
-2. **Use custom color codes** (use built-in variables)
-3. **Forget error handling**
-4. **Leave temporary files**
+### 测试
+- [ ] 使用默认安装测试脚本
+- [ ] 使用高级（19步）安装测试脚本
+- [ ] 在现有安装上测试更新函数
 
 ---
 
-**Last Updated**: December 2025
-**Compatibility**: ProxmoxVE with build.func v3+
+## 最佳实践
+
+### ✅ 应该做的:
+
+1. **使用有意义的默认值**
+2. **实现版本跟踪**
+3. **处理边缘情况**
+4. **使用 msg_info/msg_ok/msg_error 进行适当的消息传递**
+
+### ❌ 不应该做的:
+
+1. **硬编码版本**
+2. **使用自定义颜色代码**（使用内置变量）
+3. **忘记错误处理**
+4. **留下临时文件**
+
+---
+
+**最后更新**: 2025年12月
+**兼容性**: ProxmoxVE with build.func v3+

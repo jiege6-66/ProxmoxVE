@@ -30,9 +30,9 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "update-lxcs" "pve"
 
 header_info
-echo "Loading..."
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE LXC Updater" --yesno "This Will Update LXC Containers. Proceed?" 10 58
-if whiptail --backtitle "Proxmox VE Helper Scripts" --title "Skip Not-Running Containers" --yesno "Do you want to skip containers that are not currently running?" 10 58; then
+echo "加载中..."
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE LXC 更新器" --yesno "这将更新 LXC 容器。是否继续？" 10 58
+if whiptail --backtitle "Proxmox VE Helper Scripts" --title "跳过未运行的容器" --yesno "您想跳过当前未运行的容器吗？" 10 58; then
   SKIP_STOPPED="yes"
 else
   SKIP_STOPPED="no"
@@ -46,7 +46,7 @@ while read -r TAG ITEM; do
   ((${#ITEM} + OFFSET > MSG_MAX_LENGTH)) && MSG_MAX_LENGTH=${#ITEM}+OFFSET
   EXCLUDE_MENU+=("$TAG" "$ITEM " "OFF")
 done < <(pct list | awk 'NR>1')
-excluded_containers=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Containers on $NODE" --checklist "\nSelect containers to skip from updates:\n" 16 $((MSG_MAX_LENGTH + 23)) 6 "${EXCLUDE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
+excluded_containers=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Containers on $NODE" --checklist "\n选择要跳过更新的容器:\n" 16 $((MSG_MAX_LENGTH + 23)) 6 "${EXCLUDE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
 
 function needs_reboot() {
   local container=$1
@@ -88,24 +88,24 @@ header_info
 for container in $(pct list | awk '{if(NR>1) print $1}'); do
   if [[ " ${excluded_containers[@]} " =~ " $container " ]]; then
     header_info
-    echo -e "${BL}[Info]${GN} Skipping ${BL}$container${CL}"
+    echo -e "${BL}[信息]${GN} 跳过 ${BL}$container${CL}"
     sleep 1
   else
     status=$(pct status $container)
     if [ "$SKIP_STOPPED" == "yes" ] && [ "$status" == "status: stopped" ]; then
       header_info
-      echo -e "${BL}[Info]${GN} Skipping ${BL}$container${CL}${GN} (not running)${CL}"
+      echo -e "${BL}[信息]${GN} 跳过 ${BL}$container${CL}${GN} (未运行)${CL}"
       sleep 1
       continue
     fi
     template=$(pct config $container | grep -q "template:" && echo "true" || echo "false")
     if [ "$template" == "false" ] && [ "$status" == "status: stopped" ]; then
-      echo -e "${BL}[Info]${GN} Starting${BL} $container ${CL} \n"
+      echo -e "${BL}[信息]${GN} 正在启动${BL} $container ${CL} \n"
       pct start $container
-      echo -e "${BL}[Info]${GN} Waiting For${BL} $container${CL}${GN} To Start ${CL} \n"
+      echo -e "${BL}[信息]${GN} 等待${BL} $container${CL}${GN} 启动 ${CL} \n"
       sleep 5
       update_container $container
-      echo -e "${BL}[Info]${GN} Shutting down${BL} $container ${CL} \n"
+      echo -e "${BL}[信息]${GN} 正在关闭${BL} $container ${CL} \n"
       pct shutdown $container &
     elif [ "$status" == "status: running" ]; then
       update_container $container
@@ -117,16 +117,16 @@ for container in $(pct list | awk '{if(NR>1) print $1}'); do
     fi
     # check if patchmon agent is present in container and run a report if found
     if pct exec "$container" -- [ -e "/usr/local/bin/patchmon-agent" ]; then
-      echo -e "${BL}[Info]${GN} patchmon-agent found in ${BL} $container ${CL}, triggering report. \n"
+      echo -e "${BL}[信息]${GN} 在 ${BL} $container ${CL} 中找到 patchmon-agent，正在触发报告。\n"
       pct exec "$container" -- "/usr/local/bin/patchmon-agent" "report"
     fi
   fi
 done
 wait
 header_info
-echo -e "${GN}The process is complete, and the containers have been successfully updated.${CL}\n"
+echo -e "${GN}过程完成，容器已成功更新。${CL}\n"
 if [ "${#containers_needing_reboot[@]}" -gt 0 ]; then
-  echo -e "${RD}The following containers require a reboot:${CL}"
+  echo -e "${RD}以下容器需要重启:${CL}"
   for container_name in "${containers_needing_reboot[@]}"; do
     echo "$container_name"
   done

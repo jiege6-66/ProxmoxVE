@@ -52,19 +52,19 @@ function error_exit() {
 clear
 header_info
 if command -v pveversion >/dev/null 2>&1; then
-  echo -e "⚠️  Can't Install on Proxmox "
+  echo -e "⚠️  无法在 Proxmox 上安装 "
   exit
 fi
 if [ -e /etc/alpine-release ]; then
-  echo -e "⚠️  Can't Install on Alpine"
+  echo -e "⚠️  无法在 Alpine 上安装"
   exit
 fi
 while true; do
-  read -p "This will Install ${APP} on $hostname. Proceed(y/n)?" yn
+  read -p "这将在 $hostname 上安装 ${APP}。是否继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 
@@ -78,17 +78,17 @@ function msg_ok() {
   echo -e "${BFR} ${CM} ${GN}${msg}${CL}"
 }
 
-msg_info "Installing Dependencies"
+msg_info "正在安装依赖项"
 apt-get update &>/dev/null
 apt-get install -y curl &>/dev/null
 apt-get install -y git &>/dev/null
-msg_ok "Installed Dependencies"
+msg_ok "已安装依赖项"
 
 VERSION=$(curl -fsSL https://api.github.com/repos/coder/code-server/releases/latest |
   grep "tag_name" |
   awk '{print substr($2, 3, length($2)-4) }')
 
-msg_info "Installing Code-Server v${VERSION}"
+msg_info "正在安装 Code-Server v${VERSION}"
 curl -fOL https://github.com/coder/code-server/releases/download/v"$VERSION"/code-server_"${VERSION}"_amd64.deb &>/dev/null
 dpkg -i code-server_"${VERSION}"_amd64.deb &>/dev/null
 rm -rf code-server_"${VERSION}"_amd64.deb
@@ -101,7 +101,7 @@ password:
 cert: false
 EOF
 systemctl restart code-server@"$USER"
-msg_ok "Installed Code-Server v${VERSION} on $hostname"
+msg_ok "已在 $hostname 上安装 Code-Server v${VERSION}"
 
-echo -e "${APP} should be reachable by going to the following URL.
+echo -e "${APP} 应该可以通过以下 URL 访问。
          ${BL}http://$IP:8680${CL} \n"

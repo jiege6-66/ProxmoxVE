@@ -30,21 +30,21 @@ declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "add-tailscale
 header_info
 
 if ! command -v pveversion &>/dev/null; then
-  msg_error "This script must be run on the Proxmox VE host (not inside an LXC container)"
+  msg_error "此脚本必须在 Proxmox VE 主机上运行（不能在 LXC 容器内运行）"
   exit 1
 fi
 
 while true; do
-  read -rp "This will add Tailscale to an existing LXC Container ONLY. Proceed (y/n)? " yn
+  read -rp "这将仅向现有 LXC 容器添加 Tailscale。是否继续 (y/n)? " yn
   case "$yn" in
   [Yy]*) break ;;
   [Nn]*) exit 0 ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 
 header_info
-msg_info "Loading container list..."
+msg_info "正在加载容器列表..."
 
 NODE=$(hostname)
 MSG_MAX_LENGTH=0
@@ -61,7 +61,7 @@ done < <(pct list | awk 'NR>1')
 CTID=""
 while [[ -z "${CTID}" ]]; do
   CTID=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Containers on $NODE" --radiolist \
-    "\nSelect a container to add Tailscale to:\n" \
+    "\n选择要添加 Tailscale 的容器：\n" \
     16 $((MSG_MAX_LENGTH + 23)) 6 \
     "${CTID_MENU[@]}" 3>&1 1>&2 2>&3) || exit 1
 done
@@ -73,7 +73,7 @@ grep -q "lxc.cgroup2.devices.allow: c 10:200 rwm" "$CTID_CONFIG_PATH" || echo "l
 grep -q "lxc.mount.entry: /dev/net/tun" "$CTID_CONFIG_PATH" || echo "lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file" >>"$CTID_CONFIG_PATH"
 
 header_info
-msg_info "Installing Tailscale in CT $CTID"
+msg_info "正在 CT $CTID 中安装 Tailscale"
 
 pct exec "$CTID" -- bash -c '
 set -e
@@ -146,5 +146,5 @@ TAGS=$(awk -F': ' '/^tags:/ {print $2}' "$CTID_CONFIG_PATH")
 TAGS="${TAGS:+$TAGS; }tailscale"
 pct set "$CTID" -tags "$TAGS"
 
-msg_ok "Tailscale installed on CT $CTID"
-msg_info "Reboot the container, then run 'tailscale up' inside the container to activate."
+msg_ok "已在 CT $CTID 上安装 Tailscale"
+msg_info "重启容器，然后在容器内运行 'tailscale up' 以激活。"

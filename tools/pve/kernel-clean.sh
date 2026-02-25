@@ -33,15 +33,15 @@ available_kernels=$(dpkg --list | grep 'kernel-.*-pve' | awk '{print $2}' | grep
 header_info
 
 if [ -z "$available_kernels" ]; then
-  echo -e "${GN}No old kernels detected. Current kernel: ${current_kernel}${CL}"
+  echo -e "${GN}未检测到旧内核。当前内核: ${current_kernel}${CL}"
   exit 0
 fi
 
-echo -e "${GN}Currently running kernel: ${current_kernel}${CL}"
-echo -e "${YW}Available kernels for removal:${CL}"
+echo -e "${GN}当前运行的内核: ${current_kernel}${CL}"
+echo -e "${YW}可移除的内核:${CL}"
 echo "$available_kernels" | nl -w 2 -s '. '
 
-echo -e "\n${YW}Select kernels to remove (comma-separated, e.g., 1,2):${CL}"
+echo -e "\n${YW}选择要移除的内核（用逗号分隔，例如 1,2）:${CL}"
 read -r selected
 
 # Parse selection
@@ -56,30 +56,30 @@ for index in "${selected_indices[@]}"; do
 done
 
 if [ ${#kernels_to_remove[@]} -eq 0 ]; then
-  echo -e "${RD}No valid selection made. Exiting.${CL}"
+  echo -e "${RD}未进行有效选择。正在退出。${CL}"
   exit 1
 fi
 
 # Confirm removal
-echo -e "${YW}Kernels to be removed:${CL}"
+echo -e "${YW}将要移除的内核:${CL}"
 printf "%s\n" "${kernels_to_remove[@]}"
-read -rp "Proceed with removal? (y/n): " confirm
+read -rp "是否继续移除？(y/n): " confirm
 if [[ "$confirm" != "y" ]]; then
-  echo -e "${RD}Aborted.${CL}"
+  echo -e "${RD}已中止。${CL}"
   exit 1
 fi
 
 # Remove kernels
 for kernel in "${kernels_to_remove[@]}"; do
-  echo -e "${YW}Removing $kernel...${CL}"
+  echo -e "${YW}正在移除 $kernel...${CL}"
   if apt-get purge -y "$kernel" >/dev/null 2>&1; then
-    echo -e "${GN}Successfully removed: $kernel${CL}"
+    echo -e "${GN}成功移除: $kernel${CL}"
   else
-    echo -e "${RD}Failed to remove: $kernel. Check dependencies.${CL}"
+    echo -e "${RD}移除失败: $kernel。请检查依赖关系。${CL}"
   fi
 done
 
 # Clean up and update GRUB
-echo -e "${YW}Cleaning up...${CL}"
+echo -e "${YW}正在清理...${CL}"
 apt-get autoremove -y >/dev/null 2>&1 && update-grub >/dev/null 2>&1
-echo -e "${GN}Cleanup and GRUB update complete.${CL}"
+echo -e "${GN}清理和 GRUB 更新完成。${CL}"

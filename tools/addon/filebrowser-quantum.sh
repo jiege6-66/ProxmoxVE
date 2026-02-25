@@ -52,7 +52,7 @@ elif [[ -f "/etc/debian_version" ]]; then
   SERVICE_PATH="/etc/systemd/system/filebrowser.service"
   PKG_MANAGER="apt-get install -y"
 else
-  echo -e "${CROSS} Unsupported OS detected. Exiting."
+  echo -e "${CROSS} 检测到不支持的操作系统。正在退出。"
   exit 1
 fi
 
@@ -69,11 +69,11 @@ LEGACY_SERVICE_DEB="/etc/systemd/system/filebrowser.service"
 LEGACY_SERVICE_ALP="/etc/init.d/filebrowser"
 
 if [[ -f "$LEGACY_DB" || -f "$LEGACY_BIN" && ! -f "$CONFIG_PATH" ]]; then
-  echo -e "${YW}⚠️ Detected legacy FileBrowser installation.${CL}"
-  echo -n "Uninstall legacy FileBrowser and continue with Quantum install? (y/n): "
+  echo -e "${YW}⚠️ 检测到旧版 FileBrowser 安装。${CL}"
+  echo -n "卸载旧版 FileBrowser 并继续安装 Quantum 版本？(y/n): "
   read -r remove_legacy
   if [[ "${remove_legacy,,}" =~ ^(y|yes)$ ]]; then
-    msg_info "Uninstalling legacy FileBrowser"
+    msg_info "正在卸载旧版 FileBrowser"
     if [[ -f "$LEGACY_SERVICE_DEB" ]]; then
       systemctl disable --now filebrowser.service &>/dev/null
       rm -f "$LEGACY_SERVICE_DEB"
@@ -83,20 +83,20 @@ if [[ -f "$LEGACY_DB" || -f "$LEGACY_BIN" && ! -f "$CONFIG_PATH" ]]; then
       rm -f "$LEGACY_SERVICE_ALP"
     fi
     rm -f "$LEGACY_BIN" "$LEGACY_DB"
-    msg_ok "Legacy FileBrowser removed"
+    msg_ok "已移除旧版 FileBrowser"
   else
-    echo -e "${YW}❌ Installation aborted by user.${CL}"
+    echo -e "${YW}❌ 用户已中止安装。${CL}"
     exit 0
   fi
 fi
 
 # Existing installation
 if [[ -f "$INSTALL_PATH" ]]; then
-  echo -e "${YW}⚠️ ${APP} is already installed.${CL}"
-  echo -n "Uninstall ${APP}? (y/N): "
+  echo -e "${YW}⚠️ ${APP} 已安装。${CL}"
+  echo -n "卸载 ${APP}? (y/N): "
   read -r uninstall_prompt
   if [[ "${uninstall_prompt,,}" =~ ^(y|yes)$ ]]; then
-    msg_info "Uninstalling ${APP}"
+    msg_info "正在卸载 ${APP}"
     if [[ "$OS" == "Debian" ]]; then
       systemctl disable --now filebrowser.service &>/dev/null
       rm -f "$SERVICE_PATH"
@@ -106,52 +106,52 @@ if [[ -f "$INSTALL_PATH" ]]; then
       rm -f "$SERVICE_PATH"
     fi
     rm -f "$INSTALL_PATH" "$CONFIG_PATH"
-    msg_ok "${APP} has been uninstalled."
+    msg_ok "${APP} 已卸载。"
     exit 0
   fi
 
-  echo -n "Update ${APP}? (y/N): "
+  echo -n "更新 ${APP}? (y/N): "
   read -r update_prompt
   if [[ "${update_prompt,,}" =~ ^(y|yes)$ ]]; then
-    msg_info "Updating ${APP}"
+    msg_info "正在更新 ${APP}"
     if ! command -v curl &>/dev/null; then $PKG_MANAGER curl &>/dev/null; fi
     curl -fsSL https://github.com/gtsteffaniak/filebrowser/releases/latest/download/linux-amd64-filebrowser -o "$TMP_BIN"
     chmod +x "$TMP_BIN"
     mv -f "$TMP_BIN" /usr/local/bin/filebrowser
-    msg_ok "Updated ${APP}"
+    msg_ok "已更新 ${APP}"
     exit 0
   else
-    echo -e "${YW}⚠️ Update skipped. Exiting.${CL}"
+    echo -e "${YW}⚠️ 已跳过更新。正在退出。${CL}"
     exit 0
   fi
 fi
 
-echo -e "${YW}⚠️ ${APP} is not installed.${CL}"
-echo -n "Enter port number (Default: ${DEFAULT_PORT}): "
+echo -e "${YW}⚠️ ${APP} 未安装。${CL}"
+echo -n "输入端口号（默认：${DEFAULT_PORT}）: "
 read -r PORT
 PORT=${PORT:-$DEFAULT_PORT}
 
-echo -n "Install ${APP}? (y/n): "
+echo -n "安装 ${APP}? (y/n): "
 read -r install_prompt
 if ! [[ "${install_prompt,,}" =~ ^(y|yes)$ ]]; then
-  echo -e "${YW}⚠️ Installation skipped. Exiting.${CL}"
+  echo -e "${YW}⚠️ 已跳过安装。正在退出。${CL}"
   exit 0
 fi
 
-msg_info "Installing ${APP} on ${OS}"
+msg_info "正在 ${OS} 上安装 ${APP}"
 $PKG_MANAGER curl ffmpeg &>/dev/null
 curl -fsSL https://github.com/gtsteffaniak/filebrowser/releases/latest/download/linux-amd64-filebrowser -o "$TMP_BIN"
 chmod +x "$TMP_BIN"
 mv -f "$TMP_BIN" /usr/local/bin/filebrowser
-msg_ok "Installed ${APP}"
+msg_ok "已安装 ${APP}"
 
-msg_info "Preparing configuration directory"
+msg_info "正在准备配置目录"
 mkdir -p /usr/local/community-scripts
 chown root:root /usr/local/community-scripts
 chmod 755 /usr/local/community-scripts
-msg_ok "Directory prepared"
+msg_ok "目录已准备"
 
-echo -n "Use No Authentication? (y/N): "
+echo -n "使用无身份验证？(y/N): "
 read -r noauth_prompt
 
 # === YAML CONFIG GENERATION ===
@@ -178,7 +178,7 @@ auth:
   methods:
     noauth: true
 EOF
-  msg_ok "Configured with no authentication"
+  msg_ok "已配置为无身份验证"
 else
   cat <<EOF >"$CONFIG_PATH"
 server:
@@ -202,10 +202,10 @@ auth:
   adminUsername: admin
   adminPassword: helper-scripts.com
 EOF
-  msg_ok "Configured with default admin (admin / helper-scripts.com)"
+  msg_ok "已配置默认管理员（admin / helper-scripts.com）"
 fi
 
-msg_info "Creating service"
+msg_info "正在创建服务"
 if [[ "$OS" == "Debian" ]]; then
   cat <<EOF >"$SERVICE_PATH"
 [Unit]
@@ -241,5 +241,5 @@ EOF
   rc-service filebrowser start &>/dev/null
 fi
 
-msg_ok "Service created successfully"
-echo -e "${CM} ${GN}${APP} is reachable at: ${BL}http://$IP:$PORT${CL}"
+msg_ok "服务创建成功"
+echo -e "${CM} ${GN}${APP} 可通过以下地址访问: ${BL}http://$IP:$PORT${CL}"

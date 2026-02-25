@@ -1,39 +1,39 @@
-# 🧪 Code Audit: LXC Script Flow
+# 🧪 代码审计：LXC 脚本流程
 
-This guide explains the current execution flow and what to verify during reviews.
+本指南解释当前的执行流程以及在审查期间需要验证的内容。
 
-## Execution Flow (CT + Install)
+## 执行流程（CT + Install）
 
-1. `ct/appname.sh` runs on the Proxmox host and sources `misc/build.func`.
-2. `build.func` orchestrates prompts, container creation, and invokes the install script.
-3. Inside the container, `misc/install.func` exposes helper functions via `$FUNCTIONS_FILE_PATH`.
-4. `install/appname-install.sh` performs the application install.
-5. The CT script prints the completion message.
+1. `ct/appname.sh` 在 Proxmox 主机上运行并引用 `misc/build.func`。
+2. `build.func` 协调提示、容器创建，并调用安装脚本。
+3. 在容器内部，`misc/install.func` 通过 `$FUNCTIONS_FILE_PATH` 暴露辅助函数。
+4. `install/appname-install.sh` 执行应用程序安装。
+5. CT 脚本打印完成消息。
 
-## Audit Checklist
+## 审计清单
 
-### CT Script (ct/)
+### CT 脚本（ct/）
 
-- Sources `misc/build.func` from `community-scripts/ProxmoxVE/main` (setup-fork.sh updates for forks).
-- Uses `check_for_gh_release` + `fetch_and_deploy_gh_release` for updates.
-- No Docker-based installs.
+- 从 `community-scripts/ProxmoxVE/main` 引用 `misc/build.func`（setup-fork.sh 为分支更新）。
+- 使用 `check_for_gh_release` + `fetch_and_deploy_gh_release` 进行更新。
+- 不使用基于 Docker 的安装。
 
-### Install Script (install/)
+### 安装脚本（install/）
 
-- Sources `$FUNCTIONS_FILE_PATH`.
-- Uses `tools.func` helpers (setup\_\*).
-- Ends with `motd_ssh`, `customize`, `cleanup_lxc`.
+- 引用 `$FUNCTIONS_FILE_PATH`。
+- 使用 `tools.func` 辅助函数（setup\_\*）。
+- 以 `motd_ssh`、`customize`、`cleanup_lxc` 结束。
 
-### JSON Metadata
+### JSON 元数据
 
-- File in `frontend/public/json/<appname>.json` matches template schema.
+- `frontend/public/json/<appname>.json` 中的文件与模板架构匹配。
 
-### Testing
+### 测试
 
-- Test via curl from your fork (CT script only).
-- Wait 10-30 seconds after push.
+- 通过从您的分支 curl 测试（仅 CT 脚本）。
+- 推送后等待 10-30 秒。
 
-## References
+## 参考
 
 - `docs/contribution/templates_ct/AppName.sh`
 - `docs/contribution/templates_install/AppName-install.sh`

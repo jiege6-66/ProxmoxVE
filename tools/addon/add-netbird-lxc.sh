@@ -25,15 +25,15 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "add-netbird-lxc" "addon"
 
 while true; do
-  read -p "This will add NetBird to an existing LXC Container ONLY. Proceed(y/n)?" yn
+  read -p "这将仅向现有 LXC 容器添加 NetBird。是否继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 header_info
-echo "Loading..."
+echo "加载中..."
 
 function msg() {
   local TEXT="$1"
@@ -54,25 +54,25 @@ done < <(pct list | awk 'NR>1')
 
 while [ -z "${CTID:+x}" ]; do
   CTID=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Containers on $NODE" --radiolist \
-    "\nSelect a container to add NetBird to:\n" \
+    "\n选择要添加 NetBird 的容器：\n" \
     16 $(($MSG_MAX_LENGTH + 23)) 6 \
     "${CTID_MENU[@]}" 3>&1 1>&2 2>&3)
 done
 
 LXC_STATUS=$(pct status "$CTID" | awk '{print $2}')
 if [[ "$LXC_STATUS" != "running" ]]; then
-  msg "\e[1;33m The container $CTID is not running. Starting it now...\e[0m"
+  msg "\e[1;33m 容器 $CTID 未运行。正在启动...\e[0m"
   pct start "$CTID"
   while [[ "$(pct status "$CTID" | awk '{print $2}')" != "running" ]]; do
-    msg "\e[1;33m Waiting for the container to start...\e[0m"
+    msg "\e[1;33m 等待容器启动...\e[0m"
     sleep 2
   done
-  msg "\e[1;32m Container $CTID is now running.\e[0m"
+  msg "\e[1;32m 容器 $CTID 现已运行。\e[0m"
 fi
 
 DISTRO=$(pct exec "$CTID" -- cat /etc/os-release | grep -w "ID" | cut -d'=' -f2 | tr -d '"')
 if [[ "$DISTRO" != "debian" && "$DISTRO" != "ubuntu" ]]; then
-  msg "\e[1;31m Error: This script only supports Debian or Ubuntu LXC containers. Detected: $DISTRO. Aborting...\e[0m"
+  msg "\e[1;31m 错误：此脚本仅支持 Debian 或 Ubuntu LXC 容器。检测到：$DISTRO。正在中止...\e[0m"
   exit 1
 fi
 
@@ -82,7 +82,7 @@ lxc.cgroup2.devices.allow: c 10:200 rwm
 lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
 EOF
 header_info
-msg "Installing NetBird..."
+msg "正在安装 NetBird..."
 pct exec "$CTID" -- bash -c '
 if ! command -v curl &>/dev/null; then
   apt-get update -qq
@@ -103,6 +103,6 @@ OVERRIDE
   systemctl daemon-reload
 fi
 '
-msg "\e[1;32m ✔ Installed NetBird.\e[0m"
+msg "\e[1;32m ✔ 已安装 NetBird。\e[0m"
 sleep 2
-msg "\e[1;31m Reboot ${CTID} LXC to apply the changes, then run netbird up in the LXC console\e[0m"
+msg "\e[1;31m 重启 ${CTID} LXC 以应用更改，然后在 LXC 控制台中运行 netbird up\e[0m"

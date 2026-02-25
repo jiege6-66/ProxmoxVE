@@ -29,17 +29,17 @@ chmod 600 "$LOGFILE"
 echo -e "\n----- $(date '+%Y-%m-%d %H:%M:%S') | fstrim Run by $(whoami) on $(hostname) -----" >>"$LOGFILE"
 
 header_info
-echo "Loading..."
+echo "加载中..."
 
 whiptail --backtitle "Proxmox VE Helper Scripts" \
-  --title "About fstrim (LXC)" \
-  --msgbox "The 'fstrim' command releases unused blocks back to the storage device. This only makes sense for containers on SSD, NVMe, Thin-LVM, or storage with discard/TRIM support.\n\nIf your root filesystem or container disks are on classic HDDs, thick LVM, or unsupported storage types, running fstrim will have no effect.\n\nRecommended:\n- Use fstrim only on SSD, NVMe, or thin-provisioned storage with discard enabled.\n- For ZFS, ensure 'autotrim=on' is set on your pool.\n" 16 88
+  --title "关于 fstrim (LXC)" \
+  --msgbox "'fstrim' 命令将未使用的块释放回存储设备。这仅对 SSD、NVMe、Thin-LVM 或支持 discard/TRIM 的存储上的容器有意义。\n\n如果您的根文件系统或容器磁盘位于经典 HDD、厚 LVM 或不支持的存储类型上，运行 fstrim 将不会有任何效果。\n\n建议：\n- 仅在启用了 discard 的 SSD、NVMe 或精简配置存储上使用 fstrim。\n- 对于 ZFS，请确保在您的池上设置了 'autotrim=on'。\n" 16 88
 
 ROOT_FS=$(df -Th "/" | awk 'NR==2 {print $2}')
 if [ "$ROOT_FS" != "ext4" ]; then
   whiptail --backtitle "Proxmox VE Helper Scripts" \
-    --title "Warning" \
-    --yesno "Root filesystem is not ext4 ($ROOT_FS).\nContinue anyway?" 12 80 || exit 1
+    --title "警告" \
+    --yesno "根文件系统不是 ext4 ($ROOT_FS)。\n仍然继续？" 12 80 || exit 1
 fi
 
 NODE=$(hostname)
@@ -74,7 +74,7 @@ done
 
 excluded_containers_raw=$(whiptail --backtitle "Proxmox VE Helper Scripts" \
   --title "Containers on $NODE" \
-  --checklist "\nSelect containers to skip from trimming:\n" \
+  --checklist "\n选择要跳过修剪的容器:\n" \
   20 $((MAX_NAME_LEN + MAX_STAT_LEN + 20)) 12 "${EXCLUDE_MENU[@]}" 3>&1 1>&2 2>&3)
 [ $? -ne 0 ] && exit
 read -ra EXCLUDED <<<$(echo "$excluded_containers_raw" | tr -d '"')
@@ -88,8 +88,8 @@ if [ ${#STOPPED_MENU[@]} -gt 0 ]; then
       continue
     fi
     header_info
-    echo -e "${BL}[Info]${GN} Container $CTID ($DESC) is currently stopped.${CL}"
-    read -rp "Temporarily start for fstrim? [y/N]: " answer
+    echo -e "${BL}[信息]${GN} 容器 $CTID ($DESC) 当前已停止。${CL}"
+    read -rp "临时启动以进行 fstrim？[y/N]: " answer
     if [[ "$answer" =~ ^[Yy]$ ]]; then
       TO_START+=("$CTID")
     fi
@@ -105,34 +105,34 @@ function trim_container() {
   local container="$1"
   local name="$2"
   header_info
-  echo -e "${BL}[Info]${GN} Trimming ${BL}$container${CL} \n"
+  echo -e "${BL}[信息]${GN} 正在修剪 ${BL}$container${CL} \n"
 
   local before_trim after_trim
   local lv_name="vm-${container}-disk-0"
   if lvs --noheadings -o lv_name 2>/dev/null | grep -qw "$lv_name"; then
     before_trim=$(lvs --noheadings -o lv_name,data_percent 2>/dev/null | awk -v ctid="$lv_name" '$1 == ctid {gsub(/%/, "", $2); print $2}')
-    [[ -n "$before_trim" ]] && echo -e "${RD}Data before trim $before_trim%${CL}" || echo -e "${RD}Data before trim: not available${CL}"
+    [[ -n "$before_trim" ]] && echo -e "${RD}修剪前数据 $before_trim%${CL}" || echo -e "${RD}修剪前数据: 不可用${CL}"
   else
     before_trim=""
-    echo -e "${RD}Data before trim: not available (non-LVM storage)${CL}"
+    echo -e "${RD}修剪前数据: 不可用（非 LVM 存储）${CL}"
   fi
 
   local fstrim_output
   fstrim_output=$(pct fstrim "$container" 2>&1)
   if echo "$fstrim_output" | grep -qi "not supported"; then
-    echo -e "${RD}fstrim isnt supported on this storage!${CL}"
+    echo -e "${RD}此存储不支持 fstrim！${CL}"
   elif echo "$fstrim_output" | grep -Eq '([0-9]+(\.[0-9]+)?\s*[KMGT]?B)'; then
-    echo -e "${GN}fstrim result: $fstrim_output${CL}"
+    echo -e "${GN}fstrim 结果: $fstrim_output${CL}"
   else
-    echo -e "${RD}fstrim result: $fstrim_output${CL}"
+    echo -e "${RD}fstrim 结果: $fstrim_output${CL}"
   fi
 
   if lvs --noheadings -o lv_name 2>/dev/null | grep -qw "$lv_name"; then
     after_trim=$(lvs --noheadings -o lv_name,data_percent 2>/dev/null | awk -v ctid="$lv_name" '$1 == ctid {gsub(/%/, "", $2); print $2}')
-    [[ -n "$after_trim" ]] && echo -e "${GN}Data after trim $after_trim%${CL}" || echo -e "${GN}Data after trim: not available${CL}"
+    [[ -n "$after_trim" ]] && echo -e "${GN}修剪后数据 $after_trim%${CL}" || echo -e "${GN}修剪后数据: 不可用${CL}"
   else
     after_trim=""
-    echo -e "${GN}Data after trim: not available (non-LVM storage)${CL}"
+    echo -e "${GN}修剪后数据: 不可用（非 LVM 存储）${CL}"
   fi
 
   # Logging
@@ -146,25 +146,25 @@ for LINE in "${CTLINES[@]}"; do
   NAME=$(awk '{print $3}' <<<"$LINE")
   if [[ " ${EXCLUDED[*]} " =~ " $CTID " ]]; then
     header_info
-    echo -e "${BL}[Info]${GN} Skipping $CTID ($NAME, excluded)${CL}"
+    echo -e "${BL}[信息]${GN} 跳过 $CTID ($NAME, 已排除)${CL}"
     sleep 0.5
     continue
   fi
   if pct config "$CTID" | grep -q "template:"; then
     header_info
-    echo -e "${BL}[Info]${GN} Skipping $CTID ($NAME, template)${CL}\n"
+    echo -e "${BL}[信息]${GN} 跳过 $CTID ($NAME, 模板)${CL}\n"
     sleep 0.5
     continue
   fi
   if [[ "$STATUS" != "running" ]]; then
     if [[ -n "${WAS_STOPPED[$CTID]:-}" ]]; then
       header_info
-      echo -e "${BL}[Info]${GN} Starting $CTID ($NAME) for trim...${CL}"
+      echo -e "${BL}[信息]${GN} 正在启动 $CTID ($NAME) 以进行修剪...${CL}"
       pct start "$CTID"
       sleep 2
     else
       header_info
-      echo -e "${BL}[Info]${GN} Skipping $CTID ($NAME, not running, not selected)${CL}"
+      echo -e "${BL}[信息]${GN} 跳过 $CTID ($NAME, 未运行, 未选择)${CL}"
       sleep 0.5
       continue
     fi
@@ -173,21 +173,21 @@ for LINE in "${CTLINES[@]}"; do
   trim_container "$CTID" "$NAME"
 
   if [[ -n "${WAS_STOPPED[$CTID]:-}" ]]; then
-    read -rp "Stop LXC $CTID ($NAME) again after trim? [Y/n]: " answer
+    read -rp "修剪后再次停止 LXC $CTID ($NAME)？[Y/n]: " answer
     if [[ ! "$answer" =~ ^[Nn]$ ]]; then
       header_info
-      echo -e "${BL}[Info]${GN} Stopping $CTID ($NAME) again...${CL}"
+      echo -e "${BL}[信息]${GN} 再次停止 $CTID ($NAME)...${CL}"
       pct stop "$CTID"
       sleep 1
     else
       header_info
-      echo -e "${BL}[Info]${GN} Leaving $CTID ($NAME) running as requested.${CL}"
+      echo -e "${BL}[信息]${GN} 按要求保持 $CTID ($NAME) 运行。${CL}"
       sleep 1
     fi
   fi
 done
 
 header_info
-echo -e "${GN}Finished, LXC Containers Trimmed.${CL} \n"
-echo -e "${BL}If you want to see the complete log: cat $LOGFILE${CL}"
+echo -e "${GN}完成，LXC 容器已修剪。${CL} \n"
+echo -e "${BL}如果您想查看完整日志: cat $LOGFILE${CL}"
 exit 0

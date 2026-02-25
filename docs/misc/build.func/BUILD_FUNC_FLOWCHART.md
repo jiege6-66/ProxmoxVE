@@ -1,85 +1,86 @@
-# build.func Execution Flowchart
+# build.func 执行流程图
 
-## Main Execution Flow
+## 主执行流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                                START()                                          │
-│  Entry point when build.func is sourced or executed                            │
+│  引用或执行 build.func 时的入口点                                               │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                          Check Environment                                      │
-│  • Detect if running on Proxmox host vs inside container                      │
-│  • Capture hard environment variables                                          │
-│  • Set CT_TYPE based on context                                               │
+│                          检查环境                                               │
+│  • 检测是在 Proxmox 主机上运行还是在容器内运行                                  │
+│  • 捕获硬环境变量                                                               │
+│  • 根据上下文设置 CT_TYPE                                                       │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Determine Action                                        │
-│  • If CT_TYPE="update" → update_script()                                       │
-│  • If CT_TYPE="install" → install_script()                                    │
+│                        确定操作                                                 │
+│  • 如果 CT_TYPE="update" → update_script()                                      │
+│  • 如果 CT_TYPE="install" → install_script()                                    │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                        INSTALL_SCRIPT()                                        │
-│  Main container creation workflow                                              │
+│  主容器创建工作流                                                               │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Installation Mode Selection                             │
+│                        安装模式选择                                             │
 │                                                                                 │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐ │
-│  │   Default       │  │   Advanced      │  │   My Defaults   │  │ App Defaults│ │
-│  │   Install       │  │   Install       │  │                 │  │             │ │
+│  │   默认          │  │   高级          │  │   我的默认值    │  │ 应用默认值  │ │
+│  │   安装          │  │   安装          │  │                 │  │             │ │
 │  │                 │  │                 │  │                 │  │             │ │
-│  │ • Use built-in  │  │ • Full whiptail │  │ • Load from     │  │ • Load from │ │
-│  │   defaults      │  │   menus         │  │   default.vars  │  │   app.vars  │ │
-│  │ • Minimal       │  │ • Interactive   │  │ • Override      │  │ • App-      │ │
-│  │   prompts       │  │   configuration │  │   built-ins     │  │   specific  │ │
+│  │ • 使用内置      │  │ • 完整 whiptail │  │ • 从            │  │ • 从        │ │
+│  │   默认值        │  │   菜单          │  │   default.vars  │  │   app.vars  │ │
+│  │ • 最少          │  │ • 交互式        │  │   加载          │  │   加载      │ │
+│  │   提示          │  │   配置          │  │ • 覆盖          │  │ • 应用      │ │
+│  │                 │  │                 │  │   内置值        │  │   特定      │ │
 │  └─────────────────┘  └─────────────────┘  └─────────────────┘  └─────────────┘ │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                        VARIABLES()                                             │
-│  • Load variable precedence chain:                                             │
-│    1. Hard environment variables                                               │
-│    2. App-specific .vars file                                                  │
-│    3. Global default.vars file                                                 │
-│    4. Built-in defaults in base_settings()                                    │
+│  • 加载变量优先级链：                                                           │
+│    1. 硬环境变量                                                                │
+│    2. 应用特定的 .vars 文件                                                     │
+│    3. 全局 default.vars 文件                                                    │
+│    4. base_settings() 中的内置默认值                                            │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                        BASE_SETTINGS()                                         │
-│  • Set core container parameters                                               │
-│  • Configure OS selection                                                      │
-│  • Set resource defaults (CPU, RAM, Disk)                                      │
-│  • Configure network defaults                                                  │
+│  • 设置核心容器参数                                                             │
+│  • 配置 OS 选择                                                                 │
+│  • 设置资源默认值（CPU、RAM、磁盘）                                             │
+│  • 配置网络默认值                                                               │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Storage Selection Logic                                 │
+│                        存储选择逻辑                                             │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
 │  │                    SELECT_STORAGE()                                       │ │
 │  │                                                                           │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────────┐ │ │
-│  │  │   Template      │    │   Container     │    │     Resolution          │ │ │
-│  │  │   Storage       │    │   Storage       │    │     Logic               │ │ │
+│  │  │   模板          │    │   容器          │    │     解析                │ │ │
+│  │  │   存储          │    │   存储          │    │     逻辑                │ │ │
 │  │  │                 │    │                 │    │                         │ │ │
-│  │  │ • Check if      │    │ • Check if      │    │ 1. Only 1 storage      │ │ │
-│  │  │   preselected   │    │   preselected   │    │    → Auto-select        │ │ │
-│  │  │ • Validate      │    │ • Validate      │    │ 2. Preselected         │ │ │
-│  │  │   availability  │    │   availability  │    │    → Validate & use    │ │ │
-│  │  │ • Prompt if     │    │ • Prompt if     │    │ 3. Multiple options    │ │ │
-│  │  │   needed        │    │   needed        │    │    → Prompt user        │ │ │
+│  │  │ • 检查是否      │    │ • 检查是否      │    │ 1. 只有 1 个存储       │ │ │
+│  │  │   预选          │    │   预选          │    │    → 自动选择           │ │ │
+│  │  │ • 验证          │    │ • 验证          │    │ 2. 预选                │ │ │
+│  │  │   可用性        │    │   可用性        │    │    → 验证并使用         │ │ │
+│  │  │ • 如需要        │    │ • 如需要        │    │ 3. 多个选项            │ │ │
+│  │  │   提示          │    │   提示          │    │    → 提示用户           │ │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
@@ -87,9 +88,9 @@
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                        BUILD_CONTAINER()                                       │
-│  • Validate all settings                                                       │
-│  • Check for conflicts                                                          │
-│  • Prepare container configuration                                             │
+│  • 验证所有设置                                                                 │
+│  • 检查冲突                                                                     │
+│  • 准备容器配置                                                                 │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
@@ -97,20 +98,20 @@
 │                        CREATE_LXC_CONTAINER()                                  │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                     Container Creation Process                             │ │
+│  │                     容器创建过程                                           │ │
 │  │                                                                           │ │
-│  │  1. Create LXC container with basic configuration                         │ │
-│  │  2. Configure network settings                                            │ │
-│  │  3. Set up storage and mount points                                       │ │
-│  │  4. Configure features (FUSE, TUN, etc.)                                  │ │
-│  │  5. Set resource limits                                                   │ │
-│  │  6. Configure startup options                                             │ │
+│  │  1. 使用基本配置创建 LXC 容器                                              │ │
+│  │  2. 配置网络设置                                                           │ │
+│  │  3. 设置存储和挂载点                                                       │ │
+│  │  4. 配置功能（FUSE、TUN 等）                                               │ │
+│  │  5. 设置资源限制                                                           │ │
+│  │  6. 配置启动选项                                                           │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        GPU Passthrough Decision Tree                           │
+│                        GPU 直通决策树                                           │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
 │  │                    DETECT_GPU_DEVICES()                                    │ │
@@ -118,127 +119,127 @@
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────────┐ │ │
 │  │  │   Intel GPU     │    │   AMD GPU       │    │     NVIDIA GPU          │ │ │
 │  │  │                 │    │                 │    │                         │ │ │
-│  │  │ • Check i915    │    │ • Check AMDGPU  │    │ • Check NVIDIA         │ │ │
-│  │  │   driver        │    │   driver        │    │   driver                │ │ │
-│  │  │ • Detect        │    │ • Detect        │    │ • Detect devices        │ │ │
-│  │  │   devices       │    │   devices       │    │ • Check CUDA support    │ │ │
+│  │  │ • 检查 i915     │    │ • 检查 AMDGPU   │    │ • 检查 NVIDIA          │ │ │
+│  │  │   驱动          │    │   驱动          │    │   驱动                  │ │ │
+│  │  │ • 检测          │    │ • 检测          │    │ • 检测设备              │ │ │
+│  │  │   设备          │    │   设备          │    │ • 检查 CUDA 支持        │ │ │
 │  │  └─────────────────┘    └─────────────────┘    └─────────────────────────┘ │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
-│  │                    GPU Selection Logic                                     │ │
+│  │                    GPU 选择逻辑                                            │ │
 │  │                                                                           │ │
-│  │  • Is app in GPU_APPS list? OR Is container privileged?                   │ │
-│  │    └─ YES → Proceed with GPU configuration                                │ │
-│  │    └─ NO → Skip GPU passthrough                                          │ │
+│  │  • 应用是否在 GPU_APPS 列表中？或容器是否为特权模式？                      │ │
+│  │    └─ 是 → 继续 GPU 配置                                                  │ │
+│  │    └─ 否 → 跳过 GPU 直通                                                  │ │
 │  │                                                                           │ │
-│  │  • Single GPU type detected?                                              │ │
-│  │    └─ YES → Auto-select and configure                                     │ │
-│  │    └─ NO → Prompt user for selection                                      │ │
+│  │  • 检测到单个 GPU 类型？                                                   │ │
+│  │    └─ 是 → 自动选择并配置                                                 │ │
+│  │    └─ 否 → 提示用户选择                                                   │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                        CONFIGURE_GPU_PASSTHROUGH()                             │
-│  • Add GPU device entries to /etc/pve/lxc/<ctid>.conf                         │
-│  • Configure proper device permissions                                        │
-│  • Set up device mapping                                                       │
+│  • 将 GPU 设备条目添加到 /etc/pve/lxc/<ctid>.conf                              │
+│  • 配置适当的设备权限                                                           │
+│  • 设置设备映射                                                                 │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Container Finalization                                  │
-│  • Start container                                                             │
-│  • Wait for network connectivity                                               │
-│  • Fix GPU GIDs (if GPU passthrough enabled)                                  │
-│  • Configure SSH keys (if enabled)                                            │
-│  • Run post-installation scripts                                              │
+│                        容器完成                                                 │
+│  • 启动容器                                                                     │
+│  • 等待网络连接                                                                 │
+│  • 修复 GPU GID（如果启用 GPU 直通）                                            │
+│  • 配置 SSH 密钥（如果启用）                                                    │
+│  • 运行安装后脚本                                                               │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Settings Persistence                                    │
+│                        设置持久化                                               │
 │                                                                                 │
 │  ┌─────────────────────────────────────────────────────────────────────────────┐ │
 │  │                    DEFAULT_VAR_SETTINGS()                                  │ │
 │  │                                                                           │ │
-│  │  • Offer to save current settings as defaults                             │ │
-│  │  • Save to /usr/local/community-scripts/default.vars                     │ │
-│  │  • Save to /usr/local/community-scripts/defaults/<app>.vars               │ │
+│  │  • 提供将当前设置保存为默认值                                              │ │
+│  │  • 保存到 /usr/local/community-scripts/default.vars                       │ │
+│  │  • 保存到 /usr/local/community-scripts/defaults/<app>.vars                │ │
 │  └─────────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────┬───────────────────────────────────────────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              COMPLETION                                        │
-│  • Display container information                                               │
-│  • Show access details                                                         │
-│  • Provide next steps                                                         │
+│                              完成                                               │
+│  • 显示容器信息                                                                 │
+│  • 显示访问详情                                                                 │
+│  • 提供后续步骤                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Key Decision Points
+## 关键决策点
 
-### 1. Installation Mode Selection
-- **Default**: Uses built-in defaults, minimal user interaction
-- **Advanced**: Full interactive configuration via whiptail menus
-- **My Defaults**: Loads settings from global default.vars file
-- **App Defaults**: Loads settings from app-specific .vars file
+### 1. 安装模式选择
+- **默认**：使用内置默认值，最少用户交互
+- **高级**：通过 whiptail 菜单进行完整交互式配置
+- **我的默认值**：从全局 default.vars 文件加载设置
+- **应用默认值**：从应用特定的 .vars 文件加载设置
 
-### 2. Storage Selection Logic
+### 2. 存储选择逻辑
 ```
-Storage Selection Flow:
-├── Check if storage is preselected via environment variables
-│   ├── YES → Validate availability and use
-│   └── NO → Continue to resolution logic
-├── Count available storage options for content type
-│   ├── Only 1 option → Auto-select
-│   └── Multiple options → Prompt user via whiptail
-└── Validate selected storage and proceed
-```
-
-### 3. GPU Passthrough Decision Tree
-```
-GPU Passthrough Flow:
-├── Detect available GPU hardware
-│   ├── Intel GPU detected
-│   ├── AMD GPU detected
-│   └── NVIDIA GPU detected
-├── Check if GPU passthrough should be enabled
-│   ├── App is in GPU_APPS list? → YES
-│   ├── Container is privileged? → YES
-│   └── Neither? → Skip GPU passthrough
-├── Configure GPU passthrough
-│   ├── Single GPU type → Auto-configure
-│   └── Multiple GPU types → Prompt user
-└── Fix GPU GIDs post-creation
+存储选择流程：
+├── 检查存储是否通过环境变量预选
+│   ├── 是 → 验证可用性并使用
+│   └── 否 → 继续解析逻辑
+├── 计算内容类型的可用存储选项数量
+│   ├── 只有 1 个选项 → 自动选择
+│   └── 多个选项 → 通过 whiptail 提示用户
+└── 验证选定的存储并继续
 ```
 
-### 4. Variable Precedence Chain
+### 3. GPU 直通决策树
 ```
-Variable Resolution Order:
-1. Hard environment variables (captured at start)
-2. App-specific .vars file (/usr/local/community-scripts/defaults/<app>.vars)
-3. Global default.vars file (/usr/local/community-scripts/default.vars)
-4. Built-in defaults in base_settings() function
-```
-
-## Error Handling Flow
-
-```
-Error Handling:
-├── Validation errors → Display error message and exit
-├── Storage errors → Retry storage selection
-├── Network errors → Retry network configuration
-├── GPU errors → Fall back to no GPU passthrough
-└── Container creation errors → Cleanup and exit
+GPU 直通流程：
+├── 检测可用的 GPU 硬件
+│   ├── 检测到 Intel GPU
+│   ├── 检测到 AMD GPU
+│   └── 检测到 NVIDIA GPU
+├── 检查是否应启用 GPU 直通
+│   ├── 应用是否在 GPU_APPS 列表中？→ 是
+│   ├── 容器是否为特权模式？→ 是
+│   └── 都不是？→ 跳过 GPU 直通
+├── 配置 GPU 直通
+│   ├── 单个 GPU 类型 → 自动配置
+│   └── 多个 GPU 类型 → 提示用户
+└── 创建后修复 GPU GID
 ```
 
-## Integration Points
+### 4. 变量优先级链
+```
+变量解析顺序：
+1. 硬环境变量（在启动时捕获）
+2. 应用特定的 .vars 文件（/usr/local/community-scripts/defaults/<app>.vars）
+3. 全局 default.vars 文件（/usr/local/community-scripts/default.vars）
+4. base_settings() 函数中的内置默认值
+```
 
-- **Core Functions**: Depends on core.func for basic utilities
-- **Error Handling**: Uses error_handler.func for error management
-- **API Functions**: Uses api.func for Proxmox API interactions
-- **Tools**: Uses tools.func for additional utilities
-- **Install Scripts**: Integrates with <app>-install.sh scripts
+## 错误处理流程
+
+```
+错误处理：
+├── 验证错误 → 显示错误消息并退出
+├── 存储错误 → 重试存储选择
+├── 网络错误 → 重试网络配置
+├── GPU 错误 → 回退到无 GPU 直通
+└── 容器创建错误 → 清理并退出
+```
+
+## 集成点
+
+- **核心函数**：依赖 core.func 提供基本实用工具
+- **错误处理**：使用 error_handler.func 进行错误管理
+- **API 函数**：使用 api.func 进行 Proxmox API 交互
+- **工具**：使用 tools.func 提供附加实用工具
+- **安装脚本**：与 <app>-install.sh 脚本集成

@@ -94,7 +94,7 @@ select_backup_storage() {
 }
 
 backup_container() {
-  msg_custom "📦" "\e[36m" "Backing up container $CONTAINER_ID"
+  msg_custom "📦" "\e[36m" "正在备份 container $CONTAINER_ID"
   vzdump_output=$(mktemp)
   vzdump "$CONTAINER_ID" --compress zstd --storage "$BACKUP_STORAGE" --mode snapshot | tee "$vzdump_output"
   BACKUP_PATH=$(awk '/tar.zst/ {print $NF}' "$vzdump_output" | tr -d "'")
@@ -107,7 +107,7 @@ backup_container() {
   msg_ok "Backup complete: $BACKUP_PATH"
 }
 
-perform_conversion() {
+perform_con版本() {
   if pct config "$CONTAINER_ID" | grep -q 'unprivileged: 1'; then
     UNPRIVILEGED=true
   else
@@ -123,9 +123,9 @@ perform_conversion() {
   fi
 
   if pct restore "${restore_opts[@]}" -ignore-unpack-errors 1; then
-    msg_ok "Conversion successful"
+    msg_ok "Con版本 successful"
   else
-    msg_error "Conversion failed"
+    msg_error "Con版本 failed"
     exit 1
   fi
 }
@@ -155,30 +155,30 @@ manage_states() {
 cleanup_files() {
   read -rp "Delete backup archive? [$BACKUP_PATH] [Y/n]: " cleanup
   if [[ ${cleanup:-Y} =~ ^[Yy] ]]; then
-    rm -f "$BACKUP_PATH" && msg_ok "Removed backup archive"
+    rm -f "$BACKUP_PATH" && msg_ok "已移除 backup archive"
   else
     msg_custom "💾" "\e[36m" "Retained backup archive"
   fi
 }
 
 summary() {
-  local conversion="Unknown"
+  local con版本="Unknown"
   if [[ -n "${UNPRIVILEGED:-}" ]]; then
     if $UNPRIVILEGED; then
-      conversion="Unprivileged → Privileged"
+      con版本="Unprivileged → Privileged"
     else
-      conversion="Privileged → Unprivileged"
+      con版本="Privileged → Unprivileged"
     fi
   fi
 
   echo
   msg_custom "📄" "\e[36m" "Summary:"
-  msg_custom "   " "\e[36m" "$(printf "%-22s %s" "Original Container:" "$CONTAINER_ID ($CONTAINER_NAME)")"
+  msg_custom "   " "\e[36m" "$(printf "%-22s %s" "Original 容器:" "$CONTAINER_ID ($CONTAINER_NAME)")"
   msg_custom "   " "\e[36m" "$(printf "%-22s %s" "Backup Storage:" "$BACKUP_STORAGE")"
   msg_custom "   " "\e[36m" "$(printf "%-22s %s" "Target Storage:" "$TARGET_STORAGE")"
   msg_custom "   " "\e[36m" "$(printf "%-22s %s" "Backup Path:" "$BACKUP_PATH")"
-  msg_custom "   " "\e[36m" "$(printf "%-22s %s" "New Container ID:" "$NEW_CONTAINER_ID")"
-  msg_custom "   " "\e[36m" "$(printf "%-22s %s" "Privilege Conversion:" "$conversion")"
+  msg_custom "   " "\e[36m" "$(printf "%-22s %s" "New 容器 ID:" "$NEW_CONTAINER_ID")"
+  msg_custom "   " "\e[36m" "$(printf "%-22s %s" "Privilege Con版本:" "$con版本")"
   echo
 }
 
@@ -189,7 +189,7 @@ main() {
   select_backup_storage
   backup_container
   select_target_storage_and_container_id
-  perform_conversion
+  perform_con版本
   manage_states
   cleanup_files
   summary

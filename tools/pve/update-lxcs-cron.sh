@@ -10,7 +10,7 @@ excluded_containers=("$@")
 function update_container() {
   container=$1
   name=$(pct exec "$container" hostname)
-  echo -e "\n [Info] Updating $container : $name \n"
+  echo -e "\n [信息] 正在更新 $container : $name \n"
   os=$(pct config "$container" | awk '/^ostype/ {print $2}')
   case "$os" in
   alpine) pct exec "$container" -- ash -c "apk -U upgrade" ;;
@@ -30,17 +30,17 @@ for container in $(pct list | awk '{if(NR>1) print $1}'); do
     fi
   done
   if [ "$excluded" == true ]; then
-    echo -e "[Info] Skipping $container"
+    echo -e "[信息] 正在跳过 $container"
     sleep 1
   else
     status=$(pct status "$container")
     template=$(pct config "$container" | grep -q "template:" && echo "true" || echo "false")
     if [ "$template" == "false" ] && [ "$status" == "status: stopped" ]; then
-      echo -e "[Info] Starting $container"
+      echo -e "[信息] 正在启动 $container"
       pct start "$container"
       sleep 5
       update_container "$container"
-      echo -e "[Info] Shutting down $container"
+      echo -e "[信息] Shutting down $container"
       pct shutdown "$container" &
     elif [ "$status" == "status: running" ]; then
       update_container "$container"

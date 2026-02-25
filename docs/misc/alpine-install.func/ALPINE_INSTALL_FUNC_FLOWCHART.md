@@ -1,21 +1,21 @@
-# alpine-install.func Flowchart
+# alpine-install.func 流程图
 
-Alpine container initialization flow (apk-based, OpenRC init system).
+Alpine 容器初始化流程（基于 apk，OpenRC init 系统）。
 
-## Alpine Container Setup Flow
+## Alpine 容器设置流程
 
 ```
-Alpine Container Started
+Alpine 容器启动
     ↓
 setting_up_container()
     ↓
-verb_ip6()              [optional - IPv6]
+verb_ip6()              [可选 - IPv6]
     ↓
 update_os()             [apk update/upgrade]
     ↓
 network_check()
     ↓
-Application Installation
+应用程序安装
     ↓
 motd_ssh()
     ↓
@@ -23,7 +23,7 @@ customize()
     ↓
 cleanup_lxc()
     ↓
-Complete ✓
+完成 ✓
 ```
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

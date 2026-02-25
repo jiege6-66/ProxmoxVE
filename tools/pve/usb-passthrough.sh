@@ -5,13 +5,13 @@
 # License: MIT
 # https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 
-echo -e "\e[1;33m This script will allow USB passthrough to a PRIVILEGED LXC Container ONLY\e[0m"
+echo -e "\e[1;33m 此脚本仅允许 USB 直通到特权 LXC 容器\e[0m"
 while true; do
-  read -p "Did you replace 106 with your LXC ID? Proceed(y/n)?" yn
+  read -p "您是否已将 106 替换为您的 LXC ID？是否继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 
@@ -48,4 +48,4 @@ cat <<EOF >>$CTID_CONFIG_PATH
 lxc.autodev: 1
 lxc.hook.autodev: bash -c '$HOOK_SCRIPT'
 EOF
-echo -e "\e[1;33m Finished....Reboot ${CTID} LXC to apply the changes \e[0m"
+echo -e "\e[1;33m 完成....重启 ${CTID} LXC 以应用更改 \e[0m"

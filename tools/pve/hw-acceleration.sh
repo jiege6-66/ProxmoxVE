@@ -47,21 +47,21 @@ function msg_ok() {
 }
 
 if ! pveversion | grep -Eq "pve-manager/8\.[0-4](\.[0-9]+)*"; then
-  msg_error "This version of Proxmox Virtual Environment is not supported"
-  echo -e "Requires PVE Version 8.1 or higher"
-  echo -e "Exiting..."
+  msg_error "不支持此版本的 Proxmox Virtual Environment"
+  echo -e "需要 PVE 版本 8.1 或更高"
+  echo -e "正在退出..."
   sleep 2
   exit
 fi
 
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "Add Intel HW Acceleration" --yesno "This Will Add Intel HW Acceleration to an existing LXC Container. Proceed?" 8 72
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "添加 Intel HW 加速" --yesno "这将向现有 LXC 容器添加 Intel HW 加速。是否继续？" 8 72
 NODE=$(hostname)
 PREV_MENU=()
 MSG_MAX_LENGTH=0
 privileged_containers=$(pct list | awk 'NR>1 && system("grep -q \047unprivileged: 1\047 /etc/pve/lxc/" $1 ".conf")')
 
 if [ -z "$privileged_containers" ]; then
-  whiptail --msgbox "No Privileged Containers Found." 10 58
+  whiptail --msgbox "未找到特权容器。" 10 58
   exit
 fi
 
@@ -71,9 +71,9 @@ while read -r TAG ITEM; do
   PREV_MENU+=("$TAG" "$ITEM " "OFF")
 done < <(echo "$privileged_containers")
 
-privileged_container=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Privileged Containers on $NODE" --checklist "\nSelect a Container To Add Intel HW Acceleration:\n" 16 $((MSG_MAX_LENGTH + 23)) 6 "${PREV_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
+privileged_container=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Privileged Containers on $NODE" --checklist "\n选择要添加 Intel HW 加速的容器:\n" 16 $((MSG_MAX_LENGTH + 23)) 6 "${PREV_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
 header_info
-read -r -p "Verbose mode? <y/N> " prompt
+read -r -p "详细模式？<y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   STD=""
 else
@@ -90,10 +90,10 @@ lxc.mount.entry: /dev/dri dev/dri none bind,optional,create=dir
 lxc.mount.entry: /dev/dri/renderD128 dev/dri/renderD128 none bind,optional,create=file
 EOF
 
-read -r -p "Do you need the intel-media-va-driver-non-free driver (Debian 12 only)? <y/N> " prompt
+read -r -p "您需要 intel-media-va-driver-non-free 驱动程序吗（仅限 Debian 12）？<y/N> " prompt
 if [[ ${prompt,,} =~ ^(y|yes)$ ]]; then
   header_info
-  msg_info "Installing Hardware Acceleration (non-free)"
+  msg_info "正在安装硬件加速（non-free）"
   pct exec "${privileged_container}" -- bash -c "cat <<EOF >/etc/apt/sources.list.d/non-free.list
 
 deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
@@ -107,15 +107,15 @@ deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free non-
 EOF"
 
   pct exec "${privileged_container}" -- bash -c "silent() { \"\$@\" >/dev/null 2>&1; } && $STD apt-get update && $STD apt-get install -y intel-media-va-driver-non-free ocl-icd-libopencl1 intel-opencl-icd vainfo intel-gpu-tools && $STD adduser \$(id -u -n) video && $STD adduser \$(id -u -n) render"
-  msg_ok "Installed Hardware Acceleration (non-free)"
+  msg_ok "已安装硬件加速（non-free）"
 else
   header_info
-  msg_info "Installing Hardware Acceleration"
+  msg_info "正在安装硬件加速"
   pct exec "${privileged_container}" -- bash -c "silent() { \"\$@\" >/dev/null 2>&1; } && $STD apt-get install -y va-driver-all ocl-icd-libopencl1 intel-opencl-icd vainfo intel-gpu-tools && chgrp video /dev/dri && chmod 755 /dev/dri && $STD adduser \$(id -u -n) video && $STD adduser \$(id -u -n) render"
-  msg_ok "Installed Hardware Acceleration"
+  msg_ok "已安装硬件加速"
 fi
 sleep 1
-whiptail --backtitle "Proxmox VE Helper Scripts" --msgbox --title "Added tools" "vainfo, execute command 'vainfo'\nintel-gpu-tools, execute command 'intel_gpu_top'" 8 58
+whiptail --backtitle "Proxmox VE Helper Scripts" --msgbox --title "已添加工具" "vainfo，执行命令 'vainfo'\nintel-gpu-tools，执行命令 'intel_gpu_top'" 8 58
 
-msg_ok "Completed successfully!\n"
-echo -e "Reboot container ${BL}$privileged_container${CL} to apply the new settings\n"
+msg_ok "成功完成！\n"
+echo -e "重启容器 ${BL}$privileged_container${CL} 以应用新设置\n"

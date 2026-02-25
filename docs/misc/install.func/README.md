@@ -1,118 +1,118 @@
-# install.func Documentation
+# install.func 文档
 
-## Overview
+## 概述
 
-The `install.func` file provides container installation workflow orchestration and fundamental operations for applications deployed inside LXC containers. It handles network setup, OS configuration, connectivity verification, and installation mechanics.
+`install.func` 文件为部署在 LXC 容器内的应用程序提供容器安装工作流程编排和基本操作。它处理网络设置、OS 配置、连接性验证和安装机制。
 
-## Purpose and Use Cases
+## 目的和用例
 
-- **Container Setup**: Initialize new container with proper configuration
-- **Network Verification**: Verify IPv4 and IPv6 connectivity
-- **OS Configuration**: Update OS, apply system settings
-- **Installation Workflow**: Orchestrate application installation steps
-- **Error Handling**: Comprehensive signal trapping and error recovery
+- **容器设置**：使用正确的配置初始化新容器
+- **网络验证**：验证 IPv4 和 IPv6 连接性
+- **OS 配置**：更新 OS，应用系统设置
+- **安装工作流程**：编排应用程序安装步骤
+- **错误处理**：全面的信号捕获和错误恢复
 
-## Quick Reference
+## 快速参考
 
-### Key Function Groups
-- **Initialization**: `setting_up_container()` - Setup message and environment
-- **Network**: `network_check()`, `verb_ip6()` - Connectivity verification
-- **OS Configuration**: `update_os()` - OS updates and package management
-- **Installation**: `motd_ssh()`, `customize()` - Container customization
-- **Cleanup**: `cleanup_lxc()` - Final container cleanup
+### 主要功能组
+- **初始化**：`setting_up_container()` - 设置消息和环境
+- **网络**：`network_check()`、`verb_ip6()` - 连接性验证
+- **OS 配置**：`update_os()` - OS 更新和包管理
+- **安装**：`motd_ssh()`、`customize()` - 容器自定义
+- **清理**：`cleanup_lxc()` - 最终容器清理
 
-### Dependencies
-- **External**: `curl`, `apt-get`, `ping`, `dns` utilities
-- **Internal**: Uses functions from `core.func`, `error_handler.func`, `tools.func`
+### 依赖项
+- **外部**：`curl`、`apt-get`、`ping`、`dns` 实用程序
+- **内部**：使用来自 `core.func`、`error_handler.func`、`tools.func` 的函数
 
-### Integration Points
-- Used by: All install/*.sh scripts at startup
-- Uses: Environment variables from build.func and core.func
-- Provides: Container initialization and management services
+### 集成点
+- 被使用于：启动时的所有 install/*.sh 脚本
+- 使用：来自 build.func 和 core.func 的环境变量
+- 提供：容器初始化和管理服务
 
-## Documentation Files
+## 文档文件
 
 ### 📊 [INSTALL_FUNC_FLOWCHART.md](./INSTALL_FUNC_FLOWCHART.md)
-Visual execution flows showing initialization, network checks, and installation workflows.
+显示初始化、网络检查和安装工作流程的可视化执行流程。
 
 ### 📚 [INSTALL_FUNC_FUNCTIONS_REFERENCE.md](./INSTALL_FUNC_FUNCTIONS_REFERENCE.md)
-Complete alphabetical reference of all functions with parameters, dependencies, and usage details.
+所有函数的完整字母顺序参考，包含参数、依赖项和使用详情。
 
 ### 💡 [INSTALL_FUNC_USAGE_EXAMPLES.md](./INSTALL_FUNC_USAGE_EXAMPLES.md)
-Practical examples showing how to use installation functions and common patterns.
+展示如何使用安装函数和常见模式的实用示例。
 
 ### 🔗 [INSTALL_FUNC_INTEGRATION.md](./INSTALL_FUNC_INTEGRATION.md)
-How install.func integrates with other components and provides installation services.
+install.func 如何与其他组件集成并提供安装服务。
 
-## Key Features
+## 主要特性
 
-### Container Initialization
-- **Environment Setup**: Prepare container variables and functions
-- **Message System**: Display installation progress with colored output
-- **Error Handlers**: Setup signal trapping for proper cleanup
+### 容器初始化
+- **环境设置**：准备容器变量和函数
+- **消息系统**：使用彩色输出显示安装进度
+- **错误处理程序**：设置信号捕获以进行适当清理
 
-### Network & Connectivity
-- **IPv4 Verification**: Ping external hosts to verify internet access
-- **IPv6 Support**: Optional IPv6 enablement and verification
-- **DNS Checking**: Verify DNS resolution is working
-- **Retry Logic**: Automatic retries for transient failures
+### 网络和连接性
+- **IPv4 验证**：Ping 外部主机以验证互联网访问
+- **IPv6 支持**：可选的 IPv6 启用和验证
+- **DNS 检查**：验证 DNS 解析是否正常工作
+- **重试逻辑**：从临时故障中自动恢复
 
-### OS Configuration
-- **Package Updates**: Safely update OS package lists
-- **System Optimization**: Disable unnecessary services (wait-online)
-- **Timezone**: Validate and set container timezone
-- **SSH Setup**: Configure SSH daemon and keys
+### OS 配置
+- **包更新**：安全更新 OS 包列表
+- **系统优化**：禁用不必要的服务（wait-online）
+- **时区**：验证并设置容器时区
+- **SSH 设置**：配置 SSH 守护进程和密钥
 
-### Container Customization
-- **MOTD**: Create custom login message
-- **Auto-Login**: Optional passwordless root login
-- **Update Script**: Register application update function
-- **Customization Hooks**: Application-specific setup
+### 容器自定义
+- **MOTD**：创建自定义登录消息
+- **自动登录**：可选的无密码 root 登录
+- **更新脚本**：注册应用程序更新函数
+- **自定义钩子**：应用程序特定的设置
 
-## Function Categories
+## 函数分类
 
-### 🔹 Core Functions
-- `setting_up_container()` - Display setup message and set environment
-- `network_check()` - Verify network connectivity
-- `update_os()` - Update OS packages with retry logic
-- `verb_ip6()` - Enable IPv6 (optional)
+### 🔹 核心函数
+- `setting_up_container()` - 显示设置消息并设置环境
+- `network_check()` - 验证网络连接性
+- `update_os()` - 使用重试逻辑更新 OS 包
+- `verb_ip6()` - 启用 IPv6（可选）
 
-### 🔹 Configuration Functions
-- `motd_ssh()` - Setup MOTD and SSH configuration
-- `customize()` - Apply container customizations
-- `cleanup_lxc()` - Final cleanup before completion
+### 🔹 配置函数
+- `motd_ssh()` - 设置 MOTD 和 SSH 配置
+- `customize()` - 应用容器自定义
+- `cleanup_lxc()` - 完成前的最终清理
 
-### 🔹 Utility Functions
-- `create_update_script()` - Register application update function
-- `set_timezone()` - Configure container timezone
-- `disable_wait_online()` - Disable systemd-networkd-wait-online
+### 🔹 实用函数
+- `create_update_script()` - 注册应用程序更新函数
+- `set_timezone()` - 配置容器时区
+- `disable_wait_online()` - 禁用 systemd-networkd-wait-online
 
-## Execution Flow
+## 执行流程
 
 ```
-Container Started
+容器已启动
     ↓
 source $FUNCTIONS_FILE_PATH
     ↓
-setting_up_container()           ← Display "Setting up container..."
+setting_up_container()           ← 显示 "正在设置容器..."
     ↓
-network_check()                  ← Verify internet connectivity
+network_check()                  ← 验证互联网连接性
     ↓
-update_os()                      ← Update package lists
+update_os()                      ← 更新包列表
     ↓
-[Application-Specific Installation]
+[应用程序特定安装]
     ↓
-motd_ssh()                       ← Configure SSH/MOTD
-customize()                      ← Apply customizations
+motd_ssh()                       ← 配置 SSH/MOTD
+customize()                      ← 应用自定义
     ↓
-cleanup_lxc()                    ← Final cleanup
+cleanup_lxc()                    ← 最终清理
     ↓
-Installation Complete
+安装完成
 ```
 
-## Common Usage Patterns
+## 常见使用模式
 
-### Basic Container Setup
+### 基本容器设置
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
@@ -120,30 +120,30 @@ setting_up_container
 network_check
 update_os
 
-# ... application installation ...
+# ... 应用程序安装 ...
 
 motd_ssh
 customize
 cleanup_lxc
 ```
 
-### With Optional IPv6
+### 使用可选 IPv6
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 setting_up_container
-verb_ip6  # Enable IPv6
+verb_ip6  # 启用 IPv6
 network_check
 update_os
 
-# ... installation ...
+# ... 安装 ...
 
 motd_ssh
 customize
 cleanup_lxc
 ```
 
-### With Custom Update Script
+### 使用自定义更新脚本
 ```bash
 #!/usr/bin/env bash
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
@@ -151,11 +151,11 @@ setting_up_container
 network_check
 update_os
 
-# ... installation ...
+# ... 安装 ...
 
-# Register update function
+# 注册更新函数
 function update_script() {
-  # Update logic here
+  # 更新逻辑在这里
 }
 export -f update_script
 
@@ -164,85 +164,85 @@ customize
 cleanup_lxc
 ```
 
-## Best Practices
+## 最佳实践
 
-### ✅ DO
-- Call `setting_up_container()` at the start
-- Check `network_check()` output before main installation
-- Use `$STD` variable for silent operations
-- Call `cleanup_lxc()` at the very end
-- Test network connectivity before critical operations
+### ✅ 应该做
+- 在开始时调用 `setting_up_container()`
+- 在主安装前检查 `network_check()` 输出
+- 使用 `$STD` 变量进行静默操作
+- 在最后调用 `cleanup_lxc()`
+- 在关键操作前测试网络连接性
 
-### ❌ DON'T
-- Skip network verification
-- Assume internet is available
-- Hardcode container paths
-- Use `echo` instead of `msg_*` functions
-- Forget to call cleanup at the end
+### ❌ 不应该做
+- 跳过网络验证
+- 假设互联网可用
+- 硬编码容器路径
+- 使用 `echo` 而非 `msg_*` 函数
+- 忘记在最后调用清理
 
-## Environment Variables
+## 环境变量
 
-### Available Variables
-- `$FUNCTIONS_FILE_PATH` - Path to core functions (set by build.func)
-- `$CTID` - Container ID number
-- `$NSAPP` - Normalized application name (lowercase)
-- `$APP` - Application display name
-- `$STD` - Output suppression (`silent` or empty)
-- `$VERBOSE` - Verbose output mode (`yes` or `no`)
+### 可用变量
+- `$FUNCTIONS_FILE_PATH` - 核心函数路径（由 build.func 设置）
+- `$CTID` - 容器 ID 号
+- `$NSAPP` - 规范化应用程序名称（小写）
+- `$APP` - 应用程序显示名称
+- `$STD` - 输出抑制（`silent` 或空）
+- `$VERBOSE` - 详细输出模式（`yes` 或 `no`）
 
-### Setting Container Variables
+### 设置容器变量
 ```bash
 CONTAINER_TIMEZONE="UTC"
 CONTAINER_HOSTNAME="myapp-container"
 CONTAINER_FQDN="myapp.example.com"
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Network check failed"
+### "网络检查失败"
 ```bash
-# Container may not have internet access
-# Check:
-ping 8.8.8.8           # External connectivity
-nslookup example.com   # DNS resolution
-ip route show          # Routing table
+# 容器可能没有互联网访问
+# 检查：
+ping 8.8.8.8           # 外部连接性
+nslookup example.com   # DNS 解析
+ip route show          # 路由表
 ```
 
-### "Package update failed"
+### "包更新失败"
 ```bash
-# APT may be locked by another process
-ps aux | grep apt      # Check for running apt
-# Or wait for existing apt to finish
+# APT 可能被另一个进程锁定
+ps aux | grep apt      # 检查正在运行的 apt
+# 或等待现有 apt 完成
 sleep 30
 update_os
 ```
 
-### "Cannot source functions"
+### "无法引用函数"
 ```bash
-# $FUNCTIONS_FILE_PATH may not be set
-# This variable is set by build.func before running install script
-# If missing, the install script was not called properly
+# $FUNCTIONS_FILE_PATH 可能未设置
+# 此变量在运行安装脚本前由 build.func 设置
+# 如果缺失，安装脚本未正确调用
 ```
 
-## Related Documentation
+## 相关文档
 
-- **[tools.func/](../tools.func/)** - Package and tool installation
-- **[core.func/](../core.func/)** - Utility functions and messaging
-- **[error_handler.func/](../error_handler.func/)** - Error handling
-- **[alpine-install.func/](../alpine-install.func/)** - Alpine-specific setup
-- **[UPDATED_APP-install.md](../../UPDATED_APP-install.md)** - Application script guide
+- **[tools.func/](../tools.func/)** - 包和工具安装
+- **[core.func/](../core.func/)** - 实用函数和消息
+- **[error_handler.func/](../error_handler.func/)** - 错误处理
+- **[alpine-install.func/](../alpine-install.func/)** - Alpine 特定设置
+- **[UPDATED_APP-install.md](../../UPDATED_APP-install.md)** - 应用程序脚本指南
 
-## Recent Updates
+## 最近更新
 
-### Version 2.0 (Dec 2025)
-- ✅ Improved network connectivity checks
-- ✅ Enhanced OS update error handling
-- ✅ Added IPv6 support with verb_ip6()
-- ✅ Better timezone validation
-- ✅ Streamlined cleanup procedures
+### 版本 2.0（2025 年 12 月）
+- ✅ 改进网络连接性检查
+- ✅ 增强 OS 更新错误处理
+- ✅ 使用 verb_ip6() 添加 IPv6 支持
+- ✅ 更好的时区验证
+- ✅ 简化清理程序
 
 ---
 
-**Last Updated**: December 2025
-**Maintainers**: community-scripts team
-**License**: MIT
+**最后更新**：2025 年 12 月
+**维护者**：community-scripts 团队
+**许可证**：MIT

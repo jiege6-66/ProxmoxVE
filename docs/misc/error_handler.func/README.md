@@ -1,228 +1,228 @@
-# error_handler.func Documentation
+# error_handler.func 文档
 
-## Overview
+## 概述
 
-The `error_handler.func` file provides comprehensive error handling and signal management for Proxmox Community Scripts. It offers detailed error code explanations, graceful error recovery, and proper cleanup mechanisms.
+`error_handler.func` 文件为 Proxmox Community Scripts 提供全面的错误处理和信号管理。它提供详细的错误代码解释、优雅的错误恢复和适当的清理机制。
 
-## Purpose and Use Cases
+## 目的和用例
 
-- **Error Code Explanation**: Provides human-readable explanations for exit codes
-- **Signal Handling**: Manages SIGINT, SIGTERM, and other signals gracefully
-- **Error Recovery**: Implements proper cleanup and error reporting
-- **Debug Logging**: Records error information for troubleshooting
-- **Silent Execution Support**: Integrates with core.func silent execution
+- **错误代码解释**：为退出代码提供人类可读的解释
+- **信号处理**：优雅地管理 SIGINT、SIGTERM 和其他信号
+- **错误恢复**：实现适当的清理和错误报告
+- **调试日志**：记录错误信息以进行故障排除
+- **静默执行支持**：与 core.func 静默执行集成
 
-## Quick Reference
+## 快速参考
 
-### Key Function Groups
-- **Error Explanation**: `explain_exit_code()` - Convert exit codes to human-readable messages
-- **Error Handling**: `error_handler()` - Main error handler with detailed reporting
-- **Signal Handlers**: `on_interrupt()`, `on_terminate()` - Graceful signal handling
-- **Cleanup**: `on_exit()` - Cleanup on script exit
-- **Trap Setup**: `catch_errors()` - Initialize error handling traps
+### 主要功能组
+- **错误解释**：`explain_exit_code()` - 将退出代码转换为人类可读的消息
+- **错误处理**：`error_handler()` - 带详细报告的主错误处理程序
+- **信号处理程序**：`on_interrupt()`、`on_terminate()` - 优雅的信号处理
+- **清理**：`on_exit()` - 脚本退出时清理
+- **陷阱设置**：`catch_errors()` - 初始化错误处理陷阱
 
-### Dependencies
-- **External**: None (pure Bash implementation)
-- **Internal**: Uses color variables from core.func
+### 依赖项
+- **外部**：无（纯 Bash 实现）
+- **内部**：使用来自 core.func 的颜色变量
 
-### Integration Points
-- Used by: All scripts via core.func silent execution
-- Uses: Color variables from core.func
-- Provides: Error explanations for core.func silent function
+### 集成点
+- 被使用于：通过 core.func 静默执行的所有脚本
+- 使用：来自 core.func 的颜色变量
+- 提供：为 core.func silent 函数提供错误解释
 
-## Documentation Files
+## 文档文件
 
 ### 📊 [ERROR_HANDLER_FLOWCHART.md](./ERROR_HANDLER_FLOWCHART.md)
-Visual execution flows showing error handling processes and signal management.
+显示错误处理过程和信号管理的可视化执行流程。
 
 ### 📚 [ERROR_HANDLER_FUNCTIONS_REFERENCE.md](./ERROR_HANDLER_FUNCTIONS_REFERENCE.md)
-Complete alphabetical reference of all functions with parameters, dependencies, and usage details.
+所有函数的完整字母顺序参考，包含参数、依赖项和使用详情。
 
 ### 💡 [ERROR_HANDLER_USAGE_EXAMPLES.md](./ERROR_HANDLER_USAGE_EXAMPLES.md)
-Practical examples showing how to use error handling functions and common patterns.
+展示如何使用错误处理函数和常见模式的实用示例。
 
 ### 🔗 [ERROR_HANDLER_INTEGRATION.md](./ERROR_HANDLER_INTEGRATION.md)
-How error_handler.func integrates with other components and provides error handling services.
+error_handler.func 如何与其他组件集成并提供错误处理服务。
 
-## Key Features
+## 主要特性
 
-### Error Code Categories
-- **Generic/Shell Errors**: Exit codes 1, 2, 126, 127, 128, 130, 137, 139, 143
-- **Package Manager Errors**: APT/DPKG errors (100, 101, 255)
-- **Node.js Errors**: JavaScript runtime errors (243-249, 254)
-- **Python Errors**: Python environment and dependency errors (210-212)
-- **Database Errors**: PostgreSQL, MySQL, MongoDB errors (231-254)
-- **Proxmox Custom Errors**: Container and VM specific errors (200-231)
+### 错误代码分类
+- **一般/Shell 错误**：退出代码 1、2、126、127、128、130、137、139、143
+- **包管理器错误**：APT/DPKG 错误（100、101、255）
+- **Node.js 错误**：JavaScript 运行时错误（243-249、254）
+- **Python 错误**：Python 环境和依赖错误（210-212）
+- **数据库错误**：PostgreSQL、MySQL、MongoDB 错误（231-254）
+- **Proxmox 自定义错误**：容器和 VM 特定错误（200-231）
 
-### Signal Handling
-- **SIGINT (Ctrl+C)**: Graceful interruption handling
-- **SIGTERM**: Graceful termination handling
-- **EXIT**: Cleanup on script exit
-- **ERR**: Error trap for command failures
+### 信号处理
+- **SIGINT (Ctrl+C)**：优雅的中断处理
+- **SIGTERM**：优雅的终止处理
+- **EXIT**：脚本退出时清理
+- **ERR**：命令失败的错误陷阱
 
-### Error Reporting
-- **Detailed Messages**: Human-readable error explanations
-- **Context Information**: Line numbers, commands, timestamps
-- **Log Integration**: Silent log file integration
-- **Debug Logging**: Optional debug log file support
+### 错误报告
+- **详细消息**：人类可读的错误解释
+- **上下文信息**：行号、命令、时间戳
+- **日志集成**：静默日志文件集成
+- **调试日志**：可选的调试日志文件支持
 
-## Common Usage Patterns
+## 常见使用模式
 
-### Basic Error Handling Setup
+### 基本错误处理设置
 ```bash
 #!/usr/bin/env bash
-# Basic error handling setup
+# 基本错误处理设置
 
 source error_handler.func
 
-# Initialize error handling
+# 初始化错误处理
 catch_errors
 
-# Your script code here
-# Errors will be automatically handled
+# 您的脚本代码在这里
+# 错误将自动处理
 ```
 
-### Manual Error Explanation
+### 手动错误解释
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Get error explanation
+# 获取错误解释
 explanation=$(explain_exit_code 127)
-echo "Error 127: $explanation"
-# Output: Error 127: Command not found
+echo "错误 127: $explanation"
+# 输出：错误 127: Command not found
 ```
 
-### Custom Error Handling
+### 自定义错误处理
 ```bash
 #!/usr/bin/env bash
 source error_handler.func
 
-# Custom error handling
+# 自定义错误处理
 if ! command -v required_tool >/dev/null 2>&1; then
-    echo "Error: required_tool not found"
+    echo "错误：未找到 required_tool"
     exit 127
 fi
 ```
 
-## Environment Variables
+## 环境变量
 
-### Debug Variables
-- `DEBUG_LOGFILE`: Path to debug log file for error logging
-- `SILENT_LOGFILE`: Path to silent execution log file
-- `STRICT_UNSET`: Enable strict unset variable checking (0/1)
+### 调试变量
+- `DEBUG_LOGFILE`：用于错误日志的调试日志文件路径
+- `SILENT_LOGFILE`：静默执行日志文件路径
+- `STRICT_UNSET`：启用严格的未设置变量检查（0/1）
 
-### Internal Variables
-- `lockfile`: Lock file path for cleanup (set by calling script)
-- `exit_code`: Current exit code
-- `command`: Failed command
-- `line_number`: Line number where error occurred
+### 内部变量
+- `lockfile`：清理的锁文件路径（由调用脚本设置）
+- `exit_code`：当前退出代码
+- `command`：失败的命令
+- `line_number`：发生错误的行号
 
-## Error Categories
+## 错误分类
 
-### Generic/Shell Errors
-- **1**: General error / Operation not permitted
-- **2**: Misuse of shell builtins (syntax error)
-- **126**: Command invoked cannot execute (permission problem)
-- **127**: Command not found
-- **128**: Invalid argument to exit
-- **130**: Terminated by Ctrl+C (SIGINT)
-- **137**: Killed (SIGKILL / Out of memory)
-- **139**: Segmentation fault (core dumped)
-- **143**: Terminated (SIGTERM)
+### 一般/Shell 错误
+- **1**：一般错误 / 操作不允许
+- **2**：shell 内置命令误用（语法错误）
+- **126**：调用的命令无法执行（权限问题）
+- **127**：命令未找到
+- **128**：exit 的参数无效
+- **130**：被 Ctrl+C 终止（SIGINT）
+- **137**：被终止（SIGKILL / 内存不足）
+- **139**：段错误（核心转储）
+- **143**：终止（SIGTERM）
 
-### Package Manager Errors
-- **100**: APT package manager error (broken packages)
-- **101**: APT configuration error (bad sources.list)
-- **255**: DPKG fatal internal error
+### 包管理器错误
+- **100**：APT 包管理器错误（损坏的包）
+- **101**：APT 配置错误（错误的 sources.list）
+- **255**：DPKG 致命内部错误
 
-### Node.js Errors
-- **243**: JavaScript heap out of memory
-- **245**: Invalid command-line option
-- **246**: Internal JavaScript parse error
-- **247**: Fatal internal error
-- **248**: Invalid C++ addon / N-API failure
-- **249**: Inspector error
-- **254**: npm/pnpm/yarn unknown fatal error
+### Node.js 错误
+- **243**：JavaScript 堆内存不足
+- **245**：无效的命令行选项
+- **246**：内部 JavaScript 解析错误
+- **247**：致命内部错误
+- **248**：无效的 C++ 插件 / N-API 失败
+- **249**：检查器错误
+- **254**：npm/pnpm/yarn 未知致命错误
 
-### Python Errors
-- **210**: Virtualenv/uv environment missing or broken
-- **211**: Dependency resolution failed
-- **212**: Installation aborted (permissions or EXTERNALLY-MANAGED)
+### Python 错误
+- **210**：Virtualenv/uv 环境缺失或损坏
+- **211**：依赖解析失败
+- **212**：安装中止（权限或 EXTERNALLY-MANAGED）
 
-### Database Errors
-- **PostgreSQL (231-234)**: Connection, authentication, database, query errors
-- **MySQL/MariaDB (241-244)**: Connection, authentication, database, query errors
-- **MongoDB (251-254)**: Connection, authentication, database, query errors
+### 数据库错误
+- **PostgreSQL (231-234)**：连接、身份验证、数据库、查询错误
+- **MySQL/MariaDB (241-244)**：连接、身份验证、数据库、查询错误
+- **MongoDB (251-254)**：连接、身份验证、数据库、查询错误
 
-### Proxmox Custom Errors
-- **200**: Failed to create lock file
-- **203**: Missing CTID variable
-- **204**: Missing PCT_OSTYPE variable
-- **205**: Invalid CTID (<100)
-- **209**: Container creation failed
-- **210**: Cluster not quorate
-- **214**: Not enough storage space
-- **215**: Container ID not listed
-- **216**: RootFS entry missing in config
-- **217**: Storage does not support rootdir
-- **220**: Unable to resolve template path
-- **222**: Template download failed after 3 attempts
-- **223**: Template not available after download
-- **231**: LXC stack upgrade/retry failed
+### Proxmox 自定义错误
+- **200**：创建锁文件失败
+- **203**：缺少 CTID 变量
+- **204**：缺少 PCT_OSTYPE 变量
+- **205**：无效的 CTID (<100)
+- **209**：容器创建失败
+- **210**：集群未达到法定人数
+- **214**：存储空间不足
+- **215**：容器 ID 未列出
+- **216**：配置中缺少 RootFS 条目
+- **217**：存储不支持 rootdir
+- **220**：无法解析模板路径
+- **222**：3 次尝试后模板下载失败
+- **223**：下载后模板不可用
+- **231**：LXC 堆栈升级/重试失败
 
-## Best Practices
+## 最佳实践
 
-### Error Handling Setup
-1. Source error_handler.func early in script
-2. Call catch_errors() to initialize traps
-3. Use proper exit codes for different error types
-4. Provide meaningful error messages
+### 错误处理设置
+1. 在脚本早期引用 error_handler.func
+2. 调用 catch_errors() 初始化陷阱
+3. 为不同错误类型使用适当的退出代码
+4. 提供有意义的错误消息
 
-### Signal Handling
-1. Always set up signal traps
-2. Provide graceful cleanup on interruption
-3. Use appropriate exit codes for signals
-4. Clean up temporary files and processes
+### 信号处理
+1. 始终设置信号陷阱
+2. 在中断时提供优雅的清理
+3. 为信号使用适当的退出代码
+4. 清理临时文件和进程
 
-### Error Reporting
-1. Use explain_exit_code() for user-friendly messages
-2. Log errors to debug files when needed
-3. Provide context information (line numbers, commands)
-4. Integrate with silent execution logging
+### 错误报告
+1. 使用 explain_exit_code() 获取用户友好的消息
+2. 在需要时将错误记录到调试文件
+3. 提供上下文信息（行号、命令）
+4. 与静默执行日志集成
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
-1. **Missing Error Handler**: Ensure error_handler.func is sourced
-2. **Trap Not Set**: Call catch_errors() to initialize traps
-3. **Color Variables**: Ensure core.func is sourced for colors
-4. **Lock Files**: Clean up lock files in on_exit()
+### 常见问题
+1. **缺少错误处理程序**：确保引用 error_handler.func
+2. **陷阱未设置**：调用 catch_errors() 初始化陷阱
+3. **颜色变量**：确保引用 core.func 以获取颜色
+4. **锁文件**：在 on_exit() 中清理锁文件
 
-### Debug Mode
-Enable debug logging for detailed error information:
+### 调试模式
+启用调试日志以获取详细的错误信息：
 ```bash
 export DEBUG_LOGFILE="/tmp/debug.log"
 source error_handler.func
 catch_errors
 ```
 
-### Error Code Testing
-Test error explanations:
+### 错误代码测试
+测试错误解释：
 ```bash
 source error_handler.func
 for code in 1 2 126 127 128 130 137 139 143; do
-    echo "Code $code: $(explain_exit_code $code)"
+    echo "代码 $code: $(explain_exit_code $code)"
 done
 ```
 
-## Related Documentation
+## 相关文档
 
-- [core.func](../core.func/) - Core utilities and silent execution
-- [build.func](../build.func/) - Container creation with error handling
-- [tools.func](../tools.func/) - Extended utilities with error handling
-- [api.func](../api.func/) - API operations with error handling
+- [core.func](../core.func/) - 核心实用程序和静默执行
+- [build.func](../build.func/) - 带错误处理的容器创建
+- [tools.func](../tools.func/) - 带错误处理的扩展实用程序
+- [api.func](../api.func/) - 带错误处理的 API 操作
 
 ---
 
-*This documentation covers the error_handler.func file which provides comprehensive error handling for all Proxmox Community Scripts.*
+*本文档涵盖 error_handler.func 文件，该文件为所有 Proxmox Community Scripts 提供全面的错误处理。*

@@ -36,11 +36,11 @@ set-e
 header_info
 
 while true; do
-  read -p "This will Install ${APP} on $hostname. Proceed(y/n)?" yn
+  read -p "这将在 $hostname 上安装 ${APP}。是否继续(y/n)?" yn
   case $yn in
   [Yy]*) break ;;
   [Nn]*) exit ;;
-  *) echo "Please answer yes or no." ;;
+  *) echo "请回答 yes 或 no。" ;;
   esac
 done
 header_info
@@ -55,7 +55,7 @@ function msg_ok() {
   echo -e "${BFR} ${CM} ${GN}${msg}${CL}"
 }
 
-msg_info "Installing ${APP}"
+msg_info "正在安装 ${APP}"
 if ! command -v curl &>/dev/null; then
   apt-get update >/dev/null 2>&1
   apt-get install -y curl >/dev/null 2>&1
@@ -64,8 +64,8 @@ curl -fsSL "https://github.com/OliveTin/OliveTin/releases/latest/download/OliveT
 dpkg -i OliveTin_linux_amd64.deb &>/dev/null
 systemctl enable --now OliveTin &>/dev/null
 rm OliveTin_linux_amd64.deb
-msg_ok "Installed ${APP} on $hostname"
+msg_ok "已在 $hostname 上安装 ${APP}"
 
-msg_ok "Completed successfully!\n"
-echo -e "${APP} should be reachable by going to the following URL.
+msg_ok "成功完成！\n"
+echo -e "${APP} 应该可以通过以下 URL 访问。
          ${BL}http://$IP:1337${CL} \n"

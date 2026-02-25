@@ -1,7 +1,7 @@
-# alpine-tools.func Integration Guide
+# alpine-tools.func 集成指南
 
-Alpine tool installation integration with container workflows.
+Alpine 工具安装与容器工作流程的集成。
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

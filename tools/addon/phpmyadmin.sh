@@ -50,7 +50,7 @@ elif [[ -f "/etc/debian_version" ]]; then
   PKG_QUERY="dpkg -l"
   INSTALL_DIR="$INSTALL_DIR_DEBIAN"
 else
-  echo -e "${CROSS} Unsupported OS detected. Exiting."
+  echo -e "${CROSS} 检测到不支持的操作系统。正在退出。"
   exit 1
 fi
 
@@ -65,12 +65,12 @@ function check_internet() {
     apt-get update >/dev/null 2>&1
     apt-get install -y curl >/dev/null 2>&1
   fi
-  msg_info "Checking Internet connectivity to GitHub"
+  msg_info "正在检查到 GitHub 的互联网连接"
   HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://github.com)
   if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 400 ]]; then
-    msg_ok "Internet connectivity OK"
+    msg_ok "互联网连接正常"
   else
-    msg_error "Internet connectivity or GitHub unreachable (Status $HTTP_CODE). Exiting."
+    msg_error "互联网连接或 GitHub 无法访问（状态 $HTTP_CODE）。正在退出。"
     exit 1
   fi
 }
@@ -84,12 +84,12 @@ function is_phpmyadmin_installed() {
 }
 
 function install_php_and_modules() {
-  msg_info "Checking existing PHP installation"
+  msg_info "正在检查现有 PHP 安装"
   if command -v php >/dev/null 2>&1; then
     PHP_VERSION=$(php -r 'echo PHP_VERSION;')
-    msg_ok "Found PHP version $PHP_VERSION"
+    msg_ok "找到 PHP 版本 $PHP_VERSION"
   else
-    msg_info "PHP not found, will install PHP core"
+    msg_info "未找到 PHP，将安装 PHP 核心"
   fi
 
   if [[ "$OS" == "Debian" ]]; then
@@ -101,36 +101,36 @@ function install_php_and_modules() {
       fi
     done
     if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
-      msg_info "Installing missing PHP packages: ${MISSING_PACKAGES[*]}"
+      msg_info "正在安装缺失的 PHP 包：${MISSING_PACKAGES[*]}"
       if ! apt-get update &>/dev/null || ! apt-get install -y "${MISSING_PACKAGES[@]}" &>/dev/null; then
-        msg_error "Failed to install required PHP modules. Exiting."
+        msg_error "安装所需 PHP 模块失败。正在退出。"
         exit 1
       fi
-      msg_ok "Installed missing PHP packages"
+      msg_ok "已安装缺失的 PHP 包"
     else
-      msg_ok "All required PHP modules are already installed"
+      msg_ok "所有所需的 PHP 模块已安装"
     fi
   else
-    msg_info "Installing Lighttpd and PHP for Alpine"
+    msg_info "正在为 Alpine 安装 Lighttpd 和 PHP"
     $PKG_MANAGER_INSTALL lighttpd php php-fpm php-session php-json php-mysqli curl tar openssl &>/dev/null
-    msg_ok "Installed Lighttpd and PHP"
+    msg_ok "已安装 Lighttpd 和 PHP"
   fi
 }
 
 function install_phpmyadmin() {
-  msg_info "Fetching latest phpMyAdmin release from GitHub"
+  msg_info "正在从 GitHub 获取最新的 phpMyAdmin 版本"
   LATEST_VERSION_RAW=$(curl -s https://api.github.com/repos/phpmyadmin/phpmyadmin/releases/latest | grep tag_name | cut -d '"' -f4)
   LATEST_VERSION=$(echo "$LATEST_VERSION_RAW" | sed -e 's/^RELEASE_//' -e 's/_/./g')
   if [[ -z "$LATEST_VERSION" ]]; then
-    msg_error "Could not determine latest phpMyAdmin version from GitHub – falling back to 5.2.2"
+    msg_error "无法从 GitHub 确定最新的 phpMyAdmin 版本 – 回退到 5.2.2"
     LATEST_VERSION="RELEASE_5_2_2"
   fi
-  msg_ok "Latest version: $LATEST_VERSION"
+  msg_ok "最新版本：$LATEST_VERSION"
 
   TARBALL_URL="https://files.phpmyadmin.net/phpMyAdmin/${LATEST_VERSION}/phpMyAdmin-${LATEST_VERSION}-all-languages.tar.gz"
-  msg_info "Downloading ${TARBALL_URL}"
+  msg_info "正在下载 ${TARBALL_URL}"
   if ! curl -fsSL "$TARBALL_URL" -o /tmp/phpmyadmin.tar.gz; then
-    msg_error "Download failed: $TARBALL_URL"
+    msg_error "下载失败：$TARBALL_URL"
     exit 1
   fi
 
@@ -146,9 +146,9 @@ function configure_phpmyadmin() {
     chmod 660 "$INSTALL_DIR/config.inc.php"
     chown -R www-data:www-data "$INSTALL_DIR"
     systemctl restart apache2
-    msg_ok "Configured phpMyAdmin with Apache"
+    msg_ok "已使用 Apache 配置 phpMyAdmin"
   else
-    msg_info "Configuring Lighttpd for phpMyAdmin (Alpine detected)"
+    msg_info "正在为 phpMyAdmin 配置 Lighttpd（检测到 Alpine）"
 
     mkdir -p /etc/lighttpd
     cat <<EOF >/etc/lighttpd/lighttpd.conf
@@ -178,27 +178,27 @@ accesslog.filename = "/var/log/lighttpd/access.log"
 server.errorlog = "/var/log/lighttpd/error.log"
 EOF
 
-    msg_info "Starting PHP-FPM and Lighttpd"
+    msg_info "正在启动 PHP-FPM 和 Lighttpd"
 
     PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION . PHP_MINOR_VERSION;')
     PHP_FPM_SERVICE="php-fpm${PHP_VERSION}"
 
     if $STD rc-service "$PHP_FPM_SERVICE" start && $STD rc-update add "$PHP_FPM_SERVICE" default; then
-      msg_ok "Started PHP-FPM service: $PHP_FPM_SERVICE"
+      msg_ok "已启动 PHP-FPM 服务：$PHP_FPM_SERVICE"
     else
-      msg_error "Failed to start PHP-FPM service: $PHP_FPM_SERVICE"
+      msg_error "启动 PHP-FPM 服务失败：$PHP_FPM_SERVICE"
       exit 1
     fi
 
     $STD rc-service lighttpd start
     $STD rc-update add lighttpd default
-    msg_ok "Configured and started Lighttpd successfully"
+    msg_ok "已成功配置并启动 Lighttpd"
 
   fi
 }
 
 function uninstall_phpmyadmin() {
-  msg_info "Stopping Webserver"
+  msg_info "正在停止 Web 服务器"
   if [[ "$OS" == "Debian" ]]; then
     systemctl stop apache2
   else
@@ -206,36 +206,36 @@ function uninstall_phpmyadmin() {
     $STD rc-service php-fpm stop
   fi
 
-  msg_info "Removing phpMyAdmin directory"
+  msg_info "正在移除 phpMyAdmin 目录"
   rm -rf "$INSTALL_DIR"
 
   if [[ "$OS" == "Alpine" ]]; then
-    msg_info "Removing Lighttpd config"
+    msg_info "正在移除 Lighttpd 配置"
     rm -f /etc/lighttpd/lighttpd.conf
     $STD rc-service php-fpm restart
     $STD rc-service lighttpd restart
   else
     $STD systemctl restart apache2
   fi
-  msg_ok "Uninstalled phpMyAdmin"
+  msg_ok "已卸载 phpMyAdmin"
 }
 
 function update_phpmyadmin() {
-  msg_info "Fetching latest phpMyAdmin release from GitHub"
+  msg_info "正在从 GitHub 获取最新的 phpMyAdmin 版本"
   LATEST_VERSION_RAW=$(curl -s https://api.github.com/repos/phpmyadmin/phpmyadmin/releases/latest | grep tag_name | cut -d '"' -f4)
   LATEST_VERSION=$(echo "$LATEST_VERSION_RAW" | sed -e 's/^RELEASE_//' -e 's/_/./g')
 
   if [[ -z "$LATEST_VERSION" ]]; then
-    msg_error "Could not determine latest phpMyAdmin version from GitHub – falling back to 5.2.2"
+    msg_error "无法从 GitHub 确定最新的 phpMyAdmin 版本 – 回退到 5.2.2"
     LATEST_VERSION="5.2.2"
   fi
-  msg_ok "Latest version: $LATEST_VERSION"
+  msg_ok "最新版本：$LATEST_VERSION"
 
   TARBALL_URL="https://files.phpmyadmin.net/phpMyAdmin/${LATEST_VERSION}/phpMyAdmin-${LATEST_VERSION}-all-languages.tar.gz"
-  msg_info "Downloading ${TARBALL_URL}"
+  msg_info "正在下载 ${TARBALL_URL}"
 
   if ! curl -fsSL "$TARBALL_URL" -o /tmp/phpmyadmin.tar.gz; then
-    msg_error "Download failed: $TARBALL_URL"
+    msg_error "下载失败：$TARBALL_URL"
     exit 1
   fi
 
@@ -243,27 +243,27 @@ function update_phpmyadmin() {
   mkdir -p "$BACKUP_DIR"
   BACKUP_ITEMS=("config.inc.php" "upload" "save" "tmp" "themes")
 
-  msg_info "Backing up existing phpMyAdmin data"
+  msg_info "正在备份现有 phpMyAdmin 数据"
   for item in "${BACKUP_ITEMS[@]}"; do
     [[ -e "$INSTALL_DIR/$item" ]] && cp -a "$INSTALL_DIR/$item" "$BACKUP_DIR/" && echo "  ↪︎ $item"
   done
-  msg_ok "Backup completed: $BACKUP_DIR"
+  msg_ok "备份完成：$BACKUP_DIR"
 
   tar xf /tmp/phpmyadmin.tar.gz --strip-components=1 -C "$INSTALL_DIR"
-  msg_ok "Extracted phpMyAdmin $LATEST_VERSION"
+  msg_ok "已解压 phpMyAdmin $LATEST_VERSION"
 
-  msg_info "Restoring preserved files"
+  msg_info "正在恢复保留的文件"
   for item in "${BACKUP_ITEMS[@]}"; do
-    [[ -e "$BACKUP_DIR/$item" ]] && cp -a "$BACKUP_DIR/$item" "$INSTALL_DIR/" && echo "  ↪︎ $item restored"
+    [[ -e "$BACKUP_DIR/$item" ]] && cp -a "$BACKUP_DIR/$item" "$INSTALL_DIR/" && echo "  ↪︎ $item 已恢复"
   done
-  msg_ok "Restoration completed"
+  msg_ok "恢复完成"
 
   configure_phpmyadmin
 }
 
 if is_phpmyadmin_installed; then
-  echo -e "${YW}⚠️ ${APP} is already installed at ${INSTALL_DIR}.${CL}"
-  read -r -p "Would you like to Update (1), Uninstall (2) or Cancel (3)? [1/2/3]: " action
+  echo -e "${YW}⚠️ ${APP} 已安装在 ${INSTALL_DIR}。${CL}"
+  read -r -p "您想更新 (1)、卸载 (2) 还是取消 (3)？[1/2/3]: " action
   action="${action//[[:space:]]/}"
   case "$action" in
   1)
@@ -274,16 +274,16 @@ if is_phpmyadmin_installed; then
     uninstall_phpmyadmin
     ;;
   3)
-    echo -e "${YW}⚠️ Action cancelled. Exiting.${CL}"
+    echo -e "${YW}⚠️ 操作已取消。正在退出。${CL}"
     exit 0
     ;;
   *)
-    echo -e "${YW}⚠️ Invalid input. Exiting.${CL}"
+    echo -e "${YW}⚠️ 无效输入。正在退出。${CL}"
     exit 1
     ;;
   esac
 else
-  read -r -p "Would you like to install ${APP}? (y/n): " install_prompt
+  read -r -p "您想安装 ${APP} 吗？(y/n): " install_prompt
   install_prompt="${install_prompt//[[:space:]]/}"
   if [[ "${install_prompt,,}" =~ ^(y|yes)$ ]]; then
     check_internet
@@ -291,12 +291,12 @@ else
     install_phpmyadmin
     configure_phpmyadmin
     if [[ "$OS" == "Debian" ]]; then
-      echo -e "${CM} ${GN}${APP} is reachable at: ${BL}http://${IP}/phpMyAdmin${CL}"
+      echo -e "${CM} ${GN}${APP} 可通过以下地址访问: ${BL}http://${IP}/phpMyAdmin${CL}"
     else
-      echo -e "${CM} ${GN}${APP} is reachable at: ${BL}http://${IP}/${CL}"
+      echo -e "${CM} ${GN}${APP} 可通过以下地址访问: ${BL}http://${IP}/${CL}"
     fi
   else
-    echo -e "${YW}⚠️ Installation skipped. Exiting.${CL}"
+    echo -e "${YW}⚠️ 已跳过安装。正在退出。${CL}"
     exit 0
   fi
 fi

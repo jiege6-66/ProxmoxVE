@@ -28,9 +28,9 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "clean-lxcs" "pve"
 
 header_info
-echo "Loading..."
+echo "加载中..."
 
-whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE LXC Updater" --yesno "This will clean logs, cache and update package lists on selected LXC Containers. Proceed?" 10 58
+whiptail --backtitle "Proxmox VE Helper Scripts" --title "Proxmox VE LXC 更新器" --yesno "这将清理选定 LXC 容器上的日志、缓存并更新软件包列表。是否继续？" 10 58
 
 NODE=$(hostname)
 EXCLUDE_MENU=()
@@ -42,7 +42,7 @@ while read -r TAG ITEM; do
   EXCLUDE_MENU+=("$TAG" "$ITEM " "OFF")
 done < <(pct list | awk 'NR>1')
 
-excluded_containers=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Containers on $NODE" --checklist "\nSelect containers to skip from cleaning:\n" \
+excluded_containers=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Containers on $NODE" --checklist "\n选择要跳过清理的容器:\n" \
   16 $((MSG_MAX_LENGTH + 23)) 6 "${EXCLUDE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"')
 
 if [ $? -ne 0 ]; then
@@ -58,20 +58,20 @@ function run_lxc_clean() {
     BL="\033[36m"; GN="\033[1;92m"; CL="\033[m"
     name=$(hostname)
     if [ -e /etc/alpine-release ]; then
-      echo -e "${BL}[Info]${GN} Cleaning $name (Alpine)${CL}\n"
+      echo -e "${BL}[信息]${GN} 正在清理 $name (Alpine)${CL}\n"
       apk cache clean
       find /var/log -type f -delete 2>/dev/null
       find /tmp -mindepth 1 -delete 2>/dev/null
       apk update
     elif [ -e /etc/redhat-release ]; then
-      echo -e "${BL}[Info]${GN} Cleaning $name (CentOS)${CL}\n"
+      echo -e "${BL}[信息]${GN} 正在清理 $name (CentOS)${CL}\n"
       yum clean all
       find /var/log -type f -delete 2>/dev/null
       find /tmp -mindepth 1 -delete 2>/dev/null
       yum update
       yum upgrade -y
     else
-      echo -e "${BL}[Info]${GN} Cleaning $name (Debian/Ubuntu)${CL}\n"
+      echo -e "${BL}[信息]${GN} 正在清理 $name (Debian/Ubuntu)${CL}\n"
       find /var/cache -type f -delete 2>/dev/null
       find /var/log -type f -delete 2>/dev/null
       find /tmp -mindepth 1 -delete 2>/dev/null
@@ -86,7 +86,7 @@ function run_lxc_clean() {
 for container in $(pct list | awk '{if(NR>1) print $1}'); do
   if [[ " ${excluded_containers[@]} " =~ " $container " ]]; then
     header_info
-    echo -e "${BL}[Info]${GN} Skipping ${BL}$container${CL}"
+    echo -e "${BL}[信息]${GN} 跳过 ${BL}$container${CL}"
     sleep 1
     continue
   fi
@@ -95,7 +95,7 @@ for container in $(pct list | awk '{if(NR>1) print $1}'); do
   # Supported: debian, ubuntu, alpine, centos
   if [ "$os" != "debian" ] && [ "$os" != "ubuntu" ] && [ "$os" != "alpine" ] && [ "$os" != "centos" ]; then
     header_info
-    echo -e "${BL}[Info]${GN} Skipping ${RD}$container is not Debian, Ubuntu, Alpine or Red Hat Compatible${CL} \n"
+    echo -e "${BL}[信息]${GN} 跳过 ${RD}$container 不是 Debian、Ubuntu、Alpine 或 Red Hat 兼容系统${CL} \n"
     sleep 1
     continue
   fi
@@ -104,12 +104,12 @@ for container in $(pct list | awk '{if(NR>1) print $1}'); do
   template=$(pct config "$container" | grep -q "template:" && echo "true" || echo "false")
 
   if [ "$template" == "false" ] && [ "$status" == "status: stopped" ]; then
-    echo -e "${BL}[Info]${GN} Starting${BL} $container ${CL} \n"
+    echo -e "${BL}[信息]${GN} 正在启动${BL} $container ${CL} \n"
     pct start "$container"
-    echo -e "${BL}[Info]${GN} Waiting For${BL} $container${CL}${GN} To Start ${CL} \n"
+    echo -e "${BL}[信息]${GN} 等待${BL} $container${CL}${GN} 启动 ${CL} \n"
     sleep 5
     run_lxc_clean "$container"
-    echo -e "${BL}[Info]${GN} Shutting down${BL} $container ${CL} \n"
+    echo -e "${BL}[信息]${GN} 正在关闭${BL} $container ${CL} \n"
     pct shutdown "$container" &
   elif [ "$status" == "status: running" ]; then
     run_lxc_clean "$container"
@@ -118,4 +118,4 @@ done
 
 wait
 header_info
-echo -e "${GN} Finished, Selected Containers Cleaned. ${CL} \n"
+echo -e "${GN} 完成，已清理选定的容器。${CL} \n"

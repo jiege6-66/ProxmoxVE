@@ -1,25 +1,25 @@
-# alpine-tools.func Flowchart
+# alpine-tools.func 流程图
 
-Alpine tool installation and package management flow.
+Alpine 工具安装和包管理流程。
 
-## Tool Installation on Alpine
+## Alpine 上的工具安装
 
 ```
 apk_update()
     ↓
-add_community_repo()    [optional]
+add_community_repo()    [可选]
     ↓
 apk_add PACKAGES
     ↓
-Tool Installation
+工具安装
     ↓
 rc-service start
     ↓
-rc-update add           [enable at boot]
+rc-update add           [开机启用]
     ↓
-Complete ✓
+完成 ✓
 ```
 
 ---
 
-**Last Updated**: December 2025
+**最后更新**：2025 年 12 月

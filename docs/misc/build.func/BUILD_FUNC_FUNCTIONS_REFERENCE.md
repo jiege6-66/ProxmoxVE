@@ -1,335 +1,335 @@
-# build.func Functions Reference
+# build.func 函数参考
 
-## Overview
+## 概述
 
-This document provides a comprehensive reference of all functions in `build.func`, organized alphabetically with detailed descriptions, parameters, and usage information.
+本文档提供 `build.func` 中所有函数的完整参考，按字母顺序组织，包含详细描述、参数和使用信息。
 
-## Function Categories
+## 函数类别
 
-### Initialization Functions
+### 初始化函数
 
 #### `start()`
 
-**Purpose**: Main entry point when build.func is sourced or executed
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：引用或执行 build.func 时的主入口点
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Detects execution context (Proxmox host vs container)
-- Captures hard environment variables
-- Sets CT_TYPE based on context
-- Routes to appropriate workflow (install_script or update_script)
-  **Dependencies**: None
-  **Environment Variables Used**: `CT_TYPE`, `APP`, `CTID`
+- 检测执行上下文（Proxmox 主机 vs 容器）
+- 捕获硬环境变量
+- 根据上下文设置 CT_TYPE
+- 路由到适当的工作流（install_script 或 update_script）
+**依赖关系**：无
+**使用的环境变量**：`CT_TYPE`、`APP`、`CTID`
 
 #### `variables()`
 
-**Purpose**: Load and resolve all configuration variables using precedence chain
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：使用优先级链加载和解析所有配置变量
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Loads app-specific .vars file
-- Loads global default.vars file
-- Applies variable precedence chain
-- Sets all configuration variables
-  **Dependencies**: `base_settings()`
-  **Environment Variables Used**: All configuration variables
+- 加载应用特定的 .vars 文件
+- 加载全局 default.vars 文件
+- 应用变量优先级链
+- 设置所有配置变量
+**依赖关系**：`base_settings()`
+**使用的环境变量**：所有配置变量
 
 #### `base_settings()`
 
-**Purpose**: Set built-in default values for all configuration variables
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Sets default values for all variables
-**Dependencies**: None
-**Environment Variables Used**: All configuration variables
+**目的**：为所有配置变量设置内置默认值
+**参数**：无
+**返回**：无
+**副作用**：为所有变量设置默认值
+**依赖关系**：无
+**使用的环境变量**：所有配置变量
 
-### UI and Menu Functions
+### UI 和菜单函数
 
 #### `install_script()`
 
-**Purpose**: Main installation workflow coordinator
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：主安装工作流协调器
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Displays installation mode selection menu
-- Coordinates the entire installation process
-- Handles user interaction and validation
-  **Dependencies**: `variables()`, `build_container()`, `default_var_settings()`
-  **Environment Variables Used**: `APP`, `CTID`, `var_hostname`
+- 显示安装模式选择菜单
+- 协调整个安装过程
+- 处理用户交互和验证
+**依赖关系**：`variables()`、`build_container()`、`default_var_settings()`
+**使用的环境变量**：`APP`、`CTID`、`var_hostname`
 
 #### `advanced_settings()`
 
-**Purpose**: Provide advanced configuration options via whiptail menus
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：通过 whiptail 菜单提供高级配置选项
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Displays whiptail menus for configuration
-- Updates configuration variables based on user input
-- Validates user selections
-  **Dependencies**: `select_storage()`, `detect_gpu_devices()`
-  **Environment Variables Used**: All configuration variables
+- 显示配置的 whiptail 菜单
+- 根据用户输入更新配置变量
+- 验证用户选择
+**依赖关系**：`select_storage()`、`detect_gpu_devices()`
+**使用的环境变量**：所有配置变量
 
 #### `settings_menu()`
 
-**Purpose**: Display and handle settings configuration menu
-**Parameters**: None
-**Returns**: None
-**Side Effects**: Updates configuration variables
-**Dependencies**: `advanced_settings()`
-**Environment Variables Used**: All configuration variables
+**目的**：显示和处理设置配置菜单
+**参数**：无
+**返回**：无
+**副作用**：更新配置变量
+**依赖关系**：`advanced_settings()`
+**使用的环境变量**：所有配置变量
 
-### Storage Functions
+### 存储函数
 
 #### `select_storage()`
 
-**Purpose**: Handle storage selection for templates and containers
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：处理模板和容器的存储选择
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Resolves storage preselection
-- Prompts user for storage selection if needed
-- Validates storage availability
-- Sets var_template_storage and var_container_storage
-  **Dependencies**: `resolve_storage_preselect()`, `choose_and_set_storage_for_file()`
-  **Environment Variables Used**: `var_template_storage`, `var_container_storage`, `TEMPLATE_STORAGE`, `CONTAINER_STORAGE`
+- 解析存储预选
+- 如需要提示用户选择存储
+- 验证存储可用性
+- 设置 var_template_storage 和 var_container_storage
+**依赖关系**：`resolve_storage_preselect()`、`choose_and_set_storage_for_file()`
+**使用的环境变量**：`var_template_storage`、`var_container_storage`、`TEMPLATE_STORAGE`、`CONTAINER_STORAGE`
 
 #### `resolve_storage_preselect()`
 
-**Purpose**: Resolve preselected storage options
-**Parameters**:
+**目的**：解析预选的存储选项
+**参数**：
 
-- `storage_type`: Type of storage (template or container)
-  **Returns**: Storage name if valid, empty if invalid
-  **Side Effects**: Validates storage availability
-  **Dependencies**: None
-  **Environment Variables Used**: `var_template_storage`, `var_container_storage`
+- `storage_type`：存储类型（template 或 container）
+**返回**：如果有效则返回存储名称，如果无效则为空
+**副作用**：验证存储可用性
+**依赖关系**：无
+**使用的环境变量**：`var_template_storage`、`var_container_storage`
 
 #### `choose_and_set_storage_for_file()`
 
-**Purpose**: Interactive storage selection via whiptail
-**Parameters**:
+**目的**：通过 whiptail 进行交互式存储选择
+**参数**：
 
-- `storage_type`: Type of storage (template or container)
-- `content_type`: Content type (vztmpl or rootdir)
-  **Returns**: None
-  **Side Effects**:
-- Displays whiptail menu
-- Updates storage variables
-- Validates selection
-  **Dependencies**: None
-  **Environment Variables Used**: `var_template_storage`, `var_container_storage`
+- `storage_type`：存储类型（template 或 container）
+- `content_type`：内容类型（vztmpl 或 rootdir）
+**返回**：无
+**副作用**：
+- 显示 whiptail 菜单
+- 更新存储变量
+- 验证选择
+**依赖关系**：无
+**使用的环境变量**：`var_template_storage`、`var_container_storage`
 
-### Container Creation Functions
+### 容器创建函数
 
 #### `build_container()`
 
-**Purpose**: Validate settings and prepare container creation
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：验证设置并准备容器创建
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Validates all configuration
-- Checks for conflicts
-- Prepares container configuration
-- Calls create_lxc_container()
-  **Dependencies**: `create_lxc_container()`
-  **Environment Variables Used**: All configuration variables
+- 验证所有配置
+- 检查冲突
+- 准备容器配置
+- 调用 create_lxc_container()
+**依赖关系**：`create_lxc_container()`
+**使用的环境变量**：所有配置变量
 
 #### `create_lxc_container()`
 
-**Purpose**: Create the actual LXC container
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：创建实际的 LXC 容器
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Creates LXC container with basic configuration
-- Configures network settings
-- Sets up storage and mount points
-- Configures features (FUSE, TUN, etc.)
-- Sets resource limits
-- Configures startup options
-- Starts container
-  **Dependencies**: `configure_gpu_passthrough()`, `fix_gpu_gids()`
-  **Environment Variables Used**: All configuration variables
+- 使用基本配置创建 LXC 容器
+- 配置网络设置
+- 设置存储和挂载点
+- 配置功能（FUSE、TUN 等）
+- 设置资源限制
+- 配置启动选项
+- 启动容器
+**依赖关系**：`configure_gpu_passthrough()`、`fix_gpu_gids()`
+**使用的环境变量**：所有配置变量
 
-### GPU and Hardware Functions
+### GPU 和硬件函数
 
 #### `detect_gpu_devices()`
 
-**Purpose**: Detect available GPU hardware on the system
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：检测系统上可用的 GPU 硬件
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Scans for Intel, AMD, and NVIDIA GPUs
-- Updates var_gpu_type and var_gpu_devices
-- Determines GPU capabilities
-  **Dependencies**: None
-  **Environment Variables Used**: `var_gpu_type`, `var_gpu_devices`, `GPU_APPS`
+- 扫描 Intel、AMD 和 NVIDIA GPU
+- 更新 var_gpu_type 和 var_gpu_devices
+- 确定 GPU 功能
+**依赖关系**：无
+**使用的环境变量**：`var_gpu_type`、`var_gpu_devices`、`GPU_APPS`
 
 #### `configure_gpu_passthrough()`
 
-**Purpose**: Configure GPU passthrough for the container
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：为容器配置 GPU 直通
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Adds GPU device entries to container config
-- Configures proper device permissions
-- Sets up device mapping
-- Updates /etc/pve/lxc/<ctid>.conf
-  **Dependencies**: `detect_gpu_devices()`
-  **Environment Variables Used**: `var_gpu`, `var_gpu_type`, `var_gpu_devices`, `CTID`
+- 将 GPU 设备条目添加到容器配置
+- 配置适当的设备权限
+- 设置设备映射
+- 更新 /etc/pve/lxc/<ctid>.conf
+**依赖关系**：`detect_gpu_devices()`
+**使用的环境变量**：`var_gpu`、`var_gpu_type`、`var_gpu_devices`、`CTID`
 
 #### `fix_gpu_gids()`
 
-**Purpose**: Fix GPU group IDs after container creation
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：容器创建后修复 GPU 组 ID
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Updates GPU group IDs in container
-- Ensures proper GPU access permissions
-- Configures video and render groups
-  **Dependencies**: `configure_gpu_passthrough()`
-  **Environment Variables Used**: `CTID`, `var_gpu_type`
+- 更新容器中的 GPU 组 ID
+- 确保适当的 GPU 访问权限
+- 配置 video 和 render 组
+**依赖关系**：`configure_gpu_passthrough()`
+**使用的环境变量**：`CTID`、`var_gpu_type`
 
-### SSH Configuration Functions
+### SSH 配置函数
 
 #### `configure_ssh_settings()`
 
-**Purpose**: Interactive SSH key and access configuration wizard
-**Parameters**:
+**目的**：交互式 SSH 密钥和访问配置向导
+**参数**：
 
-- `step_info` (optional): Step indicator string (e.g., "Step 17/19") for consistent dialog headers
-  **Returns**: None
-  **Side Effects**:
-- Creates temporary file for SSH keys
-- Discovers and presents available SSH keys from host
-- Allows manual key entry or folder/glob scanning
-- Sets `SSH` variable to "yes" or "no" based on user selection
-- Sets `SSH_AUTHORIZED_KEY` if manual key provided
-- Populates `SSH_KEYS_FILE` with selected keys
-  **Dependencies**: `ssh_discover_default_files()`, `ssh_build_choices_from_files()`
-  **Environment Variables Used**: `SSH`, `SSH_AUTHORIZED_KEY`, `SSH_KEYS_FILE`
+- `step_info`（可选）：步骤指示器字符串（例如 "Step 17/19"）用于一致的对话框标题
+**返回**：无
+**副作用**：
+- 为 SSH 密钥创建临时文件
+- 发现并呈现主机上可用的 SSH 密钥
+- 允许手动密钥输入或文件夹/glob 扫描
+- 根据用户选择将 `SSH` 变量设置为 "yes" 或 "no"
+- 如果提供手动密钥则设置 `SSH_AUTHORIZED_KEY`
+- 使用选定的密钥填充 `SSH_KEYS_FILE`
+**依赖关系**：`ssh_discover_default_files()`、`ssh_build_choices_from_files()`
+**使用的环境变量**：`SSH`、`SSH_AUTHORIZED_KEY`、`SSH_KEYS_FILE`
 
-**SSH Key Source Options**:
+**SSH 密钥源选项**：
 
-1. `found` - Select from auto-detected host keys
-2. `manual` - Paste a single public key
-3. `folder` - Scan custom folder or glob pattern
-4. `none` - No SSH keys
+1. `found` - 从自动检测的主机密钥中选择
+2. `manual` - 粘贴单个公钥
+3. `folder` - 扫描自定义文件夹或 glob 模式
+4. `none` - 无 SSH 密钥
 
-**Note**: The "Enable root SSH access?" dialog is always shown, regardless of whether SSH keys or password are configured. This ensures users can always enable SSH access even with automatic login.
+**注意**：无论是否配置了 SSH 密钥或密码，始终显示"启用 root SSH 访问？"对话框。这确保用户即使使用自动登录也始终可以启用 SSH 访问。
 
 #### `ssh_discover_default_files()`
 
-**Purpose**: Discover SSH public key files on the host system
-**Parameters**: None
-**Returns**: Array of discovered key file paths
-**Side Effects**: Scans common SSH key locations
-**Dependencies**: None
-**Environment Variables Used**: `var_ssh_import_glob`
+**目的**：发现主机系统上的 SSH 公钥文件
+**参数**：无
+**返回**：发现的密钥文件路径数组
+**副作用**：扫描常见的 SSH 密钥位置
+**依赖关系**：无
+**使用的环境变量**：`var_ssh_import_glob`
 
 #### `ssh_build_choices_from_files()`
 
-**Purpose**: Build whiptail checklist choices from SSH key files
-**Parameters**:
+**目的**：从 SSH 密钥文件构建 whiptail 检查列表选项
+**参数**：
 
-- Array of file paths to process
-  **Returns**: None
-  **Side Effects**:
-- Sets `CHOICES` array for whiptail checklist
-- Sets `COUNT` variable with number of keys found
-- Creates `MAPFILE` for key tag to content mapping
-  **Dependencies**: None
-  **Environment Variables Used**: `CHOICES`, `COUNT`, `MAPFILE`
+- 要处理的文件路径数组
+**返回**：无
+**副作用**：
+- 为 whiptail 检查列表设置 `CHOICES` 数组
+- 使用找到的密钥数量设置 `COUNT` 变量
+- 创建密钥标签到内容映射的 `MAPFILE`
+**依赖关系**：无
+**使用的环境变量**：`CHOICES`、`COUNT`、`MAPFILE`
 
-### Settings Persistence Functions
+### 设置持久化函数
 
 #### `default_var_settings()`
 
-**Purpose**: Offer to save current settings as defaults
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：提供将当前设置保存为默认值
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Prompts user to save settings
-- Saves to default.vars file
-- Saves to app-specific .vars file
-  **Dependencies**: `maybe_offer_save_app_defaults()`
-  **Environment Variables Used**: All configuration variables
+- 提示用户保存设置
+- 保存到 default.vars 文件
+- 保存到应用特定的 .vars 文件
+**依赖关系**：`maybe_offer_save_app_defaults()`
+**使用的环境变量**：所有配置变量
 
 #### `maybe_offer_save_app_defaults()`
 
-**Purpose**: Offer to save app-specific defaults
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：提供保存应用特定默认值
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Prompts user to save app-specific settings
-- Saves to app.vars file
-- Updates app-specific configuration
-  **Dependencies**: None
-  **Environment Variables Used**: `APP`, `SAVE_APP_DEFAULTS`
+- 提示用户保存应用特定设置
+- 保存到 app.vars 文件
+- 更新应用特定配置
+**依赖关系**：无
+**使用的环境变量**：`APP`、`SAVE_APP_DEFAULTS`
 
-### Utility Functions
+### 实用函数
 
 #### `validate_settings()`
 
-**Purpose**: Validate all configuration settings
-**Parameters**: None
-**Returns**: 0 if valid, 1 if invalid
-**Side Effects**:
+**目的**：验证所有配置设置
+**参数**：无
+**返回**：如果有效则为 0，如果无效则为 1
+**副作用**：
 
-- Checks for configuration conflicts
-- Validates resource limits
-- Validates network configuration
-- Validates storage configuration
-  **Dependencies**: None
-  **Environment Variables Used**: All configuration variables
+- 检查配置冲突
+- 验证资源限制
+- 验证网络配置
+- 验证存储配置
+**依赖关系**：无
+**使用的环境变量**：所有配置变量
 
 #### `check_conflicts()`
 
-**Purpose**: Check for configuration conflicts
-**Parameters**: None
-**Returns**: 0 if no conflicts, 1 if conflicts found
-**Side Effects**:
+**目的**：检查配置冲突
+**参数**：无
+**返回**：如果没有冲突则为 0，如果发现冲突则为 1
+**副作用**：
 
-- Checks for conflicting settings
-- Validates resource allocation
-- Checks network configuration
-  **Dependencies**: None
-  **Environment Variables Used**: All configuration variables
+- 检查冲突的设置
+- 验证资源分配
+- 检查网络配置
+**依赖关系**：无
+**使用的环境变量**：所有配置变量
 
 #### `cleanup_on_error()`
 
-**Purpose**: Clean up resources on error
-**Parameters**: None
-**Returns**: None
-**Side Effects**:
+**目的**：错误时清理资源
+**参数**：无
+**返回**：无
+**副作用**：
 
-- Removes partially created containers
-- Cleans up temporary files
-- Resets configuration
-  **Dependencies**: None
-  **Environment Variables Used**: `CTID`
+- 删除部分创建的容器
+- 清理临时文件
+- 重置配置
+**依赖关系**：无
+**使用的环境变量**：`CTID`
 
-## Function Call Flow
+## 函数调用流程
 
-### Main Installation Flow
+### 主安装流程
 
 ```
 start()
 ├── variables()
 │   ├── base_settings()
-│   ├── Load app.vars
-│   └── Load default.vars
+│   ├── 加载 app.vars
+│   └── 加载 default.vars
 ├── install_script()
 │   ├── advanced_settings()
 │   │   ├── select_storage()
@@ -346,144 +346,144 @@ start()
 │       └── maybe_offer_save_app_defaults()
 ```
 
-### Error Handling Flow
+### 错误处理流程
 
 ```
-Error Detection
+错误检测
 ├── validate_settings()
 │   └── check_conflicts()
-├── Error Handling
+├── 错误处理
 │   └── cleanup_on_error()
-└── Exit with error code
+└── 以错误代码退出
 ```
 
-## Function Dependencies
+## 函数依赖关系
 
-### Core Dependencies
+### 核心依赖
 
 - `start()` → `install_script()` → `build_container()` → `create_lxc_container()`
 - `variables()` → `base_settings()`
 - `advanced_settings()` → `select_storage()` → `detect_gpu_devices()`
 
-### Storage Dependencies
+### 存储依赖
 
 - `select_storage()` → `resolve_storage_preselect()`
 - `select_storage()` → `choose_and_set_storage_for_file()`
 
-### GPU Dependencies
+### GPU 依赖
 
 - `configure_gpu_passthrough()` → `detect_gpu_devices()`
 - `fix_gpu_gids()` → `configure_gpu_passthrough()`
 
-### Settings Dependencies
+### 设置依赖
 
 - `default_var_settings()` → `maybe_offer_save_app_defaults()`
 
-## Function Usage Examples
+## 函数使用示例
 
-### Basic Container Creation
+### 基本容器创建
 
 ```bash
-# Set required variables
+# 设置必需变量
 export APP="plex"
 export CTID="100"
 export var_hostname="plex-server"
 
-# Call main functions
-start()  # Entry point
-# → variables()  # Load configuration
-# → install_script()  # Main workflow
-# → build_container()  # Create container
-# → create_lxc_container()  # Actual creation
+# 调用主函数
+start()  # 入口点
+# → variables()  # 加载配置
+# → install_script()  # 主工作流
+# → build_container()  # 创建容器
+# → create_lxc_container()  # 实际创建
 ```
 
-### Advanced Configuration
+### 高级配置
 
 ```bash
-# Set advanced variables
+# 设置高级变量
 export var_os="debian"
 export var_version="12"
 export var_cpu="4"
 export var_ram="4096"
 export var_disk="20"
 
-# Call advanced functions
-advanced_settings()  # Interactive configuration
-# → select_storage()  # Storage selection
-# → detect_gpu_devices()  # GPU detection
+# 调用高级函数
+advanced_settings()  # 交互式配置
+# → select_storage()  # 存储选择
+# → detect_gpu_devices()  # GPU 检测
 ```
 
-### GPU Passthrough
+### GPU 直通
 
 ```bash
-# Enable GPU passthrough
+# 启用 GPU 直通
 export GPU_APPS="plex"
 export var_gpu="nvidia"
 
-# Call GPU functions
-detect_gpu_devices()  # Detect hardware
-configure_gpu_passthrough()  # Configure passthrough
-fix_gpu_gids()  # Fix permissions
+# 调用 GPU 函数
+detect_gpu_devices()  # 检测硬件
+configure_gpu_passthrough()  # 配置直通
+fix_gpu_gids()  # 修复权限
 ```
 
-### Settings Persistence
+### 设置持久化
 
 ```bash
-# Save settings as defaults
+# 将设置保存为默认值
 export SAVE_DEFAULTS="true"
 export SAVE_APP_DEFAULTS="true"
 
-# Call persistence functions
-default_var_settings()  # Save global defaults
-maybe_offer_save_app_defaults()  # Save app defaults
+# 调用持久化函数
+default_var_settings()  # 保存全局默认值
+maybe_offer_save_app_defaults()  # 保存应用默认值
 ```
 
-### Container Resource & ID Management
+### 容器资源和 ID 管理
 
 #### `validate_container_id()`
-**Purpose**: Validates if a container ID is available for use.
-**Parameters**: `ctid` (Integer)
-**Returns**: `0` if available, `1` if already in use or invalid.
-**Description**: Checks for existing config files in `/etc/pve/lxc/` or `/etc/pve/qemu-server/`, and verifies LVM logical volumes.
+**目的**：验证容器 ID 是否可用。
+**参数**：`ctid`（整数）
+**返回**：如果可用则为 `0`，如果已使用或无效则为 `1`。
+**描述**：检查 `/etc/pve/lxc/` 或 `/etc/pve/qemu-server/` 中的现有配置文件，并验证 LVM 逻辑卷。
 
 #### `get_valid_container_id()`
-**Purpose**: Returns the next available, unused container ID.
-**Parameters**: `suggested_id` (Optional)
-**Returns**: A valid container ID string.
-**Description**: If the suggested ID is taken, it increments until it finds an available one.
+**目的**：返回下一个可用的未使用容器 ID。
+**参数**：`suggested_id`（可选）
+**返回**：有效的容器 ID 字符串。
+**描述**：如果建议的 ID 已被占用，则递增直到找到可用的 ID。
 
 #### `maxkeys_check()`
-**Purpose**: Ensures host kernel parameters support high numbers of keys (required for some apps).
-**Parameters**: None
-**Description**: Checks and optionally updates `kernel.keys.maxkeys` and `kernel.keys.maxbytes`.
+**目的**：确保主机内核参数支持大量密钥（某些应用需要）。
+**参数**：无
+**描述**：检查并可选择更新 `kernel.keys.maxkeys` 和 `kernel.keys.maxbytes`。
 
 #### `get_current_ip()`
-**Purpose**: Retrieves the current IP address of the container.
-**Parameters**: `ctid` (Integer)
-**Returns**: IP address string.
+**目的**：检索容器的当前 IP 地址。
+**参数**：`ctid`（整数）
+**返回**：IP 地址字符串。
 
 #### `update_motd_ip()`
-**Purpose**: Updates the Message of the Day (MOTD) file with the container's IP.
-**Parameters**: None
+**目的**：使用容器的 IP 更新每日消息（MOTD）文件。
+**参数**：无
 
-## Function Error Handling
+## 函数错误处理
 
-### Validation Functions
+### 验证函数
 
-- `validate_settings()`: Returns 0 for valid, 1 for invalid
-- `check_conflicts()`: Returns 0 for no conflicts, 1 for conflicts
+- `validate_settings()`：如果有效则返回 0，如果无效则返回 1
+- `check_conflicts()`：如果没有冲突则返回 0，如果有冲突则返回 1
 
-### Error Recovery
+### 错误恢复
 
-- `cleanup_on_error()`: Cleans up on any error
-- Error codes are propagated up the call stack
-- Critical errors cause script termination
+- `cleanup_on_error()`：任何错误时清理
+- 错误代码向上传播调用堆栈
+- 严重错误导致脚本终止
 
-### Error Types
+### 错误类型
 
-1. **Configuration Errors**: Invalid settings or conflicts
-2. **Resource Errors**: Insufficient resources or conflicts
-3. **Network Errors**: Invalid network configuration
-4. **Storage Errors**: Storage not available or invalid
-5. **GPU Errors**: GPU configuration failures
-6. **Container Creation Errors**: LXC creation failures
+1. **配置错误**：无效设置或冲突
+2. **资源错误**：资源不足或冲突
+3. **网络错误**：无效的网络配置
+4. **存储错误**：存储不可用或无效
+5. **GPU 错误**：GPU 配置失败
+6. **容器创建错误**：LXC 创建失败

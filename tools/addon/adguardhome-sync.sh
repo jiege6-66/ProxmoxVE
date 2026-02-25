@@ -64,7 +64,7 @@ elif [[ -f "/etc/debian_version" ]]; then
   OS="Debian"
   SERVICE_PATH="/etc/systemd/system/adguardhome-sync.service"
 else
-  msg_error "Unsupported OS detected. Exiting."
+  msg_error "检测到不支持的操作系统。正在退出。"
   exit 1
 fi
 
@@ -72,7 +72,7 @@ fi
 # UNINSTALL
 # ==============================================================================
 function uninstall() {
-  msg_info "Uninstalling ${APP}"
+  msg_info "正在卸载 ${APP}"
   if [[ "$OS" == "Alpine" ]]; then
     rc-service adguardhome-sync stop &>/dev/null || true
     rc-update del adguardhome-sync &>/dev/null || true
@@ -84,7 +84,7 @@ function uninstall() {
   rm -rf "$INSTALL_PATH"
   rm -f "/usr/local/bin/update_adguardhome-sync"
   rm -f "$HOME/.adguardhome-sync"
-  msg_ok "${APP} has been uninstalled"
+  msg_ok "${APP} 已卸载"
 }
 
 # ==============================================================================
@@ -92,33 +92,33 @@ function uninstall() {
 # ==============================================================================
 function update() {
   if check_for_gh_release "adguardhome-sync" "bakito/adguardhome-sync"; then
-    msg_info "Stopping service"
+    msg_info "正在停止服务"
     if [[ "$OS" == "Alpine" ]]; then
       rc-service adguardhome-sync stop &>/dev/null || true
     else
       systemctl stop adguardhome-sync.service &>/dev/null || true
     fi
-    msg_ok "Stopped service"
+    msg_ok "已停止服务"
 
-    msg_info "Backing up configuration"
+    msg_info "正在备份配置"
     cp "$CONFIG_PATH" /tmp/adguardhome-sync.yaml.bak 2>/dev/null || true
-    msg_ok "Backed up configuration"
+    msg_ok "已备份配置"
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "adguardhome-sync" "bakito/adguardhome-sync" "prebuild" "latest" "$INSTALL_PATH" "adguardhome-sync_*_linux_amd64.tar.gz"
 
-    msg_info "Restoring configuration"
+    msg_info "正在恢复配置"
     cp /tmp/adguardhome-sync.yaml.bak "$CONFIG_PATH" 2>/dev/null || true
     rm -f /tmp/adguardhome-sync.yaml.bak
-    msg_ok "Restored configuration"
+    msg_ok "已恢复配置"
 
-    msg_info "Starting service"
+    msg_info "正在启动服务"
     if [[ "$OS" == "Alpine" ]]; then
       rc-service adguardhome-sync start
     else
       systemctl start adguardhome-sync.service
     fi
-    msg_ok "Started service"
-    msg_ok "Updated successfully!"
+    msg_ok "已启动服务"
+    msg_ok "更新成功！"
     exit
   fi
 }
@@ -134,12 +134,12 @@ function install() {
 
   # Gather configuration from user
   echo ""
-  echo -e "${TAB}Enter details for your AdGuard Home instances."
-  echo -e "${TAB}The Origin is your primary instance, Replica will sync from it."
+  echo -e "${TAB}输入您的 AdGuard Home 实例详细信息。"
+  echo -e "${TAB}Origin 是您的主实例，Replica 将从它同步。"
   echo ""
 
   # Origin instance
-  echo -e "${YW}── Origin (Primary) Instance ──${CL}"
+  echo -e "${YW}── Origin（主）实例 ──${CL}"
   local origin_url origin_user origin_pass
   read -rp "  Origin URL (e.g., http://192.168.1.1): " origin_url
   origin_url="${origin_url:-http://192.168.1.1}"
@@ -153,7 +153,7 @@ function install() {
 
   # Replica instance
   echo ""
-  echo -e "${YW}── Replica Instance ──${CL}"
+  echo -e "${YW}── Replica 实例 ──${CL}"
   local replica_url replica_user replica_pass
   read -rp "  Replica URL (e.g., http://192.168.1.2): " replica_url
   replica_url="${replica_url:-http://192.168.1.2}"
@@ -166,7 +166,7 @@ function install() {
   replica_pass="${replica_pass:-changeme}"
   echo ""
 
-  msg_info "Creating configuration"
+  msg_info "正在创建配置"
   cat <<EOF >"$CONFIG_PATH"
 # AdGuardHome-Sync Configuration
 # Documentation: https://github.com/bakito/adguardhome-sync
@@ -223,9 +223,9 @@ features:
   theme: true
 EOF
   chmod 600 "$CONFIG_PATH"
-  msg_ok "Created configuration"
+  msg_ok "已创建配置"
 
-  msg_info "Creating service"
+  msg_info "正在创建服务"
   if [[ "$OS" == "Alpine" ]]; then
     cat <<EOF >"$SERVICE_PATH"
 #!/sbin/openrc-run
@@ -265,26 +265,26 @@ EOF
     systemctl daemon-reload
     systemctl enable --now adguardhome-sync &>/dev/null
   fi
-  msg_ok "Created and started service"
+  msg_ok "已创建并启动服务"
 
   # Create update script
-  msg_info "Creating update script"
+  msg_info "正在创建更新脚本"
   cat <<'UPDATEEOF' >/usr/local/bin/update_adguardhome-sync
 #!/usr/bin/env bash
 # AdGuardHome-Sync Update Script
 type=update bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/addon/adguardhome-sync.sh)"
 UPDATEEOF
   chmod +x /usr/local/bin/update_adguardhome-sync
-  msg_ok "Created update script (/usr/local/bin/update_adguardhome-sync)"
+  msg_ok "已创建更新脚本 (/usr/local/bin/update_adguardhome-sync)"
 
   echo ""
-  msg_ok "${APP} installed successfully"
+  msg_ok "${APP} 安装成功"
   msg_ok "Web UI: ${BL}http://${ip}:${DEFAULT_PORT}${CL}"
-  msg_ok "Config: ${BL}${CONFIG_PATH}${CL}"
+  msg_ok "配置文件: ${BL}${CONFIG_PATH}${CL}"
   echo ""
-  msg_warn "Edit the config file to add your AdGuardHome instances!"
-  msg_warn "  Origin: Your primary AdGuardHome instance"
-  msg_warn "  Replicas: One or more replica instances to sync to"
+  msg_warn "编辑配置文件以添加您的 AdGuardHome 实例！"
+  msg_warn "  Origin: 您的主 AdGuardHome 实例"
+  msg_warn "  Replicas: 一个或多个要同步到的副本实例"
 }
 
 # ==============================================================================
@@ -297,7 +297,7 @@ if [[ "${type:-}" == "update" ]]; then
   if [[ -d "$INSTALL_PATH" && -f "$INSTALL_PATH/adguardhome-sync" ]]; then
     update
   else
-    msg_error "${APP} is not installed. Nothing to update."
+    msg_error "${APP} 未安装。无需更新。"
     exit 1
   fi
   exit 0
@@ -309,41 +309,41 @@ IP=$(get_ip)
 
 # Check if already installed
 if [[ -d "$INSTALL_PATH" && -f "$INSTALL_PATH/adguardhome-sync" ]]; then
-  msg_warn "${APP} is already installed."
+  msg_warn "${APP} 已安装。"
   echo ""
 
-  echo -n "${TAB}Uninstall ${APP}? (y/N): "
+  echo -n "${TAB}卸载 ${APP}? (y/N): "
   read -r uninstall_prompt
   if [[ "${uninstall_prompt,,}" =~ ^(y|yes)$ ]]; then
     uninstall
     exit 0
   fi
 
-  echo -n "${TAB}Update ${APP}? (y/N): "
+  echo -n "${TAB}更新 ${APP}? (y/N): "
   read -r update_prompt
   if [[ "${update_prompt,,}" =~ ^(y|yes)$ ]]; then
     update
     exit 0
   fi
 
-  msg_warn "No action selected. Exiting."
+  msg_warn "未选择操作。正在退出。"
   exit 0
 fi
 
 # Fresh installation
-msg_warn "${APP} is not installed."
+msg_warn "${APP} 未安装。"
 echo ""
-echo -e "${TAB}${INFO} This will install:"
-echo -e "${TAB}  - AdGuardHome-Sync (Go binary)"
-echo -e "${TAB}  - Systemd/OpenRC service"
-echo -e "${TAB}  - Web UI on port ${DEFAULT_PORT}"
+echo -e "${TAB}${INFO} 这将安装："
+echo -e "${TAB}  - AdGuardHome-Sync (Go 二进制文件)"
+echo -e "${TAB}  - Systemd/OpenRC 服务"
+echo -e "${TAB}  - Web UI 端口 ${DEFAULT_PORT}"
 echo ""
 
-echo -n "${TAB}Install ${APP}? (y/N): "
+echo -n "${TAB}安装 ${APP}? (y/N): "
 read -r install_prompt
 if [[ "${install_prompt,,}" =~ ^(y|yes)$ ]]; then
   install
 else
-  msg_warn "Installation cancelled. Exiting."
+  msg_warn "安装已取消。正在退出。"
   exit 0
 fi

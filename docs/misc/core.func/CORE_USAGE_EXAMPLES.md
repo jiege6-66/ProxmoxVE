@@ -1,508 +1,508 @@
-# core.func Usage Examples
+# core.func 使用示例
 
-## Overview
+## 概述
 
-This document provides practical usage examples for `core.func` functions, covering common scenarios, integration patterns, and best practices.
+本文档提供 `core.func` 函数的实用示例，涵盖常见场景、集成模式和最佳实践。
 
-## Basic Script Setup
+## 基本脚本设置
 
-### Standard Script Initialization
+### 标准脚本初始化
 
 ```bash
 #!/usr/bin/env bash
-# Standard script setup using core.func
+# 使用 core.func 的标准脚本设置
 
-# Source core functions
+# 引用核心函数
 source core.func
 
-# Run system checks
+# 运行系统检查
 pve_check
 arch_check
 shell_check
 root_check
 
-# Optional: Check SSH connection
+# 可选：检查 SSH 连接
 ssh_check
 
-# Set up error handling
+# 设置错误处理
 trap 'stop_spinner' EXIT INT TERM
 
-# Your script logic here
-msg_info "Starting script execution"
-# ... script code ...
-msg_ok "Script completed successfully"
+# 您的脚本逻辑在这里
+msg_info "正在启动脚本执行"
+# ... 脚本代码 ...
+msg_ok "脚本成功完成"
 ```
 
-### Minimal Script Setup
+### 最小脚本设置
 
 ```bash
 #!/usr/bin/env bash
-# Minimal setup for simple scripts
+# 简单脚本的最小设置
 
 source core.func
 
-# Basic checks only
+# 仅基本检查
 pve_check
 root_check
 
-# Simple execution
-msg_info "Running operation"
-# ... your code ...
-msg_ok "Operation completed"
+# 简单执行
+msg_info "正在运行操作"
+# ... 您的代码 ...
+msg_ok "操作完成"
 ```
 
-## Message Display Examples
+## 消息显示示例
 
-### Progress Indication
+### 进度指示
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Show progress with spinner
-msg_info "Downloading package..."
+# 显示带旋转器的进度
+msg_info "正在下载包..."
 sleep 2
-msg_ok "Download completed"
+msg_ok "下载完成"
 
-msg_info "Installing package..."
+msg_info "正在安装包..."
 sleep 3
-msg_ok "Installation completed"
+msg_ok "安装完成"
 
-msg_info "Configuring service..."
+msg_info "正在配置服务..."
 sleep 1
-msg_ok "Configuration completed"
+msg_ok "配置完成"
 ```
 
-### Error Handling
+### 错误处理
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Function with error handling
+# 带错误处理的函数
 install_package() {
     local package="$1"
 
-    msg_info "Installing $package..."
+    msg_info "正在安装 $package..."
 
     if silent apt-get install -y "$package"; then
-        msg_ok "$package installed successfully"
+        msg_ok "$package 安装成功"
         return 0
     else
-        msg_error "Failed to install $package"
+        msg_error "安装 $package 失败"
         return 1
     fi
 }
 
-# Usage
+# 使用
 if install_package "nginx"; then
-    msg_ok "Nginx installation completed"
+    msg_ok "Nginx 安装完成"
 else
-    msg_error "Nginx installation failed"
+    msg_error "Nginx 安装失败"
     exit 1
 fi
 ```
 
-### Warning Messages
+### 警告消息
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Show warnings for potentially dangerous operations
-msg_warn "This will modify system configuration"
-read -p "Continue? [y/N]: " confirm
+# 显示潜在危险操作的警告
+msg_warn "这将修改系统配置"
+read -p "继续？[y/N]：" confirm
 
 if [[ "$confirm" =~ ^[yY]$ ]]; then
-    msg_info "Proceeding with modification..."
-    # ... dangerous operation ...
-    msg_ok "Modification completed"
+    msg_info "正在进行修改..."
+    # ... 危险操作 ...
+    msg_ok "修改完成"
 else
-    msg_info "Operation cancelled"
+    msg_info "操作已取消"
 fi
 ```
 
-### Custom Messages
+### 自定义消息
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Custom message with specific icon and color
-msg_custom "🚀" "\e[32m" "Launching application"
-msg_custom "⚡" "\e[33m" "High performance mode enabled"
-msg_custom "🔒" "\e[31m" "Security mode activated"
+# 带特定图标和颜色的自定义消息
+msg_custom "🚀" "\e[32m" "正在启动应用程序"
+msg_custom "⚡" "\e[33m" "高性能模式已启用"
+msg_custom "🔒" "\e[31m" "安全模式已激活"
 ```
 
-### Debug Messages
+### 调试消息
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Enable debug mode
+# 启用调试模式
 export var_full_verbose=1
 
-# Debug messages
-msg_debug "Variable value: $some_variable"
-msg_debug "Function called: $FUNCNAME"
-msg_debug "Current directory: $(pwd)"
+# 调试消息
+msg_debug "变量值：$some_variable"
+msg_debug "调用的函数：$FUNCNAME"
+msg_debug "当前目录：$(pwd)"
 ```
 
-## Silent Execution Examples
+## 静默执行示例
 
-### Package Management
+### 包管理
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Update package lists
-msg_info "Updating package lists..."
+# 更新包列表
+msg_info "正在更新包列表..."
 silent apt-get update
 
-# Install packages
-msg_info "Installing required packages..."
+# 安装包
+msg_info "正在安装必需的包..."
 silent apt-get install -y curl wget git
 
-# Upgrade packages
-msg_info "Upgrading packages..."
+# 升级包
+msg_info "正在升级包..."
 silent apt-get upgrade -y
 
-msg_ok "Package management completed"
+msg_ok "包管理完成"
 ```
 
-### File Operations
+### 文件操作
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Create directories
-msg_info "Creating directory structure..."
+# 创建目录
+msg_info "正在创建目录结构..."
 silent mkdir -p /opt/myapp/{config,logs,data}
 
-# Set permissions
-msg_info "Setting permissions..."
+# 设置权限
+msg_info "正在设置权限..."
 silent chmod 755 /opt/myapp
 silent chmod 644 /opt/myapp/config/*
 
-# Copy files
-msg_info "Copying configuration files..."
+# 复制文件
+msg_info "正在复制配置文件..."
 silent cp config/* /opt/myapp/config/
 
-msg_ok "File operations completed"
+msg_ok "文件操作完成"
 ```
 
-### Service Management
+### 服务管理
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Start service
-msg_info "Starting service..."
+# 启动服务
+msg_info "正在启动服务..."
 silent systemctl start myservice
 
-# Enable service
-msg_info "Enabling service..."
+# 启用服务
+msg_info "正在启用服务..."
 silent systemctl enable myservice
 
-# Check service status
-msg_info "Checking service status..."
+# 检查服务状态
+msg_info "正在检查服务状态..."
 if silent systemctl is-active --quiet myservice; then
-    msg_ok "Service is running"
+    msg_ok "服务正在运行"
 else
-    msg_error "Service failed to start"
+    msg_error "服务启动失败"
 fi
 ```
 
-### Network Operations
+### 网络操作
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Test network connectivity
-msg_info "Testing network connectivity..."
+# 测试网络连接
+msg_info "正在测试网络连接..."
 if silent ping -c 1 8.8.8.8; then
-    msg_ok "Network connectivity confirmed"
+    msg_ok "网络连接已确认"
 else
-    msg_error "Network connectivity failed"
+    msg_error "网络连接失败"
 fi
 
-# Download files
-msg_info "Downloading configuration..."
+# 下载文件
+msg_info "正在下载配置..."
 silent curl -fsSL https://example.com/config -o /tmp/config
 
-# Extract archives
-msg_info "Extracting archive..."
+# 提取存档
+msg_info "正在提取存档..."
 silent tar -xzf /tmp/archive.tar.gz -C /opt/
 ```
 
-## System Check Examples
+## 系统检查示例
 
-### Comprehensive System Validation
+### 全面系统验证
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Complete system validation
+# 完整系统验证
 validate_system() {
-    msg_info "Validating system requirements..."
+    msg_info "正在验证系统要求..."
 
-    # Check Proxmox version
+    # 检查 Proxmox 版本
     if pve_check; then
-        msg_ok "Proxmox VE version is supported"
+        msg_ok "Proxmox VE 版本受支持"
     fi
 
-    # Check architecture
+    # 检查架构
     if arch_check; then
-        msg_ok "System architecture is supported"
+        msg_ok "系统架构受支持"
     fi
 
-    # Check shell
+    # 检查 shell
     if shell_check; then
-        msg_ok "Shell environment is correct"
+        msg_ok "Shell 环境正确"
     fi
 
-    # Check privileges
+    # 检查权限
     if root_check; then
-        msg_ok "Running with sufficient privileges"
+        msg_ok "以足够权限运行"
     fi
 
-    # Check SSH connection
+    # 检查 SSH 连接
     ssh_check
 
-    msg_ok "System validation completed"
+    msg_ok "系统验证完成"
 }
 
-# Run validation
+# 运行验证
 validate_system
 ```
 
-### Conditional System Checks
+### 条件系统检查
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Check if running in container
+# 检查是否在容器中运行
 if [[ -f /.dockerenv ]] || [[ -f /run/.containerenv ]]; then
-    msg_warn "Running inside container"
-    # Skip some checks
+    msg_warn "在容器内运行"
+    # 跳过某些检查
 else
-    # Full system checks
+    # 完整系统检查
     pve_check
     arch_check
 fi
 
-# Always check shell and privileges
+# 始终检查 shell 和权限
 shell_check
 root_check
 ```
 
-## Header Management Examples
+## 头部管理示例
 
-### Application Header Display
+### 应用程序头部显示
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Set application information
+# 设置应用程序信息
 export APP="plex"
 export APP_TYPE="ct"
 
-# Display header
+# 显示头部
 header_info
 
-# Continue with application setup
-msg_info "Setting up Plex Media Server..."
+# 继续应用程序设置
+msg_info "正在设置 Plex Media Server..."
 ```
 
-### Custom Header Handling
+### 自定义头部处理
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Get header content
+# 获取头部内容
 export APP="nextcloud"
 export APP_TYPE="ct"
 
 header_content=$(get_header)
 if [[ -n "$header_content" ]]; then
-    echo "Header found:"
+    echo "找到头部："
     echo "$header_content"
 else
-    msg_warn "No header found for $APP"
+    msg_warn "未找到 $APP 的头部"
 fi
 ```
 
-## Swap Management Examples
+## 交换管理示例
 
-### Interactive Swap Creation
+### 交互式交换创建
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Check and create swap
+# 检查并创建交换
 if check_or_create_swap; then
-    msg_ok "Swap is available"
+    msg_ok "交换可用"
 else
-    msg_warn "No swap available - continuing without swap"
+    msg_warn "交换不可用 - 继续无交换"
 fi
 ```
 
-### Automated Swap Check
+### 自动交换检查
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Check swap without prompting
+# 不提示检查交换
 check_swap_quiet() {
     if swapon --noheadings --show | grep -q 'swap'; then
-        msg_ok "Swap is active"
+        msg_ok "交换处于活动状态"
         return 0
     else
-        msg_warn "No active swap detected"
+        msg_warn "未检测到活动交换"
         return 1
     fi
 }
 
 if check_swap_quiet; then
-    msg_info "System has sufficient swap"
+    msg_info "系统有足够的交换"
 else
-    msg_warn "Consider adding swap for better performance"
+    msg_warn "考虑添加交换以获得更好的性能"
 fi
 ```
 
-## Spinner Usage Examples
+## 旋转器使用示例
 
-### Long-Running Operations
+### 长时间运行的操作
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Long-running operation with spinner
+# 带旋转器的长时间运行操作
 long_operation() {
-    msg_info "Processing large dataset..."
+    msg_info "正在处理大型数据集..."
 
-    # Simulate long operation
+    # 模拟长操作
     for i in {1..100}; do
         sleep 0.1
-        # Update spinner message periodically
+        # 定期更新旋转器消息
         if (( i % 20 == 0 )); then
-            SPINNER_MSG="Processing... $i%"
+            SPINNER_MSG="正在处理... $i%"
         fi
     done
 
-    msg_ok "Dataset processing completed"
+    msg_ok "数据集处理完成"
 }
 
 long_operation
 ```
 
-### Background Operations
+### 后台操作
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Background operation with spinner
+# 带旋转器的后台操作
 background_operation() {
-    msg_info "Starting background process..."
+    msg_info "正在启动后台进程..."
 
-    # Start spinner
-    SPINNER_MSG="Processing in background..."
+    # 启动旋转器
+    SPINNER_MSG="正在后台处理..."
     spinner &
     SPINNER_PID=$!
 
-    # Do background work
+    # 执行后台工作
     sleep 5
 
-    # Stop spinner
+    # 停止旋转器
     stop_spinner
-    msg_ok "Background process completed"
+    msg_ok "后台进程完成"
 }
 
 background_operation
 ```
 
-## Integration Examples
+## 集成示例
 
-### With build.func
+### 与 build.func 集成
 
 ```bash
 #!/usr/bin/env bash
-# Integration with build.func
+# 与 build.func 集成
 
 source core.func
 source build.func
 
-# Use core functions for system validation
+# 使用核心函数进行系统验证
 pve_check
 arch_check
 root_check
 
-# Use build.func for container creation
+# 使用 build.func 创建容器
 export APP="plex"
 export CTID="100"
-# ... container creation ...
+# ... 容器创建 ...
 ```
 
-### With tools.func
+### 与 tools.func 集成
 
 ```bash
 #!/usr/bin/env bash
-# Integration with tools.func
+# 与 tools.func 集成
 
 source core.func
 source tools.func
 
-# Use core functions for UI
-msg_info "Starting maintenance tasks..."
+# 使用核心函数的 UI
+msg_info "正在启动维护任务..."
 
-# Use tools.func for maintenance
+# 使用 tools.func 进行维护
 update_system
 cleanup_logs
 optimize_storage
 
-msg_ok "Maintenance completed"
+msg_ok "维护完成"
 ```
 
-### With error_handler.func
+### 与 error_handler.func 集成
 
 ```bash
 #!/usr/bin/env bash
-# Integration with error_handler.func
+# 与 error_handler.func 集成
 
 source core.func
 source error_handler.func
 
-# Use core functions for execution
-msg_info "Running operation..."
+# 使用核心函数执行
+msg_info "正在运行操作..."
 
-# Silent execution will use error_handler for explanations
+# 静默执行将使用 error_handler 进行说明
 silent apt-get install -y package
 
-msg_ok "Operation completed"
+msg_ok "操作完成"
 ```
 
-## Best Practices Examples
+## 最佳实践示例
 
-### Error Handling Pattern
+### 错误处理模式
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Robust error handling
+# 健壮的错误处理
 run_with_error_handling() {
     local operation="$1"
     local description="$2"
@@ -510,219 +510,219 @@ run_with_error_handling() {
     msg_info "$description"
 
     if silent "$operation"; then
-        msg_ok "$description completed successfully"
+        msg_ok "$description 成功完成"
         return 0
     else
-        msg_error "$description failed"
+        msg_error "$description 失败"
         return 1
     fi
 }
 
-# Usage
-run_with_error_handling "apt-get update" "Package list update"
-run_with_error_handling "apt-get install -y nginx" "Nginx installation"
+# 使用
+run_with_error_handling "apt-get update" "包列表更新"
+run_with_error_handling "apt-get install -y nginx" "Nginx 安装"
 ```
 
-### Verbose Mode Handling
+### 详细模式处理
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Handle verbose mode
+# 处理详细模式
 if is_verbose_mode; then
-    msg_info "Verbose mode enabled - showing detailed output"
-    # Show more information
+    msg_info "详细模式已启用 - 显示详细输出"
+    # 显示更多信息
 else
-    msg_info "Normal mode - showing minimal output"
-    # Show less information
+    msg_info "正常模式 - 显示最少输出"
+    # 显示较少信息
 fi
 ```
 
-### Alpine Linux Detection
+### Alpine Linux 检测
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Handle different OS types
+# 处理不同的 OS 类型
 if is_alpine; then
-    msg_info "Detected Alpine Linux"
-    # Use Alpine-specific commands
+    msg_info "检测到 Alpine Linux"
+    # 使用 Alpine 特定命令
     silent apk add --no-cache package
 else
-    msg_info "Detected Debian-based system"
-    # Use Debian-specific commands
+    msg_info "检测到基于 Debian 的系统"
+    # 使用 Debian 特定命令
     silent apt-get install -y package
 fi
 ```
 
-### Conditional Execution
+### 条件执行
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Conditional execution based on system state
+# 基于系统状态的条件执行
 if [[ -f /etc/nginx/nginx.conf ]]; then
-    msg_warn "Nginx configuration already exists"
-    read -p "Overwrite? [y/N]: " overwrite
+    msg_warn "Nginx 配置已存在"
+    read -p "覆盖？[y/N]：" overwrite
     if [[ "$overwrite" =~ ^[yY]$ ]]; then
-        msg_info "Overwriting configuration..."
-        # ... overwrite logic ...
+        msg_info "正在覆盖配置..."
+        # ... 覆盖逻辑 ...
     else
-        msg_info "Skipping configuration"
+        msg_info "跳过配置"
     fi
 else
-    msg_info "Creating new Nginx configuration..."
-    # ... create logic ...
+    msg_info "正在创建新的 Nginx 配置..."
+    # ... 创建逻辑 ...
 fi
 ```
 
-## Advanced Usage Examples
+## 高级使用示例
 
-### Custom Spinner Messages
+### 自定义旋转器消息
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Custom spinner with progress
+# 带进度的自定义旋转器
 download_with_progress() {
     local url="$1"
     local file="$2"
 
-    msg_info "Starting download..."
+    msg_info "正在开始下载..."
 
-    # Start spinner
-    SPINNER_MSG="Downloading..."
+    # 启动旋转器
+    SPINNER_MSG="正在下载..."
     spinner &
     SPINNER_PID=$!
 
-    # Download with progress
+    # 带进度下载
     curl -L "$url" -o "$file" --progress-bar
 
-    # Stop spinner
+    # 停止旋转器
     stop_spinner
-    msg_ok "Download completed"
+    msg_ok "下载完成"
 }
 
 download_with_progress "https://example.com/file.tar.gz" "/tmp/file.tar.gz"
 ```
 
-### Message Deduplication
+### 消息去重
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Messages are automatically deduplicated
+# 消息自动去重
 for i in {1..5}; do
-    msg_info "Processing item $i"
-    # This message will only show once
+    msg_info "正在处理项目 $i"
+    # 此消息只会显示一次
 done
 
-# Different messages will show separately
-msg_info "Starting phase 1"
-msg_info "Starting phase 2"
-msg_info "Starting phase 3"
+# 不同的消息将分别显示
+msg_info "正在启动阶段 1"
+msg_info "正在启动阶段 2"
+msg_info "正在启动阶段 3"
 ```
 
-### Terminal Control
+### 终端控制
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Ensure terminal control is available
+# 确保终端控制可用
 ensure_tput
 
-# Use terminal control
+# 使用终端控制
 clear_line
-echo "This line will be cleared"
+echo "此行将被清除"
 clear_line
-echo "New content"
+echo "新内容"
 ```
 
-## Troubleshooting Examples
+## 故障排除示例
 
-### Debug Mode
+### 调试模式
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Enable debug mode
+# 启用调试模式
 export var_full_verbose=1
 export VERBOSE="yes"
 
-# Debug information
-msg_debug "Script started"
-msg_debug "Current user: $(whoami)"
-msg_debug "Current directory: $(pwd)"
-msg_debug "Environment variables: $(env | grep -E '^(APP|CTID|VERBOSE)')"
+# 调试信息
+msg_debug "脚本已启动"
+msg_debug "当前用户：$(whoami)"
+msg_debug "当前目录：$(pwd)"
+msg_debug "环境变量：$(env | grep -E '^(APP|CTID|VERBOSE)')"
 ```
 
-### Silent Execution Debugging
+### 静默执行调试
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Debug silent execution
+# 调试静默执行
 debug_silent() {
     local cmd="$1"
     local log_file="/tmp/debug.$$.log"
 
-    echo "Command: $cmd" > "$log_file"
-    echo "Timestamp: $(date)" >> "$log_file"
-    echo "Working directory: $(pwd)" >> "$log_file"
-    echo "Environment:" >> "$log_file"
+    echo "命令：$cmd" > "$log_file"
+    echo "时间戳：$(date)" >> "$log_file"
+    echo "工作目录：$(pwd)" >> "$log_file"
+    echo "环境：" >> "$log_file"
     env >> "$log_file"
-    echo "--- Command Output ---" >> "$log_file"
+    echo "--- 命令输出 ---" >> "$log_file"
 
     if silent "$cmd"; then
-        msg_ok "Command succeeded"
+        msg_ok "命令成功"
     else
-        msg_error "Command failed - check $log_file for details"
+        msg_error "命令失败 - 检查 $log_file 以获取详细信息"
     fi
 }
 
 debug_silent "apt-get update"
 ```
 
-### Error Recovery
+### 错误恢复
 
 ```bash
 #!/usr/bin/env bash
 source core.func
 
-# Error recovery pattern
+# 错误恢复模式
 retry_operation() {
     local max_attempts=3
     local attempt=1
 
     while [[ $attempt -le $max_attempts ]]; do
-        msg_info "Attempt $attempt of $max_attempts"
+        msg_info "尝试 $attempt / $max_attempts"
 
         if silent "$@"; then
-            msg_ok "Operation succeeded on attempt $attempt"
+            msg_ok "操作在尝试 $attempt 时成功"
             return 0
         else
-            msg_warn "Attempt $attempt failed"
+            msg_warn "尝试 $attempt 失败"
             ((attempt++))
 
             if [[ $attempt -le $max_attempts ]]; then
-                msg_info "Retrying in 5 seconds..."
+                msg_info "5 秒后重试..."
                 sleep 5
             fi
         fi
     done
 
-    msg_error "Operation failed after $max_attempts attempts"
+    msg_error "操作在 $max_attempts 次尝试后失败"
     return 1
 }
 
-# Usage
+# 使用
 retry_operation "apt-get install -y package"
 ```

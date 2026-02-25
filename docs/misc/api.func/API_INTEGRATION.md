@@ -1,46 +1,46 @@
-# api.func Integration Guide
+# api.func 集成指南
 
-## Overview
+## 概述
 
-This document describes how `api.func` integrates with other components in the Proxmox Community Scripts project, including dependencies, data flow, and API surface.
+本文档描述 `api.func` 如何与 Proxmox Community Scripts 项目中的其他组件集成，包括依赖项、数据流和 API 接口。
 
-## Dependencies
+## 依赖项
 
-### External Dependencies
+### 外部依赖
 
-#### Required Commands
-- **`curl`**: HTTP client for API communication
-- **`uuidgen`**: Generate unique identifiers (optional, can use other methods)
+#### 必需命令
+- **`curl`**：用于 API 通信的 HTTP 客户端
+- **`uuidgen`**：生成唯一标识符（可选，可以使用其他方法）
 
-#### Optional Commands
-- **None**: No other external command dependencies
+#### 可选命令
+- **无**：没有其他外部命令依赖
 
-### Internal Dependencies
+### 内部依赖
 
-#### Environment Variables from Other Scripts
-- **build.func**: Provides container creation variables
-- **vm-core.func**: Provides VM creation variables
-- **core.func**: Provides system information variables
-- **Installation scripts**: Provide application-specific variables
+#### 来自其他脚本的环境变量
+- **build.func**：提供容器创建变量
+- **vm-core.func**：提供 VM 创建变量
+- **core.func**：提供系统信息变量
+- **安装脚本**：提供应用程序特定变量
 
-## Integration Points
+## 集成点
 
-### With build.func
+### 与 build.func
 
-#### LXC Container Reporting
+#### LXC 容器报告
 ```bash
-# build.func uses api.func for container reporting
+# build.func 使用 api.func 进行容器报告
 source core.func
 source api.func
 source build.func
 
-# Set up API reporting
+# 设置 API 报告
 export DIAGNOSTICS="yes"
 export RANDOM_UUID="$(uuidgen)"
 
-# Container creation with API reporting
+# 带 API 报告的容器创建
 create_container() {
-    # Set container parameters
+    # 设置容器参数
     export CT_TYPE=1
     export DISK_SIZE="$var_disk"
     export CORE_COUNT="$var_cpu"
@@ -50,13 +50,13 @@ create_container() {
     export NSAPP="$APP"
     export METHOD="install"
 
-    # Report installation start
+    # 报告安装开始
     post_to_api
 
-    # Container creation using build.func
-    # ... build.func container creation logic ...
+    # 使用 build.func 创建容器
+    # ... build.func 容器创建逻辑 ...
 
-    # Report completion
+    # 报告完成
     if [[ $? -eq 0 ]]; then
         post_update_to_api "success" 0
     else
@@ -65,36 +65,36 @@ create_container() {
 }
 ```
 
-#### Error Reporting Integration
+#### 错误报告集成
 ```bash
-# build.func uses api.func for error reporting
+# build.func 使用 api.func 进行错误报告
 handle_container_error() {
     local exit_code=$1
     local error_msg=$(get_error_description $exit_code)
 
-    echo "Container creation failed: $error_msg"
+    echo "容器创建失败: $error_msg"
     post_update_to_api "failed" $exit_code
 }
 ```
 
-### With vm-core.func
+### 与 vm-core.func
 
-#### VM Installation Reporting
+#### VM 安装报告
 ```bash
-# vm-core.func uses api.func for VM reporting
+# vm-core.func 使用 api.func 进行 VM 报告
 source core.func
 source api.func
 source vm-core.func
 
-# Set up VM API reporting
+# 设置 VM API 报告
 mkdir -p /usr/local/community-scripts
 echo "DIAGNOSTICS=yes" > /usr/local/community-scripts/diagnostics
 
 export RANDOM_UUID="$(uuidgen)"
 
-# VM creation with API reporting
+# 带 API 报告的 VM 创建
 create_vm() {
-    # Set VM parameters
+    # 设置 VM 参数
     export DISK_SIZE="${var_disk}G"
     export CORE_COUNT="$var_cpu"
     export RAM_SIZE="$var_ram"
@@ -103,35 +103,35 @@ create_vm() {
     export NSAPP="$APP"
     export METHOD="install"
 
-    # Report VM installation start
+    # 报告 VM 安装开始
     post_to_api_vm
 
-    # VM creation using vm-core.func
-    # ... vm-core.func VM creation logic ...
+    # 使用 vm-core.func 创建 VM
+    # ... vm-core.func VM 创建逻辑 ...
 
-    # Report completion
+    # 报告完成
     post_update_to_api "success" 0
 }
 ```
 
-### With core.func
+### 与 core.func
 
-#### System Information Integration
+#### 系统信息集成
 ```bash
-# core.func provides system information for api.func
+# core.func 为 api.func 提供系统信息
 source core.func
 source api.func
 
-# Get system information for API reporting
+# 获取用于 API 报告的系统信息
 get_system_info_for_api() {
-    # Get PVE version using core.func utilities
+    # 使用 core.func 实用程序获取 PVE 版本
     local pve_version=$(pveversion | awk -F'[/ ]' '{print $2}')
 
-    # Set API parameters
+    # 设置 API 参数
     export var_os="$var_os"
     export var_version="$var_version"
 
-    # Use core.func error handling with api.func reporting
+    # 使用 core.func 错误处理和 api.func 报告
     if silent apt-get update; then
         post_update_to_api "success" 0
     else
@@ -140,398 +140,398 @@ get_system_info_for_api() {
 }
 ```
 
-### With error_handler.func
+### 与 error_handler.func
 
-#### Error Description Integration
+#### 错误描述集成
 ```bash
-# error_handler.func uses api.func for error descriptions
+# error_handler.func 使用 api.func 进行错误描述
 source core.func
 source error_handler.func
 source api.func
 
-# Enhanced error handler with API reporting
+# 带 API 报告的增强错误处理器
 enhanced_error_handler() {
     local exit_code=${1:-$?}
     local command=${2:-${BASH_COMMAND:-unknown}}
 
-    # Get error description from api.func
+    # 从 api.func 获取错误描述
     local error_msg=$(get_error_description $exit_code)
 
-    # Display error information
-    echo "Error $exit_code: $error_msg"
-    echo "Command: $command"
+    # 显示错误信息
+    echo "错误 $exit_code: $error_msg"
+    echo "命令: $command"
 
-    # Report error to API
+    # 向 API 报告错误
     export DIAGNOSTICS="yes"
     export RANDOM_UUID="$(uuidgen)"
     post_update_to_api "failed" $exit_code
 
-    # Use standard error handler
+    # 使用标准错误处理器
     error_handler $exit_code $command
 }
 ```
 
-### With install.func
+### 与 install.func
 
-#### Installation Process Reporting
+#### 安装过程报告
 ```bash
-# install.func uses api.func for installation reporting
+# install.func 使用 api.func 进行安装报告
 source core.func
 source api.func
 source install.func
 
-# Installation with API reporting
+# 带 API 报告的安装
 install_package_with_reporting() {
     local package="$1"
 
-    # Set up API reporting
+    # 设置 API 报告
     export DIAGNOSTICS="yes"
     export RANDOM_UUID="$(uuidgen)"
     export NSAPP="$package"
     export METHOD="install"
 
-    # Report installation start
+    # 报告安装开始
     post_to_api
 
-    # Package installation using install.func
+    # 使用 install.func 安装包
     if install_package "$package"; then
-        echo "$package installed successfully"
+        echo "$package 安装成功"
         post_update_to_api "success" 0
         return 0
     else
         local exit_code=$?
         local error_msg=$(get_error_description $exit_code)
-        echo "$package installation failed: $error_msg"
+        echo "$package 安装失败: $error_msg"
         post_update_to_api "failed" $exit_code
         return $exit_code
     fi
 }
 ```
 
-### With alpine-install.func
+### 与 alpine-install.func
 
-#### Alpine Installation Reporting
+#### Alpine 安装报告
 ```bash
-# alpine-install.func uses api.func for Alpine reporting
+# alpine-install.func 使用 api.func 进行 Alpine 报告
 source core.func
 source api.func
 source alpine-install.func
 
-# Alpine installation with API reporting
+# 带 API 报告的 Alpine 安装
 install_alpine_with_reporting() {
     local app="$1"
 
-    # Set up API reporting
+    # 设置 API 报告
     export DIAGNOSTICS="yes"
     export RANDOM_UUID="$(uuidgen)"
     export NSAPP="$app"
     export METHOD="install"
     export var_os="alpine"
 
-    # Report Alpine installation start
+    # 报告 Alpine 安装开始
     post_to_api
 
-    # Alpine installation using alpine-install.func
+    # 使用 alpine-install.func 安装 Alpine 应用
     if install_alpine_app "$app"; then
-        echo "Alpine $app installed successfully"
+        echo "Alpine $app 安装成功"
         post_update_to_api "success" 0
         return 0
     else
         local exit_code=$?
         local error_msg=$(get_error_description $exit_code)
-        echo "Alpine $app installation failed: $error_msg"
+        echo "Alpine $app 安装失败: $error_msg"
         post_update_to_api "failed" $exit_code
         return $exit_code
     fi
 }
 ```
 
-### With alpine-tools.func
+### 与 alpine-tools.func
 
-#### Alpine Tools Reporting
+#### Alpine 工具报告
 ```bash
-# alpine-tools.func uses api.func for Alpine tools reporting
+# alpine-tools.func 使用 api.func 进行 Alpine 工具报告
 source core.func
 source api.func
 source alpine-tools.func
 
-# Alpine tools with API reporting
+# 带 API 报告的 Alpine 工具
 run_alpine_tool_with_reporting() {
     local tool="$1"
 
-    # Set up API reporting
+    # 设置 API 报告
     export DIAGNOSTICS="yes"
     export RANDOM_UUID="$(uuidgen)"
     export NSAPP="alpine-tools"
     export METHOD="tool"
 
-    # Report tool execution start
+    # 报告工具执行开始
     post_to_api
 
-    # Run Alpine tool using alpine-tools.func
+    # 使用 alpine-tools.func 运行 Alpine 工具
     if run_alpine_tool "$tool"; then
-        echo "Alpine tool $tool executed successfully"
+        echo "Alpine 工具 $tool 执行成功"
         post_update_to_api "success" 0
         return 0
     else
         local exit_code=$?
         local error_msg=$(get_error_description $exit_code)
-        echo "Alpine tool $tool failed: $error_msg"
+        echo "Alpine 工具 $tool 失败: $error_msg"
         post_update_to_api "failed" $exit_code
         return $exit_code
     fi
 }
 ```
 
-### With passthrough.func
+### 与 passthrough.func
 
-#### Hardware Passthrough Reporting
+#### 硬件直通报告
 ```bash
-# passthrough.func uses api.func for hardware reporting
+# passthrough.func 使用 api.func 进行硬件报告
 source core.func
 source api.func
 source passthrough.func
 
-# Hardware passthrough with API reporting
+# 带 API 报告的硬件直通
 configure_passthrough_with_reporting() {
     local hardware_type="$1"
 
-    # Set up API reporting
+    # 设置 API 报告
     export DIAGNOSTICS="yes"
     export RANDOM_UUID="$(uuidgen)"
     export NSAPP="passthrough"
     export METHOD="hardware"
 
-    # Report passthrough configuration start
+    # 报告直通配置开始
     post_to_api
 
-    # Configure passthrough using passthrough.func
+    # 使用 passthrough.func 配置直通
     if configure_passthrough "$hardware_type"; then
-        echo "Hardware passthrough configured successfully"
+        echo "硬件直通配置成功"
         post_update_to_api "success" 0
         return 0
     else
         local exit_code=$?
         local error_msg=$(get_error_description $exit_code)
-        echo "Hardware passthrough failed: $error_msg"
+        echo "硬件直通失败: $error_msg"
         post_update_to_api "failed" $exit_code
         return $exit_code
     fi
 }
 ```
 
-### With tools.func
+### 与 tools.func
 
-#### Maintenance Operations Reporting
+#### 维护操作报告
 ```bash
-# tools.func uses api.func for maintenance reporting
+# tools.func 使用 api.func 进行维护报告
 source core.func
 source api.func
 source tools.func
 
-# Maintenance operations with API reporting
+# 带 API 报告的维护操作
 run_maintenance_with_reporting() {
     local operation="$1"
 
-    # Set up API reporting
+    # 设置 API 报告
     export DIAGNOSTICS="yes"
     export RANDOM_UUID="$(uuidgen)"
     export NSAPP="maintenance"
     export METHOD="tool"
 
-    # Report maintenance start
+    # 报告维护开始
     post_to_api
 
-    # Run maintenance using tools.func
+    # 使用 tools.func 运行维护
     if run_maintenance_operation "$operation"; then
-        echo "Maintenance operation $operation completed successfully"
+        echo "维护操作 $operation 成功完成"
         post_update_to_api "success" 0
         return 0
     else
         local exit_code=$?
         local error_msg=$(get_error_description $exit_code)
-        echo "Maintenance operation $operation failed: $error_msg"
+        echo "维护操作 $operation 失败: $error_msg"
         post_update_to_api "failed" $exit_code
         return $exit_code
     fi
 }
 ```
 
-## Data Flow
+## 数据流
 
-### Input Data
+### 输入数据
 
-#### Environment Variables from Other Scripts
-- **`CT_TYPE`**: Container type (1 for LXC, 2 for VM)
-- **`DISK_SIZE`**: Disk size in GB
-- **`CORE_COUNT`**: Number of CPU cores
-- **`RAM_SIZE`**: RAM size in MB
-- **`var_os`**: Operating system type
-- **`var_version`**: OS version
-- **`DISABLEIP6`**: IPv6 disable setting
-- **`NSAPP`**: Namespace application name
-- **`METHOD`**: Installation method
-- **`DIAGNOSTICS`**: Enable/disable diagnostic reporting
-- **`RANDOM_UUID`**: Unique identifier for tracking
+#### 来自其他脚本的环境变量
+- **`CT_TYPE`**：容器类型（1 表示 LXC，2 表示 VM）
+- **`DISK_SIZE`**：磁盘大小（GB）
+- **`CORE_COUNT`**：CPU 核心数
+- **`RAM_SIZE`**：RAM 大小（MB）
+- **`var_os`**：操作系统类型
+- **`var_version`**：操作系统版本
+- **`DISABLEIP6`**：IPv6 禁用设置
+- **`NSAPP`**：命名空间应用程序名称
+- **`METHOD`**：安装方法
+- **`DIAGNOSTICS`**：启用/禁用诊断报告
+- **`RANDOM_UUID`**：用于跟踪的唯一标识符
 
-#### Function Parameters
-- **Exit codes**: Passed to `get_error_description()` and `post_update_to_api()`
-- **Status information**: Passed to `post_update_to_api()`
-- **API endpoints**: Hardcoded in functions
+#### 函数参数
+- **退出代码**：传递给 `get_error_description()` 和 `post_update_to_api()`
+- **状态信息**：传递给 `post_update_to_api()`
+- **API 端点**：在函数中硬编码
 
-#### System Information
-- **PVE version**: Retrieved from `pveversion` command
-- **Disk size processing**: Processed for VM API (removes 'G' suffix)
-- **Error codes**: Retrieved from command exit codes
+#### 系统信息
+- **PVE 版本**：从 `pveversion` 命令检索
+- **磁盘大小处理**：为 VM API 处理（删除 'G' 后缀）
+- **错误代码**：从命令退出代码检索
 
-### Processing Data
+### 处理数据
 
-#### API Request Preparation
-- **JSON payload creation**: Format data for API consumption
-- **Data validation**: Ensure required fields are present
-- **Error handling**: Handle missing or invalid data
-- **Content type setting**: Set appropriate HTTP headers
+#### API 请求准备
+- **JSON 负载创建**：格式化数据供 API 使用
+- **数据验证**：确保必需字段存在
+- **错误处理**：处理缺失或无效数据
+- **内容类型设置**：设置适当的 HTTP 标头
 
-#### Error Processing
-- **Error code mapping**: Map numeric codes to descriptions
-- **Error message formatting**: Format error descriptions
-- **Unknown error handling**: Handle unrecognized error codes
-- **Fallback messages**: Provide default error messages
+#### 错误处理
+- **错误代码映射**：将数字代码映射到描述
+- **错误消息格式化**：格式化错误描述
+- **未知错误处理**：处理无法识别的错误代码
+- **后备消息**：提供默认错误消息
 
-#### API Communication
-- **HTTP request preparation**: Prepare curl commands
-- **Response handling**: Capture HTTP response codes
-- **Error handling**: Handle network and API errors
-- **Duplicate prevention**: Prevent duplicate status updates
+#### API 通信
+- **HTTP 请求准备**：准备 curl 命令
+- **响应处理**：捕获 HTTP 响应代码
+- **错误处理**：处理网络和 API 错误
+- **重复防止**：防止重复状态更新
 
-### Output Data
+### 输出数据
 
-#### API Communication
-- **HTTP requests**: Sent to community-scripts.org API
-- **Response codes**: Captured from API responses
-- **Error information**: Reported to API
-- **Status updates**: Sent to API
+#### API 通信
+- **HTTP 请求**：发送到 community-scripts.org API
+- **响应代码**：从 API 响应捕获
+- **错误信息**：报告给 API
+- **状态更新**：发送到 API
 
-#### Error Information
-- **Error descriptions**: Human-readable error messages
-- **Error codes**: Mapped to descriptions
-- **Context information**: Error context and details
-- **Fallback messages**: Default error messages
+#### 错误信息
+- **错误描述**：人类可读的错误消息
+- **错误代码**：映射到描述
+- **上下文信息**：错误上下文和详情
+- **后备消息**：默认错误消息
 
-#### System State
-- **POST_UPDATE_DONE**: Prevents duplicate updates
-- **RESPONSE**: Stores API response
-- **JSON_PAYLOAD**: Stores formatted API data
-- **API_URL**: Stores API endpoint
+#### 系统状态
+- **POST_UPDATE_DONE**：防止重复更新
+- **RESPONSE**：存储 API 响应
+- **JSON_PAYLOAD**：存储格式化的 API 数据
+- **API_URL**：存储 API 端点
 
-## API Surface
+## API 接口
 
-### Public Functions
+### 公共函数
 
-#### Error Description
-- **`get_error_description()`**: Convert exit codes to explanations
-- **Parameters**: Exit code to explain
-- **Returns**: Human-readable explanation string
-- **Usage**: Called by other functions and scripts
+#### 错误描述
+- **`get_error_description()`**：将退出代码转换为解释
+- **参数**：要解释的退出代码
+- **返回**：人类可读的解释字符串
+- **用途**：被其他函数和脚本调用
 
-#### API Communication
-- **`post_to_api()`**: Send LXC installation data
-- **`post_to_api_vm()`**: Send VM installation data
-- **`post_update_to_api()`**: Send status updates
-- **Parameters**: Status and exit code (for updates)
-- **Returns**: None
-- **Usage**: Called by installation scripts
+#### API 通信
+- **`post_to_api()`**：发送 LXC 安装数据
+- **`post_to_api_vm()`**：发送 VM 安装数据
+- **`post_update_to_api()`**：发送状态更新
+- **参数**：状态和退出代码（用于更新）
+- **返回**：无
+- **用途**：被安装脚本调用
 
-### Internal Functions
+### 内部函数
 
-#### None
-- All functions in api.func are public
-- No internal helper functions
-- Direct implementation of all functionality
+#### 无
+- api.func 中的所有函数都是公共的
+- 没有内部辅助函数
+- 所有功能的直接实现
 
-### Global Variables
+### 全局变量
 
-#### Configuration Variables
-- **`DIAGNOSTICS`**: Diagnostic reporting setting
-- **`RANDOM_UUID`**: Unique tracking identifier
-- **`POST_UPDATE_DONE`**: Duplicate update prevention
+#### 配置变量
+- **`DIAGNOSTICS`**：诊断报告设置
+- **`RANDOM_UUID`**：唯一跟踪标识符
+- **`POST_UPDATE_DONE`**：重复更新防止
 
-#### Data Variables
-- **`CT_TYPE`**: Container type
-- **`DISK_SIZE`**: Disk size
-- **`CORE_COUNT`**: CPU core count
-- **`RAM_SIZE`**: RAM size
-- **`var_os`**: Operating system
-- **`var_version`**: OS version
-- **`DISABLEIP6`**: IPv6 setting
-- **`NSAPP`**: Application namespace
-- **`METHOD`**: Installation method
+#### 数据变量
+- **`CT_TYPE`**：容器类型
+- **`DISK_SIZE`**：磁盘大小
+- **`CORE_COUNT`**：CPU 核心数
+- **`RAM_SIZE`**：RAM 大小
+- **`var_os`**：操作系统
+- **`var_version`**：操作系统版本
+- **`DISABLEIP6`**：IPv6 设置
+- **`NSAPP`**：应用程序命名空间
+- **`METHOD`**：安装方法
 
-#### Internal Variables
-- **`API_URL`**: API endpoint URL
-- **`JSON_PAYLOAD`**: API request payload
-- **`RESPONSE`**: API response
-- **`DISK_SIZE_API`**: Processed disk size for VM API
+#### 内部变量
+- **`API_URL`**：API 端点 URL
+- **`JSON_PAYLOAD`**：API 请求负载
+- **`RESPONSE`**：API 响应
+- **`DISK_SIZE_API`**：VM API 的处理后磁盘大小
 
-## Integration Patterns
+## 集成模式
 
-### Standard Integration Pattern
+### 标准集成模式
 
 ```bash
 #!/usr/bin/env bash
-# Standard integration pattern
+# 标准集成模式
 
-# 1. Source core.func first
+# 1. 首先 source core.func
 source core.func
 
 # 2. Source api.func
 source api.func
 
-# 3. Set up API reporting
+# 3. 设置 API 报告
 export DIAGNOSTICS="yes"
 export RANDOM_UUID="$(uuidgen)"
 
-# 4. Set application parameters
+# 4. 设置应用程序参数
 export NSAPP="$APP"
 export METHOD="install"
 
-# 5. Report installation start
+# 5. 报告安装开始
 post_to_api
 
-# 6. Perform installation
-# ... installation logic ...
+# 6. 执行安装
+# ... 安装逻辑 ...
 
-# 7. Report completion
+# 7. 报告完成
 post_update_to_api "success" 0
 ```
 
-### Minimal Integration Pattern
+### 最小集成模式
 
 ```bash
 #!/usr/bin/env bash
-# Minimal integration pattern
+# 最小集成模式
 
 source api.func
 
-# Basic error reporting
+# 基本错误报告
 export DIAGNOSTICS="yes"
 export RANDOM_UUID="$(uuidgen)"
 
-# Report failure
+# 报告失败
 post_update_to_api "failed" 127
 ```
 
-### Advanced Integration Pattern
+### 高级集成模式
 
 ```bash
 #!/usr/bin/env bash
-# Advanced integration pattern
+# 高级集成模式
 
 source core.func
 source api.func
 source error_handler.func
 
-# Set up comprehensive API reporting
+# 设置全面的 API 报告
 export DIAGNOSTICS="yes"
 export RANDOM_UUID="$(uuidgen)"
 export CT_TYPE=1
@@ -542,13 +542,13 @@ export var_os="debian"
 export var_version="12"
 export METHOD="install"
 
-# Enhanced error handling with API reporting
+# 带 API 报告的增强错误处理
 enhanced_error_handler() {
     local exit_code=${1:-$?}
     local command=${2:-${BASH_COMMAND:-unknown}}
 
     local error_msg=$(get_error_description $exit_code)
-    echo "Error $exit_code: $error_msg"
+    echo "错误 $exit_code: $error_msg"
 
     post_update_to_api "failed" $exit_code
     error_handler $exit_code $command
@@ -556,88 +556,88 @@ enhanced_error_handler() {
 
 trap 'enhanced_error_handler' ERR
 
-# Advanced operations with API reporting
+# 带 API 报告的高级操作
 post_to_api
-# ... operations ...
+# ... 操作 ...
 post_update_to_api "success" 0
 ```
 
-## Error Handling Integration
+## 错误处理集成
 
-### Automatic Error Reporting
-- **Error Descriptions**: Provides human-readable error messages
-- **API Integration**: Reports errors to community-scripts.org API
-- **Error Tracking**: Tracks error patterns for project improvement
-- **Diagnostic Data**: Contributes to anonymous usage analytics
+### 自动错误报告
+- **错误描述**：提供人类可读的错误消息
+- **API 集成**：向 community-scripts.org API 报告错误
+- **错误跟踪**：跟踪错误模式以改进项目
+- **诊断数据**：贡献匿名使用分析
 
-### Manual Error Reporting
-- **Custom Error Codes**: Use appropriate error codes for different scenarios
-- **Error Context**: Provide context information for errors
-- **Status Updates**: Report both success and failure cases
-- **Error Analysis**: Analyze error patterns and trends
+### 手动错误报告
+- **自定义错误代码**：为不同场景使用适当的错误代码
+- **错误上下文**：为错误提供上下文信息
+- **状态更新**：报告成功和失败情况
+- **错误分析**：分析错误模式和趋势
 
-### API Communication Errors
-- **Network Failures**: Handle API communication failures gracefully
-- **Missing Prerequisites**: Check prerequisites before API calls
-- **Duplicate Prevention**: Prevent duplicate status updates
-- **Error Recovery**: Handle API errors without blocking installation
+### API 通信错误
+- **网络故障**：优雅地处理 API 通信失败
+- **缺少先决条件**：在 API 调用前检查先决条件
+- **重复防止**：防止重复状态更新
+- **错误恢复**：处理 API 错误而不阻止安装
 
-## Performance Considerations
+## 性能考虑
 
-### API Communication Overhead
-- **Minimal Impact**: API calls add minimal overhead
-- **Asynchronous**: API calls don't block installation process
-- **Error Handling**: API failures don't affect installation
-- **Optional**: API reporting is optional and can be disabled
+### API 通信开销
+- **最小影响**：API 调用增加最小开销
+- **异步**：API 调用不会阻止安装过程
+- **错误处理**：API 失败不影响安装
+- **可选**：API 报告是可选的，可以禁用
 
-### Memory Usage
-- **Minimal Footprint**: API functions use minimal memory
-- **Variable Reuse**: Global variables reused across functions
-- **No Memory Leaks**: Proper cleanup prevents memory leaks
-- **Efficient Processing**: Efficient JSON payload creation
+### 内存使用
+- **最小占用**：API 函数使用最小内存
+- **变量重用**：全局变量在函数间重用
+- **无内存泄漏**：适当的清理防止内存泄漏
+- **高效处理**：高效的 JSON 负载创建
 
-### Execution Speed
-- **Fast API Calls**: Quick API communication
-- **Efficient Error Processing**: Fast error code processing
-- **Minimal Delay**: Minimal delay in API operations
-- **Non-blocking**: API calls don't block installation
+### 执行速度
+- **快速 API 调用**：快速的 API 通信
+- **高效错误处理**：快速的错误代码处理
+- **最小延迟**：API 操作中的最小延迟
+- **非阻塞**：API 调用不阻止安装
 
-## Security Considerations
+## 安全考虑
 
-### Data Privacy
-- **Anonymous Reporting**: Only anonymous data is sent
-- **No Sensitive Data**: No sensitive information is transmitted
-- **User Control**: Users can disable diagnostic reporting
-- **Data Minimization**: Only necessary data is sent
+### 数据隐私
+- **匿名报告**：仅发送匿名数据
+- **无敏感数据**：不传输敏感信息
+- **用户控制**：用户可以禁用诊断报告
+- **数据最小化**：仅发送必要数据
 
-### API Security
-- **HTTPS**: API communication uses secure protocols
-- **Data Validation**: API data is validated before sending
-- **Error Handling**: API errors are handled securely
-- **No Credentials**: No authentication credentials are sent
+### API 安全
+- **HTTPS**：API 通信使用安全协议
+- **数据验证**：发送前验证 API 数据
+- **错误处理**：安全地处理 API 错误
+- **无凭据**：不发送身份验证凭据
 
-### Network Security
-- **Secure Communication**: Uses secure HTTP protocols
-- **Error Handling**: Network errors are handled gracefully
-- **No Data Leakage**: No sensitive data is leaked
-- **Secure Endpoints**: Uses trusted API endpoints
+### 网络安全
+- **安全通信**：使用安全的 HTTP 协议
+- **错误处理**：优雅地处理网络错误
+- **无数据泄漏**：不泄漏敏感数据
+- **安全端点**：使用可信的 API 端点
 
-## Future Integration Considerations
+## 未来集成考虑
 
-### Extensibility
-- **New API Endpoints**: Easy to add new API endpoints
-- **Additional Data**: Easy to add new data fields
-- **Error Codes**: Easy to add new error code descriptions
-- **API Versions**: Easy to support new API versions
+### 可扩展性
+- **新 API 端点**：易于添加新的 API 端点
+- **额外数据**：易于添加新的数据字段
+- **错误代码**：易于添加新的错误代码描述
+- **API 版本**：易于支持新的 API 版本
 
-### Compatibility
-- **API Versioning**: Compatible with different API versions
-- **Data Format**: Compatible with different data formats
-- **Error Codes**: Compatible with different error code systems
-- **Network Protocols**: Compatible with different network protocols
+### 兼容性
+- **API 版本控制**：与不同 API 版本兼容
+- **数据格式**：与不同数据格式兼容
+- **错误代码**：与不同错误代码系统兼容
+- **网络协议**：与不同网络协议兼容
 
-### Performance
-- **Optimization**: API communication can be optimized
-- **Caching**: API responses can be cached
-- **Batch Operations**: Multiple operations can be batched
-- **Async Processing**: API calls can be made asynchronous
+### 性能
+- **优化**：可以优化 API 通信
+- **缓存**：可以缓存 API 响应
+- **批处理操作**：可以批处理多个操作
+- **异步处理**：可以使 API 调用异步
