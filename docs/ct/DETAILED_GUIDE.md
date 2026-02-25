@@ -144,11 +144,11 @@ msg_ok "Completed successfully!\n"
 #!/usr/bin/env bash
 # Copyright (c) 2021-2026 community-scripts ORG
 # Author: YourUsername
-# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/jiege6-66/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/example/project
 
 # 导入主编排器
-source <(curl -fsSL https://git.community-scripts.org/community-scripts/ProxmoxVE/raw/branch/main/misc/build.func)
+source <(curl -fsSL https://git.community-scripts.org/jiege6-66/ProxmoxVE/raw/branch/main/misc/build.func)
 ```
 
 > **⚠️ 重要**: 在打开 PR 之前，将 URL 更改为 `community-scripts` 仓库！
@@ -363,7 +363,7 @@ function health_check() {
 
 ```bash
 #!/usr/bin/env bash
-source <(curl -fsSL https://git.community-scripts.org/community-scripts/ProxmoxVE/raw/branch/main/misc/build.func)
+source <(curl -fsSL https://git.community-scripts.org/jiege6-66/ProxmoxVE/raw/branch/main/misc/build.func)
 
 APP="Homarr"
 var_tags="dashboard;homepage"

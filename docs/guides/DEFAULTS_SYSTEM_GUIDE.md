@@ -728,8 +728,8 @@ EOF
 ### 需要更多信息？
 
 - 📖 [主文档](../../docs/)
-- 🐛 [报告问题](https://github.com/community-scripts/ProxmoxVE/issues)
-- 💬 [讨论](https://github.com/community-scripts/ProxmoxVE/discussions)
+- 🐛 [报告问题](https://github.com/jiege6-66/ProxmoxVE/issues)
+- 💬 [讨论](https://github.com/jiege6-66/ProxmoxVE/discussions)
 
 ### 有用的命令
 

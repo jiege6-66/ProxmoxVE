@@ -280,7 +280,7 @@ ProxmoxVE/
 发现错误？想要改进文档？
 
 1. 参见：[contribution/README.md](contribution/README.md) 获取完整的贡献指南
-2. 开启问题：[GitHub Issues](https://github.com/community-scripts/ProxmoxVE/issues)
+2. 开启问题：[GitHub Issues](https://github.com/jiege6-66/ProxmoxVE/issues)
 3. 或提交带有改进的 PR
 
 ---

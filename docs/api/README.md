@@ -120,7 +120,7 @@ ERROR_DESC=$(get_error_description EXIT_CODE)
 - **启用 API 报告** → 默认内置，无需配置
 - **禁用 API** → 在运行前设置 `api_disable="yes"`
 - **查看 API 数据** → 访问 https://community-scripts.org/stats
-- **报告 API 错误** → [GitHub Issues](https://github.com/community-scripts/ProxmoxVE/issues)
+- **报告 API 错误** → [GitHub Issues](https://github.com/jiege6-66/ProxmoxVE/issues)
 
 ## 调试 API 问题
 

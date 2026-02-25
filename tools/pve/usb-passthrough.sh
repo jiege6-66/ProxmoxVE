@@ -3,7 +3,7 @@
 # Copyright (c) 2021-2026 tteck
 # Author: tteck (tteckster)
 # License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# https://github.com/jiege6-66/ProxmoxVE/raw/main/LICENSE
 
 echo -e "\e[1;33m 此脚本仅允许 USB 直通到特权 LXC 容器\e[0m"
 while true; do

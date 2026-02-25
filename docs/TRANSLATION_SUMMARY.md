@@ -185,4 +185,4 @@
 **翻译完成时间**: 2025年12月
 **翻译者**: Kiro AI Assistant
 **项目**: ProxmoxVE Community Scripts
-**GitHub**: https://github.com/community-scripts/ProxmoxVE
+**GitHub**: https://github.com/jiege6-66/ProxmoxVE

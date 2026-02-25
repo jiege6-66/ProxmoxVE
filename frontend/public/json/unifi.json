@@ -15,7 +15,7 @@
   "config_path": "",
   "description": "UniFi Network Server 是一款帮助管理和监控 UniFi 网络(Wi-Fi、以太网等)的软件，通过提供直观的用户界面和高级功能实现。它允许网络管理员配置、监控和升级网络设备，以及查看网络统计信息、客户端设备和历史事件。该应用的目标是使 UniFi 网络的管理更加简单高效。",
   "disable": true,
-  "disable_description": "This script is disabled because UniFi no longer delivers APT packages for Debian systems. The installation relies on APT repositories that are no longer maintained or available. For more details, see: https://github.com/community-scripts/ProxmoxVE/issues/11876",
+  "disable_description": "This script is disabled because UniFi no longer delivers APT packages for Debian systems. The installation relies on APT repositories that are no longer maintained or available. For more details, see: https://github.com/jiege6-66/ProxmoxVE/issues/11876",
   "install_methods": [
     {
       "type": "default",

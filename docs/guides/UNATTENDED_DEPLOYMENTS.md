@@ -58,7 +58,7 @@ pveversion
 ### 2. 网络连接
 ```bash
 # 测试 GitHub 访问
-curl -I https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh
+curl -I https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/debian.sh
 
 # 测试互联网连接
 ping -c 1 1.1.1.1
@@ -95,7 +95,7 @@ df -h
 
 **最简单的形式：**
 ```bash
-var_hostname=myserver bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
+var_hostname=myserver bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/debian.sh)"
 ```
 
 ### 完整配置示例
@@ -120,7 +120,7 @@ var_nesting=1 \
 var_tags=production,automated \
 var_protection=yes \
 var_verbose=no \
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/debian.sh)"
 
 echo "✓ 容器部署成功"
 ```
@@ -139,7 +139,7 @@ var_ram=4096 \
 var_hostname=web-server \
 var_net=192.168.1.100/24-192.168.1.150/24 \
 var_gateway=192.168.1.1 \
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/debian.sh)"
 
 # 脚本将：
 # 1. Ping 192.168.1.100 - 如果响应，跳过
@@ -154,7 +154,7 @@ var_gateway=192.168.1.1 \
 
 **步骤 1：创建一次默认值（交互式）**
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pihole.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/pihole.sh)"
 # 选择"高级设置"→ 配置 → 保存为"应用默认值"
 ```
 
@@ -164,7 +164,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/Proxmo
 # deploy-with-defaults.sh
 
 # 应用默认值会自动加载
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pihole.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/pihole.sh)"
 # 脚本将使用 /usr/local/community-scripts/defaults/pihole.vars
 ```
 
@@ -185,7 +185,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/Proxmo
 var_gpu=yes \
 var_tun=yes \
 var_hostname=transcoder \
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/plex.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/plex.sh)"
 ```
 
 ---
@@ -207,7 +207,7 @@ for app in "${apps[@]}"; do
   var_hostname="$app-server" \
   var_cpu=2 \
   var_ram=2048 \
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${app}.sh)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${app}.sh)"
 
   echo "✓ $app 已部署"
   sleep 5  # 部署之间等待
@@ -251,7 +251,7 @@ for app in "${!CONTAINERS[@]}"; do
   var_ipv6_method=none \
   var_ssh=yes \
   var_tags="$tags,automated" \
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${app}.sh)" 2>&1 | tee "deploy-${app}.log"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${app}.sh)" 2>&1 | tee "deploy-${app}.log"
 
   if [ $? -eq 0 ]; then
     echo "✓ $app 部署成功"
@@ -286,7 +286,7 @@ deploy_container() {
   var_disk="$disk" \
   var_hostname="$app" \
   var_net=dhcp \
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${app}.sh)" \
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${app}.sh)" \
     &> "deploy-${app}.log"
 
   echo "[$app] ✓ 完成"
@@ -331,7 +331,7 @@ echo "所有部署完成！"
         var_net=dhcp \
         var_ssh=yes \
         var_tags=ansible,automated \
-        bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/debian.sh)"
       args:
         executable: /bin/bash
       register: deploy_result
@@ -388,7 +388,7 @@ echo "所有部署完成！"
         var_ssh=yes \
         var_ssh_authorized_key="{{ ssh_key }}" \
         var_tags="{{ item.tags }},ansible" \
-        bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/{{ item.name }}.sh)"
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/{{ item.name }}.sh)"
       args:
         executable: /bin/bash
       loop: "{{ containers }}"
@@ -440,7 +440,7 @@ resource "null_resource" "deploy_container" {
       "var_disk=${each.value.disk}",
       "var_hostname=${each.key}",
       "var_net=dhcp",
-      "bash -c \"$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${each.value.template}.sh)\""
+      "bash -c \"$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${each.value.template}.sh)\""
     ]
 
     connection {
@@ -521,7 +521,7 @@ jobs:
             var_net=dhcp \
             var_ssh=yes \
             var_tags=ci-cd,automated \
-            bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${{ github.event.inputs.container_type }}.sh)"
+            bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${{ github.event.inputs.container_type }}.sh)"
 
       - name: 通知部署状态
         if: success()
@@ -555,7 +555,7 @@ deploy_container:
         var_hostname=gitlab-ci-container \
         var_net=dhcp \
         var_tags=gitlab-ci,automated \
-        bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/debian.sh)"
       EOF
   only:
     - main
@@ -587,7 +587,7 @@ deploy_container() {
   var_hostname="$HOSTNAME" \
   var_net=dhcp \
   var_ssh=yes \
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${APP}.sh)" 2>&1 | tee deploy.log
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${APP}.sh)" 2>&1 | tee deploy.log
 
   return ${PIPESTATUS[0]}
 }
@@ -679,7 +679,7 @@ deploy() {
   var_hostname="$HOSTNAME" \
   var_cpu=4 \
   var_ram=4096 \
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${APP}.sh)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${APP}.sh)"
   return $?
 }
 
@@ -782,7 +782,7 @@ deploy_secure() {
   var_protection=yes \
   var_tags=production,secure,automated \
   var_verbose=no \
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/${APP}.sh)" 2>&1 | tee -a "$LOG_FILE"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/${APP}.sh)" 2>&1 | tee -a "$LOG_FILE"
 
   if [ ${PIPESTATUS[0]} -eq 0 ]; then
     log "✓ 部署成功"
@@ -847,7 +847,7 @@ SSH_KEYS=$(load_ssh_keys)
 var_ssh=yes \
 var_ssh_authorized_key="$SSH_KEYS" \
 var_hostname=multi-key-server \
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/debian.sh)"
 ```
 
 ---

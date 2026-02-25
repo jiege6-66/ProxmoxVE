@@ -120,7 +120,7 @@ cleanup_lxc
 #!/usr/bin/env bash
 # Copyright (c) 2021-2026 community-scripts ORG
 # Author: YourUsername
-# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/jiege6-66/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/application/repo
 
 # 加载所有可用函数（来自 core.func + tools.func）

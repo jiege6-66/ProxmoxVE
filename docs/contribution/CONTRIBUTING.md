@@ -39,27 +39,27 @@
 
 ### 重要说明
 
-- 创建新脚本时使用 [AppName.sh](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_ct/AppName.sh) 和 [AppName-install.sh](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.sh) 作为模板。
+- 创建新脚本时使用 [AppName.sh](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_ct/AppName.sh) 和 [AppName-install.sh](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.sh) 作为模板。
 
 ---
 
 # 🚀 应用程序脚本（ct/AppName.sh）
 
-- 您可以在[这里](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_ct/AppName.md)找到此文件的所有编码标准以及结构。
+- 您可以在[这里](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_ct/AppName.md)找到此文件的所有编码标准以及结构。
 - 这些脚本负责容器创建、设置必要的变量以及在安装后处理应用程序的更新。
 
 ---
 
 # 🛠 安装脚本（install/AppName-install.sh）
 
-- 您可以在[这里](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.md)找到此文件的所有编码标准以及结构。
+- 您可以在[这里](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.md)找到此文件的所有编码标准以及结构。
 - 这些脚本负责应用程序的安装。
 
 ---
 
 ## 🚀 构建您自己的脚本
 
-从[模板脚本](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.sh)开始
+从[模板脚本](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.sh)开始
 
 ---
 
@@ -137,7 +137,7 @@ git push origin submit/myapp
 
 ### 7. 创建 Pull Request
 
-从 `submit/myapp` → `community-scripts/ProxmoxVE/main` 打开 Pull Request。
+从 `submit/myapp` → `jiege6-66/ProxmoxVE/main` 打开 Pull Request。
 
 验证 PR 仅显示这 3 个文件：
 
@@ -154,7 +154,7 @@ git push origin submit/myapp
 **使用方法**：
 ```bash
 # 示例：使用跟踪运行并在失败时保留容器
-dev_mode="trace,keep" bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/myapp.sh)"
+dev_mode="trace,keep" bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/myapp.sh)"
 ```
 
 ### 可用标志：
@@ -173,6 +173,6 @@ dev_mode="trace,keep" bash -c "$(curl -fsSL https://raw.githubusercontent.com/co
 
 ## 📚 页面
 
-- [CT 模板：AppName.sh](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_ct/AppName.sh)
-- [安装模板：AppName-install.sh](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.sh)
-- [JSON 模板：AppName.json](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/templates_json/AppName.json)
+- [CT 模板：AppName.sh](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_ct/AppName.sh)
+- [安装模板：AppName-install.sh](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_install/AppName-install.sh)
+- [JSON 模板：AppName.json](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/templates_json/AppName.json)

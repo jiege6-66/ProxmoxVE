@@ -14,7 +14,7 @@
 
 ### CT 脚本（ct/）
 
-- 从 `community-scripts/ProxmoxVE/main` 引用 `misc/build.func`（setup-fork.sh 为分支更新）。
+- 从 `jiege6-66/ProxmoxVE/main` 引用 `misc/build.func`（setup-fork.sh 为分支更新）。
 - 使用 `check_for_gh_release` + `fetch_and_deploy_gh_release` 进行更新。
 - 不使用基于 Docker 的安装。
 

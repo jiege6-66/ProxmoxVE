@@ -11,7 +11,7 @@
   "interface_port": 5005,
   "documentation": "https://github.com/PCJones/UmlautAdaptarr/blob/master/README.md",
   "website": "https://github.com/PCJones/UmlautAdaptarr",
-  "logo": "https://raw.githubusercontent.com/community-scripts/ProxmoxVE/refs/heads/main/misc/images/logo.png",
+  "logo": "https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/refs/heads/main/misc/images/logo.png",
   "config_path": "/opt/UmlautAdaptarr/appsettings.json",
   "description": "UmlautAdaptarr 是一个修复 Sonarr、Radarr、Lidarr 和 Readarr 处理外语问题的工具。它位于这些应用和索引器之间，修改搜索和结果，并重命名发布版本，使应用能够正确识别它们。",
   "install_methods": [

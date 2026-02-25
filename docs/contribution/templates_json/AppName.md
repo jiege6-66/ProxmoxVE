@@ -152,9 +152,9 @@
 
 查看仓库中的实际示例：
 
-- [frontend/public/json/trip.json](https://github.com/community-scripts/ProxmoxVE/blob/main/frontend/public/json/trip.json)
-- [frontend/public/json/thingsboard.json](https://github.com/community-scripts/ProxmoxVE/blob/main/frontend/public/json/thingsboard.json)
-- [frontend/public/json/unifi.json](https://github.com/community-scripts/ProxmoxVE/blob/main/frontend/public/json/unifi.json)
+- [frontend/public/json/trip.json](https://github.com/jiege6-66/ProxmoxVE/blob/main/frontend/public/json/trip.json)
+- [frontend/public/json/thingsboard.json](https://github.com/jiege6-66/ProxmoxVE/blob/main/frontend/public/json/thingsboard.json)
+- [frontend/public/json/unifi.json](https://github.com/jiege6-66/ProxmoxVE/blob/main/frontend/public/json/unifi.json)
 
 ---
 

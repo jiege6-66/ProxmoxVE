@@ -3,7 +3,7 @@
 # Copyright (c) 2021-2026 tteck
 # Author: MickLesk
 # License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# https://github.com/jiege6-66/ProxmoxVE/raw/main/LICENSE
 
 function header_info {
   clear
@@ -24,7 +24,7 @@ GN=$(echo "\033[1;92m")
 CL=$(echo "\033[m")
 
 # Telemetry
-source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/api.func) 2>/dev/null || true
+source <(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/misc/api.func) 2>/dev/null || true
 declare -f init_tool_telemetry &>/dev/null && init_tool_telemetry "update-repo" "pve"
 
 header_info
@@ -39,14 +39,14 @@ function update_container() {
     echo -e "${BL}[信息]${GN} 正在检查 /usr/bin/update in ${BL}$container${CL} (OS: ${GN}$os${CL})"
 
     if pct exec "$container" -- [ -e /usr/bin/update ]; then
-      if pct exec "$container" -- grep -q "community-scripts/ProxmoxVE" /usr/bin/update; then
+      if pct exec "$container" -- grep -q "jiege6-66/ProxmoxVE" /usr/bin/update; then
         echo -e "${RD}[无变化]${CL} /usr/bin/update 已是最新 in ${BL}$container${CL}.\n"
       elif pct exec "$container" -- grep -q -v "tteck" /usr/bin/update; then
         echo -e "${RD}[警告]${CL} /usr/bin/update in ${BL}$container${CL} 包含不同的条目 (${RD}tteck${CL}). 未做任何更改。\n"
       else
         pct exec "$container" -- bash -c "sed -i 's/tteck\\/Proxmox/community-scripts\\/ProxmoxVE/g' /usr/bin/update"
 
-        if pct exec "$container" -- grep -q "community-scripts/ProxmoxVE" /usr/bin/update; then
+        if pct exec "$container" -- grep -q "jiege6-66/ProxmoxVE" /usr/bin/update; then
           echo -e "${GN}[成功]${CL} /usr/bin/update updated in ${BL}$container${CL}.\n"
         else
           echo -e "${RD}[错误]${CL} /usr/bin/update in ${BL}$container${CL} 无法正确更新.\n"
@@ -66,4 +66,4 @@ for container in $(pct list | awk '{if(NR>1) print $1}'); do
 done
 
 header_info
-echo -e "${GN}处理已完成. 仓库已切换至 community-scripts/ProxmoxVE.${CL}\n"
+echo -e "${GN}处理已完成. 仓库已切换至 jiege6-66/ProxmoxVE.${CL}\n"

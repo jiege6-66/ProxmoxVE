@@ -23,7 +23,7 @@
 
 ```bash
 # 1. 在 GitHub 上分叉
-# 访问：https://github.com/community-scripts/ProxmoxVE → Fork（右上角）
+# 访问：https://github.com/jiege6-66/ProxmoxVE → Fork（右上角）
 
 # 2. 克隆您的分支
 git clone https://github.com/YOUR_USERNAME/ProxmoxVE.git
@@ -75,7 +75,7 @@ git push origin feature/my-awesome-app
 
 ```bash
 # ✅ 用户从 GitHub 运行（PR 合并后的正常使用）
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/myapp.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/myapp.sh)"
 
 # 安装脚本由 CT 脚本调用，用户不直接运行
 ```
@@ -97,7 +97,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/ProxmoxVE/
 
 ```bash
 # 用户通过 curl 从上游下载脚本
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/myapp.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/myapp.sh)"
 
 # 脚本的 curl 命令现在指向上游（community-scripts）
 # 这是稳定的、经过测试的版本
@@ -159,7 +159,7 @@ git config user.name "Your Name"
 git config user.email "your.email@example.com"
 
 # 添加上游远程以与主仓库同步
-git remote add upstream https://github.com/community-scripts/ProxmoxVE.git
+git remote add upstream https://github.com/jiege6-66/ProxmoxVE.git
 
 # 验证远程
 git remote -v
@@ -646,9 +646,9 @@ git push -f origin main
 
 ## 📞 联系和支持
 
-- **GitHub**：[community-scripts/ProxmoxVE](https://github.com/community-scripts/ProxmoxVE)
-- **Issues**：[GitHub Issues](https://github.com/community-scripts/ProxmoxVE/issues)
-- **Discussions**：[GitHub Discussions](https://github.com/community-scripts/ProxmoxVE/discussions)
+- **GitHub**：[jiege6-66/ProxmoxVE](https://github.com/jiege6-66/ProxmoxVE)
+- **Issues**：[GitHub Issues](https://github.com/jiege6-66/ProxmoxVE/issues)
+- **Discussions**：[GitHub Discussions](https://github.com/jiege6-66/ProxmoxVE/discussions)
 - **Discord**：[加入服务器](https://discord.gg/UHrpNWGwkH)
 
 ---

@@ -62,7 +62,7 @@
 
 ```bash
 #!/usr/bin/env bash
-source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
+source <(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/misc/build.func)
 # （注意：setup-fork.sh 在开发期间将此 URL 更改为指向您的分支）
 ```
 
@@ -160,9 +160,9 @@ fetch_and_deploy_gh_release "myapp" "owner/repo"
 
 具有良好更新函数的最新参考脚本：
 
-- [Trip](https://github.com/community-scripts/ProxmoxVE/blob/main/ct/trip.sh)
-- [Thingsboard](https://github.com/community-scripts/ProxmoxVE/blob/main/ct/thingsboard.sh)
-- [UniFi](https://github.com/community-scripts/ProxmoxVE/blob/main/ct/unifi.sh)
+- [Trip](https://github.com/jiege6-66/ProxmoxVE/blob/main/ct/trip.sh)
+- [Thingsboard](https://github.com/jiege6-66/ProxmoxVE/blob/main/ct/thingsboard.sh)
+- [UniFi](https://github.com/jiege6-66/ProxmoxVE/blob/main/ct/unifi.sh)
 
 ---
 

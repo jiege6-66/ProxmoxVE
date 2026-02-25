@@ -16,7 +16,7 @@
   "config_path": "",
   "description": "OPNsense 是一个基于 FreeBSD 的开源防火墙和路由平台。它提供高级安全功能,包括入侵检测、VPN 支持、流量整形和网页过滤,并配有直观的网页界面便于管理。以其可靠性和定期更新而闻名,OPNsense 是企业和家庭网络的热门选择。",
   "disable": false,
-  "disable_description": "This script has been temporarily disabled due to installation failures. The OPNsense bootstrap process was not completing successfully, resulting in a plain FreeBSD VM instead of a functional OPNsense installation. The issue is being investigated and the script will be re-enabled once resolved. For more details, see: https://github.com/community-scripts/ProxmoxVE/issues/6183",
+  "disable_description": "This script has been temporarily disabled due to installation failures. The OPNsense bootstrap process was not completing successfully, resulting in a plain FreeBSD VM instead of a functional OPNsense installation. The issue is being investigated and the script will be re-enabled once resolved. For more details, see: https://github.com/jiege6-66/ProxmoxVE/issues/6183",
   "install_methods": [
     {
       "type": "default",

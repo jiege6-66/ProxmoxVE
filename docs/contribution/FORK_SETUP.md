@@ -23,8 +23,8 @@ bash docs/contribution/setup-fork.sh --full
 
 1. **检测** 从 git config 获取您的 GitHub 用户名
 2. **更新所有硬编码链接** 指向您的分支：
-   - 指向 `community-scripts/ProxmoxVE` 的文档链接
-   - **脚本中的 Curl 下载 URL**（例如，`curl ... github.com/community-scripts/ProxmoxVE/main/...`）
+   - 指向 `jiege6-66/ProxmoxVE` 的文档链接
+   - **脚本中的 Curl 下载 URL**（例如，`curl ... github.com/jiege6-66/ProxmoxVE/main/...`）
 3. **创建** `.git-setup-info` 包含您的配置详细信息
 4. **备份** 所有修改的文件（\*.backup 以确保安全）
 
@@ -34,12 +34,12 @@ bash docs/contribution/setup-fork.sh --full
 
 ```bash
 # ct/myapp.sh 的第一行
-source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
+source <(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/misc/build.func)
 ```
 
 **没有 setup-fork.sh：**
 
-- 脚本 URL 仍然指向 `community-scripts/ProxmoxVE/main`
+- 脚本 URL 仍然指向 `jiege6-66/ProxmoxVE/main`
 - 如果您使用 `bash ct/myapp.sh` 在本地测试，您正在测试本地文件，但脚本的 curl 命令会从**上游**仓库下载
 - 您的修改实际上没有通过 curl 命令进行测试！❌
 
@@ -54,7 +54,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 # 示例：setup-fork.sh 更改的内容
 
 # 之前（指向上游）：
-source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
+source <(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/misc/build.func)
 
 # 之后（指向您的分支）：
 source <(curl -fsSL https://raw.githubusercontent.com/john/ProxmoxVE/main/misc/build.func)
@@ -136,7 +136,7 @@ bash docs/contribution/setup-fork.sh --full john my-fork
 
 ```bash
 # 如果还没有添加上游
-git remote add upstream https://github.com/community-scripts/ProxmoxVE.git
+git remote add upstream https://github.com/jiege6-66/ProxmoxVE.git
 
 # 从上游获取最新内容
 git fetch upstream

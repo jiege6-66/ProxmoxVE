@@ -226,7 +226,7 @@ apt full-upgrade -y
 
 ### 参考
 
-官方讨论：[GitHub #8126](https://github.com/community-scripts/ProxmoxVE/discussions/8126)
+官方讨论：[GitHub #8126](https://github.com/jiege6-66/ProxmoxVE/discussions/8126)
 
 ---
 
@@ -285,7 +285,7 @@ apt full-upgrade -y
 
 发现未记录的退出代码或有解决方案要分享？请：
 
-1. 在 [GitHub](https://github.com/community-scripts/ProxmoxVE/issues) 上开启问题
+1. 在 [GitHub](https://github.com/jiege6-66/ProxmoxVE/issues) 上开启问题
 2. 包括：
    - 退出代码编号
    - 错误消息

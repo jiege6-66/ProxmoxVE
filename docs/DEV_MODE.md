@@ -7,16 +7,16 @@
 ```bash
 # 单一模式
 export dev_mode="motd"
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/wallabag.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/wallabag.sh)"
 
 # 多个模式（逗号分隔）
 export dev_mode="motd,keep,trace"
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/wallabag.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/wallabag.sh)"
 
 # 结合详细输出
 export var_verbose="yes"
 export dev_mode="pause,logs"
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/wallabag.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/wallabag.sh)"
 ```
 
 ## 可用模式
@@ -434,7 +434,7 @@ grep "ed563b19" /var/log/community-scripts/*.log
 ```bash
 # 初始测试以查看失败
 export dev_mode="keep,logs"
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/wallabag.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/wallabag.sh)"
 
 # 容器 107 已保留，检查日志
 tail /var/log/community-scripts/install-*.log

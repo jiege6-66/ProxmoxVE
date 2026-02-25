@@ -3,8 +3,8 @@
 # Copyright (c) 2021-2026 tteck
 # Author: tteck (tteckster)
 # License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
-# bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/pve/cron-update-lxcs.sh)"
+# https://github.com/jiege6-66/ProxmoxVE/raw/main/LICENSE
+# bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/tools/pve/cron-update-lxcs.sh)"
 
 clear
 cat <<"EOF"
@@ -25,7 +25,7 @@ add() {
     *) echo "请回答 yes 或 no。" ;;
     esac
   done
-  sh -c '(crontab -l -u root 2>/dev/null; echo "0 0 * * 0 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/pve/update-lxcs-cron.sh)\" >>/var/log/update-lxcs-cron.log 2>/dev/null") | crontab -u root -'
+  sh -c '(crontab -l -u root 2>/dev/null; echo "0 0 * * 0 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/tools/pve/update-lxcs-cron.sh)\" >>/var/log/update-lxcs-cron.log 2>/dev/null") | crontab -u root -'
   clear
   echo -e "\n 查看 Cron 更新 LXC 日志: cat /var/log/update-lxcs-cron.log"
 }

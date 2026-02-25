@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/images/logo-81x112.png" height="120px" alt="Proxmox VE Helper-Scripts Logo" />
+  <img src="https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/misc/images/logo-81x112.png" height="120px" alt="Proxmox VE Helper-Scripts Logo" />
   
   <h1>Proxmox VE Helper-Scripts</h1>
   <p><em>纪念 @tteck 的社区传承</em></p>
@@ -17,13 +17,13 @@
   </p>
 
   <p>
-    <a href="https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/README.md">
+    <a href="https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/README.md">
       <img src="https://img.shields.io/badge/🤝_Contribute-Guidelines-ff4785?style=for-the-badge&labelColor=2d3748" alt="Contribute" />
     </a>
-    <a href="https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/USER_SUBMITTED_GUIDES.md">
+    <a href="https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/USER_SUBMITTED_GUIDES.md">
       <img src="https://img.shields.io/badge/📚_Guides-Read-0077b5?style=for-the-badge&labelColor=2d3748" alt="Guides" />
     </a>
-    <a href="https://github.com/community-scripts/ProxmoxVE/blob/main/CHANGELOG.md">
+    <a href="https://github.com/jiege6-66/ProxmoxVE/blob/main/CHANGELOG.md">
       <img src="https://img.shields.io/badge/📋_Changelog-View-6c5ce7?style=for-the-badge&labelColor=2d3748" alt="Changelog" />
     </a>
   </p>
@@ -141,12 +141,12 @@
 直接在您的 Proxmox UI 中安装便捷的脚本管理器：
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pve-scripts-local.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jiege6-66/ProxmoxVE/main/ct/pve-scripts-local.sh)"
 ```
 
 这会在您的 Proxmox 界面中添加一个菜单，方便访问脚本而无需访问网站。
 
-📖 **了解更多：** [ProxmoxVE-Local Repository](https://github.com/community-scripts/ProxmoxVE-Local)
+📖 **了解更多：** [ProxmoxVE-Local Repository](https://github.com/jiege6-66/ProxmoxVE-Local)
 
 ---
 
@@ -166,14 +166,14 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/Proxmo
     <td align="center" width="33%">
       <h3>💭 讨论区</h3>
       <p>功能请求、问答和想法</p>
-      <a href="https://github.com/community-scripts/ProxmoxVE/discussions">
+      <a href="https://github.com/jiege6-66/ProxmoxVE/discussions">
         <img src="https://img.shields.io/badge/Discuss-238636?style=for-the-badge&logo=github&logoColor=white" alt="Discussions" />
       </a>
     </td>
     <td align="center" width="33%">
       <h3>🐛 问题反馈</h3>
       <p>错误报告和问题跟踪</p>
-      <a href="https://github.com/community-scripts/ProxmoxVE/issues">
+      <a href="https://github.com/jiege6-66/ProxmoxVE/issues">
         <img src="https://img.shields.io/badge/Report-d73a4a?style=for-the-badge&logo=github&logoColor=white" alt="Issues" />
       </a>
     </td>
@@ -214,7 +214,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/Proxmo
 <div align="center">
   <br />
   
-  👉 查看我们的 **[贡献指南](https://github.com/community-scripts/ProxmoxVE/blob/main/docs/contribution/README.md)** 开始贡献
+  👉 查看我们的 **[贡献指南](https://github.com/jiege6-66/ProxmoxVE/blob/main/docs/contribution/README.md)** 开始贡献
   
 </div>
 
@@ -249,19 +249,19 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/Proxmo
 </p>
 
 <p align="center">
-  <a href="https://star-history.com/#community-scripts/ProxmoxVE&Date">
+  <a href="https://star-history.com/#jiege6-66/ProxmoxVE&Date">
     <picture>
       <source
         media="(prefers-color-scheme: dark)"
-        srcset="https://api.star-history.com/svg?repos=community-scripts/ProxmoxVE&type=Date&theme=dark"
+        srcset="https://api.star-history.com/svg?repos=jiege6-66/ProxmoxVE&type=Date&theme=dark"
       />
       <source
         media="(prefers-color-scheme: light)"
-        srcset="https://api.star-history.com/svg?repos=community-scripts/ProxmoxVE&type=Date"
+        srcset="https://api.star-history.com/svg?repos=jiege6-66/ProxmoxVE&type=Date"
       />
       <img
         alt="Star History Chart"
-        src="https://api.star-history.com/svg?repos=community-scripts/ProxmoxVE&type=Date"
+        src="https://api.star-history.com/svg?repos=jiege6-66/ProxmoxVE&type=Date"
         width="650"
       />
     </picture>

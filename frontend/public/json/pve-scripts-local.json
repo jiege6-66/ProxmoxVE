@@ -9,10 +9,10 @@
   "updateable": true,
   "privileged": false,
   "interface_port": 3000,
-  "documentation": "https://github.com/community-scripts/ProxmoxVE-Local",
+  "documentation": "https://github.com/jiege6-66/ProxmoxVE-Local",
   "config_path": "/opt/PVEScripts-Local/.env",
   "website": "https://community-scripts.github.io/ProxmoxVE",
-  "logo": "https://raw.githubusercontent.com/community-scripts/ProxmoxVE-Local/refs/heads/main/.github/logo.png",
+  "logo": "https://raw.githubusercontent.com/jiege6-66/ProxmoxVE-Local/refs/heads/main/.github/logo.png",
   "description": "一个现代化的基于网页的 Proxmox VE (PVE) 辅助脚本管理界面。此工具提供用户友好的方式来发现、下载和本地执行社区提供的 Proxmox 脚本,并实时流式传输终端输出。",
   "install_methods": [
     {
